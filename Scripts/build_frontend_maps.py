@@ -114,17 +114,20 @@ def build_map(map_package_path, map_name):
     try:
         b_saved = bool(unreal.EditorLevelLibrary.save_current_level())
     except Exception as e:
-        unreal.log_warning(f"save_current_level fallback: {e}")
+        unreal.log_warning(f"EditorLevelLibrary.save_current_level exception: {e}")
+
+    if not b_saved:
         try:
             b_saved = bool(editor_level_subsystem.save_current_level())
         except Exception as e_save:
-            unreal.log_warning(f"LevelEditorSubsystem.save_current_level fallback: {e_save}")
+            unreal.log_warning(f"LevelEditorSubsystem.save_current_level exception: {e_save}")
 
     if b_saved:
         unreal.log(f"=== Successfully saved {map_name} to {map_package_path} ===")
-    else:
-        unreal.log_warning(f"Save level returned false or encountered warning for {map_name}")
-    return True
+        return True
+
+    unreal.log_error(f"Failed to save {map_name} to {map_package_path}!")
+    return False
 
 def main():
     ok_login = build_map("/Game/Maps/LoginMap", "LoginMap")
