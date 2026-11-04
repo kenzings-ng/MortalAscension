@@ -6,6 +6,10 @@
 #include "AbilitySystemBlueprintLibrary.h"
 #include "Combat/AscendantAttributeSet.h"
 #include "Combat/PAPostureSyncComponent.h"
+#include "Combat/PAThreatComponent.h"
+#include "AI/PABossAIComponent.h"
+#include "Controller/PABasePlayerController.h"
+#include "UI/PAGameplayHUDWidget.h"
 #include "GameplayEffect.h"
 #include "GameplayTagContainer.h"
 #include "Kismet/GameplayStatics.h"
@@ -41,6 +45,11 @@ APAStoneGolemBoss::APAStoneGolemBoss(const FObjectInitializer& ObjectInitializer
 		LeashComponent->SetLeashSpeedMultiplier(1.5f);
 	}
 
+	// Khởi tạo các Component quản lý Boss theo chuẩn M6 & GDD
+	PostureSyncComponent = CreateDefaultSubobject<UPAPostureSyncComponent>(TEXT("PostureSyncComponent"));
+	ThreatComponent = CreateDefaultSubobject<UPAThreatComponent>(TEXT("ThreatComponent"));
+	BossAIComponent = CreateDefaultSubobject<UPABossAIComponent>(TEXT("BossAIComponent"));
+
 	// Cấu hình thông số mặc định cho Stone Golem Boss
 	AggroRadius = 800.0f;
 	AttackRange = 250.0f;
@@ -54,6 +63,17 @@ APAStoneGolemBoss::APAStoneGolemBoss(const FObjectInitializer& ObjectInitializer
 	bCanSlam = true;
 
 	SetBaseMoveSpeed(BossWalkSpeed);
+}
+
+void APAStoneGolemBoss::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (LeashComponent)
+	{
+		LeashComponent->OnLeashStateChanged.AddUniqueDynamic(this, &APAStoneGolemBoss::HandleLeashStateChanged);
+		LeashComponent->OnLeashCompleted.AddUniqueDynamic(this, &APAStoneGolemBoss::HandleLeashCompleted);
+	}
 }
 
 void APAStoneGolemBoss::BeginPlay()
@@ -104,8 +124,19 @@ void APAStoneGolemBoss::BeginPlay()
 	if (LeashComponent)
 	{
 		LeashComponent->SetSpawnOrigin(GetActorLocation());
-		LeashComponent->OnLeashStateChanged.AddDynamic(this, &APAStoneGolemBoss::HandleLeashStateChanged);
-		LeashComponent->OnLeashCompleted.AddDynamic(this, &APAStoneGolemBoss::HandleLeashCompleted);
+		LeashComponent->OnLeashStateChanged.AddUniqueDynamic(this, &APAStoneGolemBoss::HandleLeashStateChanged);
+		LeashComponent->OnLeashCompleted.AddUniqueDynamic(this, &APAStoneGolemBoss::HandleLeashCompleted);
+	}
+
+	if (ThreatComponent)
+	{
+		ThreatComponent->SetSpawnOrigin(GetActorLocation());
+	}
+
+	if (BossAIComponent)
+	{
+		const float MaxHP = (AttributeSet && AttributeSet->GetMaxHealth() > 0.0f) ? AttributeSet->GetMaxHealth() : 10000.0f;
+		BossAIComponent->InitializeBoss(MaxHP);
 	}
 }
 
@@ -121,20 +152,49 @@ void APAStoneGolemBoss::Tick(float DeltaSeconds)
 
 void APAStoneGolemBoss::UpdateBossAI(float DeltaSeconds)
 {
-	// 1. Nếu đang trong trạng thái hồi vị trí (Leash Resetting), bỏ qua truy đuổi
+	// 0. Nếu Boss đã chết, không thực hiện hành động
+	const bool bDead = (AbilitySystemComponent && AbilitySystemComponent->HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(TEXT("State.Dead"), false))) ||
+		(AttributeSet && AttributeSet->GetHealth() <= 0.0f);
+	if (bDead)
+	{
+		return;
+	}
+
+	// 1. Nếu Boss đang bị vỡ thế Stagger (choáng 3.0s), dừng chuyển động và không tấn công
+	if (PostureSyncComponent && PostureSyncComponent->IsStaggered())
+	{
+		if (UCharacterMovementComponent* MoveComp = GetCharacterMovement())
+		{
+			MoveComp->StopMovementImmediately();
+		}
+		return;
+	}
+
+	// 2. Nếu đang trong trạng thái hồi vị trí (Leash Resetting), bỏ qua truy đuổi
 	if (LeashComponent && LeashComponent->IsLeashResetting())
 	{
 		CurrentTarget = nullptr;
 		return;
 	}
 
-	// 2. Nếu đang tung đòn Ground Slam, đứng yên dập đất
+	// 3. Nếu đang tung đòn Ground Slam, đứng yên dập đất
 	if (bIsPerformingSlam)
 	{
 		return;
 	}
 
-	// 3. Nếu chưa có mục tiêu, quét tìm người chơi gần nhất trong bán kính AggroRadius (hỗ trợ Dedicated Server)
+	// 4. Ưu tiên mục tiêu có Threat cao nhất từ ThreatComponent
+	if (ThreatComponent)
+	{
+		ThreatComponent->EvaluateThreatRetargeting();
+		AActor* AggroTarget = ThreatComponent->GetCurrentAggroTarget();
+		if (AggroTarget && AggroTarget != CurrentTarget.Get())
+		{
+			SetTargetActor(AggroTarget);
+		}
+	}
+
+	// 5. Nếu chưa có mục tiêu, quét tìm người chơi gần nhất trong bán kính AggroRadius (hỗ trợ Dedicated Server)
 	if (!CurrentTarget.IsValid())
 	{
 		float ClosestDistSq = FMath::Square(AggroRadius);
@@ -164,11 +224,15 @@ void APAStoneGolemBoss::UpdateBossAI(float DeltaSeconds)
 
 		if (BestTarget)
 		{
-			CurrentTarget = BestTarget;
+			SetTargetActor(BestTarget);
+			if (ThreatComponent)
+			{
+				ThreatComponent->AddThreat(BestTarget, 10.0f, EPAThreatSource::Damage);
+			}
 		}
 	}
 
-	// 4. Nếu có mục tiêu hợp lệ
+	// 6. Nếu có mục tiêu hợp lệ
 	if (CurrentTarget.IsValid())
 	{
 		// Kiểm tra nếu mục tiêu đã chết, vào vùng an toàn Sanctuary, hoặc ra quá xa khỏi tầm Aggro
@@ -179,6 +243,16 @@ void APAStoneGolemBoss::UpdateBossAI(float DeltaSeconds)
 			if ((TagDead.IsValid() && TargetASC->HasMatchingGameplayTag(TagDead)) ||
 				(TagInSanctuary.IsValid() && TargetASC->HasMatchingGameplayTag(TagInSanctuary)))
 			{
+				if (APABaseCharacter* TargetChar = Cast<APABaseCharacter>(CurrentTarget.Get()))
+				{
+					if (APABasePlayerController* TargetPC = Cast<APABasePlayerController>(TargetChar->GetController()))
+					{
+						if (TargetPC->GetGameplayHUDWidget())
+						{
+							TargetPC->GetGameplayHUDWidget()->HideBossHUD();
+						}
+					}
+				}
 				CurrentTarget = nullptr;
 				return;
 			}
@@ -187,8 +261,31 @@ void APAStoneGolemBoss::UpdateBossAI(float DeltaSeconds)
 		const float Dist = FVector::Dist2D(GetActorLocation(), CurrentTarget->GetActorLocation());
 		if (Dist > AggroRadius * 1.5f)
 		{
+			if (APABaseCharacter* TargetChar = Cast<APABaseCharacter>(CurrentTarget.Get()))
+			{
+				if (APABasePlayerController* TargetPC = Cast<APABasePlayerController>(TargetChar->GetController()))
+				{
+					if (TargetPC->GetGameplayHUDWidget())
+					{
+						TargetPC->GetGameplayHUDWidget()->HideBossHUD();
+					}
+				}
+			}
 			CurrentTarget = nullptr;
 			return;
+		}
+
+		// Kích hoạt Boss HUD trên giao diện người chơi khi tham chiến
+		if (APABaseCharacter* TargetChar = Cast<APABaseCharacter>(CurrentTarget.Get()))
+		{
+			if (APABasePlayerController* TargetPC = Cast<APABasePlayerController>(TargetChar->GetController()))
+			{
+				if (TargetPC->GetGameplayHUDWidget() && !TargetPC->GetGameplayHUDWidget()->IsBossHUDVisible())
+				{
+					static const TArray<FName> BossParts = { FName(TEXT("Core")), FName(TEXT("Horn")), FName(TEXT("Arm_Left")), FName(TEXT("Arm_Right")) };
+					TargetPC->GetGameplayHUDWidget()->ShowBossHUD(this, TEXT("Ancient Stone Golem"), 10, BossParts);
+				}
+			}
 		}
 
 		// Hướng quay mặt ngắm về phía mục tiêu
@@ -385,7 +482,25 @@ void APAStoneGolemBoss::HandleLeashStateChanged(bool bIsLeashing)
 {
 	if (bIsLeashing)
 	{
+		if (CurrentTarget.IsValid())
+		{
+			if (APABaseCharacter* TargetChar = Cast<APABaseCharacter>(CurrentTarget.Get()))
+			{
+				if (APABasePlayerController* TargetPC = Cast<APABasePlayerController>(TargetChar->GetController()))
+				{
+					if (TargetPC->GetGameplayHUDWidget())
+					{
+						TargetPC->GetGameplayHUDWidget()->HideBossHUD();
+					}
+				}
+			}
+		}
+
 		CurrentTarget = nullptr;
+		if (ThreatComponent)
+		{
+			ThreatComponent->TriggerLeashReset();
+		}
 		if (bIsPerformingSlam)
 		{
 			FinishGroundSlam();
@@ -396,4 +511,84 @@ void APAStoneGolemBoss::HandleLeashStateChanged(bool bIsLeashing)
 void APAStoneGolemBoss::HandleLeashCompleted()
 {
 	CurrentTarget = nullptr;
+	if (ThreatComponent)
+	{
+		ThreatComponent->CompleteLeashReset();
+	}
+}
+
+void APAStoneGolemBoss::HandlePostureBroken(AActor* InstigatorActor)
+{
+	Super::HandlePostureBroken(InstigatorActor);
+
+	if (AbilitySystemComponent)
+	{
+		static const FGameplayTag TagStaggered = FGameplayTag::RequestGameplayTag(TEXT("State.Staggered"), false);
+		if (TagStaggered.IsValid())
+		{
+			AbilitySystemComponent->AddLooseGameplayTag(TagStaggered);
+		}
+	}
+
+	if (PostureSyncComponent)
+	{
+		APABaseCharacter* InstigatorChar = Cast<APABaseCharacter>(InstigatorActor);
+		const float MaxHP = (AttributeSet && AttributeSet->GetMaxHealth() > 0.0f) ? AttributeSet->GetMaxHealth() : 10000.0f;
+		PostureSyncComponent->NotifyPostureBroken(InstigatorChar, FGuid(), MaxHP);
+	}
+
+	if (bIsPerformingSlam)
+	{
+		FinishGroundSlam();
+	}
+}
+
+void APAStoneGolemBoss::HandleOutOfHealth(AActor* InstigatorActor)
+{
+	Super::HandleOutOfHealth(InstigatorActor);
+
+	if (CurrentTarget.IsValid())
+	{
+		if (APABaseCharacter* TargetChar = Cast<APABaseCharacter>(CurrentTarget.Get()))
+		{
+			if (APABasePlayerController* TargetPC = Cast<APABasePlayerController>(TargetChar->GetController()))
+			{
+				if (TargetPC->GetGameplayHUDWidget())
+				{
+					TargetPC->GetGameplayHUDWidget()->HideBossHUD();
+				}
+			}
+		}
+	}
+
+	if (BossAIComponent)
+	{
+		BossAIComponent->SetBossHealth(0.0f);
+	}
+
+	if (ThreatComponent)
+	{
+		ThreatComponent->ClearThreatTable();
+	}
+}
+
+float APAStoneGolemBoss::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	const float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	if (ActualDamage > 0.0f)
+	{
+		AActor* ThreatActor = DamageCauser ? DamageCauser : (EventInstigator ? EventInstigator->GetPawn() : nullptr);
+		if (ThreatActor && ThreatComponent)
+		{
+			ThreatComponent->AddThreat(ThreatActor, ActualDamage, EPAThreatSource::Damage);
+		}
+
+		if (BossAIComponent)
+		{
+			BossAIComponent->ApplyBossDamage(ActualDamage);
+		}
+	}
+
+	return ActualDamage;
 }

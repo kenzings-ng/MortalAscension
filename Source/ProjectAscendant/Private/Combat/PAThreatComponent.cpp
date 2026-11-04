@@ -179,12 +179,11 @@ void UPAThreatComponent::ApplyTaunt(AActor* TaunterActor, float BaseTauntThreat)
 	}
 
 	const FString Key = GetKeyForActor(TaunterActor);
-	ApplyTauntById(Key, BaseTauntThreat);
+	FPAThreatEntry& Entry = ThreatTable.FindOrAdd(Key);
+	Entry.CombatantActor = TaunterActor;
+	Entry.CombatantId = Key;
 
-	if (FPAThreatEntry* Entry = ThreatTable.Find(Key))
-	{
-		Entry->CombatantActor = TaunterActor;
-	}
+	ApplyTauntById(Key, BaseTauntThreat);
 }
 
 void UPAThreatComponent::ApplyTauntById(const FString& TaunterId, float BaseTauntThreat)

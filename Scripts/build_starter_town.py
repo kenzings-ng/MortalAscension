@@ -441,8 +441,22 @@ def build_starter_town():
         nav_volume.set_actor_label("NavMeshBoundsVolume_Outpost")
         nav_volume.set_actor_scale3d(unreal.Vector(120.0, 120.0, 10.0))
 
-    # NO BOSS - Sanctuary Safe Outpost Hub
-    unreal.log("Sanctuary Safe Outpost verified: 0 bosses, 0 hostile monsters spawned.")
+    # 13. Boss Stone Golem - Frontier Encounter Arena (Outside East Gate, Playable Slice Z3b)
+    boss_class = getattr(unreal, "PAStoneGolemBoss", None)
+    if not boss_class:
+        try:
+            boss_class = unreal.load_class(None, "/Script/ProjectAscendant.PAStoneGolemBoss")
+        except Exception:
+            pass
+    if boss_class:
+        boss_actor = editor_actor_subsystem.spawn_actor_from_class(
+            boss_class,
+            unreal.Vector(3200, 0, 40),
+            unreal.Rotator(0, 180, 0)
+        )
+        if boss_actor:
+            boss_actor.set_actor_label("Boss_StoneGolem")
+            unreal.log("Spawned Boss_StoneGolem at (3200, 0, 40) in Frontier Encounter Arena")
 
     # Save Level
     b_saved = False

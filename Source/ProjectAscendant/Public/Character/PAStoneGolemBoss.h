@@ -8,6 +8,9 @@
 #include "PAStoneGolemBoss.generated.h"
 
 class UPAMonsterLeashComponent;
+class UPAPostureSyncComponent;
+class UPAThreatComponent;
+class UPABossAIComponent;
 
 /**
  * APAStoneGolemBoss
@@ -26,6 +29,7 @@ class PROJECTASCENDANT_API APAStoneGolemBoss : public APABaseCharacter
 public:
 	APAStoneGolemBoss(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
+	virtual void PostInitializeComponents() override;
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaSeconds) override;
 
@@ -56,6 +60,22 @@ public:
 	/** Trả về Leash Component */
 	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|Boss|Leash")
 	UPAMonsterLeashComponent* GetLeashComponent() const { return LeashComponent; }
+
+	/** Trả về PostureSyncComponent quản lý vỡ thế Stagger */
+	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|Boss|Posture")
+	UPAPostureSyncComponent* GetPostureSyncComponent() const { return PostureSyncComponent; }
+
+	/** Trả về ThreatComponent quản lý bảng nộ khí */
+	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|Boss|Threat")
+	UPAThreatComponent* GetThreatComponent() const { return ThreatComponent; }
+
+	/** Trả về BossAIComponent */
+	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|Boss|AI")
+	UPABossAIComponent* GetBossAIComponent() const { return BossAIComponent; }
+
+	virtual void HandlePostureBroken(AActor* InstigatorActor) override;
+	virtual void HandleOutOfHealth(AActor* InstigatorActor) override;
+	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 	/** Kiểm tra xem Boss có đang trong trạng thái Slam không */
 	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|Boss|Combat")
@@ -97,12 +117,15 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProjectAscendant|Boss|Locomotion")
 	float BossWalkSpeed;
 
-protected:
+	/** Xử lý sự kiện trạng thái Leash thay đổi */
 	UFUNCTION()
 	void HandleLeashStateChanged(bool bIsLeashing);
 
+	/** Xử lý sự kiện hoàn tất Leash quay về điểm ban đầu */
 	UFUNCTION()
 	void HandleLeashCompleted();
+
+protected:
 
 	/** Hết cooldown Slam */
 	UFUNCTION()
@@ -111,6 +134,18 @@ protected:
 	/** Component quản lý biên giới quay đầu Leash */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ProjectAscendant|Boss|Components")
 	TObjectPtr<UPAMonsterLeashComponent> LeashComponent;
+
+	/** Component quản lý đồng bộ trạng thái vỡ thế Stagger và cửa sổ kết liễu Finisher */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ProjectAscendant|Boss|Components")
+	TObjectPtr<UPAPostureSyncComponent> PostureSyncComponent;
+
+	/** Component quản lý bảng nộ khí Threat Table theo thẩm quyền Server */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ProjectAscendant|Boss|Components")
+	TObjectPtr<UPAThreatComponent> ThreatComponent;
+
+	/** Component máy trạng thái AI Boss cấp cao */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ProjectAscendant|Boss|Components")
+	TObjectPtr<UPABossAIComponent> BossAIComponent;
 
 	/** Mục tiêu hiện tại đang nhắm đến */
 	UPROPERTY(Transient)

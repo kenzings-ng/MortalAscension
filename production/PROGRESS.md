@@ -611,3 +611,31 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   - GDD Consistency Validator: 108/108 files PASS.
   - UE Automation Tests: `ProjectAscendant.UI.GameplayHUD` 1/1 PASS; toàn bộ suite `ProjectAscendant.UI` 6/6 PASS; `ProjectAscendant.Economy.WanderingSmuggler` 1/1 PASS (ExitCode=1 Linux clean exit).
 - **Reviewer độc lập**: APPROVED sau khi giải quyết 2 điểm tối ưu hiệu năng tick và thoát giao dịch khi dính combat tag `State.InCombat`. Tái kiểm tra khắc phục 3/3 comment trên PR #36 hoàn tất.
+
+---
+
+## 6. Nhật Ký Đầu Việc: Nhánh `feat/z3b-boss-encounter-wiring` (Bước Z3b - Đánh Boss Stone Golem, Wiring, PostureSync, Threat table & Arena Placement)
+
+- **Mục tiêu**: Bước Z3b của Playable Slice (DECISIONS.md §13 & ROADMAP Giai đoạn 1) — Hoàn thiện liên kết Boss Stone Golem (`APAStoneGolemBoss`) với các thành phần PostureSync (`UPAPostureSyncComponent`), Threat Table (`UPAThreatComponent`), Boss AI (`UPABossAIComponent`), Leash Boundary (`UPAMonsterLeashComponent`), và đặt Boss vào Đấu trường ngoài Cổng Đông bản đồ Outpost (`L_VerdantFrontier_Outpost`).
+- **Nhánh**: `feat/z3b-boss-encounter-wiring`.
+- **Nội dung thực hiện**:
+  1. **Wiring Thành Phần Boss Stone Golem (`APAStoneGolemBoss`)**:
+     - *Thành phần Subobject*: Khởi tạo `UPAPostureSyncComponent`, `UPAThreatComponent`, `UPABossAIComponent`, và `UPAMonsterLeashComponent` ngay trong constructor.
+     - *GAS Minimal Replication*: Thiết lập chế độ đồng bộ `EGameplayEffectReplicationMode::Minimal` cho Boss theo chuẩn DECISIONS.md §11 (AI/Monster dùng Minimal, Player dùng Mixed).
+     - *Vòng lặp Vỡ Thế Posture & Stagger*: Override `HandlePostureBroken(AActor* InstigatorActor)` để cấp tag `State.Staggered`, thông báo cho `PostureSyncComponent->NotifyPostureBroken`, hủy chiêu dậm đất Ground Slam đang kích hoạt.
+     - *Bảng Thù Hận Contested Threat Table*: Override `TakeDamage` để ghi nhận điểm thù hận từ sát thương vào `ThreatComponent`. Trong hàm AI `UpdateBossAI`, quét mục tiêu dựa trên ngưỡng retargeting 130% chuẩn của bảng thù hận, tự động kích hoạt hiển thị Boss HUD trên Controller của mục tiêu.
+     - *Kỹ năng Ground Slam*: Hỗ trợ thi triển đòn dậm đất AoE bán kính 300cm với tag `State.Attacking`, tự động gỡ bỏ tag khi hoàn tất chiêu thức.
+     - *Cơ chế Leash & Reset*: Kết nối sự kiện `OnLeashStateChanged` từ `UPAMonsterLeashComponent` (bán kính leash 2500cm). Khi kích hoạt leash, Boss xóa mục tiêu, ẩn Boss HUD và đặt cờ bất tử trong quá trình quay về điểm gốc.
+  2. **Bố trí Đấu Trường Boss vào Map (`Scripts/build_starter_town.py`)**:
+     - Thêm Mục 13 trong kịch bản dựng map: Spawn `APAStoneGolemBoss` tại tọa độ `(3200, 0, 40)` bên ngoài Cổng Đông (Palisade Gate East tại `X=1800`), quay mặt về phía Outpost với góc quay `Rotator(0, 180, 0)`.
+     - Chạy lại kịch bản headless và cập nhật map `Content/Maps/L_VerdantFrontier_Outpost.umap` an toàn (Git LFS pointer).
+  3. **Bộ Kiểm Thử Tự Động Hóa Chuyên Biệt (`PAStoneGolemEncounterTests.cpp`)**:
+     - AC-1: Khởi tạo đầy đủ Subobject components và kiểm tra GAS ReplicationMode = Minimal.
+     - AC-2: Contested Threat Table & Target tracking (gây sát thương, Taunt snap lên trên top threat, EvaluateThreatRetargeting).
+     - AC-3: Stagger Loop & Cửa sổ Finisher (`HandlePostureBroken` gán tag `State.Staggered`, `PostureSyncComponent->IsStaggered() == true`, `CanExecute` cho finisher).
+     - AC-4: Ground Slam Combat & Animation Tags (kích hoạt cấp tag `State.Attacking`, kết thúc thu hồi tag).
+     - AC-5: Leash Reset & Threat Wipe (vượt 2500cm kích hoạt leash reset, hủy mục tiêu aggro, kích hoạt trạng thái bất tử leashing).
+- **Kết quả Cổng Tự Động**:
+  - GDD Consistency Validator: 108/108 files PASS.
+  - UE Automation Tests: `ProjectAscendant.Character.StoneGolemEncounter` PASS; toàn bộ suite `ProjectAscendant.Character` PASS.
+- **Reviewer độc lập**: Sẵn sàng kiểm tra độc lập trước khi mở PR.
