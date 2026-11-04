@@ -7,14 +7,36 @@ def build_map(map_package_path, map_name):
     editor_level_subsystem = unreal.get_editor_subsystem(unreal.LevelEditorSubsystem)
     
     # 1. Create or Open Level
+    b_level_ready = False
     try:
-        unreal.EditorLevelLibrary.new_level(map_package_path)
+        b_level_ready = bool(unreal.EditorLevelLibrary.new_level(map_package_path))
     except Exception as e:
         unreal.log_warning(f"EditorLevelLibrary.new_level fallback: {e}")
+
+    if not b_level_ready:
         try:
-            editor_level_subsystem.new_level(map_package_path)
+            b_level_ready = bool(editor_level_subsystem.new_level(map_package_path))
         except Exception as e2:
-            unreal.log_warning(f"LevelEditorSubsystem fallback: {e2}")
+            unreal.log_warning(f"LevelEditorSubsystem.new_level fallback: {e2}")
+
+    # Fallback: attempt to load existing level if new_level was not created
+    if not b_level_ready:
+        unreal.log_warning(f"new_level returned false for {map_package_path}, attempting to load existing level...")
+        try:
+            b_level_ready = bool(unreal.EditorLevelLibrary.load_level(map_package_path))
+        except Exception as e_load:
+            unreal.log_warning(f"EditorLevelLibrary.load_level fallback: {e_load}")
+
+        if not b_level_ready:
+            try:
+                b_level_ready = bool(editor_level_subsystem.load_level(map_package_path))
+            except Exception as e_load2:
+                unreal.log_warning(f"LevelEditorSubsystem.load_level fallback: {e_load2}")
+
+    # Critical abort check: prevent destroying actors in whichever level is currently open
+    if not b_level_ready:
+        unreal.log_error(f"ABORT: Failed to create or load target map at {map_package_path}. Halting to prevent wiping active level!")
+        return False
 
     # 2. Clear existing duplicate actors (bỏ qua WorldSettings và hệ thống core)
     for actor in editor_actor_subsystem.get_all_level_actors():
@@ -88,17 +110,29 @@ def build_map(map_package_path, map_name):
                 pass
 
     # 6. Save Level
+    b_saved = False
     try:
-        unreal.EditorLevelLibrary.save_current_level()
+        b_saved = bool(unreal.EditorLevelLibrary.save_current_level())
     except Exception as e:
         unreal.log_warning(f"save_current_level fallback: {e}")
-        editor_level_subsystem.save_current_level()
+        try:
+            b_saved = bool(editor_level_subsystem.save_current_level())
+        except Exception as e_save:
+            unreal.log_warning(f"LevelEditorSubsystem.save_current_level fallback: {e_save}")
 
-    unreal.log(f"=== Successfully saved {map_name} to {map_package_path} ===")
+    if b_saved:
+        unreal.log(f"=== Successfully saved {map_name} to {map_package_path} ===")
+    else:
+        unreal.log_warning(f"Save level returned false or encountered warning for {map_name}")
+    return True
 
 def main():
-    build_map("/Game/Maps/LoginMap", "LoginMap")
-    build_map("/Game/Maps/CharacterSelectMap", "CharacterSelectMap")
+    ok_login = build_map("/Game/Maps/LoginMap", "LoginMap")
+    ok_char = build_map("/Game/Maps/CharacterSelectMap", "CharacterSelectMap")
+    if not (ok_login and ok_char):
+        unreal.log_error("Build frontend maps failed or aborted.")
+        return 1
+    return 0
 
 if __name__ == "__main__":
     main()
