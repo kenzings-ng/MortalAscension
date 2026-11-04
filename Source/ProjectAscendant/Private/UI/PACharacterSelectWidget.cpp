@@ -2,6 +2,7 @@
 
 #include "UI/PACharacterSelectWidget.h"
 #include "Account/PAAccountSubsystem.h"
+#include "Controller/PABasePlayerController.h"
 #include "Kismet/GameplayStatics.h"
 #include "Widgets/SCompoundWidget.h"
 #include "Widgets/Layout/SBorder.h"
@@ -75,11 +76,24 @@ void UPACharacterSelectWidget::ConfirmSelectionAndEnterWorld()
 		FInputModeGameOnly InputMode;
 		PC->SetInputMode(InputMode);
 		PC->bShowMouseCursor = true;
+
+		if (APABasePlayerController* PABasePC = Cast<APABasePlayerController>(PC))
+		{
+			PABasePC->SetupGameplayHUD();
+		}
 	}
 
 	if (UWorld* World = GetWorld())
 	{
-		UGameplayStatics::OpenLevel(World, TargetGameWorldMapName);
+		// Không tải lại map nếu đang ở client kết nối mạng (NM_Client) hoặc đã ở trong map đích
+		const bool bIsClientNetMode = (World->GetNetMode() == NM_Client);
+		const FString CurrentMapName = World->GetMapName();
+		const bool bAlreadyInTargetMap = CurrentMapName.Contains(TargetGameWorldMapName.ToString());
+
+		if (!bIsClientNetMode && !bAlreadyInTargetMap)
+		{
+			UGameplayStatics::OpenLevel(World, TargetGameWorldMapName);
+		}
 	}
 }
 

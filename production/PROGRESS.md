@@ -657,3 +657,35 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
      - AC-7: Kiểm tra `RemoveCombatant` tự động chuyển đổi mục tiêu sang người chơi tiếp theo.
      - AC-8: Kiểm tra cầu nối sát thương GAS (Damage và Posture Damage) tính toán chính xác điểm nộ trong `ThreatComponent`.
   - Kết quả kiểm thử lại: `validate_gdd_consistency.py` 108/108 PASS; Headless UE Automation `ProjectAscendant.Character` 6/6 PASS (100% assertions pass).
+
+
+---
+
+## 7. Nhật Ký Đầu Việc: Nhánh `feat/z4-playable-slice-integration` (Bước Z4 - Tích Hợp Vòng Chơi Được & Sổ Tay Hướng Dẫn Playtest)
+
+- **Mục tiêu**: Bước Z4 của Playable Slice (DECISIONS.md §13, kế hoạch `playable-slice-and-approvals-2026-10-10.md`, và ROADMAP Giai đoạn 1.5) — Tích hợp toàn diện chuỗi gameplay từ Màn hình Đăng nhập/Fast Playtest, Chọn nhân vật, Nạp bản đồ Outpost (`L_VerdantFrontier_Outpost`), HUD Vitals/Boss/CombatText, tương tác Đe Rèn & Smuggler (300cm), Đấu trường Boss Cổ Thạch Golem (Nộ khí, Vỡ thế Stagger, Né Ground Slam, Finisher, Leash Reset), và kiểm thử đồng bộ 2 Client mạng cục bộ.
+- **Nhánh**: `feat/z4-playable-slice-integration`.
+- **Nội dung thực hiện**:
+  1. **Tối Ưu & Mở Rộng Script Khởi Chạy Game (`run_game.sh`)**:
+     - *Chế độ Chơi Đơn Standalone*: `./run_game.sh` (mặc định 1280x720 Windowed) và `./run_game.sh game 1920 1080` (Fullscreen chống crash swapchain Wayland/KDE).
+     - *Chế độ Chơi Thử Mạng 2 Client (`./run_game.sh playtest`)*: Tự động khởi chạy 1 Dedicated Server cục bộ trên cổng 7777, đợi nạp map 4s, sau đó mở đồng thời Client 1 (960x540 bên trái tại `X=40, Y=60`) và Client 2 (960x540 bên phải tại `X=1020, Y=60`).
+     - *Chế độ Mô Phỏng Độ Trễ Mạng (`./run_game.sh playtest-lag`)*: Kích hoạt `-ExecCmds="Net PktLag=150; Net PktLoss=2"` trên cả 2 client để kiểm chứng khả năng bù trễ và mượt mà của Iris theo đúng tiêu chí 🛑 của ROADMAP Giai đoạn 1.5.
+     - *Bẫy Tín Hiệu Dọn Dẹp*: Thiết lập `trap cleanup INT TERM EXIT` để khi bấm `Ctrl+C` trong terminal sẽ đóng sạch Dedicated Server và cả 2 client cùng lúc.
+     - *Hỗ trợ Client đơn*: `./run_game.sh client [IP:PORT]` để kết nối client linh hoạt vào máy chủ chỉ định.
+  2. **Khắc Phục Luồng Chọn Nhân Vật Trong Mạng Cục Bộ (`PACharacterSelectWidget.cpp`)**:
+     - Trong `UPACharacterSelectWidget::ConfirmSelectionAndEnterWorld()`:
+       * Khi người chơi bấm xác nhận chọn class, tự động gọi `APABasePlayerController::SetupGameplayHUD()` để mở HUD chiến đấu.
+       * Kiểm tra chế độ mạng: nếu đang ở chế độ `NM_Client` hoặc map hiện tại đã là `TargetGameWorldMapName` (`L_VerdantFrontier_Outpost`), **không** gọi `UGameplayStatics::OpenLevel`, tránh việc client bị ngắt kết nối với Dedicated Server hoặc reload lại map không cần thiết.
+  3. **Bộ Kiểm Thử Tự Động Hóa Tích Hợp (`PAPlayableSliceIntegrationTests.cpp`)**:
+     - *AC-1: Cấu trúc Actor Outpost*: Kiểm tra sự hiện diện của `APABlacksmithForge` (bán kính 300cm), `APAWanderingSmugglerNPC`, và `APAStoneGolemBoss` với đầy đủ subobjects và cờ replication.
+     - *AC-2: Vòng Chuyển Giao Chọn Nhân Vật & Setup In-Game HUD*: Kiểm tra `UPAAccountSubsystem`, `SetupGameplayHUD`, tạo `UPAGameplayHUDWidget` an toàn.
+     - *AC-3: Định Tuyến Tương Tác & Chặn Giao Dịch Trong Chiến Đấu*: Kiểm tra bán kính 300cm, và tự động từ chối giao dịch/rèn đồ khi nhân vật dính combat tag `State.InCombat`.
+     - *AC-4: Vòng Đời Giao Tranh Boss*: Bảng thù hận Contested Threat Table (ngưỡng 130%), ngắt chiêu Ground Slam khi bị Stagger vỡ thế, mở cửa sổ Finisher, và Leash Reset.
+     - *AC-5: Chuẩn Replication Iris & GAS*: Xác thực Player ASC Replication Mode là `Mixed` và Boss ASC Replication Mode là `Minimal` theo DECISIONS §11, cùng các tầng tần số Iris Spatial Filtering (Tier 1 60Hz, Tier 2 30Hz, Tier 3 0Hz).
+  4. **Sổ Tay Hướng Dẫn Chơi Thử Chi Tiết (`production/PLAYTEST_CHECKLIST.md`)**:
+     - Cung cấp checklist 6 bước từng thao tác rõ ràng cho Chủ dự án trải nghiệm trực tiếp từ màn hình đăng nhập, chọn nhân vật, khám phá outpost, tương tác NPC, đánh Boss, và chế độ 2 client đồng bộ mạng.
+     - Cung cấp biểu mẫu ghi nhận đánh giá cảm giác chơi (`feel-core=playtest`) về góc nhìn Camera (90°), nhịp độ Dash (0.35s), độ đầm đòn đánh Melee, cửa sổ Finisher (5.0s), và độ mượt Iris dưới điều kiện lag 150ms / loss 2%.
+- **Kết quả Cổng Tự Động**:
+  - GDD Consistency Validator: 108/108 files PASS.
+  - UE Automation Tests: `ProjectAscendant.Integration.PlayableSlice` PASS.
+- **Reviewer độc lập**: Chuẩn bị triệu hồi subagent thẩm định chéo.
