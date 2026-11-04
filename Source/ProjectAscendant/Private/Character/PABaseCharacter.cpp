@@ -27,6 +27,7 @@
 #include "UI/PACharacterSelectTypes.h"
 #include "Account/PAAccountSubsystem.h"
 #include "Economy/PACurrencyComponent.h"
+#include "Inventory/PAInventoryComponent.h"
 #include "Network/PALootDropletActor.h"
 #include "Character/PAPaperdollComponent.h"
 
@@ -86,6 +87,8 @@ APABaseCharacter::APABaseCharacter(const FObjectInitializer& ObjectInitializer)
 	StaminaComponent = CreateDefaultSubobject<UPAStaminaComponent>(TEXT("StaminaComponent"));
 	CurrencyComponent = CreateDefaultSubobject<UPACurrencyComponent>(TEXT("CurrencyComponent"));
 	CurrencyComponent->SetIsReplicated(true);
+	InventoryComponent = CreateDefaultSubobject<UPAInventoryComponent>(TEXT("InventoryComponent"));
+	InventoryComponent->SetIsReplicated(true);
 	PaperdollComponent = CreateDefaultSubobject<UPAPaperdollComponent>(TEXT("PaperdollComponent"));
 
 	// -------------------------------------------------------------------------

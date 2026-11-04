@@ -18,6 +18,7 @@ class UPAStaminaComponent;
 class UPaperFlipbookComponent;
 class UPaperZDAnimationComponent;
 class UPACurrencyComponent;
+class UPAInventoryComponent;
 class UPAPaperdollComponent;
 
 /**
@@ -198,6 +199,10 @@ public:
 	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|Economy")
 	UPACurrencyComponent* GetCurrencyComponent() const { return CurrencyComponent.Get(); }
 
+	/** Trả về InventoryComponent quản lý túi đồ của nhân vật (Story inv-001) */
+	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|Inventory")
+	UPAInventoryComponent* GetInventoryComponent() const { return InventoryComponent.Get(); }
+
 	/** Trả về PaperdollComponent quản lý hiển thị trang bị đa tầng */
 	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|Paperdoll")
 	UPAPaperdollComponent* GetPaperdollComponent() const { return PaperdollComponent.Get(); }
@@ -302,6 +307,10 @@ protected:
 	/** Component quản lý ví song tiền tệ Vàng và Tàn Trang (Story econ-001) */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ProjectAscendant|Economy", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UPACurrencyComponent> CurrencyComponent;
+
+	/** Component quản lý túi đồ của nhân vật (Story inv-001) */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ProjectAscendant|Inventory", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UPAInventoryComponent> InventoryComponent;
 
 	/** Component quản lý trực quan hóa trang bị đa tầng Modular Paperdoll */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ProjectAscendant|Paperdoll", meta = (AllowPrivateAccess = "true"))

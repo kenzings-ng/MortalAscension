@@ -55,6 +55,10 @@
 		{
 			"Name": "SpinePlugin",
 			"Enabled": true
+		},
+		{
+			"Name": "Dataflow",
+			"Enabled": false
 		}
 	]
 }

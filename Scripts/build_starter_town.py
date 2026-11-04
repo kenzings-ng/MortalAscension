@@ -9,20 +9,37 @@ def build_starter_town():
     map_package_path = "/Game/Maps/L_VerdantFrontier_Outpost"
     
     # Create or open level
-    try:
-        unreal.EditorLevelLibrary.new_level(map_package_path)
-    except Exception as e:
-        unreal.log_warning(f"EditorLevelLibrary.new_level fallback: {e}")
+    b_level_ready = False
+    if unreal.EditorAssetLibrary.does_asset_exist(map_package_path):
+        unreal.log(f"Asset exists at {map_package_path}, loading existing level...")
         try:
-            editor_level_subsystem.new_level(map_package_path)
-        except Exception as e2:
-            unreal.log_warning(f"LevelEditorSubsystem fallback: {e2}")
-    
-    # Destroy existing actors to ensure clean build
+            b_level_ready = bool(editor_level_subsystem.load_level(map_package_path))
+        except Exception as e_load:
+            unreal.log_warning(f"LevelEditorSubsystem.load_level fallback: {e_load}")
+            try:
+                b_level_ready = bool(unreal.EditorLevelLibrary.load_level(map_package_path))
+            except Exception as e_load2:
+                unreal.log_warning(f"EditorLevelLibrary.load_level fallback: {e_load2}")
+    else:
+        unreal.log(f"Creating new level at {map_package_path}...")
+        try:
+            b_level_ready = bool(editor_level_subsystem.new_level(map_package_path))
+        except Exception as e:
+            unreal.log_warning(f"LevelEditorSubsystem.new_level fallback: {e}")
+            try:
+                b_level_ready = bool(unreal.EditorLevelLibrary.new_level(map_package_path))
+            except Exception as e2:
+                unreal.log_warning(f"EditorLevelLibrary.new_level fallback: {e2}")
+
+    if not b_level_ready:
+        unreal.log_error(f"ABORT: Failed to create or load target map at {map_package_path}.")
+        return False
+
+    # Destroy existing actors to ensure clean build (bỏ qua WorldSettings)
     existing_actors = editor_actor_subsystem.get_all_level_actors()
     for actor in existing_actors:
-        unreal.log(f"Destroying existing actor: {actor.get_actor_label()}")
-        editor_actor_subsystem.destroy_actor(actor)
+        if not isinstance(actor, unreal.WorldSettings):
+            editor_actor_subsystem.destroy_actor(actor)
 
     # Load basic shapes and materials
     cube_mesh = None
@@ -193,6 +210,22 @@ def build_starter_town():
             r_comp.set_mobility(unreal.ComponentMobility.MOVABLE)
 
     # 5. Blacksmith Forge Station (Tier 1 Outpost Blacksmith)
+    forge_class = getattr(unreal, "PABlacksmithForge", None)
+    if not forge_class:
+        try:
+            forge_class = unreal.load_class(None, "/Script/ProjectAscendant.PABlacksmithForge")
+        except Exception:
+            pass
+    if forge_class:
+        forge_actor = editor_actor_subsystem.spawn_actor_from_class(
+            forge_class,
+            unreal.Vector(-600, 350, 40),
+            unreal.Rotator(0, 0, 0)
+        )
+        if forge_actor:
+            forge_actor.set_actor_label("Forge_Tier1_Outpost")
+            unreal.log("Spawned Forge_Tier1_Outpost at (-600, 350, 40)")
+
     # Anvil
     anvil = editor_actor_subsystem.spawn_actor_from_class(
         unreal.StaticMeshActor,
@@ -239,6 +272,22 @@ def build_starter_town():
             fl_comp.set_light_color(unreal.LinearColor(1.0, 0.40, 0.08, 1.0))
 
     # 6. Merchant Supply Depot (Tier 1 Outpost Merchant)
+    smuggler_class = getattr(unreal, "PAWanderingSmuggler", None)
+    if not smuggler_class:
+        try:
+            smuggler_class = unreal.load_class(None, "/Script/ProjectAscendant.PAWanderingSmuggler")
+        except Exception:
+            pass
+    if smuggler_class:
+        smuggler_actor = editor_actor_subsystem.spawn_actor_from_class(
+            smuggler_class,
+            unreal.Vector(-600, -350, 40),
+            unreal.Rotator(0, 0, 0)
+        )
+        if smuggler_actor:
+            smuggler_actor.set_actor_label("NPC_WanderingSmuggler")
+            unreal.log("Spawned NPC_WanderingSmuggler at (-600, -350, 40)")
+
     # Counter
     merchant_counter = editor_actor_subsystem.spawn_actor_from_class(
         unreal.StaticMeshActor,
@@ -396,13 +445,24 @@ def build_starter_town():
     unreal.log("Sanctuary Safe Outpost verified: 0 bosses, 0 hostile monsters spawned.")
 
     # Save Level
+    b_saved = False
     try:
-        unreal.EditorLevelLibrary.save_current_level()
+        b_saved = bool(unreal.EditorLevelLibrary.save_current_level())
     except Exception as e:
-        unreal.log_warning(f"save_current_level fallback: {e}")
-        editor_level_subsystem.save_current_level()
+        unreal.log_warning(f"EditorLevelLibrary.save_current_level exception: {e}")
 
-    unreal.log(f"=== Successfully built and saved Starter Town to {map_package_path} ===")
+    if not b_saved:
+        try:
+            b_saved = bool(editor_level_subsystem.save_current_level())
+        except Exception as e_save:
+            unreal.log_warning(f"LevelEditorSubsystem.save_current_level exception: {e_save}")
+
+    if b_saved:
+        unreal.log(f"=== Successfully built and saved Starter Town to {map_package_path} ===")
+        return True
+    else:
+        unreal.log_error(f"Failed to save Starter Town to {map_package_path}!")
+        return False
 
 if __name__ == "__main__":
     build_starter_town()

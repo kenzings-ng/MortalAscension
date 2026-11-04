@@ -573,3 +573,41 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   - GDD Consistency Validator: 108/108 files PASS.
   - UE Automation Tests: `ProjectAscendant.Account` 1/1 PASS (100% assertions AC-1 -> AC-5 passed, ExitCode=1 Linux clean exit).
 - **Reviewer độc lập**: PASS sau khi hoàn tất khắc phục salt normalization, bổ sung test E2E AC-5 và sửa thuộc tính `b_unbound`.
+
+---
+
+## 5. Nhật Ký Đầu Việc: Nhánh `feat/z3-ingame-hud-npcs-interaction` (Bước Z3 - In-Game HUD, NPCs & Tương Tác)
+
+- **Mục tiêu**: Bước Z3 của Playable Slice (DECISIONS.md §13) — Khởi tạo In-Game HUD (Vitals, Boss HUD, Floating Combat Text), đặt NPC Smuggler và Lò rèn vào Outpost map (`L_VerdantFrontier_Outpost`), xử lý tương tác phím F và phím Escape qua `UPAServiceRequestComponent`.
+- **Nhánh**: `feat/z3-ingame-hud-npcs-interaction`.
+- **PR**: [#36](https://github.com/kenzings-ng/ProjectAscendant/pull/36)
+- **Nội dung thực hiện**:
+  1. **Actor Lò Rèn (`APABlacksmithForge`)**:
+     - Tạo Actor chuyên dụng `APABlacksmithForge` chứa `UPABlacksmithComponent`, `kMaxInteractionDistance = 300.0f` (DECISIONS §13), `bReplicates = true`.
+  2. **In-game HUD tổng hợp (`UPAGameplayHUDWidget`)**:
+     - Tích hợp cụm Vitals người chơi (`UPAPlayerVitalsWidget`), Boss Health & Stagger reticle (`UPABossHealthWidget`), kết nối `UPAFloatingCombatTextComponent`.
+     - Nhúng cửa sổ giao dịch `UPAMerchantShopWidget` và rèn đúc `UPABlacksmithForgeWidget` với cơ chế loại trừ tương hỗ (mutual exclusion).
+     - Hỗ trợ fallback headless test thông qua template `CreateSafeWidget` mà không làm crash editor khi thiếu `UWidgetTree`.
+  3. **Bộ điều khiển & Đường ống tương tác (`APABasePlayerController`)**:
+     - Khởi tạo và gắn `FloatingCombatTextComponent` cùng `GameplayHUDWidgetClass`.
+     - Ràng buộc phím `F` (`HandleInteract`) và `Escape` (`HandleCloseInteractiveWindows`).
+     - Tối ưu hóa `FindBestInteractableActor`: lọc khoảng cách `DistSq <= ClosestDistSq` trước khi reflection tìm `UPAMerchantComponent` / `UPABlacksmithComponent` nhằm giữ ngân sách tick `<= 0.2ms`.
+     - Tự động đóng modal giao dịch/lò rèn khi người chơi di chuyển cách xa > 500cm hoặc bước vào trạng thái giao tranh (`State.InCombat` qua `PAServerRequestValidation`).
+  4. **Bố trí Actor vào Map (`Scripts/build_starter_town.py`)**:
+     - Spawn và cấu hình vị trí `APABlacksmithForge` tại `(-600, 350, 40)` và `APAWanderingSmuggler` tại `(-600, -350, 40)`.
+     - Cập nhật map `Content/Maps/L_VerdantFrontier_Outpost.umap` (Git LFS pointer).
+  5. **Unit & Automation Tests (`PAGameplayHUDTests.cpp`)**:
+     - AC-1: Khởi tạo phân cấp Widget (Vitals, Boss HUD, Shop, Forge).
+     - AC-2: Vòng đời hiển thị Boss HUD (kích hoạt và ẩn khi kết thúc encounter).
+     - AC-3: Cửa sổ Modal tương tác (Mở Shop / Mở Forge, đóng qua Escape / Close).
+     - AC-4: Lời nhắc phím tương tác `[F]` trong phạm vi bán kính tương tác 300cm.
+     - AC-5: Xác thực khởi tạo Actor Lò rèn (`APABlacksmithForge`) và Thương nhân (`APAWanderingSmuggler`).
+- **Khắc phục phản hồi Reviewer PR #36 (chatgpt-codex-connector[bot])**:
+  1. *Gắn cây Widget vào HUD render (`UPAGameplayHUDWidget`)*: Tự động khởi tạo `UWidgetTree` và `UCanvasPanel* RootCanvas` khi chưa có, gắn toàn bộ child widgets (`VitalsWidget`, `BossHealthWidget`, `ShopWidget`, `ForgeWidget`, `PromptTextBlock`) vào Canvas Panel với Anchor và Alignment chuẩn.
+  2. *SceneRoot cho Actor Smuggler (`APAWanderingSmuggler` & `build_starter_town.py`)*: Thêm `USceneComponent* SceneRoot` làm `RootComponent`, khắc phục `GetActorLocation()` trả về gốc tọa độ `(0,0,0)` khiến tương tác tại `(-600, -350, 40)` thất bại. Cập nhật `build_starter_town.py` dùng `does_asset_exist` và `load_level` chống lỗi new_level trùng lặp trong headless mode.
+  3. *Tích hợp Karma thật cho Smuggler (`PABasePlayerController` & `PAMerchantComponent`)*: Truyền `PlayerKarma` tính từ `ControlledCharacter->Karma` vào `OpenShop`. Trong `ServerHandleBuyItem`, ủy quyền mua sắm sang `BuyItemWithKarmaCheck` khi merchant là `APAWanderingSmuggler` để kích hoạt phụ thu 20% Wanted khi Karma < -50.
+  4. *Mở rộng Unit Tests (`PAGameplayHUDTests.cpp`)*: Bổ sung kiểm tra cấu trúc `WidgetTree`, `RootCanvas`, đồng bộ text/visibility của `PromptTextBlock`, kiểm tra `RootComponent` của Smuggler, và kiểm chứng phụ thu Wanted 20% (100 -> 120 Gold).
+- **Kết quả Cổng Tự Động**:
+  - GDD Consistency Validator: 108/108 files PASS.
+  - UE Automation Tests: `ProjectAscendant.UI.GameplayHUD` 1/1 PASS; toàn bộ suite `ProjectAscendant.UI` 6/6 PASS; `ProjectAscendant.Economy.WanderingSmuggler` 1/1 PASS (ExitCode=1 Linux clean exit).
+- **Reviewer độc lập**: APPROVED sau khi giải quyết 2 điểm tối ưu hiệu năng tick và thoát giao dịch khi dính combat tag `State.InCombat`. Tái kiểm tra khắc phục 3/3 comment trên PR #36 hoàn tất.
