@@ -115,8 +115,9 @@ bool UPAAccountSubsystem::LoginWithCredentials(
 		return false;
 	}
 
-	// 1. Kiểm tra tài khoản có tồn tại không
-	if (!RegisteredCredentials.Contains(InEmail))
+	// 1. Kiểm tra tài khoản có tồn tại không (tra cứu 1 lần qua con trỏ)
+	const FString* StoredPasswordHash = RegisteredCredentials.Find(InEmail);
+	if (!StoredPasswordHash)
 	{
 		OutError = TEXT("Tài khoản không tồn tại. Vui lòng đăng ký tài khoản mới.");
 		SetLoginState(EPAAuthLoginState::Error, OutError);
@@ -124,9 +125,8 @@ bool UPAAccountSubsystem::LoginWithCredentials(
 	}
 
 	// 2. Kiểm tra mật khẩu (so khớp bằng hash an toàn)
-	const FString StoredPasswordHash = RegisteredCredentials[InEmail];
-	const FString IncomingPasswordHash = HashPassword(InPassword, InEmail.ToLower());
-	if (!StoredPasswordHash.Equals(IncomingPasswordHash, ESearchCase::CaseSensitive))
+	const FString IncomingPasswordHash = HashPassword(InPassword, InEmail);
+	if (!StoredPasswordHash->Equals(IncomingPasswordHash, ESearchCase::CaseSensitive))
 	{
 		OutError = TEXT("Mật khẩu không chính xác. Vui lòng thử lại.");
 		SetLoginState(EPAAuthLoginState::Error, OutError);
@@ -265,7 +265,9 @@ FString UPAAccountSubsystem::GenerateAuthToken(const FString& AccountId)
 
 FString UPAAccountSubsystem::HashPassword(const FString& InPlainPassword, const FString& InSalt)
 {
-	const FString Combined = FString::Printf(TEXT("%s::%s"), *InPlainPassword, *InSalt);
+	// Chuẩn hóa Salt (cắt khoảng trắng, đưa về chữ thường) để đảm bảo đồng nhất dù gọi từ C++ hay Blueprint
+	const FString NormalizedSalt = InSalt.TrimStartAndEnd().ToLower();
+	const FString Combined = FString::Printf(TEXT("%s::%s"), *InPlainPassword, *NormalizedSalt);
 	FTCHARToUTF8 Utf8Combined(*Combined);
 
 	FSHA1 Sha1Gen;

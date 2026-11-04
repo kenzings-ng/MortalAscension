@@ -121,6 +121,42 @@ bool FPAAccountTests::RunTest(const FString& Parameters)
 		TestFalse(TEXT("AC4: Server rejects malformed token"), bMalformed);
 	}
 
+	// ===========================================================
+	// AC-5: End-to-End Registration, Password Hashing & Login Lifecycle
+	// ===========================================================
+	{
+		UPAAccountSubsystem* Subsystem = NewObject<UPAAccountSubsystem>();
+		TestNotNull(TEXT("AC5: Subsystem instance created"), Subsystem);
+
+		if (Subsystem)
+		{
+			const FString TestEmail = TEXT("warrior@ascendant.io");
+			const FString TestPassword = TEXT("ValidPassword123");
+			FString RegError;
+
+			// 1. Đăng ký tài khoản mới
+			bool bRegistered = Subsystem->RegisterAccount(TestEmail, TestPassword, TestPassword, RegError);
+			TestTrue(TEXT("AC5: Account registration succeeds"), bRegistered);
+			TestTrue(TEXT("AC5: No registration error"), RegError.IsEmpty());
+
+			// 2. Thử đăng nhập sai mật khẩu -> Phải thất bại
+			FString LoginWrongError;
+			bool bWrongLogin = Subsystem->LoginWithCredentials(TestEmail, TEXT("IncorrectPassword123"), false, LoginWrongError);
+			TestFalse(TEXT("AC5: Login with wrong password rejected"), bWrongLogin);
+			TestEqual(TEXT("AC5: Subsystem state is Error on bad login"), Subsystem->GetLoginState(), EPAAuthLoginState::Error);
+
+			// 3. Đăng nhập đúng mật khẩu -> Phải thành công và tạo Token
+			FString LoginSuccessError;
+			bool bSuccessLogin = Subsystem->LoginWithCredentials(TestEmail, TestPassword, true, LoginSuccessError);
+			TestTrue(TEXT("AC5: Login with correct password succeeds"), bSuccessLogin);
+			TestTrue(TEXT("AC5: No error on successful login"), LoginSuccessError.IsEmpty());
+			TestEqual(TEXT("AC5: Subsystem state is LoggedIn"), Subsystem->GetLoginState(), EPAAuthLoginState::LoggedIn);
+			TestTrue(TEXT("AC5: IsLoggedIn pure helper returns true"), Subsystem->IsLoggedIn());
+			TestEqual(TEXT("AC5: Active profile email matches"), Subsystem->GetActiveProfile().Email, TestEmail);
+			TestTrue(TEXT("AC5: Session token generated on login"), !Subsystem->GetActiveProfile().AuthToken.IsEmpty());
+		}
+	}
+
 	return true;
 }
 
