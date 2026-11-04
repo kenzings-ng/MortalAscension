@@ -2,6 +2,8 @@
 
 #include "Misc/AutomationTest.h"
 #include "Account/PAAccountSubsystem.h"
+#include "Engine/GameInstance.h"
+#include "Subsystems/SubsystemCollection.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -125,11 +127,17 @@ bool FPAAccountTests::RunTest(const FString& Parameters)
 	// AC-5: End-to-End Registration, Password Hashing & Login Lifecycle
 	// ===========================================================
 	{
-		UPAAccountSubsystem* Subsystem = NewObject<UPAAccountSubsystem>();
-		TestNotNull(TEXT("AC5: Subsystem instance created"), Subsystem);
+		UGameInstance* GameInstance = NewObject<UGameInstance>();
+		TestNotNull(TEXT("AC5: GameInstance created"), GameInstance);
+
+		UPAAccountSubsystem* Subsystem = GameInstance ? NewObject<UPAAccountSubsystem>(GameInstance) : nullptr;
+		TestNotNull(TEXT("AC5: Subsystem instance created with GameInstance outer"), Subsystem);
 
 		if (Subsystem)
 		{
+			FSubsystemCollection<UGameInstanceSubsystem> Collection;
+			Subsystem->Initialize(Collection);
+
 			const FString TestEmail = TEXT("warrior@ascendant.io");
 			const FString TestPassword = TEXT("ValidPassword123");
 			FString RegError;
@@ -154,6 +162,8 @@ bool FPAAccountTests::RunTest(const FString& Parameters)
 			TestTrue(TEXT("AC5: IsLoggedIn pure helper returns true"), Subsystem->IsLoggedIn());
 			TestEqual(TEXT("AC5: Active profile email matches"), Subsystem->GetActiveProfile().Email, TestEmail);
 			TestTrue(TEXT("AC5: Session token generated on login"), !Subsystem->GetActiveProfile().AuthToken.IsEmpty());
+
+			Subsystem->Deinitialize();
 		}
 	}
 
