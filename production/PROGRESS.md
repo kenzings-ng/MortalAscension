@@ -580,6 +580,7 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
 
 - **Mục tiêu**: Bước Z3 của Playable Slice (DECISIONS.md §13) — Khởi tạo In-Game HUD (Vitals, Boss HUD, Floating Combat Text), đặt NPC Smuggler và Lò rèn vào Outpost map (`L_VerdantFrontier_Outpost`), xử lý tương tác phím F và phím Escape qua `UPAServiceRequestComponent`.
 - **Nhánh**: `feat/z3-ingame-hud-npcs-interaction`.
+- **PR**: [#36](https://github.com/kenzings-ng/ProjectAscendant/pull/36)
 - **Nội dung thực hiện**:
   1. **Actor Lò Rèn (`APABlacksmithForge`)**:
      - Tạo Actor chuyên dụng `APABlacksmithForge` chứa `UPABlacksmithComponent`, `kMaxInteractionDistance = 300.0f` (DECISIONS §13), `bReplicates = true`.
@@ -601,7 +602,12 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
      - AC-3: Cửa sổ Modal tương tác (Mở Shop / Mở Forge, đóng qua Escape / Close).
      - AC-4: Lời nhắc phím tương tác `[F]` trong phạm vi bán kính tương tác 300cm.
      - AC-5: Xác thực khởi tạo Actor Lò rèn (`APABlacksmithForge`) và Thương nhân (`APAWanderingSmuggler`).
+- **Khắc phục phản hồi Reviewer PR #36 (chatgpt-codex-connector[bot])**:
+  1. *Gắn cây Widget vào HUD render (`UPAGameplayHUDWidget`)*: Tự động khởi tạo `UWidgetTree` và `UCanvasPanel* RootCanvas` khi chưa có, gắn toàn bộ child widgets (`VitalsWidget`, `BossHealthWidget`, `ShopWidget`, `ForgeWidget`, `PromptTextBlock`) vào Canvas Panel với Anchor và Alignment chuẩn.
+  2. *SceneRoot cho Actor Smuggler (`APAWanderingSmuggler` & `build_starter_town.py`)*: Thêm `USceneComponent* SceneRoot` làm `RootComponent`, khắc phục `GetActorLocation()` trả về gốc tọa độ `(0,0,0)` khiến tương tác tại `(-600, -350, 40)` thất bại. Cập nhật `build_starter_town.py` dùng `does_asset_exist` và `load_level` chống lỗi new_level trùng lặp trong headless mode.
+  3. *Tích hợp Karma thật cho Smuggler (`PABasePlayerController` & `PAMerchantComponent`)*: Truyền `PlayerKarma` tính từ `ControlledCharacter->Karma` vào `OpenShop`. Trong `ServerHandleBuyItem`, ủy quyền mua sắm sang `BuyItemWithKarmaCheck` khi merchant là `APAWanderingSmuggler` để kích hoạt phụ thu 20% Wanted khi Karma < -50.
+  4. *Mở rộng Unit Tests (`PAGameplayHUDTests.cpp`)*: Bổ sung kiểm tra cấu trúc `WidgetTree`, `RootCanvas`, đồng bộ text/visibility của `PromptTextBlock`, kiểm tra `RootComponent` của Smuggler, và kiểm chứng phụ thu Wanted 20% (100 -> 120 Gold).
 - **Kết quả Cổng Tự Động**:
   - GDD Consistency Validator: 108/108 files PASS.
-  - UE Automation Tests: `ProjectAscendant.UI.GameplayHUD` 1/1 PASS; toàn bộ suite `ProjectAscendant.UI` 6/6 PASS (ExitCode=1 Linux clean exit).
-- **Reviewer độc lập**: APPROVED sau khi giải quyết 2 điểm tối ưu hiệu năng tick và thoát giao dịch khi dính combat tag `State.InCombat`.
+  - UE Automation Tests: `ProjectAscendant.UI.GameplayHUD` 1/1 PASS; toàn bộ suite `ProjectAscendant.UI` 6/6 PASS; `ProjectAscendant.Economy.WanderingSmuggler` 1/1 PASS (ExitCode=1 Linux clean exit).
+- **Reviewer độc lập**: APPROVED sau khi giải quyết 2 điểm tối ưu hiệu năng tick và thoát giao dịch khi dính combat tag `State.InCombat`. Tái kiểm tra khắc phục 3/3 comment trên PR #36 hoàn tất.

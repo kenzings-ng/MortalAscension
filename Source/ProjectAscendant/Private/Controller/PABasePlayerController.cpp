@@ -505,7 +505,7 @@ void APABasePlayerController::HandleInteract()
 			CurrentInteractingActor = BestInteractable;
 			if (ActiveGameplayHUDWidget)
 			{
-				int32 PlayerKarma = 0;
+				const int32 PlayerKarma = FMath::RoundToInt(ControlledCharacter->Karma);
 				ActiveGameplayHUDWidget->OpenShop(
 					Merchant,
 					ControlledCharacter->GetInventoryComponent(),

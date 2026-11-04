@@ -13,8 +13,11 @@
 #include "Controller/PABasePlayerController.h"
 #include "Character/PABaseCharacter.h"
 #include "Inventory/PAInventoryComponent.h"
+#include "Inventory/PAItemStaticDataAsset.h"
 #include "Economy/PACurrencyComponent.h"
 #include "Engine/World.h"
+#include "Blueprint/WidgetTree.h"
+#include "Components/TextBlock.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
@@ -51,6 +54,9 @@ bool FPAGameplayHUDTests::RunTest(const FString& Parameters)
 			TestNotNull(TEXT("AC1: BossHealthWidget instantiated"), HUDWidget->GetBossHealthWidget());
 			TestNotNull(TEXT("AC1: ShopWidget instantiated"), HUDWidget->GetShopWidget());
 			TestNotNull(TEXT("AC1: ForgeWidget instantiated"), HUDWidget->GetForgeWidget());
+			TestNotNull(TEXT("AC1: WidgetTree initialized"), HUDWidget->WidgetTree.Get());
+			TestNotNull(TEXT("AC1: RootCanvas initialized"), HUDWidget->WidgetTree ? HUDWidget->WidgetTree->RootWidget.Get() : nullptr);
+			TestNotNull(TEXT("AC1: PromptTextBlock instantiated"), HUDWidget->GetPromptTextBlock());
 
 			// Mặc định ban đầu: Vitals hiển thị, các cửa sổ modal bị đóng
 			TestFalse(TEXT("AC1: Ban đầu không có cửa sổ tương tác nào mở"), HUDWidget->IsAnyInteractiveWindowOpen());
@@ -122,9 +128,18 @@ bool FPAGameplayHUDTests::RunTest(const FString& Parameters)
 			HUDWidget->SetInteractionPrompt(TEXT("[F] Giao Dịch"), true);
 			TestTrue(TEXT("AC4: Prompt visible"), HUDWidget->IsInteractionPromptVisible());
 			TestEqual(TEXT("AC4: Prompt text matches"), HUDWidget->GetInteractionPromptText(), TEXT("[F] Giao Dịch"));
+			if (HUDWidget->GetPromptTextBlock())
+			{
+				TestEqual(TEXT("AC4: Prompt text block text matches"), HUDWidget->GetPromptTextBlock()->GetText().ToString(), TEXT("[F] Giao Dịch"));
+				TestEqual(TEXT("AC4: Prompt text block visibility matches"), HUDWidget->GetPromptTextBlock()->GetVisibility(), ESlateVisibility::Visible);
+			}
 
 			HUDWidget->SetInteractionPrompt(TEXT(""), false);
 			TestFalse(TEXT("AC4: Prompt hidden"), HUDWidget->IsInteractionPromptVisible());
+			if (HUDWidget->GetPromptTextBlock())
+			{
+				TestEqual(TEXT("AC4: Prompt text block collapsed when hidden"), HUDWidget->GetPromptTextBlock()->GetVisibility(), ESlateVisibility::Collapsed);
+			}
 		}
 	}
 
@@ -139,6 +154,7 @@ bool FPAGameplayHUDTests::RunTest(const FString& Parameters)
 		{
 			TestEqual(TEXT("AC5: Mặc định Forge Tier là Tier 1 Outpost"), ForgeActor->ForgeTier, EPABlacksmithTier::Tier1_Outpost);
 			TestEqual(TEXT("AC5: Bán kính tương tác Lò rèn là 300cm (DECISIONS.md §13)"), APABlacksmithForge::kMaxInteractionDistance, 300.0f);
+			TestNotNull(TEXT("AC5: RootComponent exists on Forge Actor"), ForgeActor->GetRootComponent());
 			TestNotNull(TEXT("AC5: BlacksmithComponent tồn tại trên Forge Actor"), ForgeActor->GetBlacksmithComponent());
 		}
 
@@ -147,8 +163,38 @@ bool FPAGameplayHUDTests::RunTest(const FString& Parameters)
 		TestNotNull(TEXT("AC5: APAWanderingSmuggler instantiated"), SmugglerActor);
 		if (SmugglerActor)
 		{
+			TestNotNull(TEXT("AC5: RootComponent exists on Smuggler Actor"), SmugglerActor->GetRootComponent());
 			TestNotNull(TEXT("AC5: MerchantComponent tồn tại trên Smuggler Actor"), SmugglerActor->GetMerchantComponent());
 			TestNotNull(TEXT("AC5: RestockComponent tồn tại trên Smuggler Actor"), SmugglerActor->GetRestockComponent());
+		}
+
+		// 3. Karma Surcharge Delegation on Smuggler
+		{
+			APAWanderingSmuggler* Smuggler = NewObject<APAWanderingSmuggler>();
+			UPAMerchantComponent* SmugglerMerchant = Smuggler->GetMerchantComponent();
+			TestNotNull(TEXT("AC5: Smuggler Merchant Component exists"), SmugglerMerchant);
+
+			UItemStaticDataAsset* TestItem = NewObject<UItemStaticDataAsset>();
+			TestItem->ItemId = FName("item_test_health_potion");
+			TestItem->Category = EPAItemCategory::Consumable;
+			TestItem->MaxStackSize = 20;
+
+			FPAMerchantCatalogEntry Entry;
+			Entry.ItemData = TestItem;
+			Entry.PriceGold = 100;
+			Entry.AvailableStock = 5;
+			SmugglerMerchant->AddCatalogEntry(Entry);
+
+			UPAInventoryComponent* Inv = NewObject<UPAInventoryComponent>();
+			UPACurrencyComponent* Wallet = NewObject<UPACurrencyComponent>();
+			EPACurrencyTransactionError CurrencyErr = EPACurrencyTransactionError::None;
+			Wallet->AddCurrency(EPACurrencyType::Gold, 1000, CurrencyErr);
+
+			// Call Smuggler directly with Wanted Karma (-60): price should be 100 * 1.2 = 120
+			EPATransactionError BuyErr = EPATransactionError::None;
+			const bool bSmugglerBought = Smuggler->BuyItemWithKarmaCheck(Inv, Wallet, 0, 1, -60, BuyErr);
+			TestTrue(TEXT("AC5: Wanted player can buy from Smuggler"), bSmugglerBought);
+			TestEqual(TEXT("AC5: Wallet deducted 120 gold (with 20% surcharge)"), Wallet->GetGold(), 880LL);
 		}
 	}
 

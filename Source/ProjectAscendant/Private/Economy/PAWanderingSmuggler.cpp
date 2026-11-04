@@ -14,6 +14,9 @@ APAWanderingSmuggler::APAWanderingSmuggler()
 	PrimaryActorTick.bCanEverTick = false;
 	bReplicates = true;
 
+	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
+	RootComponent = SceneRoot;
+
 	MerchantComp = CreateDefaultSubobject<UPAMerchantComponent>(TEXT("MerchantComponent"));
 	RestockComp  = CreateDefaultSubobject<UPARestockComponent>(TEXT("RestockComponent"));
 

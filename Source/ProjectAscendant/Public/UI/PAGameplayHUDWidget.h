@@ -20,6 +20,8 @@ class UPABlacksmithComponent;
 class UPAInventoryComponent;
 class UPACurrencyComponent;
 class UPAServiceRequestComponent;
+class UTextBlock;
+class UCanvasPanel;
 
 /**
  * UPAGameplayHUDWidget
@@ -116,6 +118,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|HUD|Interaction")
 	bool IsInteractionPromptVisible() const { return bIsPromptVisible; }
 
+	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|HUD|Interaction")
+	UTextBlock* GetPromptTextBlock() const { return PromptTextBlock; }
+
 	// ===========================================================
 	// Interactive Modal Windows (Shop & Forge)
 	// ===========================================================
@@ -178,6 +183,9 @@ protected:
 
 	UPROPERTY(BlueprintReadOnly, Category = "ProjectAscendant|HUD")
 	bool bIsPromptVisible = false;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ProjectAscendant|HUD")
+	TObjectPtr<UTextBlock> PromptTextBlock;
 
 	UPROPERTY(BlueprintReadOnly, Category = "ProjectAscendant|HUD")
 	bool bIsBossHUDActive = false;

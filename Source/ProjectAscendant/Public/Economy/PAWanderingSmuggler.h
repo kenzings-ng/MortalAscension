@@ -115,6 +115,9 @@ public:
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ProjectAscendant|Smuggler")
+	TObjectPtr<USceneComponent> SceneRoot;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ProjectAscendant|Smuggler")
 	TObjectPtr<UPAMerchantComponent> MerchantComp;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ProjectAscendant|Smuggler")

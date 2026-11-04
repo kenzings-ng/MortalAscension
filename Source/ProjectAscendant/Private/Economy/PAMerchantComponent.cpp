@@ -8,6 +8,8 @@
 #include "GameFramework/Pawn.h"
 #include "GameFramework/PlayerController.h"
 #include "Network/PAServerRequestValidation.h"
+#include "Economy/PAWanderingSmuggler.h"
+#include "Character/PABaseCharacter.h"
 
 UPAMerchantComponent::UPAMerchantComponent()
 	: MerchantTier(EPAMerchantTier::Tier1_Outpost)
@@ -437,6 +439,20 @@ bool UPAMerchantComponent::ServerHandleBuyItem(const APlayerController* Requeste
 		OnTransactionFailed.Broadcast(OutError);
 		return false;
 	}
+
+	if (APAWanderingSmuggler* Smuggler = Cast<APAWanderingSmuggler>(GetOwner()))
+	{
+		int32 PlayerKarma = 0;
+		if (Requester)
+		{
+			if (const APABaseCharacter* BaseChar = Cast<APABaseCharacter>(Requester->GetPawn()))
+			{
+				PlayerKarma = FMath::RoundToInt(BaseChar->Karma);
+			}
+		}
+		return Smuggler->BuyItemWithKarmaCheck(Inventory, Wallet, CatalogIndex, Quantity, PlayerKarma, OutError);
+	}
+
 	return BuyItem(Inventory, Wallet, CatalogIndex, Quantity, OutError);
 }
 

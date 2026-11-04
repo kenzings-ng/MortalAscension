@@ -12,6 +12,10 @@
 #include "AbilitySystemComponent.h"
 #include "Components/SlateWrapperTypes.h"
 #include "Blueprint/UserWidget.h"
+#include "Blueprint/WidgetTree.h"
+#include "Components/CanvasPanel.h"
+#include "Components/CanvasPanelSlot.h"
+#include "Components/TextBlock.h"
 
 namespace
 {
@@ -71,6 +75,18 @@ void UPAGameplayHUDWidget::NativeDestruct()
 
 void UPAGameplayHUDWidget::EnsureChildWidgetsCreated()
 {
+	if (!WidgetTree)
+	{
+		WidgetTree = NewObject<UWidgetTree>(this, TEXT("WidgetTree"));
+	}
+
+	UCanvasPanel* RootCanvas = Cast<UCanvasPanel>(WidgetTree->RootWidget);
+	if (!RootCanvas)
+	{
+		RootCanvas = WidgetTree->ConstructWidget<UCanvasPanel>(UCanvasPanel::StaticClass(), TEXT("RootCanvas"));
+		WidgetTree->RootWidget = RootCanvas;
+	}
+
 	APlayerController* PC = OwningPC.Get() ? OwningPC.Get() : GetOwningPlayer();
 
 	if (!VitalsWidget && VitalsWidgetClass)
@@ -79,6 +95,14 @@ void UPAGameplayHUDWidget::EnsureChildWidgetsCreated()
 		if (VitalsWidget)
 		{
 			VitalsWidget->SetVisibility(ESlateVisibility::Visible);
+			if (RootCanvas && !RootCanvas->HasChild(VitalsWidget))
+			{
+				if (UCanvasPanelSlot* VitalsSlot = Cast<UCanvasPanelSlot>(RootCanvas->AddChild(VitalsWidget)))
+				{
+					VitalsSlot->SetPosition(FVector2D(24.0f, 24.0f));
+					VitalsSlot->SetAutoSize(true);
+				}
+			}
 		}
 	}
 
@@ -88,6 +112,16 @@ void UPAGameplayHUDWidget::EnsureChildWidgetsCreated()
 		if (BossHealthWidget)
 		{
 			BossHealthWidget->SetVisibility(ESlateVisibility::Collapsed);
+			if (RootCanvas && !RootCanvas->HasChild(BossHealthWidget))
+			{
+				if (UCanvasPanelSlot* BossSlot = Cast<UCanvasPanelSlot>(RootCanvas->AddChild(BossHealthWidget)))
+				{
+					BossSlot->SetAnchors(FAnchors(0.5f, 0.0f, 0.5f, 0.0f));
+					BossSlot->SetAlignment(FVector2D(0.5f, 0.0f));
+					BossSlot->SetPosition(FVector2D(0.0f, 32.0f));
+					BossSlot->SetAutoSize(true);
+				}
+			}
 		}
 	}
 
@@ -97,6 +131,15 @@ void UPAGameplayHUDWidget::EnsureChildWidgetsCreated()
 		if (ShopWidget)
 		{
 			ShopWidget->SetVisibility(ESlateVisibility::Collapsed);
+			if (RootCanvas && !RootCanvas->HasChild(ShopWidget))
+			{
+				if (UCanvasPanelSlot* ShopSlot = Cast<UCanvasPanelSlot>(RootCanvas->AddChild(ShopWidget)))
+				{
+					ShopSlot->SetAnchors(FAnchors(0.5f, 0.5f, 0.5f, 0.5f));
+					ShopSlot->SetAlignment(FVector2D(0.5f, 0.5f));
+					ShopSlot->SetAutoSize(true);
+				}
+			}
 		}
 	}
 
@@ -106,6 +149,32 @@ void UPAGameplayHUDWidget::EnsureChildWidgetsCreated()
 		if (ForgeWidget)
 		{
 			ForgeWidget->SetVisibility(ESlateVisibility::Collapsed);
+			if (RootCanvas && !RootCanvas->HasChild(ForgeWidget))
+			{
+				if (UCanvasPanelSlot* ForgeSlot = Cast<UCanvasPanelSlot>(RootCanvas->AddChild(ForgeWidget)))
+				{
+					ForgeSlot->SetAnchors(FAnchors(0.5f, 0.5f, 0.5f, 0.5f));
+					ForgeSlot->SetAlignment(FVector2D(0.5f, 0.5f));
+					ForgeSlot->SetAutoSize(true);
+				}
+			}
+		}
+	}
+
+	if (!PromptTextBlock && RootCanvas)
+	{
+		PromptTextBlock = WidgetTree->ConstructWidget<UTextBlock>(UTextBlock::StaticClass(), TEXT("PromptTextBlock"));
+		if (PromptTextBlock)
+		{
+			PromptTextBlock->SetText(FText::FromString(CurrentPromptText));
+			PromptTextBlock->SetVisibility(bIsPromptVisible ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+			if (UCanvasPanelSlot* PromptSlot = Cast<UCanvasPanelSlot>(RootCanvas->AddChild(PromptTextBlock)))
+			{
+				PromptSlot->SetAnchors(FAnchors(0.5f, 1.0f, 0.5f, 1.0f));
+				PromptSlot->SetAlignment(FVector2D(0.5f, 1.0f));
+				PromptSlot->SetPosition(FVector2D(0.0f, -96.0f));
+				PromptSlot->SetAutoSize(true);
+			}
 		}
 	}
 }
@@ -177,6 +246,12 @@ void UPAGameplayHUDWidget::SetInteractionPrompt(const FString& PromptText, bool 
 {
 	CurrentPromptText = PromptText;
 	bIsPromptVisible = bVisible;
+
+	if (PromptTextBlock)
+	{
+		PromptTextBlock->SetText(FText::FromString(PromptText));
+		PromptTextBlock->SetVisibility(bVisible ? ESlateVisibility::Visible : ESlateVisibility::Collapsed);
+	}
 }
 
 void UPAGameplayHUDWidget::OpenShop(UPAMerchantComponent* MerchantComp, UPAInventoryComponent* PlayerInv,
