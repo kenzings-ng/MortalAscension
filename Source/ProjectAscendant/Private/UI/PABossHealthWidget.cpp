@@ -73,14 +73,15 @@ void UPABossHealthWidget::SetBossTarget(AActor* InBossActor, const FString& InBo
 	// Hủy binding cũ nếu có
 	ClearBossTarget();
 
+	Model.SetBossIdentity(InBossName, InBossLevel);
+	Model.RegisterParts(InPartIds);
+
 	if (!InBossActor)
 	{
 		return;
 	}
 
 	BossActor = InBossActor;
-	Model.SetBossIdentity(InBossName, InBossLevel);
-	Model.RegisterParts(InPartIds);
 
 	// Tìm và bind vào AbilitySystemComponent của Boss
 	UAbilitySystemComponent* ASC = InBossActor->FindComponentByClass<UAbilitySystemComponent>();

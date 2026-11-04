@@ -193,6 +193,22 @@ def build_starter_town():
             r_comp.set_mobility(unreal.ComponentMobility.MOVABLE)
 
     # 5. Blacksmith Forge Station (Tier 1 Outpost Blacksmith)
+    forge_class = getattr(unreal, "PABlacksmithForge", None)
+    if not forge_class:
+        try:
+            forge_class = unreal.load_class(None, "/Script/ProjectAscendant.PABlacksmithForge")
+        except Exception:
+            pass
+    if forge_class:
+        forge_actor = editor_actor_subsystem.spawn_actor_from_class(
+            forge_class,
+            unreal.Vector(-600, 350, 40),
+            unreal.Rotator(0, 0, 0)
+        )
+        if forge_actor:
+            forge_actor.set_actor_label("Forge_Tier1_Outpost")
+            unreal.log("Spawned Forge_Tier1_Outpost at (-600, 350, 40)")
+
     # Anvil
     anvil = editor_actor_subsystem.spawn_actor_from_class(
         unreal.StaticMeshActor,
@@ -239,6 +255,22 @@ def build_starter_town():
             fl_comp.set_light_color(unreal.LinearColor(1.0, 0.40, 0.08, 1.0))
 
     # 6. Merchant Supply Depot (Tier 1 Outpost Merchant)
+    smuggler_class = getattr(unreal, "PAWanderingSmuggler", None)
+    if not smuggler_class:
+        try:
+            smuggler_class = unreal.load_class(None, "/Script/ProjectAscendant.PAWanderingSmuggler")
+        except Exception:
+            pass
+    if smuggler_class:
+        smuggler_actor = editor_actor_subsystem.spawn_actor_from_class(
+            smuggler_class,
+            unreal.Vector(-600, -350, 40),
+            unreal.Rotator(0, 0, 0)
+        )
+        if smuggler_actor:
+            smuggler_actor.set_actor_label("NPC_WanderingSmuggler")
+            unreal.log("Spawned NPC_WanderingSmuggler at (-600, -350, 40)")
+
     # Counter
     merchant_counter = editor_actor_subsystem.spawn_actor_from_class(
         unreal.StaticMeshActor,

@@ -573,3 +573,35 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   - GDD Consistency Validator: 108/108 files PASS.
   - UE Automation Tests: `ProjectAscendant.Account` 1/1 PASS (100% assertions AC-1 -> AC-5 passed, ExitCode=1 Linux clean exit).
 - **Reviewer độc lập**: PASS sau khi hoàn tất khắc phục salt normalization, bổ sung test E2E AC-5 và sửa thuộc tính `b_unbound`.
+
+---
+
+## 5. Nhật Ký Đầu Việc: Nhánh `feat/z3-ingame-hud-npcs-interaction` (Bước Z3 - In-Game HUD, NPCs & Tương Tác)
+
+- **Mục tiêu**: Bước Z3 của Playable Slice (DECISIONS.md §13) — Khởi tạo In-Game HUD (Vitals, Boss HUD, Floating Combat Text), đặt NPC Smuggler và Lò rèn vào Outpost map (`L_VerdantFrontier_Outpost`), xử lý tương tác phím F và phím Escape qua `UPAServiceRequestComponent`.
+- **Nhánh**: `feat/z3-ingame-hud-npcs-interaction`.
+- **Nội dung thực hiện**:
+  1. **Actor Lò Rèn (`APABlacksmithForge`)**:
+     - Tạo Actor chuyên dụng `APABlacksmithForge` chứa `UPABlacksmithComponent`, `kMaxInteractionDistance = 300.0f` (DECISIONS §13), `bReplicates = true`.
+  2. **In-game HUD tổng hợp (`UPAGameplayHUDWidget`)**:
+     - Tích hợp cụm Vitals người chơi (`UPAPlayerVitalsWidget`), Boss Health & Stagger reticle (`UPABossHealthWidget`), kết nối `UPAFloatingCombatTextComponent`.
+     - Nhúng cửa sổ giao dịch `UPAMerchantShopWidget` và rèn đúc `UPABlacksmithForgeWidget` với cơ chế loại trừ tương hỗ (mutual exclusion).
+     - Hỗ trợ fallback headless test thông qua template `CreateSafeWidget` mà không làm crash editor khi thiếu `UWidgetTree`.
+  3. **Bộ điều khiển & Đường ống tương tác (`APABasePlayerController`)**:
+     - Khởi tạo và gắn `FloatingCombatTextComponent` cùng `GameplayHUDWidgetClass`.
+     - Ràng buộc phím `F` (`HandleInteract`) và `Escape` (`HandleCloseInteractiveWindows`).
+     - Tối ưu hóa `FindBestInteractableActor`: lọc khoảng cách `DistSq <= ClosestDistSq` trước khi reflection tìm `UPAMerchantComponent` / `UPABlacksmithComponent` nhằm giữ ngân sách tick `<= 0.2ms`.
+     - Tự động đóng modal giao dịch/lò rèn khi người chơi di chuyển cách xa > 500cm hoặc bước vào trạng thái giao tranh (`State.InCombat` qua `PAServerRequestValidation`).
+  4. **Bố trí Actor vào Map (`Scripts/build_starter_town.py`)**:
+     - Spawn và cấu hình vị trí `APABlacksmithForge` tại `(-600, 350, 40)` và `APAWanderingSmuggler` tại `(-600, -350, 40)`.
+     - Cập nhật map `Content/Maps/L_VerdantFrontier_Outpost.umap` (Git LFS pointer).
+  5. **Unit & Automation Tests (`PAGameplayHUDTests.cpp`)**:
+     - AC-1: Khởi tạo phân cấp Widget (Vitals, Boss HUD, Shop, Forge).
+     - AC-2: Vòng đời hiển thị Boss HUD (kích hoạt và ẩn khi kết thúc encounter).
+     - AC-3: Cửa sổ Modal tương tác (Mở Shop / Mở Forge, đóng qua Escape / Close).
+     - AC-4: Lời nhắc phím tương tác `[F]` trong phạm vi bán kính tương tác 300cm.
+     - AC-5: Xác thực khởi tạo Actor Lò rèn (`APABlacksmithForge`) và Thương nhân (`APAWanderingSmuggler`).
+- **Kết quả Cổng Tự Động**:
+  - GDD Consistency Validator: 108/108 files PASS.
+  - UE Automation Tests: `ProjectAscendant.UI.GameplayHUD` 1/1 PASS; toàn bộ suite `ProjectAscendant.UI` 6/6 PASS (ExitCode=1 Linux clean exit).
+- **Reviewer độc lập**: APPROVED sau khi giải quyết 2 điểm tối ưu hiệu năng tick và thoát giao dịch khi dính combat tag `State.InCombat`.

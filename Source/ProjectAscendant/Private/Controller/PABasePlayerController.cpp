@@ -16,6 +16,16 @@
 #include "Combat/PAGameplayAbility_Dash.h"
 #include "Combat/PAGameplayAbility_Finisher.h"
 #include "Network/PAServiceRequestComponent.h"
+#include "Network/PAServerRequestValidation.h"
+#include "UI/PAGameplayHUDWidget.h"
+#include "UI/PAFloatingCombatTextComponent.h"
+#include "Economy/PAMerchantComponent.h"
+#include "Economy/PAWanderingSmuggler.h"
+#include "Crafting/PABlacksmithComponent.h"
+#include "Crafting/PABlacksmithForge.h"
+#include "Inventory/PAInventoryComponent.h"
+#include "Economy/PACurrencyComponent.h"
+#include "EngineUtils.h"
 
 APABasePlayerController::APABasePlayerController(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer)
@@ -29,8 +39,10 @@ APABasePlayerController::APABasePlayerController(const FObjectInitializer& Objec
 	bEnableMouseOverEvents = true;
 
 	LoginWidgetClass = UPALoginWidget::StaticClass();
+	GameplayHUDWidgetClass = UPAGameplayHUDWidget::StaticClass();
 
 	ServiceRequestComponent = CreateDefaultSubobject<UPAServiceRequestComponent>(TEXT("ServiceRequestComponent"));
+	FloatingCombatTextComponent = CreateDefaultSubobject<UPAFloatingCombatTextComponent>(TEXT("FloatingCombatTextComponent"));
 }
 
 void APABasePlayerController::BeginPlay()
@@ -67,6 +79,50 @@ void APABasePlayerController::BeginPlay()
 				bShowMouseCursor = true;
 			}
 		}
+		else
+		{
+			SetupGameplayHUD();
+		}
+	}
+}
+
+void APABasePlayerController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	if (IsLocalController())
+	{
+		SetupGameplayHUD();
+	}
+}
+
+void APABasePlayerController::AcknowledgePossession(APawn* InPawn)
+{
+	Super::AcknowledgePossession(InPawn);
+	if (IsLocalController())
+	{
+		SetupGameplayHUD();
+	}
+}
+
+void APABasePlayerController::SetupGameplayHUD()
+{
+	if (!IsLocalController())
+	{
+		return;
+	}
+
+	if (!ActiveGameplayHUDWidget && GameplayHUDWidgetClass)
+	{
+		ActiveGameplayHUDWidget = CreateWidget<UPAGameplayHUDWidget>(this, GameplayHUDWidgetClass);
+		if (ActiveGameplayHUDWidget)
+		{
+			ActiveGameplayHUDWidget->AddToViewport(10);
+		}
+	}
+
+	if (ActiveGameplayHUDWidget)
+	{
+		ActiveGameplayHUDWidget->InitializeHUD(this, Cast<APABaseCharacter>(GetPawn()));
 	}
 }
 
@@ -107,6 +163,53 @@ void APABasePlayerController::PlayerTick(float DeltaTime)
 
 		// 3. Quét tia và làm mờ dither vật thể che khuất tầm nhìn (AC-3)
 		UpdateCameraOcclusion(DeltaTime);
+
+		// 4. Cập nhật trạng thái tương tác HUD (phím F) và tự động đóng khi rời xa > 500cm (DECISIONS §13)
+		if (ActiveGameplayHUDWidget)
+		{
+			if (ActiveGameplayHUDWidget->IsAnyInteractiveWindowOpen())
+			{
+				bool bShouldClose = false;
+				if (!CurrentInteractingActor.IsValid())
+				{
+					bShouldClose = true;
+				}
+				else if (APawn* ControlledPawn = GetPawn())
+				{
+					const float Dist = FVector::Dist(ControlledPawn->GetActorLocation(), CurrentInteractingActor->GetActorLocation());
+					if (Dist > 500.0f || PAServerRequestValidation::IsActorInCombat(ControlledPawn))
+					{
+						bShouldClose = true;
+					}
+				}
+				if (bShouldClose)
+				{
+					HandleCloseInteractiveWindows();
+				}
+				ActiveGameplayHUDWidget->SetInteractionPrompt(TEXT(""), false);
+			}
+			else
+			{
+				AActor* NearbyActor = FindBestInteractableActor(300.0f);
+				if (NearbyActor)
+				{
+					FString PromptText = TEXT("[F] Tương Tác");
+					if (NearbyActor->FindComponentByClass<UPAMerchantComponent>())
+					{
+						PromptText = TEXT("[F] Giao Dịch (Thương Nhân)");
+					}
+					else if (NearbyActor->FindComponentByClass<UPABlacksmithComponent>())
+					{
+						PromptText = TEXT("[F] Rèn / Sửa Đồ (Lò Rèn)");
+					}
+					ActiveGameplayHUDWidget->SetInteractionPrompt(PromptText, true);
+				}
+				else
+				{
+					ActiveGameplayHUDWidget->SetInteractionPrompt(TEXT(""), false);
+				}
+			}
+		}
 	}
 }
 
@@ -125,6 +228,12 @@ void APABasePlayerController::SetupInputComponent()
 		// Phím E hoặc chuột phải thi triển kết liễu Finisher
 		InputComponent->BindKey(EKeys::E, IE_Pressed, this, &APABasePlayerController::HandleDirectFinisher);
 		InputComponent->BindKey(EKeys::RightMouseButton, IE_Pressed, this, &APABasePlayerController::HandleDirectFinisher);
+
+		// Phím F tương tác ngữ cảnh (Merchant, Forge)
+		InputComponent->BindKey(EKeys::F, IE_Pressed, this, &APABasePlayerController::HandleInteract);
+
+		// Phím Escape đóng các cửa sổ tương tác
+		InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &APABasePlayerController::HandleCloseInteractiveWindows);
 	}
 
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
@@ -358,4 +467,127 @@ void APABasePlayerController::ResetOccludedComponents()
 	}
 	CurrentlyOccludedComponents.Empty();
 }
+
+void APABasePlayerController::HandleInteract()
+{
+	if (!IsLocalController())
+	{
+		return;
+	}
+
+	if (ActiveGameplayHUDWidget && ActiveGameplayHUDWidget->IsAnyInteractiveWindowOpen())
+	{
+		HandleCloseInteractiveWindows();
+		return;
+	}
+
+	AActor* BestInteractable = FindBestInteractableActor(300.0f);
+	if (!BestInteractable)
+	{
+		return;
+	}
+
+	APABaseCharacter* ControlledCharacter = Cast<APABaseCharacter>(GetPawn());
+	if (!ControlledCharacter)
+	{
+		return;
+	}
+
+	// 1. Kiểm tra Thương Nhân Lang Thang / NPC Merchant
+	if (UPAMerchantComponent* Merchant = BestInteractable->FindComponentByClass<UPAMerchantComponent>())
+	{
+		EPATransactionError Error = EPATransactionError::None;
+		const bool bInCombat = ControlledCharacter->GetAbilitySystemComponent() &&
+			ControlledCharacter->GetAbilitySystemComponent()->HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(FName("State.InCombat")));
+
+		if (Merchant->ValidateInteraction(ControlledCharacter, bInCombat, Error))
+		{
+			CurrentInteractingActor = BestInteractable;
+			if (ActiveGameplayHUDWidget)
+			{
+				int32 PlayerKarma = 0;
+				ActiveGameplayHUDWidget->OpenShop(
+					Merchant,
+					ControlledCharacter->GetInventoryComponent(),
+					ControlledCharacter->GetCurrencyComponent(),
+					PlayerKarma,
+					ServiceRequestComponent
+				);
+			}
+			return;
+		}
+	}
+
+	// 2. Kiểm tra Lò Rèn / Đe Rèn Blacksmith Forge
+	if (UPABlacksmithComponent* Forge = BestInteractable->FindComponentByClass<UPABlacksmithComponent>())
+	{
+		EPACraftingError Error = EPACraftingError::None;
+		const bool bInCombat = ControlledCharacter->GetAbilitySystemComponent() &&
+			ControlledCharacter->GetAbilitySystemComponent()->HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(FName("State.InCombat")));
+
+		if (Forge->ValidateInteraction(ControlledCharacter, bInCombat, Error))
+		{
+			CurrentInteractingActor = BestInteractable;
+			if (ActiveGameplayHUDWidget)
+			{
+				ActiveGameplayHUDWidget->OpenForge(
+					Forge,
+					ControlledCharacter->GetInventoryComponent(),
+					ControlledCharacter->GetCurrencyComponent(),
+					ServiceRequestComponent
+				);
+			}
+			return;
+		}
+	}
+}
+
+void APABasePlayerController::HandleCloseInteractiveWindows()
+{
+	if (ActiveGameplayHUDWidget)
+	{
+		ActiveGameplayHUDWidget->CloseInteractiveWindows();
+	}
+	CurrentInteractingActor.Reset();
+}
+
+AActor* APABasePlayerController::FindBestInteractableActor(float MaxDistance) const
+{
+	APawn* ControlledPawn = GetPawn();
+	if (!ControlledPawn || !GetWorld())
+	{
+		return nullptr;
+	}
+
+	const FVector PlayerLoc = ControlledPawn->GetActorLocation();
+	AActor* BestActor = nullptr;
+	float ClosestDistSq = FMath::Square(MaxDistance);
+
+	for (TActorIterator<AActor> It(GetWorld()); It; ++It)
+	{
+		AActor* Candidate = *It;
+		if (!Candidate || Candidate == ControlledPawn)
+		{
+			continue;
+		}
+
+		const float DistSq = FVector::DistSquared(PlayerLoc, Candidate->GetActorLocation());
+		if (DistSq > ClosestDistSq)
+		{
+			continue;
+		}
+
+		const bool bHasMerchant = Candidate->FindComponentByClass<UPAMerchantComponent>() != nullptr;
+		const bool bHasForge = Candidate->FindComponentByClass<UPABlacksmithComponent>() != nullptr;
+
+		if (bHasMerchant || bHasForge)
+		{
+			ClosestDistSq = DistSq;
+			BestActor = Candidate;
+		}
+	}
+
+	return BestActor;
+}
+
 

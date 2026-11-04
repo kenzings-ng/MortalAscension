@@ -13,6 +13,8 @@ class APABaseCharacter;
 class UPrimitiveComponent;
 class UPALoginWidget;
 class UPAServiceRequestComponent;
+class UPAGameplayHUDWidget;
+class UPAFloatingCombatTextComponent;
 
 /**
  * APABasePlayerController
@@ -35,6 +37,30 @@ public:
 	/** X11b: routes this player's Merchant / Blacksmith requests to the server (owning-connection RPCs). */
 	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|ServiceRequest")
 	UPAServiceRequestComponent* GetServiceRequestComponent() const { return ServiceRequestComponent; }
+
+	/** Trả về component hiển thị số sát thương nổi */
+	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|UI")
+	UPAFloatingCombatTextComponent* GetFloatingCombatTextComponent() const { return FloatingCombatTextComponent; }
+
+	/** Trả về Gameplay HUD widget đang hoạt động */
+	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|UI")
+	UPAGameplayHUDWidget* GetGameplayHUDWidget() const { return ActiveGameplayHUDWidget; }
+
+	/** Tạo và khởi tạo Gameplay HUD khi vào bản đồ chơi */
+	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|UI")
+	void SetupGameplayHUD();
+
+	/** Xử lý phím tương tác F ngữ cảnh (nói chuyện với Smuggler / mở Lò Rèn) */
+	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|Interaction")
+	void HandleInteract();
+
+	/** Đóng cửa sổ tương tác đang mở */
+	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|Interaction")
+	void HandleCloseInteractiveWindows();
+
+	/** Quét tìm Actor tương tác trong bán kính (mặc định 300cm theo DECISIONS.md §13) */
+	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|Interaction")
+	AActor* FindBestInteractableActor(float MaxDistance = 300.0f) const;
 
 	// -------------------------------------------------------------------------
 	// Camera Look-Ahead & Occlusion Dither (Story 003)
@@ -59,6 +85,8 @@ public:
 protected:
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
+	virtual void OnPossess(APawn* InPawn) override;
+	virtual void AcknowledgePossession(APawn* InPawn) override;
 
 	/** Xử lý input di chuyển 2D (WASD / Left Stick) khi đang kích hoạt */
 	void HandleMoveTriggered(const FInputActionValue& Value);
@@ -102,6 +130,22 @@ protected:
 	/** Instance widget giao diện đang hiển thị trên viewport cục bộ */
 	UPROPERTY(BlueprintReadOnly, Category = "ProjectAscendant|UI")
 	TObjectPtr<UPALoginWidget> ActiveLoginWidget = nullptr;
+
+	/** Lớp Widget giao diện In-Game HUD trung tâm */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ProjectAscendant|UI")
+	TSubclassOf<UPAGameplayHUDWidget> GameplayHUDWidgetClass;
+
+	/** Instance giao diện In-Game HUD đang hiển thị trên màn hình */
+	UPROPERTY(BlueprintReadOnly, Category = "ProjectAscendant|UI")
+	TObjectPtr<UPAGameplayHUDWidget> ActiveGameplayHUDWidget = nullptr;
+
+	/** Component quản lý số sát thương nổi và phản hồi chiến đấu */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ProjectAscendant|UI")
+	TObjectPtr<UPAFloatingCombatTextComponent> FloatingCombatTextComponent;
+
+	/** Actor đang tương tác hiện tại (Merchant hoặc Forge) */
+	UPROPERTY(Transient)
+	TWeakObjectPtr<AActor> CurrentInteractingActor;
 
 	/** Input Mapping Context mặc định cho việc điều khiển nhân vật */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "ProjectAscendant|Input")
