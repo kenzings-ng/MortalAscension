@@ -195,6 +195,12 @@ public:
 	/** Callback khi thanh thế đứng của nhân vật bị phá vỡ (Posture >= MaxPosture) */
 	virtual void HandlePostureBroken(AActor* InstigatorActor);
 
+	/** Callback khi nhân vật nhận sát thương máu từ GAS hoặc Combat Pipeline */
+	virtual void HandleDamageReceived(AActor* InstigatorActor, float DamageAmount);
+
+	/** Callback khi nhân vật nhận sát thương Posture từ GAS hoặc Combat Pipeline */
+	virtual void HandlePostureDamageReceived(AActor* InstigatorActor, float PostureAmount);
+
 	/** Trả về CurrencyComponent quản lý ví tiền tệ của nhân vật (Story econ-001) */
 	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|Economy")
 	UPACurrencyComponent* GetCurrencyComponent() const { return CurrencyComponent.Get(); }

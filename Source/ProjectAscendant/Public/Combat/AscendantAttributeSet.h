@@ -43,13 +43,17 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	// -------------------------------------------------------------------------
-	// Combat Delegates (Broadcast khi cạn máu hoặc vỡ thế Posture)
+	// Combat Delegates (Broadcast khi cạn máu, vỡ thế Posture, hoặc nhận sát thương)
 	// -------------------------------------------------------------------------
 	DECLARE_MULTICAST_DELEGATE_OneParam(FOnOutOfHealthDelegate, AActor* /* InstigatorActor */);
 	DECLARE_MULTICAST_DELEGATE_OneParam(FOnPostureBrokenDelegate, AActor* /* InstigatorActor */);
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnDamageReceivedDelegate, AActor* /* InstigatorActor */, float /* DamageAmount */);
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnPostureDamageReceivedDelegate, AActor* /* InstigatorActor */, float /* PostureAmount */);
 
 	FOnOutOfHealthDelegate OnOutOfHealth;
 	FOnPostureBrokenDelegate OnPostureBroken;
+	FOnDamageReceivedDelegate OnDamageReceived;
+	FOnPostureDamageReceivedDelegate OnPostureDamageReceived;
 
 	/** Cờ trạng thái ngăn phát lặp sự kiện cạn kiệt sinh mệnh */
 	bool bOutOfHealthBroadcasted = false;

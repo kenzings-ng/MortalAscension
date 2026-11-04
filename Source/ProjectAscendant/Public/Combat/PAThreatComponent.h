@@ -121,6 +121,18 @@ public:
 	void ApplyTauntById(const FString& TaunterId, float BaseTauntThreat = 0.0f);
 
 	/**
+	 * Xóa bỏ thực thể khỏi bảng nộ khí (khi chết, vào vùng an toàn Sanctuary, hoặc ra khỏi tầm).
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|Threat")
+	void RemoveCombatant(AActor* CombatantActor);
+
+	/**
+	 * Xóa bỏ thực thể khỏi bảng nộ khí theo Id.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|Threat")
+	void RemoveCombatantById(const FString& CombatantId);
+
+	/**
 	 * Đánh giá lại mục tiêu công kích (AC-2: 130% Threat Retargeting Rule).
 	 * Boss quét mỗi 1.0s; chỉ chuyển target khi nộ khí của người khác >= CurrentTargetThreat * 1.30f.
 	 */

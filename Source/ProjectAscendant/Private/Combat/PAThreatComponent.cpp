@@ -179,12 +179,11 @@ void UPAThreatComponent::ApplyTaunt(AActor* TaunterActor, float BaseTauntThreat)
 	}
 
 	const FString Key = GetKeyForActor(TaunterActor);
-	ApplyTauntById(Key, BaseTauntThreat);
+	FPAThreatEntry& Entry = ThreatTable.FindOrAdd(Key);
+	Entry.CombatantActor = TaunterActor;
+	Entry.CombatantId = Key;
 
-	if (FPAThreatEntry* Entry = ThreatTable.Find(Key))
-	{
-		Entry->CombatantActor = TaunterActor;
-	}
+	ApplyTauntById(Key, BaseTauntThreat);
 }
 
 void UPAThreatComponent::ApplyTauntById(const FString& TaunterId, float BaseTauntThreat)
@@ -215,6 +214,43 @@ void UPAThreatComponent::ApplyTauntById(const FString& TaunterId, float BaseTaun
 	CurrentAggroTargetId = TaunterId;
 
 	OnAggroTargetChanged.Broadcast(CurrentAggroTarget.Get(), OldTarget);
+}
+
+void UPAThreatComponent::RemoveCombatant(AActor* CombatantActor)
+{
+	if (!CombatantActor)
+	{
+		return;
+	}
+	RemoveCombatantById(GetKeyForActor(CombatantActor));
+}
+
+void UPAThreatComponent::RemoveCombatantById(const FString& CombatantId)
+{
+	if (CombatantId.IsEmpty() || !ThreatTable.Contains(CombatantId))
+	{
+		return;
+	}
+
+	ThreatTable.Remove(CombatantId);
+
+	if (CurrentAggroTargetId == CombatantId)
+	{
+		AActor* OldTarget = CurrentAggroTarget.Get();
+		CurrentAggroTarget = nullptr;
+		CurrentAggroTargetId.Empty();
+
+		FString NextTopId;
+		AActor* NextTopActor = nullptr;
+		const float NextTopThreat = FindCurrentTopThreat(NextTopId, NextTopActor);
+		if (NextTopThreat > 0.0f)
+		{
+			CurrentAggroTarget = NextTopActor;
+			CurrentAggroTargetId = NextTopId;
+		}
+
+		OnAggroTargetChanged.Broadcast(CurrentAggroTarget.Get(), OldTarget);
+	}
 }
 
 void UPAThreatComponent::EvaluateThreatRetargeting()

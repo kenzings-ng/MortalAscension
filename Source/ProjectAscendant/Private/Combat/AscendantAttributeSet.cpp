@@ -113,7 +113,12 @@ void UAscendantAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModC
 
 	if (Data.EvaluatedData.Attribute == GetHealthAttribute())
 	{
+		const float DamageMagnitude = -Data.EvaluatedData.Magnitude;
 		SetHealth(FMath::Clamp(GetHealth(), 0.0f, GetMaxHealth()));
+		if (DamageMagnitude > 0.0f)
+		{
+			OnDamageReceived.Broadcast(InstigatorActor, DamageMagnitude);
+		}
 		EvaluateOutOfHealthBroadcast(InstigatorActor);
 	}
 	else if (Data.EvaluatedData.Attribute == GetManaAttribute())
@@ -126,7 +131,12 @@ void UAscendantAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModC
 	}
 	else if (Data.EvaluatedData.Attribute == GetPostureAttribute())
 	{
+		const float PostureMagnitude = Data.EvaluatedData.Magnitude;
 		SetPosture(FMath::Clamp(GetPosture(), 0.0f, GetMaxPosture()));
+		if (PostureMagnitude > 0.0f)
+		{
+			OnPostureDamageReceived.Broadcast(InstigatorActor, PostureMagnitude);
+		}
 		EvaluatePostureBrokenBroadcast(InstigatorActor);
 	}
 }
