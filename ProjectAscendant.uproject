@@ -49,6 +49,10 @@
 			"Enabled": true
 		},
 		{
+			"Name": "CommonUI",
+			"Enabled": true
+		},
+		{
 			"Name": "SpinePlugin",
 			"Enabled": true
 		}

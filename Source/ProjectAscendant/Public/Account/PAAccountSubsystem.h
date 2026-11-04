@@ -177,6 +177,10 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Ascendant|Account|Validation")
 	static FString GenerateAuthToken(const FString& AccountId);
 
+	/** Băm mật khẩu bằng SHA-1 kèm Salt định danh để bảo mật lưu trữ credential */
+	UFUNCTION(BlueprintPure, Category = "Ascendant|Account|Validation")
+	static FString HashPassword(const FString& InPlainPassword, const FString& InSalt);
+
 	/** Xác thực tính hợp lệ của Join Token trên Dedicated Server trước khi cho phép spawn */
 	UFUNCTION(BlueprintPure, Category = "Ascendant|Account|Validation")
 	static bool ValidateJoinToken(const FString& InToken, const FString& ExpectedAccountId);

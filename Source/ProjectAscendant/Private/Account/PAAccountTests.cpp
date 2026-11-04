@@ -80,6 +80,21 @@ bool FPAAccountTests::RunTest(const FString& Parameters)
 		TestTrue(TEXT("AC3: 10-char password passes"), UPAAccountSubsystem::IsValidPassword(TEXT("secretpass"), PwdError));
 		TestFalse(TEXT("AC3: 5-char password fails"), UPAAccountSubsystem::IsValidPassword(TEXT("12345"), PwdError));
 		TestFalse(TEXT("AC3: Empty password fails"), UPAAccountSubsystem::IsValidPassword(TEXT(""), PwdError));
+
+		// 3. Kiểm tra Mã hóa mật khẩu (Security Requirement: Never store plaintext)
+		const FString Salt = TEXT("hero@ascendant.io");
+		const FString PlainPwd = TEXT("Secret123456");
+		const FString Hash1 = UPAAccountSubsystem::HashPassword(PlainPwd, Salt);
+		const FString Hash2 = UPAAccountSubsystem::HashPassword(PlainPwd, Salt);
+		const FString HashWrongPwd = UPAAccountSubsystem::HashPassword(TEXT("WrongPassword123"), Salt);
+		const FString HashDiffSalt = UPAAccountSubsystem::HashPassword(PlainPwd, TEXT("other@ascendant.io"));
+
+		TestFalse(TEXT("AC3: Password hash is not empty"), Hash1.IsEmpty());
+		TestEqual(TEXT("AC3: SHA-1 hex hash length is 40 characters"), Hash1.Len(), 40);
+		TestNotEqual(TEXT("AC3: Password is never stored in plaintext"), Hash1, PlainPwd);
+		TestEqual(TEXT("AC3: Hash is deterministic with same salt"), Hash1, Hash2);
+		TestNotEqual(TEXT("AC3: Different password produces different hash"), Hash1, HashWrongPwd);
+		TestNotEqual(TEXT("AC3: Different salt produces different hash"), Hash1, HashDiffSalt);
 	}
 
 	// ===========================================================

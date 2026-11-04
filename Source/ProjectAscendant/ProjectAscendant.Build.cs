@@ -23,6 +23,7 @@ public class ProjectAscendant : ModuleRules
 			"PaperZD",
 			"SpinePlugin",
 			"UMG",
+			"CommonUI",
 			"Json",
 			"JsonUtilities"
 		});
