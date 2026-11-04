@@ -216,6 +216,43 @@ void UPAThreatComponent::ApplyTauntById(const FString& TaunterId, float BaseTaun
 	OnAggroTargetChanged.Broadcast(CurrentAggroTarget.Get(), OldTarget);
 }
 
+void UPAThreatComponent::RemoveCombatant(AActor* CombatantActor)
+{
+	if (!CombatantActor)
+	{
+		return;
+	}
+	RemoveCombatantById(GetKeyForActor(CombatantActor));
+}
+
+void UPAThreatComponent::RemoveCombatantById(const FString& CombatantId)
+{
+	if (CombatantId.IsEmpty() || !ThreatTable.Contains(CombatantId))
+	{
+		return;
+	}
+
+	ThreatTable.Remove(CombatantId);
+
+	if (CurrentAggroTargetId == CombatantId)
+	{
+		AActor* OldTarget = CurrentAggroTarget.Get();
+		CurrentAggroTarget = nullptr;
+		CurrentAggroTargetId.Empty();
+
+		FString NextTopId;
+		AActor* NextTopActor = nullptr;
+		const float NextTopThreat = FindCurrentTopThreat(NextTopId, NextTopActor);
+		if (NextTopThreat > 0.0f)
+		{
+			CurrentAggroTarget = NextTopActor;
+			CurrentAggroTargetId = NextTopId;
+		}
+
+		OnAggroTargetChanged.Broadcast(CurrentAggroTarget.Get(), OldTarget);
+	}
+}
+
 void UPAThreatComponent::EvaluateThreatRetargeting()
 {
 	if (bIsLeashResetting || ThreatTable.Num() == 0)

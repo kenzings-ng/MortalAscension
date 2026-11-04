@@ -123,6 +123,8 @@ void APABaseCharacter::PostInitializeComponents()
 	{
 		AttributeSet->OnOutOfHealth.AddUObject(this, &APABaseCharacter::HandleOutOfHealth);
 		AttributeSet->OnPostureBroken.AddUObject(this, &APABaseCharacter::HandlePostureBroken);
+		AttributeSet->OnDamageReceived.AddUObject(this, &APABaseCharacter::HandleDamageReceived);
+		AttributeSet->OnPostureDamageReceived.AddUObject(this, &APABaseCharacter::HandlePostureDamageReceived);
 	}
 }
 
@@ -456,6 +458,16 @@ void APABaseCharacter::HandlePostureBroken(AActor* InstigatorActor)
 			false
 		);
 	}
+}
+
+void APABaseCharacter::HandleDamageReceived(AActor* InstigatorActor, float DamageAmount)
+{
+	// Default base character hook
+}
+
+void APABaseCharacter::HandlePostureDamageReceived(AActor* InstigatorActor, float PostureAmount)
+{
+	// Default base character hook
 }
 
 void APABaseCharacter::SetSpriteFacingRight(bool bFacingRight)

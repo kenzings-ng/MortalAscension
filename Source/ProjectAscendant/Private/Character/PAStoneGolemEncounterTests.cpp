@@ -172,6 +172,65 @@ bool FPAStoneGolemEncounterTests::RunTest(const FString& Parameters)
 		TestTrue(TEXT("AC-5: ThreatComponent is in leash reset state"), ThreatComp->IsInvulnerable());
 	}
 
+	// =========================================================================
+	// AC-6: Ground Slam Cancellation & Timer Protection
+	// =========================================================================
+	{
+		APAStoneGolemBoss* Boss = NewObject<APAStoneGolemBoss>();
+		Boss->TryExecuteGroundSlam();
+		TestTrue(TEXT("AC-6: Ground slam in progress"), Boss->IsPerformingSlam());
+
+		// Boss bị đánh vỡ thế (Stagger) giữa chừng khi đang dập đất
+		APABaseCharacter* Attacker = NewObject<APABaseCharacter>();
+		Boss->HandlePostureBroken(Attacker);
+
+		TestFalse(TEXT("AC-6: Ground slam cancelled immediately on Stagger"), Boss->IsPerformingSlam());
+		TestFalse(
+			TEXT("AC-6: State.Attacking tag removed on Stagger cancellation"),
+			Boss->GetAbilitySystemComponent()->HasMatchingGameplayTag(FGameplayTag::RequestGameplayTag(TEXT("State.Attacking"), false))
+		);
+	}
+
+	// =========================================================================
+	// AC-7: Threat Table RemoveCombatant & Stale Target Filtering
+	// =========================================================================
+	{
+		APAStoneGolemBoss* Boss = NewObject<APAStoneGolemBoss>();
+		UPAThreatComponent* ThreatComp = Boss->GetThreatComponent();
+
+		APABaseCharacter* Player1 = NewObject<APABaseCharacter>();
+		APABaseCharacter* Player2 = NewObject<APABaseCharacter>();
+
+		ThreatComp->AddThreat(Player1, 100.0f);
+		ThreatComp->AddThreat(Player2, 80.0f);
+		ThreatComp->EvaluateThreatRetargeting();
+
+		TestEqual(TEXT("AC-7: Player1 is top aggro target initially"), ThreatComp->GetCurrentAggroTarget(), Cast<AActor>(Player1));
+
+		// Giả lập Player1 bị loại bỏ (chết hoặc vào Sanctuary)
+		ThreatComp->RemoveCombatant(Player1);
+		TestEqual(TEXT("AC-7: Target automatically switched to Player2 after Player1 removed"), ThreatComp->GetCurrentAggroTarget(), Cast<AActor>(Player2));
+		TestEqual(TEXT("AC-7: Tracked combatant count decreased to 1"), ThreatComp->GetTrackedCombatantCount(), 1);
+	}
+
+	// =========================================================================
+	// AC-8: GAS Damage & Posture Damage Bridge to Threat
+	// =========================================================================
+	{
+		APAStoneGolemBoss* Boss = NewObject<APAStoneGolemBoss>();
+		UPAThreatComponent* ThreatComp = Boss->GetThreatComponent();
+		APABaseCharacter* Attacker = NewObject<APABaseCharacter>();
+
+		// Mô phỏng nhận sát thương máu từ delegate GAS
+		Boss->HandleDamageReceived(Attacker, 60.0f);
+		TestEqual(TEXT("AC-8: Threat increased by 60 from GAS damage"), ThreatComp->GetThreat(Attacker), 60.0f);
+
+		// Mô phỏng nhận sát thương Posture từ delegate GAS (2.5x multiplier)
+		Boss->HandlePostureDamageReceived(Attacker, 20.0f);
+		// 60 + 20 * 2.5 = 60 + 50 = 110
+		TestEqual(TEXT("AC-8: Threat increased by 50 from Posture damage (2.5x)"), ThreatComp->GetThreat(Attacker), 110.0f);
+	}
+
 	return true;
 }
 

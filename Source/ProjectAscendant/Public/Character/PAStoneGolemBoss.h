@@ -31,6 +31,7 @@ public:
 
 	virtual void PostInitializeComponents() override;
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Tick(float DeltaSeconds) override;
 
 	// -------------------------------------------------------------------------
@@ -40,6 +41,10 @@ public:
 	/** Cập nhật AI chu kỳ: tìm mục tiêu, truy đuổi và kích hoạt kỹ năng */
 	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|Boss|AI")
 	void UpdateBossAI(float DeltaSeconds);
+
+	/** Kiểm tra tính hợp lệ của mục tiêu giao tranh (chưa chết, không ở trong Sanctuary, trong phạm vi cho phép) */
+	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|Boss|AI")
+	bool IsTargetCombatValid(AActor* TargetActor) const;
 
 	/** Thử kích hoạt đòn đập đất Ground Slam */
 	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|Boss|Combat")
@@ -75,6 +80,8 @@ public:
 
 	virtual void HandlePostureBroken(AActor* InstigatorActor) override;
 	virtual void HandleOutOfHealth(AActor* InstigatorActor) override;
+	virtual void HandleDamageReceived(AActor* InstigatorActor, float DamageAmount) override;
+	virtual void HandlePostureDamageReceived(AActor* InstigatorActor, float PostureAmount) override;
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 	/** Kiểm tra xem Boss có đang trong trạng thái Slam không */

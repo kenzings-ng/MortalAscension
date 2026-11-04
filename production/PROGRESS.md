@@ -638,4 +638,22 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
 - **Kết quả Cổng Tự Động**:
   - GDD Consistency Validator: 108/108 files PASS.
   - UE Automation Tests: `ProjectAscendant.Character.StoneGolemEncounter` PASS; toàn bộ suite `ProjectAscendant.Character` PASS.
-- **Reviewer độc lập**: Sẵn sàng kiểm tra độc lập trước khi mở PR.
+- **Reviewer độc lập & Khắc phục phản hồi Code Review (PR #37)**:
+  1. *Lọc bỏ mục tiêu stale/chết/Sanctuary trong AI Boss & Threat Component*:
+     - Bổ sung `RemoveCombatant` và `RemoveCombatantById` trong `UPAThreatComponent` để loại bỏ đối thủ khỏi bảng nộ khí khi chết, vào vùng an toàn hoặc ra ngoài tầm, tự động chuyển `CurrentAggroTarget` sang mục tiêu điểm nộ cao tiếp theo.
+     - Triển khai `IsTargetCombatValid` trong `APAStoneGolemBoss`: kiểm tra con trỏ, tag `State.Dead`, tag `State.InSanctuary`, lượng máu `<= 0`, và bán kính cho phép.
+     - Khắc phục triệt để lỗi kẹt vòng lặp ngắm lại mục tiêu chết hoặc trong Sanctuary trong `UpdateBossAI`.
+  2. *Bảo vệ Timer và ngắt chiêu Ground Slam*:
+     - `FinishGroundSlam` gọi `World->GetTimerManager().ClearTimer(SlamDurationTimerHandle)`.
+     - `PerformSlamAoEDamage` bổ sung guard: nếu `!bIsPerformingSlam || bDead || bStaggered || bLeashResetting`, lập tức ngắt chiêu và không gây sát thương AoE.
+     - `EndPlay` và `HandleOutOfHealth` dọn dẹp toàn bộ bộ đếm thời gian `SlamDurationTimerHandle` và `SlamCooldownTimerHandle`.
+     - Xóa bỏ việc gọi trùng lặp `AddUniqueDynamic` cho Leash Component trong `BeginPlay` (giữ trong `PostInitializeComponents`, unbind sạch trong `EndPlay`).
+  3. *Cầu nối sát thương GAS sang Threat Table*:
+     - Bổ sung delegate `OnDamageReceived` và `OnPostureDamageReceived` trong `UAscendantAttributeSet::PostGameplayEffectExecute`.
+     - Bổ sung virtual callback `HandleDamageReceived` và `HandlePostureDamageReceived` trong `APABaseCharacter` và override trong `APAStoneGolemBoss`.
+     - Đòn đánh melee hoặc finisher qua GameplayEffect tự động tăng điểm nộ (hệ số 1.0x cho máu, 2.5x cho Posture Damage theo GDD) vào `ThreatComponent` và cập nhật `BossAIComponent`.
+  4. *Mở rộng Unit & Automation Tests (`PAStoneGolemEncounterTests.cpp`)*:
+     - AC-6: Kiểm tra ngắt chiêu Ground Slam tức thì khi bị Stagger và gỡ bỏ tag `State.Attacking`.
+     - AC-7: Kiểm tra `RemoveCombatant` tự động chuyển đổi mục tiêu sang người chơi tiếp theo.
+     - AC-8: Kiểm tra cầu nối sát thương GAS (Damage và Posture Damage) tính toán chính xác điểm nộ trong `ThreatComponent`.
+  - Kết quả kiểm thử lại: `validate_gdd_consistency.py` 108/108 PASS; Headless UE Automation `ProjectAscendant.Character` 6/6 PASS (100% assertions pass).
