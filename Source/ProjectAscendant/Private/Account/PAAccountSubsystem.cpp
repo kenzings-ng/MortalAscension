@@ -2,6 +2,7 @@
 
 #include "Account/PAAccountSubsystem.h"
 #include "Misc/Guid.h"
+#include "Misc/SecureHash.h"
 
 void UPAAccountSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
@@ -18,7 +19,7 @@ void UPAAccountSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	const FString DefaultDisplayName = TEXT("AscendantKnight");
 	const FString DefaultToken = GenerateAuthToken(DefaultAccountId);
 
-	RegisteredCredentials.Add(DefaultEmail, DefaultPassword);
+	RegisteredCredentials.Add(DefaultEmail, HashPassword(DefaultPassword, DefaultEmail.ToLower()));
 	RegisteredProfiles.Add(DefaultEmail, FPAAccountProfile(DefaultAccountId, DefaultEmail, DefaultDisplayName, DefaultToken, false));
 }
 
@@ -90,7 +91,8 @@ bool UPAAccountSubsystem::RegisterAccount(
 	const FString NewAuthToken = GenerateAuthToken(NewAccountId);
 	FPAAccountProfile NewProfile(NewAccountId, InEmail, AutoDisplayName, NewAuthToken, false);
 
-	RegisteredCredentials.Add(InEmail, InPassword);
+	const FString HashedPassword = HashPassword(InPassword, InEmail.ToLower());
+	RegisteredCredentials.Add(InEmail, HashedPassword);
 	RegisteredProfiles.Add(InEmail, NewProfile);
 
 	SetLoginState(EPAAuthLoginState::LoggedOut);
@@ -113,17 +115,18 @@ bool UPAAccountSubsystem::LoginWithCredentials(
 		return false;
 	}
 
-	// 1. Kiểm tra tài khoản có tồn tại không
-	if (!RegisteredCredentials.Contains(InEmail))
+	// 1. Kiểm tra tài khoản có tồn tại không (tra cứu 1 lần qua con trỏ)
+	const FString* StoredPasswordHash = RegisteredCredentials.Find(InEmail);
+	if (!StoredPasswordHash)
 	{
 		OutError = TEXT("Tài khoản không tồn tại. Vui lòng đăng ký tài khoản mới.");
 		SetLoginState(EPAAuthLoginState::Error, OutError);
 		return false;
 	}
 
-	// 2. Kiểm tra mật khẩu
-	const FString StoredPassword = RegisteredCredentials[InEmail];
-	if (!StoredPassword.Equals(InPassword, ESearchCase::CaseSensitive))
+	// 2. Kiểm tra mật khẩu (so khớp bằng hash an toàn)
+	const FString IncomingPasswordHash = HashPassword(InPassword, InEmail);
+	if (!StoredPasswordHash->Equals(IncomingPasswordHash, ESearchCase::CaseSensitive))
 	{
 		OutError = TEXT("Mật khẩu không chính xác. Vui lòng thử lại.");
 		SetLoginState(EPAAuthLoginState::Error, OutError);
@@ -258,6 +261,22 @@ FString UPAAccountSubsystem::GenerateAuthToken(const FString& AccountId)
 	const int64 UnixTimestamp = FDateTime::UtcNow().ToUnixTimestamp();
 	const FString RandomSecret = FGuid::NewGuid().ToString(EGuidFormats::Short);
 	return FString::Printf(TEXT("PA-TOKEN-%s-%lld-%s"), *AccountId, UnixTimestamp, *RandomSecret);
+}
+
+FString UPAAccountSubsystem::HashPassword(const FString& InPlainPassword, const FString& InSalt)
+{
+	// Chuẩn hóa Salt (cắt khoảng trắng, đưa về chữ thường) để đảm bảo đồng nhất dù gọi từ C++ hay Blueprint
+	const FString NormalizedSalt = InSalt.TrimStartAndEnd().ToLower();
+	const FString Combined = FString::Printf(TEXT("%s::%s"), *InPlainPassword, *NormalizedSalt);
+	FTCHARToUTF8 Utf8Combined(*Combined);
+
+	FSHA1 Sha1Gen;
+	Sha1Gen.Update((const uint8*)Utf8Combined.Get(), Utf8Combined.Length());
+	Sha1Gen.Final();
+
+	uint8 Digest[20];
+	Sha1Gen.GetHash(Digest);
+	return BytesToHex(Digest, 20);
 }
 
 bool UPAAccountSubsystem::ValidateJoinToken(const FString& InToken, const FString& ExpectedAccountId)

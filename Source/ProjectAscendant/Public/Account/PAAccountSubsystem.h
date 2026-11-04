@@ -177,6 +177,14 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Ascendant|Account|Validation")
 	static FString GenerateAuthToken(const FString& AccountId);
 
+	/**
+	 * Băm mật khẩu bằng SHA-1 kèm Salt định danh để bảo mật lưu trữ credential giả lập cục bộ.
+	 * Ghi chú: Đây là client-side mock phục vụ playtest/mockup ở giai đoạn Z2/Sprint 1.
+	 * Khi kết nối Dedicated Server / Production Auth Service (Giai đoạn 6), xác thực sẽ sử dụng Argon2id/bcrypt qua HTTPS.
+	 */
+	UFUNCTION(BlueprintPure, Category = "Ascendant|Account|Validation")
+	static FString HashPassword(const FString& InPlainPassword, const FString& InSalt);
+
 	/** Xác thực tính hợp lệ của Join Token trên Dedicated Server trước khi cho phép spawn */
 	UFUNCTION(BlueprintPure, Category = "Ascendant|Account|Validation")
 	static bool ValidateJoinToken(const FString& InToken, const FString& ExpectedAccountId);

@@ -552,3 +552,24 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   - T4: God Slayer (Mở qua thử thách tối thượng, kết hợp đa nhánh)
 
 **Tổng cộng**: 15 Class nhánh + 1 Class Apex = **16 Class**. Tuyệt đối không thêm class ngoài danh sách này.
+
+---
+
+## 4. Nhật Ký Đầu Việc: Nhánh `feat/z2-frontend-login-charselect` (Bước Z2 - Playable Slice Frontend)
+
+- **Mục tiêu**: Bật CommonUI, khắc phục lỗ hổng bảo mật băm mật khẩu trong `PAAccountSubsystem`, mở rộng test automation AC-5 và dựng script map mở đầu theo kế hoạch Playable Slice (DECISIONS.md §13).
+- **PR**: [#33](https://github.com/kenzings-ng/ProjectAscendant/pull/33) (Commit: `e4c8b94228bd8b7e1db7bd5691988836eb4c6461`).
+- **Nội dung thực hiện**:
+  1. **CommonUI Plugin**: Bật trong `ProjectAscendant.uproject` và liên kết trong `ProjectAscendant.Build.cs`.
+  2. **Bảo mật mật khẩu**:
+     - `UPAAccountSubsystem::HashPassword`: băm mật khẩu với SHA-1 + chuẩn hóa email salt (`InSalt.TrimStartAndEnd().ToLower()`).
+     - Tối ưu hóa tra cứu `RegisteredCredentials.Find(InEmail)` (1 lần tìm kiếm).
+  3. **Unit Tests (`PAAccountTests.cpp`)**:
+     - Bổ sung AC-3: Kiểm tra tính tất định, độ nhạy salt/mật khẩu, định dạng 40 hex char, khác biệt với plaintext.
+     - Bổ sung AC-5: Kiểm tra chu trình thực tế E2E (đăng ký -> thử đăng nhập sai bị từ chối -> đăng nhập đúng thành công -> sinh session token).
+  4. **Scripts map tự động (`Scripts/build_frontend_maps.py`)**:
+     - Tạo `LoginMap` và `CharacterSelectMap` với Lighting, PostProcessVolume (`b_unbound=True`, manual exposure calibration) và Framing Camera FOV 90.
+- **Kết quả Cổng Tự Động**:
+  - GDD Consistency Validator: 108/108 files PASS.
+  - UE Automation Tests: `ProjectAscendant.Account` 1/1 PASS (100% assertions AC-1 -> AC-5 passed, ExitCode=1 Linux clean exit).
+- **Reviewer độc lập**: PASS sau khi hoàn tất khắc phục salt normalization, bổ sung test E2E AC-5 và sửa thuộc tính `b_unbound`.

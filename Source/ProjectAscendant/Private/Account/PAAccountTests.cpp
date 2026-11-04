@@ -80,6 +80,21 @@ bool FPAAccountTests::RunTest(const FString& Parameters)
 		TestTrue(TEXT("AC3: 10-char password passes"), UPAAccountSubsystem::IsValidPassword(TEXT("secretpass"), PwdError));
 		TestFalse(TEXT("AC3: 5-char password fails"), UPAAccountSubsystem::IsValidPassword(TEXT("12345"), PwdError));
 		TestFalse(TEXT("AC3: Empty password fails"), UPAAccountSubsystem::IsValidPassword(TEXT(""), PwdError));
+
+		// 3. Kiểm tra Mã hóa mật khẩu (Security Requirement: Never store plaintext)
+		const FString Salt = TEXT("hero@ascendant.io");
+		const FString PlainPwd = TEXT("Secret123456");
+		const FString Hash1 = UPAAccountSubsystem::HashPassword(PlainPwd, Salt);
+		const FString Hash2 = UPAAccountSubsystem::HashPassword(PlainPwd, Salt);
+		const FString HashWrongPwd = UPAAccountSubsystem::HashPassword(TEXT("WrongPassword123"), Salt);
+		const FString HashDiffSalt = UPAAccountSubsystem::HashPassword(PlainPwd, TEXT("other@ascendant.io"));
+
+		TestFalse(TEXT("AC3: Password hash is not empty"), Hash1.IsEmpty());
+		TestEqual(TEXT("AC3: SHA-1 hex hash length is 40 characters"), Hash1.Len(), 40);
+		TestNotEqual(TEXT("AC3: Password is never stored in plaintext"), Hash1, PlainPwd);
+		TestEqual(TEXT("AC3: Hash is deterministic with same salt"), Hash1, Hash2);
+		TestNotEqual(TEXT("AC3: Different password produces different hash"), Hash1, HashWrongPwd);
+		TestNotEqual(TEXT("AC3: Different salt produces different hash"), Hash1, HashDiffSalt);
 	}
 
 	// ===========================================================
@@ -104,6 +119,42 @@ bool FPAAccountTests::RunTest(const FString& Parameters)
 		// Token rác -> Server từ chối
 		bool bMalformed = UPAAccountSubsystem::ValidateJoinToken(TEXT("INVALID-TOKEN"), AccountId);
 		TestFalse(TEXT("AC4: Server rejects malformed token"), bMalformed);
+	}
+
+	// ===========================================================
+	// AC-5: End-to-End Registration, Password Hashing & Login Lifecycle
+	// ===========================================================
+	{
+		UPAAccountSubsystem* Subsystem = NewObject<UPAAccountSubsystem>();
+		TestNotNull(TEXT("AC5: Subsystem instance created"), Subsystem);
+
+		if (Subsystem)
+		{
+			const FString TestEmail = TEXT("warrior@ascendant.io");
+			const FString TestPassword = TEXT("ValidPassword123");
+			FString RegError;
+
+			// 1. Đăng ký tài khoản mới
+			bool bRegistered = Subsystem->RegisterAccount(TestEmail, TestPassword, TestPassword, RegError);
+			TestTrue(TEXT("AC5: Account registration succeeds"), bRegistered);
+			TestTrue(TEXT("AC5: No registration error"), RegError.IsEmpty());
+
+			// 2. Thử đăng nhập sai mật khẩu -> Phải thất bại
+			FString LoginWrongError;
+			bool bWrongLogin = Subsystem->LoginWithCredentials(TestEmail, TEXT("IncorrectPassword123"), false, LoginWrongError);
+			TestFalse(TEXT("AC5: Login with wrong password rejected"), bWrongLogin);
+			TestEqual(TEXT("AC5: Subsystem state is Error on bad login"), Subsystem->GetLoginState(), EPAAuthLoginState::Error);
+
+			// 3. Đăng nhập đúng mật khẩu -> Phải thành công và tạo Token
+			FString LoginSuccessError;
+			bool bSuccessLogin = Subsystem->LoginWithCredentials(TestEmail, TestPassword, true, LoginSuccessError);
+			TestTrue(TEXT("AC5: Login with correct password succeeds"), bSuccessLogin);
+			TestTrue(TEXT("AC5: No error on successful login"), LoginSuccessError.IsEmpty());
+			TestEqual(TEXT("AC5: Subsystem state is LoggedIn"), Subsystem->GetLoginState(), EPAAuthLoginState::LoggedIn);
+			TestTrue(TEXT("AC5: IsLoggedIn pure helper returns true"), Subsystem->IsLoggedIn());
+			TestEqual(TEXT("AC5: Active profile email matches"), Subsystem->GetActiveProfile().Email, TestEmail);
+			TestTrue(TEXT("AC5: Session token generated on login"), !Subsystem->GetActiveProfile().AuthToken.IsEmpty());
+		}
 	}
 
 	return true;
