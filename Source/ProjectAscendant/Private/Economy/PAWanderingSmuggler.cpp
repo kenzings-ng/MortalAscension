@@ -234,6 +234,7 @@ void APAWanderingSmuggler::OnRestockApplied(float /*RestockServerTime*/)
 				const FPAMerchantCatalogEntry& PoolEntry = RotatingStockPool[PoolIndices[SlotOffset]];
 				Slot->ItemData       = PoolEntry.ItemData;
 				Slot->PriceGold      = PoolEntry.PriceGold;
+				Slot->CurrencyType   = PoolEntry.CurrencyType;
 				Slot->AvailableStock = FMath::RandRange(RestockStockMin, RestockStockMax);
 			}
 		}

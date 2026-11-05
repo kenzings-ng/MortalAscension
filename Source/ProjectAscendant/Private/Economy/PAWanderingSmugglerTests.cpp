@@ -346,6 +346,81 @@ bool FPAWanderingSmugglerTests::RunTest(const FString& Parameters)
 		}
 	}
 
+	// =========================================================================
+	// DECISIONS §13 / Reviewer Gate: Verify Subsequent Restocks Sync CurrencyType
+	// =========================================================================
+	{
+		APAWanderingSmuggler* Smuggler = NewObject<APAWanderingSmuggler>();
+		TestNotNull(TEXT("Restock CurrencyType: Smuggler actor instantiated"), Smuggler);
+		if (Smuggler)
+		{
+			Smuggler->InitializeFixedCatalog();
+			UPAMerchantComponent* MerchantComp = Smuggler->GetMerchantComponent();
+			TestNotNull(TEXT("Restock CurrencyType: MerchantComponent exists"), MerchantComp);
+			TestEqual(TEXT("Restock CurrencyType: Fixed catalog has 3 entries"),
+				MerchantComp->GetCatalogCount(), 3);
+
+			// Test with controlled pools:
+			// Initial Pool: Only SkillShards
+			FPAMerchantCatalogEntry ShardItem;
+			ShardItem.PriceGold = 50;
+			ShardItem.CurrencyType = EPACurrencyType::SkillShards;
+			ShardItem.AvailableStock = 2;
+			Smuggler->RotatingStockPool.Empty();
+			Smuggler->RotatingStockPool.Add(ShardItem);
+
+			// Initial restock (count == FixedCount): adds rotating slots
+			Smuggler->OnRestockApplied(0.0f);
+			TestTrue(TEXT("Restock CurrencyType: Catalog expanded with rotating slots"),
+				MerchantComp->GetCatalogCount() > 3);
+
+			const int32 FirstRotatingIdx = 3;
+			const FPAMerchantCatalogEntry* InitialRotated = MerchantComp->GetCatalogEntry(FirstRotatingIdx);
+			TestNotNull(TEXT("Restock CurrencyType: Initial rotated entry exists"), InitialRotated);
+			if (InitialRotated)
+			{
+				TestEqual(TEXT("Restock CurrencyType: Initial restock CurrencyType is SkillShards"),
+					InitialRotated->CurrencyType, EPACurrencyType::SkillShards);
+			}
+
+			// Subsequent restock: Pool changed to Gold item
+			FPAMerchantCatalogEntry GoldItem;
+			GoldItem.PriceGold = 400;
+			GoldItem.CurrencyType = EPACurrencyType::Gold;
+			GoldItem.AvailableStock = 3;
+			Smuggler->RotatingStockPool.Empty();
+			Smuggler->RotatingStockPool.Add(GoldItem);
+
+			// Subsequent restock (count > FixedCount): mutates rotating slots in place
+			Smuggler->OnRestockApplied(3600.0f);
+
+			const FPAMerchantCatalogEntry* SubsequentRotated = MerchantComp->GetCatalogEntry(FirstRotatingIdx);
+			TestNotNull(TEXT("Restock CurrencyType: Subsequent rotated entry exists"), SubsequentRotated);
+			if (SubsequentRotated)
+			{
+				TestEqual(TEXT("Restock CurrencyType: Subsequent restock correctly syncs CurrencyType to Gold"),
+					SubsequentRotated->CurrencyType, EPACurrencyType::Gold);
+				TestEqual(TEXT("Restock CurrencyType: Subsequent restock updates PriceGold to 400"),
+					SubsequentRotated->PriceGold, 400);
+			}
+
+			// Subsequent restock again: Pool changed back to SkillShards
+			Smuggler->RotatingStockPool.Empty();
+			Smuggler->RotatingStockPool.Add(ShardItem);
+			Smuggler->OnRestockApplied(7200.0f);
+
+			const FPAMerchantCatalogEntry* ThirdRotated = MerchantComp->GetCatalogEntry(FirstRotatingIdx);
+			TestNotNull(TEXT("Restock CurrencyType: Third rotated entry exists"), ThirdRotated);
+			if (ThirdRotated)
+			{
+				TestEqual(TEXT("Restock CurrencyType: Third restock correctly syncs CurrencyType back to SkillShards"),
+					ThirdRotated->CurrencyType, EPACurrencyType::SkillShards);
+				TestEqual(TEXT("Restock CurrencyType: Third restock updates PriceGold to 50"),
+					ThirdRotated->PriceGold, 50);
+			}
+		}
+	}
+
 	return true;
 }
 

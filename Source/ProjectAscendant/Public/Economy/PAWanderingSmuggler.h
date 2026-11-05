@@ -117,6 +117,14 @@ public:
 	/** Tỷ lệ phụ phí Wanted tại Tier 2 (GDD: 20%). */
 	static constexpr float kWantedSurchargeRatio = 0.20f;
 
+	/** Khởi tạo danh mục cố định (Fixed Catalog) — chỉ chạy 1 lần khi BeginPlay(). */
+	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|Smuggler")
+	void InitializeFixedCatalog();
+
+	/** Callback nhận từ UPARestockComponent::OnRestocked — re-rolls rotating catalog slots. */
+	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|Smuggler")
+	void OnRestockApplied(float RestockServerTime);
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ProjectAscendant|Smuggler")
 	TObjectPtr<USceneComponent> SceneRoot;
@@ -126,12 +134,4 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "ProjectAscendant|Smuggler")
 	TObjectPtr<UPARestockComponent> RestockComp;
-
-private:
-	/** Khởi tạo danh mục cố định (Fixed Catalog) — chỉ chạy 1 lần khi BeginPlay(). */
-	void InitializeFixedCatalog();
-
-	/** Callback nhận từ UPARestockComponent::OnRestocked — re-rolls rotating catalog slots. */
-	UFUNCTION()
-	void OnRestockApplied(float RestockServerTime);
 };
