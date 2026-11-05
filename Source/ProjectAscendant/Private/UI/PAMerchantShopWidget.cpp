@@ -70,11 +70,13 @@ void UPAMerchantShopWidget::UnbindWallet()
 	}
 }
 
-void UPAMerchantShopWidget::HandleCurrencyBalanceChanged(EPACurrencyType Type, int64 NewBalance, int64 Delta)
+void UPAMerchantShopWidget::HandleCurrencyBalanceChanged(EPACurrencyType /*Type*/, int64 /*NewBalance*/, int64 /*Delta*/)
 {
-	if (Type == EPACurrencyType::Gold)
+	if (CurrencyRef.IsValid())
 	{
-		Model.UpdateAffordability(static_cast<int32>(NewBalance));
+		Model.UpdateAffordability(
+			static_cast<int32>(CurrencyRef->GetGold()),
+			static_cast<int32>(CurrencyRef->GetSkillShards()));
 	}
 }
 
@@ -156,6 +158,7 @@ void UPAMerchantShopWidget::InitializeShop(
 		}
 		ShopEntry.Quantity = Entry.AvailableStock;
 		ShopEntry.PriceGold = Entry.PriceGold;
+		ShopEntry.CurrencyType = Entry.CurrencyType;
 		ShopEntry.FinalPrice = Entry.PriceGold;
 		Model.CatalogItems.Add(ShopEntry);
 	}
@@ -166,7 +169,8 @@ void UPAMerchantShopWidget::InitializeShop(
 
 	// Cập nhật affordability
 	const int32 Gold = PlayerWallet->GetGold();
-	Model.UpdateAffordability(Gold);
+	const int32 SkillShards = PlayerWallet->GetSkillShards();
+	Model.UpdateAffordability(Gold, SkillShards);
 
 	Model.SwitchTab(EPAShopTab::Buy);
 }
