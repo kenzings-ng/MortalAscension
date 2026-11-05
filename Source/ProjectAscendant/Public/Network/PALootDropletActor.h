@@ -48,7 +48,8 @@ public:
 		APlayerController* InPC,
 		const FString& InEncounterId,
 		int32 InGoldReward,
-		const TArray<FName>& InItemIds);
+		const TArray<FName>& InItemIds,
+		int32 InSkillShardsReward = 0);
 
 	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|Loot")
 	void InitializeDroplet(
@@ -56,7 +57,8 @@ public:
 		APlayerController* InPC,
 		const FString& InEncounterId,
 		int32 InGoldReward,
-		const TArray<FName>& InItemIds);
+		const TArray<FName>& InItemIds,
+		int32 InSkillShardsReward = 0);
 
 	// -------------------------------------------------------------------------
 	// Queries & Visibility
@@ -73,6 +75,9 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|Loot")
 	int32 GetGoldReward() const { return GoldReward; }
+
+	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|Loot")
+	int32 GetSkillShardsReward() const { return SkillShardsReward; }
 
 	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|Loot")
 	const TArray<FName>& GetDroppedItemIds() const { return DroppedItemIds; }
@@ -104,9 +109,13 @@ public:
 	 * Dedicated Server kiểm tra toàn quyền thẩm quyền.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|Loot")
-	bool TryClaimLoot(const FString& InPlayerId, int32& OutGold, TArray<FName>& OutItems);
+	bool TryClaimLoot(const FString& InPlayerId, int32& OutGold, TArray<FName>& OutItems, int32& OutSkillShards);
 
 	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|Loot")
+	bool TryClaimLootByUID(const FGuid& InPlayerUID, int32& OutGold, TArray<FName>& OutItems, int32& OutSkillShards);
+
+	/** Overload tương thích ngược cho các lời gọi không nhận OutSkillShards */
+	bool TryClaimLoot(const FString& InPlayerId, int32& OutGold, TArray<FName>& OutItems);
 	bool TryClaimLootByUID(const FGuid& InPlayerUID, int32& OutGold, TArray<FName>& OutItems);
 
 public:
@@ -129,6 +138,10 @@ protected:
 	/** Lượng vàng thưởng chứa trong túi */
 	UPROPERTY(Replicated, BlueprintReadOnly, Category = "ProjectAscendant|Loot")
 	int32 GoldReward = 0;
+
+	/** Lượng tàn trang kỹ năng (Skill Shards) chứa trong túi (DECISIONS §13) */
+	UPROPERTY(Replicated, BlueprintReadOnly, Category = "ProjectAscendant|Loot")
+	int32 SkillShardsReward = 0;
 
 	/** Danh sách ID vật phẩm rơi trong túi */
 	UPROPERTY(Replicated, BlueprintReadOnly, Category = "ProjectAscendant|Loot")

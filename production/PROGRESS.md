@@ -715,4 +715,41 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   - Gate 2: Git LFS Pointers: PASS (0 violations).
   - Gate 3: UE Automation Suite (`ProjectAscendant.Network`): 13/13 tests PASS (ExitCode 1, clean exit signal).
   - Gate 4: Multi-Client Headless Replication Gate (`test_multi_client_replication.py`): 9/9 AC checks PASS (Exit 0).
+- **Reviewer độc lập**: Tiểu tổ thẩm định độc lập Code Reviewer đã duyệt (APPROVED). Đã squash-merge vào `main` tại commit `4d093fe` (PR #39).
+
+---
+
+## 9. Nhật Ký Đầu Việc: Nhánh `feat/y4-pve-shard-drop` (Bước Y4 - Rơi 100% Tàn Trang PvE & Bản Đồ Smuggler Bán Bằng Tàn Trang)
+
+- **Mục tiêu**: Bước Y4 trong kế hoạch `playable-slice-and-approvals-2026-10-10.md` và `DECISIONS.md` §13 (`d-pvedrop=drop`, `d-smuggler=shards`, `zone-system.md:88`, `merchant-economy.md:105`):
+  1. Khi người chơi tử trận trong PvE, khấu trừ 50% Gold và 100% Tàn Trang Kỹ Năng (`item_skill_shard`, `EPACurrencyType::SkillShards`) rơi vào Vệt Tro Tàn (Ash Remnant / `APALootDropletActor`).
+  2. Bản Đồ Mật Cảnh (Dungeon Map) trong danh mục xoay vòng của Thương Nhân Lang Thang (`APAWanderingSmuggler`) được thanh toán bằng Tàn Trang (`EPACurrencyType::SkillShards`).
+- **Nhánh**: `feat/y4-pve-shard-drop`.
+- **Nội dung thực hiện**:
+  1. **Nâng Cấp Xử Lý Hình Phạt Tử Trận PvE Trong Ví Tiền Tệ (`PACurrencyComponent.h` / `.cpp`)**:
+     - Nâng cấp `UPACurrencyComponent::HandlePvEDeathPenalty(int64& OutGoldLost, int64& OutSkillShardsLost)` khấu trừ 50% Gold (`ceil(CurrentGold / 2)`) và 100% Skill Shards (`CurrentSkillShards`).
+     - Bổ sung overload tương thích ngược `HandlePvEDeathPenalty(int64& OutGoldLost)`.
+  2. **Hỗ Trợ Tàn Trang Trong Túi Đồ Vệt Tro Tàn (`PALootDropletActor.h` / `.cpp`)**:
+     - Bổ sung thuộc tính `SkillShardsReward` (replicated `COND_OwnerOnly`) và `GetSkillShardsReward()`.
+     - Cập nhật `InitializeDropletWithUID` và `InitializeDroplet` nhận tham số `int32 InSkillShardsReward`.
+     - Cập nhật `TryClaimLoot` và `TryClaimLootByUID` trả về `OutSkillShards`.
+     - Trong `APABaseCharacter::HandleOutOfHealth`: gọi `HandlePvEDeathPenalty(DroppedGold, DroppedShards)` và nạp cả Gold và Shards vào `APALootDropletActor`.
+  3. **Hỗ Trợ Mua Bằng Tàn Trang Trong Hệ Thống Thương Nhân (`PAMerchantTypes.h` & `PAMerchantComponent.cpp`)**:
+     - Mở rộng `FPAMerchantCatalogEntry` bổ sung `EPACurrencyType CurrencyType = EPACurrencyType::Gold`.
+     - Bổ sung mã lỗi giao dịch `EPATransactionError::InsufficientCurrency` (thiếu Tàn Trang).
+     - Trong `UPAMerchantComponent::BuyItem`: kiểm tra số dư và khấu trừ Server-Authoritative đúng loại tiền tệ `Entry.CurrencyType` (`Gold` hoặc `SkillShards`).
+  4. **Cấu Hình Danh Mục Xoay Vòng Của Smuggler (`PAWanderingSmuggler.cpp` / `.h`)**:
+     - Trong `EnsureDefaultRotatingPool`: thiết lập Bản Đồ Mật Cảnh (Dungeon Map) thanh toán bằng `EPACurrencyType::SkillShards` (50 Tàn Trang) theo đúng `merchant-economy.md:105` và DECISIONS §13.
+     - Công khai phương thức `EnsureDefaultRotatingPool()` cho phép test suite và Blueprint kiểm thử trực tiếp.
+  5. **Đồng Bộ Tài Liệu Story**:
+     - Cập nhật AC-3 trong `production/epics/expansion-economy/story-001-currency-wallet-engine.md`.
+     - Cập nhật AC-2 trong `production/epics/expansion-economy/story-003-wandering-smuggler.md`.
+  6. **Mở Rộng Unit & Automation Tests**:
+     - `PACurrencyWalletTests.cpp`: Kiểm tra AC-3 với 1000 Gold -> rơi 500 Gold, 75 Shards -> rơi 100% (75 Shards, còn lại 0). Kiểm tra các trường hợp biên lẻ và 0.
+     - `PAMerchantTests.cpp`: Kiểm tra mua hàng bằng `SkillShards`, kiểm tra lỗi `InsufficientCurrency` khi thiếu Shards, và trừ chính xác Shards mà không ảnh hưởng tới Gold.
+     - `PAWanderingSmugglerTests.cpp`: Xác thực pool xoay vòng mặc định có Bản Đồ Mật Cảnh thanh toán bằng `EPACurrencyType::SkillShards`.
+- **Kết quả Cổng Tự Động**:
+  - Gate 1: GDD Consistency Validator: 108/108 files PASS (0 errors, 0 warnings).
+  - Gate 2: Git LFS Pointers: PASS (0 violations).
+  - Gate 3: UE Automation Tests: `ProjectAscendant.Economy` 4/4 PASS; `ProjectAscendant.Network` 13/13 PASS.
 - **Reviewer độc lập**: Chuẩn bị triệu hồi subagent thẩm định chéo.

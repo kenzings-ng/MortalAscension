@@ -33,7 +33,7 @@
 
 - [x] **AC-1 (Dual Currency FastArray Replication)**: `UPACurrencyComponent` manages Gold (`EPACurrencyType::Gold`, max 9,999,999) and Skill Shards / Tàn Trang (`item_skill_shard`, `EPACurrencyType::SkillShards`, max 99,999) replicating state changes to owning client via `FFastArraySerializer` delta serialization.
 - [x] **AC-2 (Atomic Transaction RPCs & Anti-Duping)**: Server RPCs (`Server_AddCurrency`, `Server_DeductCurrency`, `Server_TransferCurrency`) validate sender authority, enforce non-negative balances, clamp to maximum capacity, and reject unauthorized or invalid operations with specific error codes (`EPACurrencyTransactionError`). *(X14 2026-10-10: chưa đạt / chưa có bằng chứng — xem dòng X14 ở đầu file.)*
-- [x] **AC-3 (PvE Death Penalty)**: Upon player death in PvE (`HandlePvEDeathPenalty`), exactly 50% of carried Gold (`floor(Gold * 0.50)`) is deducted and prepared for world droplet drop, while 100% of Skill Shards are safeguarded. *(X14 2026-10-10: chưa đạt / chưa có bằng chứng — xem dòng X14 ở đầu file.)*
+- [x] **AC-3 (PvE Death Penalty)**: Upon player death in PvE (`HandlePvEDeathPenalty`), exactly 50% of carried Gold (`ceil(Gold * 0.50)`) is deducted and 100% of Skill Shards / Tàn Trang (`item_skill_shard`) are dropped into the Ash Remnant droplet per DECISIONS.md §13 and zone-system.md:88. *(X14 2026-10-10: chưa đạt / chưa có bằng chứng — xem dòng X14 ở đầu file; đã hoàn tất kiểm chứng ở Bước Y4.)*
 
 ---
 
@@ -47,10 +47,10 @@
 2. **Currency Component (`PACurrencyComponent.h` / `PACurrencyComponent.cpp`)**:
    - Manages balances, handles `GetCurrency(EPACurrencyType)`, `HasSufficientCurrency(EPACurrencyType, int64)`.
    - Server-only mutators: `Server_AddCurrency`, `Server_DeductCurrency`, `Server_TransferCurrency`.
-   - PvE death penalty helper: `HandlePvEDeathPenalty(int64& OutGoldLost)`.
+   - PvE death penalty helper: `HandlePvEDeathPenalty(int64& OutGoldLost, int64& OutSkillShardsLost)`.
 3. **Character Integration (`PABaseCharacter.h` / `PABaseCharacter.cpp`)**:
    - `UPACurrencyComponent` added as default subobject.
-   - On death event (`HandleDeath`), calls `CurrencyComponent->HandlePvEDeathPenalty()`.
+   - On death event (`HandleOutOfHealth`), calls `CurrencyComponent->HandlePvEDeathPenalty(DroppedGold, DroppedShards)` and spawns `APALootDropletActor` containing dropped Gold and Skill Shards.
 
 ---
 

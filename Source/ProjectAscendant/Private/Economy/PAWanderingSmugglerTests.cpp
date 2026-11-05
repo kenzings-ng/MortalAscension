@@ -321,6 +321,31 @@ bool FPAWanderingSmugglerTests::RunTest(const FString& Parameters)
 			FPAMerchantFormulas::CalculateWantedSurchargePrice(0, 0.20f), 0);
 	}
 
+	// =========================================================================
+	// DECISIONS §13: Smuggler Rotating Pool Dungeon Map Priced in Skill Shards
+	// =========================================================================
+	{
+		APAWanderingSmuggler* Smuggler = NewObject<APAWanderingSmuggler>();
+		TestNotNull(TEXT("DECISIONS §13: Smuggler actor instantiated"), Smuggler);
+		if (Smuggler)
+		{
+			Smuggler->EnsureDefaultRotatingPool();
+			const TArray<FPAMerchantCatalogEntry>& Pool = Smuggler->RotatingStockPool;
+			TestTrue(TEXT("DECISIONS §13: Default rotating stock pool has 5 entries"), Pool.Num() >= 5);
+			if (Pool.Num() >= 5)
+			{
+				// Entry 0 is Dungeon Map (Bản Đồ Mật Cảnh)
+				TestEqual(TEXT("DECISIONS §13: Dungeon Map CurrencyType is SkillShards"),
+					Pool[0].CurrencyType, EPACurrencyType::SkillShards);
+				TestEqual(TEXT("DECISIONS §13: Dungeon Map Price in Skill Shards is 50"),
+					Pool[0].PriceGold, 50);
+				// Other items remain Gold
+				TestEqual(TEXT("DECISIONS §13: Tier-2 Crafting material CurrencyType is Gold"),
+					Pool[1].CurrencyType, EPACurrencyType::Gold);
+			}
+		}
+	}
+
 	return true;
 }
 

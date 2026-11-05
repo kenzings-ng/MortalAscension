@@ -66,6 +66,10 @@ public:
 		int32 PlayerKarma,
 		EPATransactionError& OutError);
 
+	/** Khởi tạo pool xoay vòng mặc định nếu chưa có (default items từ GDD & DECISIONS §13). */
+	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|Smuggler")
+	void EnsureDefaultRotatingPool();
+
 	// -------------------------------------------------------------------------
 	// Components
 	// -------------------------------------------------------------------------
@@ -126,9 +130,6 @@ protected:
 private:
 	/** Khởi tạo danh mục cố định (Fixed Catalog) — chỉ chạy 1 lần khi BeginPlay(). */
 	void InitializeFixedCatalog();
-
-	/** Khởi tạo pool xoay vòng mặc định nếu chưa có (default items từ GDD). */
-	void EnsureDefaultRotatingPool();
 
 	/** Callback nhận từ UPARestockComponent::OnRestocked — re-rolls rotating catalog slots. */
 	UFUNCTION()

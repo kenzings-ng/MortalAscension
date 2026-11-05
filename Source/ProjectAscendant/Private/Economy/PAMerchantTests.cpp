@@ -81,6 +81,33 @@ bool FPAMerchantTests::RunTest(const FString& Parameters)
 			bBought = Merchant->BuyItem(Inventory, Wallet, 0, 1, TransErr);
 			TestFalse(TEXT("AC-1: Buying out-of-stock item fails"), bBought);
 			TestEqual(TEXT("AC-1: Error is OutOfStock"), TransErr, EPATransactionError::OutOfStock);
+
+			// DECISIONS §13: Item priced in Skill Shards (e.g. Dungeon Map)
+			UItemStaticDataAsset* MapAsset = NewObject<UItemStaticDataAsset>();
+			MapAsset->ItemId = FName("item_dungeon_map");
+			MapAsset->ItemName = FText::FromString(TEXT("Bản Đồ Mật Cảnh"));
+			MapAsset->MaxStackSize = 5;
+
+			FPAMerchantCatalogEntry MapEntry;
+			MapEntry.ItemData = MapAsset;
+			MapEntry.PriceGold = 25; // 25 Skill Shards
+			MapEntry.CurrencyType = EPACurrencyType::SkillShards;
+			MapEntry.AvailableStock = 3;
+			Merchant->AddCatalogEntry(MapEntry);
+
+			// Try to buy without Skill Shards -> Fails with InsufficientCurrency
+			bBought = Merchant->BuyItem(Inventory, Wallet, 1, 1, TransErr);
+			TestFalse(TEXT("DECISIONS §13: Buying Skill Shards item with 0 shards fails"), bBought);
+			TestEqual(TEXT("DECISIONS §13: Error is InsufficientCurrency"), TransErr, EPATransactionError::InsufficientCurrency);
+
+			// Add 50 Skill Shards and buy 1 Map
+			Wallet->AddCurrency(EPACurrencyType::SkillShards, 50, CurrErr);
+			const int64 InitialGold = Wallet->GetGold();
+			bBought = Merchant->BuyItem(Inventory, Wallet, 1, 1, TransErr);
+			TestTrue(TEXT("DECISIONS §13: Buying item with Skill Shards succeeds"), bBought);
+			TestEqual(TEXT("DECISIONS §13: Wallet deducted 25 Skill Shards -> 25 remaining"), Wallet->GetSkillShards(), 25LL);
+			TestEqual(TEXT("DECISIONS §13: Gold remains completely untouched"), Wallet->GetGold(), InitialGold);
+			TestEqual(TEXT("DECISIONS §13: Inventory received 1 Dungeon Map"), Inventory->GetItemCount(FName("item_dungeon_map")), 1);
 		}
 	}
 

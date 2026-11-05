@@ -70,9 +70,13 @@ public:
 	bool TransferCurrencyTo(UPACurrencyComponent* TargetWallet, EPACurrencyType Type, int64 Amount, EPACurrencyTransactionError& OutError);
 
 	/**
-	 * Xử lý hình phạt tử trận PvE (AC-3): Khấu trừ 50% Gold, OutGoldLost là lượng rơi ra đất.
+	 * Xử lý hình phạt tử trận PvE (AC-3 / zone-system.md:88 / DECISIONS §13):
+	 * Khấu trừ 50% Gold và 100% Skill Shards (Tàn Trang) rơi ra đất dưới dạng Vệt Tro Tàn.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|Economy")
+	bool HandlePvEDeathPenalty(int64& OutGoldLost, int64& OutSkillShardsLost);
+
+	/** Overload tương thích ngược cho các lời gọi 1 tham số */
 	bool HandlePvEDeathPenalty(int64& OutGoldLost);
 
 	// -------------------------------------------------------------------------
