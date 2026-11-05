@@ -142,6 +142,31 @@ bool FPAShopForgeUITests::RunTest(const FString& Parameters)
 		TestTrue(TEXT("AC1: Can afford 100g item with 150g"), Model.CatalogItems[0].bCanAfford);
 		TestTrue(TEXT("AC1: Can afford 80g item with 150g"), Model.CatalogItems[1].bCanAfford);
 		TestFalse(TEXT("AC1: Cannot afford 500g item with 150g"), Model.CatalogItems[2].bCanAfford);
+
+		// Shard affordability check
+		FPAShopItemEntry ShardItem;
+		ShardItem.ItemId = FName("item_dungeon_map");
+		ShardItem.PriceGold = 50;
+		ShardItem.FinalPrice = 50;
+		ShardItem.CurrencyType = EPACurrencyType::SkillShards;
+		Model.CatalogItems.Add(ShardItem);
+
+		// With 150 Gold, 20 Skill Shards: ShardItem should NOT be affordable (cost 50 Shards)
+		Model.UpdateAffordability(150, 20);
+		TestFalse(TEXT("AC1: Cannot afford 50-shard item with 20 shards (even with 150 gold)"),
+			Model.CatalogItems.Last().bCanAfford);
+
+		// With 10 Gold, 60 Skill Shards: ShardItem SHOULD be affordable
+		Model.UpdateAffordability(10, 60);
+		TestTrue(TEXT("AC1: Can afford 50-shard item with 60 shards (even with only 10 gold)"),
+			Model.CatalogItems.Last().bCanAfford);
+
+		// Defensive: single-argument UpdateAffordability preserves existing PlayerSkillShards
+		Model.UpdateAffordability(200);
+		TestEqual(TEXT("AC1: Single-arg UpdateAffordability preserves PlayerSkillShards (60)"),
+			Model.PlayerSkillShards, 60);
+		TestTrue(TEXT("AC1: ShardItem remains affordable after single-arg Gold update"),
+			Model.CatalogItems.Last().bCanAfford);
 	}
 
 	// ===========================================================

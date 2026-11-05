@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Economy/PACurrencyTypes.h"
 #include "PAShopForgeUITypes.generated.h"
 
 /**
@@ -42,6 +43,9 @@ struct PROJECTASCENDANT_API FPAShopItemEntry
 
 	UPROPERTY(BlueprintReadOnly, Category = "ShopUI")
 	int32 PriceGold = 0;
+
+	UPROPERTY(BlueprintReadOnly, Category = "ShopUI")
+	EPACurrencyType CurrencyType = EPACurrencyType::Gold;
 
 	/** Có áp dụng phụ phí Karma (+20%)? */
 	UPROPERTY(BlueprintReadOnly, Category = "ShopUI")
@@ -176,6 +180,10 @@ struct PROJECTASCENDANT_API FPAShopUIModel
 	UPROPERTY(BlueprintReadOnly, Category = "ShopUI|Model")
 	int32 PlayerGold = 0;
 
+	/** Số tàn trang hiện tại */
+	UPROPERTY(BlueprintReadOnly, Category = "ShopUI|Model")
+	int32 PlayerSkillShards = 0;
+
 	/** Giới hạn Buyback FIFO */
 	static constexpr int32 MaxBuybackEntries = 10;
 
@@ -235,13 +243,23 @@ struct PROJECTASCENDANT_API FPAShopUIModel
 		}
 	}
 
-	/** Cập nhật trạng thái CanAfford cho catalog items */
+	/** Cập nhật trạng thái CanAfford chỉ với Gold (bảo toàn PlayerSkillShards hiện tại) */
 	void UpdateAffordability(int32 Gold)
 	{
+		UpdateAffordability(Gold, PlayerSkillShards);
+	}
+
+	/** Cập nhật trạng thái CanAfford cho cả Gold và SkillShards */
+	void UpdateAffordability(int32 Gold, int32 SkillShards)
+	{
 		PlayerGold = Gold;
+		PlayerSkillShards = SkillShards;
 		for (FPAShopItemEntry& Item : CatalogItems)
 		{
-			Item.bCanAfford = Gold >= Item.FinalPrice;
+			const int32 Balance = (Item.CurrencyType == EPACurrencyType::SkillShards)
+				? PlayerSkillShards
+				: PlayerGold;
+			Item.bCanAfford = Balance >= Item.FinalPrice;
 		}
 	}
 };
