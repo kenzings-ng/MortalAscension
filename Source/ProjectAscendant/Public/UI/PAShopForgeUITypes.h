@@ -243,8 +243,14 @@ struct PROJECTASCENDANT_API FPAShopUIModel
 		}
 	}
 
-	/** Cập nhật trạng thái CanAfford cho catalog items */
-	void UpdateAffordability(int32 Gold, int32 SkillShards = 0)
+	/** Cập nhật trạng thái CanAfford chỉ với Gold (bảo toàn PlayerSkillShards hiện tại) */
+	void UpdateAffordability(int32 Gold)
+	{
+		UpdateAffordability(Gold, PlayerSkillShards);
+	}
+
+	/** Cập nhật trạng thái CanAfford cho cả Gold và SkillShards */
+	void UpdateAffordability(int32 Gold, int32 SkillShards)
 	{
 		PlayerGold = Gold;
 		PlayerSkillShards = SkillShards;

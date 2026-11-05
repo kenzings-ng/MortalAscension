@@ -108,7 +108,9 @@ void UPAMerchantShopWidget::HandleMerchantRequestConfirmed(int32 RequestId, bool
 
 	if (CurrencyRef.IsValid())
 	{
-		Model.UpdateAffordability(static_cast<int32>(CurrencyRef->GetGold()));
+		Model.UpdateAffordability(
+			static_cast<int32>(CurrencyRef->GetGold()),
+			static_cast<int32>(CurrencyRef->GetSkillShards()));
 	}
 
 	OnTransactionCompleted.Broadcast();

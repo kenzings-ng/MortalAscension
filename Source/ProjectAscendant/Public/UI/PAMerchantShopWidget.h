@@ -87,6 +87,9 @@ public:
 	int32 GetPlayerGold() const { return Model.PlayerGold; }
 
 	UFUNCTION(BlueprintPure, Category = "ShopUI")
+	int32 GetPlayerSkillShards() const { return Model.PlayerSkillShards; }
+
+	UFUNCTION(BlueprintPure, Category = "ShopUI")
 	const FPAShopUIModel& GetModel() const { return Model; }
 
 	/** X11b: true while a request awaits server confirmation. */

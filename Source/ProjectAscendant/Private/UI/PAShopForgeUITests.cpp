@@ -160,6 +160,13 @@ bool FPAShopForgeUITests::RunTest(const FString& Parameters)
 		Model.UpdateAffordability(10, 60);
 		TestTrue(TEXT("AC1: Can afford 50-shard item with 60 shards (even with only 10 gold)"),
 			Model.CatalogItems.Last().bCanAfford);
+
+		// Defensive: single-argument UpdateAffordability preserves existing PlayerSkillShards
+		Model.UpdateAffordability(200);
+		TestEqual(TEXT("AC1: Single-arg UpdateAffordability preserves PlayerSkillShards (60)"),
+			Model.PlayerSkillShards, 60);
+		TestTrue(TEXT("AC1: ShardItem remains affordable after single-arg Gold update"),
+			Model.CatalogItems.Last().bCanAfford);
 	}
 
 	// ===========================================================
