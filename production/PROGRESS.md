@@ -688,4 +688,31 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
 - **Kết quả Cổng Tự Động**:
   - GDD Consistency Validator: 108/108 files PASS.
   - UE Automation Tests: `ProjectAscendant.Integration.PlayableSlice` PASS.
+- **Reviewer độc lập**: Tiểu tổ thẩm định độc lập Code Reviewer đã duyệt (APPROVED). Đã squash-merge vào `main` tại commit `e535ada` (PR #38).
+
+---
+
+## 8. Nhật Ký Đầu Việc: Nhánh `test/z5-multi-client-replication-gate` (Bước Z5 - Bộ Kiểm Thử Tự Động Hóa Multi-Process Headless Replication 1 Server + 2 Clients)
+
+- **Mục tiêu**: Bước Z5 trong kế hoạch Playable Slice (DECISIONS.md §11, §13, và ROADMAP Giai đoạn 1.5) — Kiểm thử tự động thật (multi-process headless replication) với 1 Dedicated Server và ít nhất 2 Clients chạy đồng thời trên Linux, xác thực 100% Server-Authoritative, tính toàn vẹn của Iris Replication System, đăng ký Controller phân tán, và dọn dẹp tài nguyên an toàn.
+- **Nhánh**: `test/z5-multi-client-replication-gate`.
+- **Nội dung thực hiện**:
+  1. **Khắc Phục & Chuẩn Hóa Cấu Hình Iris NetSerializer (`ProjectAscendant.Build.cs` & `DefaultEngine.ini`)**:
+     - Bổ sung `SetupIrisSupport(Target)` trong `Source/ProjectAscendant/ProjectAscendant.Build.cs`: Khắc phục lỗi thiếu NetSerializer cho các cấu trúc `FFastArraySerializer` (`FPACurrencyList`, `FPAInventoryList`), bảo đảm Iris tự động sinh fragment replication.
+     - Thêm `net.SubObjects.DefaultUseSubObjectReplicationList=1` vào mục `[SystemSettings]` trong `Config/DefaultEngine.ini`: Khắc phục triệt để ensure condition `GDefaultUseSubObjectReplicationList` trong `EngineReplicationBridge.cpp:234` và `Line: 396`, đảm bảo toàn bộ Actor và Subobject tương thích chuẩn Iris.
+  2. **Bộ Kịch Bản Kiểm Thử Đa Tiến Trình Tự Động (`Tools/QA/test_multi_client_replication.py`)**:
+     - *AC-1 (Dedicated Server Lifecycle & Iris)*: Tự động dò tìm cổng khả dụng (bắt đầu từ 7788), khởi chạy Dedicated Server headless (`-server -nullrhi -nosound -unattended`), đợi nạp map `L_VerdantFrontier_Outpost`, xác nhận Iris Replication System (`ReplicationSystem_0`) khởi tạo thành công.
+     - *AC-2 (Dual Client Handshake & Join)*: Mở Client 1 và Client 2 headless trỏ tới `127.0.0.1:PORT`, xác thực Dedicated Server ghi nhận bắt tay mạng (`NotifyAcceptingConnection >= 2`) và hoàn tất chuỗi gia nhập (`Join succeeded`).
+     - *AC-3 (Iris Replication Consistency)*: Giám sát toàn bộ log Server và Client, khẳng định 0 lỗi descriptor FFastArray (`won't be replicated`), 0 cảnh báo/ensure về subobject list.
+     - *AC-4 (Multi-Client Player Controllers)*: Xác thực Server khởi tạo và replicate độc lập Player Controller cho từng client (`PABasePlayerController_0` và `PABasePlayerController_1`) trong cùng một thế giới Outpost.
+     - *AC-5 (Graceful Teardown & Zero Crash)*: Phát tín hiệu đóng tiến trình tuần tự (Clients -> Server) qua `SIGINT` (ReturnCode=130), kiểm tra sạch sẽ vòng đời kết thúc (`LogExit: Exiting.`, `Log file closed`), cam kết 0 fatal error, 0 assertion failed, 0 gọi CrashReportClient.
+  3. **Tích Hợp Vào Test Runner Trung Tâm (`Tools/QA/run_headless_tests.sh`)**:
+     - Bổ sung tham số `--net-replication` và tích hợp vào `--all` dưới dạng `[GATE 4]`.
+  4. **Cập Nhật ROADMAP Giai Đoạn 1.5**:
+     - Đánh dấu hoàn thành `[x]` cho các mục kiểm thử Iris, ASC Mixed, và Network tests dựa trên bằng chứng kiểm thử thực tế từ PR #38 và PR #39. Giữ lại mục 🛑 để Chủ dự án tự chơi thử cảm giác lag/loss khi mong muốn.
+- **Kết quả Cổng Tự Động**:
+  - Gate 1: GDD Consistency Validator: 108/108 files PASS (0 errors, 0 warnings).
+  - Gate 2: Git LFS Pointers: PASS (0 violations).
+  - Gate 3: UE Automation Suite (`ProjectAscendant.Network`): 13/13 tests PASS (ExitCode 1, clean exit signal).
+  - Gate 4: Multi-Client Headless Replication Gate (`test_multi_client_replication.py`): 9/9 AC checks PASS (Exit 0).
 - **Reviewer độc lập**: Chuẩn bị triệu hồi subagent thẩm định chéo.

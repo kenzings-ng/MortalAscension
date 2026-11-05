@@ -13,6 +13,7 @@ UPROJECT="${PROJECT_ROOT}/ProjectAscendant.uproject"
 
 RUN_UE=0
 UE_ONLY=0
+RUN_NET_REPLICATION=0
 TEST_FILTER="ProjectAscendant."
 
 # Parse arguments
@@ -22,6 +23,10 @@ while [[ $# -gt 0 ]]; do
             RUN_UE=1
             shift
             ;;
+        --net-replication)
+            RUN_NET_REPLICATION=1
+            shift
+            ;;
         --filter=*)
             TEST_FILTER="${1#*=}"
             RUN_UE=1
@@ -29,6 +34,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         --all)
             RUN_UE=1
+            RUN_NET_REPLICATION=1
             shift
             ;;
         --ue-only)
@@ -39,7 +45,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         *)
             echo "Unknown option: $1"
-            echo "Usage: ./run_headless_tests.sh [--ue] [--ue-only] [--all] [--filter=ProjectAscendant.Network]"
+            echo "Usage: ./run_headless_tests.sh [--ue] [--ue-only] [--net-replication] [--all] [--filter=ProjectAscendant.Network]"
             exit 1
             ;;
     esac
@@ -166,6 +172,23 @@ if [ "${RUN_UE}" -eq 1 ]; then
     fi
 else
     echo -e "\n[GATE 3/3] UE Automation Tests skipped for fast check (run with --ue or --all for full PR merge verification)."
+fi
+
+# 4. Multi-Process Headless Replication Suite (1 Dedicated Server + 2 Clients)
+if [ "${RUN_NET_REPLICATION}" -eq 1 ]; then
+    echo -e "\n[GATE 4] Running Multi-Process Headless Replication Suite (1 Dedicated Server + 2 Clients)..."
+    set +e
+    python3 "${PROJECT_ROOT}/Tools/QA/test_multi_client_replication.py"
+    NET_STATUS=$?
+    set -e
+    if [ "${NET_STATUS}" -eq 0 ]; then
+        echo ">> [PASS] Multi-Client Headless Replication Gate"
+    else
+        echo ">> [FAIL] Multi-Client Headless Replication Gate (ExitCode=${NET_STATUS})"
+        FAILED_GATES=$((FAILED_GATES + 1))
+    fi
+else
+    echo -e "\n[GATE 4] Multi-Client Headless Replication Test skipped (run with --net-replication or --all)."
 fi
 
 echo -e "\n============================================================"
