@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Inventory/PAInventoryTypes.h"
+#include "Economy/PACurrencyTypes.h"
 #include "PAMerchantTypes.generated.h"
 
 class UItemStaticDataAsset;
@@ -43,7 +44,8 @@ enum class EPATransactionError : uint8
 	DistanceExceeded      = 6 UMETA(DisplayName = "Interaction Distance Exceeded (>300cm)"),
 	InCombat              = 7 UMETA(DisplayName = "Cannot Trade In Combat"),
 	BuybackEmpty          = 8 UMETA(DisplayName = "Buyback Slot Is Empty"),
-	ServerRejected        = 9 UMETA(DisplayName = "Server Rejected Transaction")
+	ServerRejected        = 9 UMETA(DisplayName = "Server Rejected Transaction"),
+	InsufficientCurrency  = 10 UMETA(DisplayName = "Insufficient Currency (Skill Shards)")
 };
 
 /**
@@ -62,6 +64,10 @@ struct PROJECTASCENDANT_API FPAMerchantCatalogEntry
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Merchant|Catalog", meta = (ClampMin = "0"))
 	int32 PriceGold = 0;
 
+	/** Loại tiền tệ sử dụng để mua món hàng này (Mặc định: Gold; Bản đồ mật cảnh dùng SkillShards theo DECISIONS §13) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Merchant|Catalog")
+	EPACurrencyType CurrencyType = EPACurrencyType::Gold;
+
 	/** Số lượng tồn kho hiện tại (-1 là vô hạn) */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Merchant|Catalog")
 	int32 AvailableStock = -1;
@@ -69,6 +75,7 @@ struct PROJECTASCENDANT_API FPAMerchantCatalogEntry
 	FPAMerchantCatalogEntry()
 		: ItemData(nullptr)
 		, PriceGold(0)
+		, CurrencyType(EPACurrencyType::Gold)
 		, AvailableStock(-1)
 	{
 	}

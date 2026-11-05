@@ -194,13 +194,25 @@ bool UPAMerchantComponent::BuyItem(UPAInventoryComponent* Inventory, UPACurrency
 		return false;
 	}
 
-	// Gold check
+	// Currency balance check (Gold or SkillShards depending on Entry.CurrencyType, DECISIONS §13)
 	const int64 TotalCost = static_cast<int64>(Entry.PriceGold) * Quantity;
-	if (Wallet->GetGold() < TotalCost)
+	if (Entry.CurrencyType == EPACurrencyType::SkillShards)
 	{
-		OutError = EPATransactionError::InsufficientGold;
-		OnTransactionFailed.Broadcast(OutError);
-		return false;
+		if (Wallet->GetSkillShards() < TotalCost)
+		{
+			OutError = EPATransactionError::InsufficientCurrency;
+			OnTransactionFailed.Broadcast(OutError);
+			return false;
+		}
+	}
+	else
+	{
+		if (Wallet->GetGold() < TotalCost)
+		{
+			OutError = EPATransactionError::InsufficientGold;
+			OnTransactionFailed.Broadcast(OutError);
+			return false;
+		}
 	}
 
 	// Space check & inventory addition
@@ -218,12 +230,14 @@ bool UPAMerchantComponent::BuyItem(UPAInventoryComponent* Inventory, UPACurrency
 		return false;
 	}
 
-	// Deduct Gold
+	// Deduct Currency Server-Authoritatively
 	EPACurrencyTransactionError CurrErr = EPACurrencyTransactionError::None;
-	if (TotalCost > 0 && !Wallet->DeductCurrency(EPACurrencyType::Gold, TotalCost, CurrErr))
+	if (TotalCost > 0 && !Wallet->DeductCurrency(Entry.CurrencyType, TotalCost, CurrErr))
 	{
 		Inventory->ConsumeItemQuantity(Entry.ItemData->ItemId, Quantity);
-		OutError = EPATransactionError::InsufficientGold;
+		OutError = (Entry.CurrencyType == EPACurrencyType::SkillShards)
+			? EPATransactionError::InsufficientCurrency
+			: EPATransactionError::InsufficientGold;
 		OnTransactionFailed.Broadcast(OutError);
 		return false;
 	}

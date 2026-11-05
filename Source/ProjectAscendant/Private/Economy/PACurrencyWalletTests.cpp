@@ -106,7 +106,7 @@ bool FPACurrencyWalletTests::RunTest(const FString& Parameters)
 	}
 
 	// =========================================================================
-	// AC-3: PvE Death Penalty (50% Gold Loss, 100% Skill Shards Retained)
+	// AC-3: PvE Death Penalty (50% Gold Loss & 100% Skill Shards Dropped, DECISIONS §13)
 	// =========================================================================
 	{
 		UPACurrencyComponent* DeathWallet = NewObject<UPACurrencyComponent>();
@@ -119,23 +119,30 @@ bool FPACurrencyWalletTests::RunTest(const FString& Parameters)
 			DeathWallet->AddCurrency(EPACurrencyType::SkillShards, 75, ErrorCode);
 
 			int64 DroppedGold = 0;
-			bool bDeathPenaltyApplied = DeathWallet->HandlePvEDeathPenalty(DroppedGold);
+			int64 DroppedShards = 0;
+			bool bDeathPenaltyApplied = DeathWallet->HandlePvEDeathPenalty(DroppedGold, DroppedShards);
 			TestTrue(TEXT("AC-3: PvE Death Penalty applied successfully"), bDeathPenaltyApplied);
 			TestEqual(TEXT("AC-3: 50% of 1000 Gold dropped = 500 Gold"), DroppedGold, 500LL);
 			TestEqual(TEXT("AC-3: Remaining Gold in wallet is 500"), DeathWallet->GetGold(), 500LL);
-			TestEqual(TEXT("AC-3: Skill Shards 100% safeguarded at 75"), DeathWallet->GetSkillShards(), 75LL);
+			TestEqual(TEXT("AC-3: 100% of 75 Skill Shards dropped = 75 Shards (DECISIONS §13, zone-system.md:88)"), DroppedShards, 75LL);
+			TestEqual(TEXT("AC-3: Remaining Skill Shards in wallet is 0 (100% dropped)"), DeathWallet->GetSkillShards(), 0LL);
 
 			// Edge case: Odd number Gold (e.g. 501 Gold -> 50% floor is 250 remaining, 251 dropped)
 			DeathWallet->AddCurrency(EPACurrencyType::Gold, 1, ErrorCode); // 501 Gold
-			DeathWallet->HandlePvEDeathPenalty(DroppedGold);
+			DeathWallet->AddCurrency(EPACurrencyType::SkillShards, 30, ErrorCode); // 30 Shards
+			DeathWallet->HandlePvEDeathPenalty(DroppedGold, DroppedShards);
 			TestEqual(TEXT("AC-3: 501 Gold drops 251 Gold"), DroppedGold, 251LL);
 			TestEqual(TEXT("AC-3: 250 Gold remaining"), DeathWallet->GetGold(), 250LL);
+			TestEqual(TEXT("AC-3: 30 Shards drops 30 Shards"), DroppedShards, 30LL);
+			TestEqual(TEXT("AC-3: 0 Shards remaining"), DeathWallet->GetSkillShards(), 0LL);
 
-			// Edge case: 0 Gold -> 0 dropped
+			// Edge case: 0 Gold & 0 Shards -> 0 dropped
 			DeathWallet->DeductCurrency(EPACurrencyType::Gold, 250, ErrorCode);
-			DeathWallet->HandlePvEDeathPenalty(DroppedGold);
+			DeathWallet->HandlePvEDeathPenalty(DroppedGold, DroppedShards);
 			TestEqual(TEXT("AC-3: 0 Gold drops 0"), DroppedGold, 0LL);
+			TestEqual(TEXT("AC-3: 0 Shards drops 0"), DroppedShards, 0LL);
 			TestEqual(TEXT("AC-3: 0 Gold remaining"), DeathWallet->GetGold(), 0LL);
+			TestEqual(TEXT("AC-3: 0 Shards remaining"), DeathWallet->GetSkillShards(), 0LL);
 		}
 	}
 

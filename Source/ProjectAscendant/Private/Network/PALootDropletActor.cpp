@@ -56,7 +56,8 @@ void APALootDropletActor::InitializeDropletWithUID(
 	APlayerController* InPC,
 	const FString& InEncounterId,
 	int32 InGoldReward,
-	const TArray<FName>& InItemIds)
+	const TArray<FName>& InItemIds,
+	int32 InSkillShardsReward)
 {
 	if (!HasAuthority())
 	{
@@ -68,6 +69,7 @@ void APALootDropletActor::InitializeDropletWithUID(
 	OwningPlayerController = InPC;
 	DropSourceEncounterId = InEncounterId;
 	GoldReward = FMath::Max(0, InGoldReward);
+	SkillShardsReward = FMath::Max(0, InSkillShardsReward);
 	DroppedItemIds = InItemIds;
 	bIsClaimed = false;
 
@@ -82,11 +84,12 @@ void APALootDropletActor::InitializeDroplet(
 	APlayerController* InPC,
 	const FString& InEncounterId,
 	int32 InGoldReward,
-	const TArray<FName>& InItemIds)
+	const TArray<FName>& InItemIds,
+	int32 InSkillShardsReward)
 {
 	FGuid ParsedUID;
 	FGuid::Parse(InPlayerId, ParsedUID);
-	InitializeDropletWithUID(ParsedUID, InPlayerId, InPC, InEncounterId, InGoldReward, InItemIds);
+	InitializeDropletWithUID(ParsedUID, InPlayerId, InPC, InEncounterId, InGoldReward, InItemIds, InSkillShardsReward);
 }
 
 bool APALootDropletActor::CanPlayerSeeOrInteractByUID(const FGuid& InPlayerUID) const
@@ -128,9 +131,10 @@ bool APALootDropletActor::IsVisibleToLocalController(const APlayerController* Lo
 	return LocalPC == OwningPlayerController.Get() || GetOwner() == LocalPC;
 }
 
-bool APALootDropletActor::TryClaimLoot(const FString& InPlayerId, int32& OutGold, TArray<FName>& OutItems)
+bool APALootDropletActor::TryClaimLoot(const FString& InPlayerId, int32& OutGold, TArray<FName>& OutItems, int32& OutSkillShards)
 {
 	OutGold = 0;
+	OutSkillShards = 0;
 	OutItems.Empty();
 
 	// Guard bắt buộc trên Dedicated Server
@@ -146,6 +150,7 @@ bool APALootDropletActor::TryClaimLoot(const FString& InPlayerId, int32& OutGold
 
 	bIsClaimed = true;
 	OutGold = GoldReward;
+	OutSkillShards = SkillShardsReward;
 	OutItems = DroppedItemIds;
 
 	OnLootClaimed.Broadcast(OwningPlayerId, GoldReward);
@@ -154,9 +159,16 @@ bool APALootDropletActor::TryClaimLoot(const FString& InPlayerId, int32& OutGold
 	return true;
 }
 
-bool APALootDropletActor::TryClaimLootByUID(const FGuid& InPlayerUID, int32& OutGold, TArray<FName>& OutItems)
+bool APALootDropletActor::TryClaimLoot(const FString& InPlayerId, int32& OutGold, TArray<FName>& OutItems)
+{
+	int32 DummyShards = 0;
+	return TryClaimLoot(InPlayerId, OutGold, OutItems, DummyShards);
+}
+
+bool APALootDropletActor::TryClaimLootByUID(const FGuid& InPlayerUID, int32& OutGold, TArray<FName>& OutItems, int32& OutSkillShards)
 {
 	OutGold = 0;
+	OutSkillShards = 0;
 	OutItems.Empty();
 
 	if (!HasAuthority())
@@ -171,12 +183,19 @@ bool APALootDropletActor::TryClaimLootByUID(const FGuid& InPlayerUID, int32& Out
 
 	bIsClaimed = true;
 	OutGold = GoldReward;
+	OutSkillShards = SkillShardsReward;
 	OutItems = DroppedItemIds;
 
 	OnLootClaimed.Broadcast(OwningPlayerId, GoldReward);
 
 	Destroy();
 	return true;
+}
+
+bool APALootDropletActor::TryClaimLootByUID(const FGuid& InPlayerUID, int32& OutGold, TArray<FName>& OutItems)
+{
+	int32 DummyShards = 0;
+	return TryClaimLootByUID(InPlayerUID, OutGold, OutItems, DummyShards);
 }
 
 void APALootDropletActor::OnRep_IsClaimed()
@@ -196,6 +215,7 @@ void APALootDropletActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& 
 	DOREPLIFETIME_CONDITION(APALootDropletActor, OwningPlayerId, COND_OwnerOnly);
 	DOREPLIFETIME_CONDITION(APALootDropletActor, DropSourceEncounterId, COND_OwnerOnly);
 	DOREPLIFETIME_CONDITION(APALootDropletActor, GoldReward, COND_OwnerOnly);
+	DOREPLIFETIME_CONDITION(APALootDropletActor, SkillShardsReward, COND_OwnerOnly);
 	DOREPLIFETIME_CONDITION(APALootDropletActor, DroppedItemIds, COND_OwnerOnly);
 	DOREPLIFETIME_CONDITION(APALootDropletActor, bIsClaimed, COND_None);
 }

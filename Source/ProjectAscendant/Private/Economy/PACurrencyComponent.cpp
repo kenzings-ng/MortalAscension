@@ -242,21 +242,51 @@ bool UPACurrencyComponent::TransferCurrencyTo(UPACurrencyComponent* TargetWallet
 	return true;
 }
 
-bool UPACurrencyComponent::HandlePvEDeathPenalty(int64& OutGoldLost)
+bool UPACurrencyComponent::HandlePvEDeathPenalty(int64& OutGoldLost, int64& OutSkillShardsLost)
 {
+	OutGoldLost = 0;
+	OutSkillShardsLost = 0;
+
 	const int64 CurrentGold = GetGold();
-	if (CurrentGold <= 0)
+	const int64 CurrentShards = GetSkillShards();
+
+	if (CurrentGold <= 0 && CurrentShards <= 0)
 	{
-		OutGoldLost = 0;
 		return true;
 	}
 
-	// High-Stakes PvE Death Penalty: 50% Gold dropped into Ashen Remnant droplet.
-	// Odd numbers drop ceil(CurrentGold / 2) to ensure remaining is floor(CurrentGold / 2).
-	OutGoldLost = (CurrentGold + 1) / 2;
-
 	EPACurrencyTransactionError Error = EPACurrencyTransactionError::None;
-	return DeductCurrency(EPACurrencyType::Gold, OutGoldLost, Error);
+	bool bSuccess = true;
+
+	// High-Stakes PvE Death Penalty (zone-system.md:88, DECISIONS §13):
+	// 1. 50% Gold rơi vào Vệt Tro Tàn (Ashen Remnant droplet).
+	// Số lẻ: ceil(CurrentGold / 2) để đảm bảo số còn lại là floor(CurrentGold / 2).
+	if (CurrentGold > 0)
+	{
+		OutGoldLost = (CurrentGold + 1) / 2;
+		if (!DeductCurrency(EPACurrencyType::Gold, OutGoldLost, Error))
+		{
+			bSuccess = false;
+		}
+	}
+
+	// 2. 100% Tàn Trang Kỹ Năng (Skill Shards) rơi vào Vệt Tro Tàn (DECISIONS §13).
+	if (CurrentShards > 0)
+	{
+		OutSkillShardsLost = CurrentShards;
+		if (!DeductCurrency(EPACurrencyType::SkillShards, OutSkillShardsLost, Error))
+		{
+			bSuccess = false;
+		}
+	}
+
+	return bSuccess;
+}
+
+bool UPACurrencyComponent::HandlePvEDeathPenalty(int64& OutGoldLost)
+{
+	int64 DummyShards = 0;
+	return HandlePvEDeathPenalty(OutGoldLost, DummyShards);
 }
 
 void UPACurrencyComponent::OnReplicatedCurrencyChanged(EPACurrencyType Type, int64 OldAmount, int64 NewAmount)

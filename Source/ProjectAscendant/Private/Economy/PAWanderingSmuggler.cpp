@@ -143,20 +143,22 @@ void APAWanderingSmuggler::EnsureDefaultRotatingPool()
 	// We seed minimal placeholder entries for server logic to function
 	// without Blueprint assignment. ItemData is nullptr until set via DataAsset.
 
-	auto AddPool = [&](int32 PriceGold)
+	auto AddPool = [&](int32 Price, EPACurrencyType Currency = EPACurrencyType::Gold)
 	{
 		FPAMerchantCatalogEntry Entry;
-		Entry.PriceGold      = PriceGold;
+		Entry.PriceGold      = Price;
+		Entry.CurrencyType   = Currency;
 		Entry.AvailableStock = FMath::RandRange(RestockStockMin, RestockStockMax);
 		RotatingStockPool.Add(Entry);
 	};
 
 	// Placeholder pool entries (5 items → 4 will be randomly selected each restock)
-	AddPool(300);  // Dungeon Map (Skill Shards in prod, Gold placeholder here)
-	AddPool(200);  // Tier-2 crafting material
-	AddPool(250);  // Tier-2 gem
-	AddPool(400);  // Emergency Warp Scroll
-	AddPool(100);  // Temporary buff food
+	// Theo GDD merchant-economy.md:105 và DECISIONS §13: Bản Đồ Mật Cảnh (Dungeon Map) bán bằng SkillShards (Tàn Trang)
+	AddPool(50, EPACurrencyType::SkillShards);  // Dungeon Map (Bán bằng Tàn Trang / Skill Shards)
+	AddPool(200, EPACurrencyType::Gold);        // Tier-2 crafting material
+	AddPool(250, EPACurrencyType::Gold);        // Tier-2 gem
+	AddPool(400, EPACurrencyType::Gold);        // Emergency Warp Scroll
+	AddPool(100, EPACurrencyType::Gold);        // Temporary buff food
 }
 
 void APAWanderingSmuggler::OnRestockApplied(float /*RestockServerTime*/)
@@ -232,6 +234,7 @@ void APAWanderingSmuggler::OnRestockApplied(float /*RestockServerTime*/)
 				const FPAMerchantCatalogEntry& PoolEntry = RotatingStockPool[PoolIndices[SlotOffset]];
 				Slot->ItemData       = PoolEntry.ItemData;
 				Slot->PriceGold      = PoolEntry.PriceGold;
+				Slot->CurrencyType   = PoolEntry.CurrencyType;
 				Slot->AvailableStock = FMath::RandRange(RestockStockMin, RestockStockMax);
 			}
 		}

@@ -380,11 +380,12 @@ void APABaseCharacter::HandleOutOfHealth(AActor* InstigatorActor)
 		CapsuleComp->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	}
 
-	// Xử lý hình phạt tử trận PvE trừ 50% Gold rơi vào Vệt Tro Tàn (Story econ-001 / AC-3)
+	// Xử lý hình phạt tử trận PvE trừ 50% Gold và 100% Tàn Trang rơi vào Vệt Tro Tàn (Story econ-001, zone-system.md:88, DECISIONS §13)
 	if (CurrencyComponent && HasAuthority())
 	{
 		int64 DroppedGold = 0;
-		if (CurrencyComponent->HandlePvEDeathPenalty(DroppedGold) && DroppedGold > 0)
+		int64 DroppedShards = 0;
+		if (CurrencyComponent->HandlePvEDeathPenalty(DroppedGold, DroppedShards) && (DroppedGold > 0 || DroppedShards > 0))
 		{
 			if (UWorld* World = GetWorld())
 			{
@@ -398,7 +399,8 @@ void APABaseCharacter::HandleOutOfHealth(AActor* InstigatorActor)
 						PC,
 						TEXT("PvE_Death_AshenRemnant"),
 						static_cast<int32>(FMath::Min(DroppedGold, static_cast<int64>(MAX_int32))),
-						{}
+						{},
+						static_cast<int32>(FMath::Min(DroppedShards, static_cast<int64>(MAX_int32)))
 					);
 				}
 			}
