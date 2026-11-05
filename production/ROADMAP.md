@@ -52,9 +52,9 @@ Giai đoạn 2B không cần duyệt thẩm mỹ, nên agent làm 2B trong lúc 
 
 ## Giai đoạn 1.5 — Netcode
 
-- [~] PIE 2 client + dedicated server, Iris bật (`net.Iris.UseIrisReplication=1`).
-- [~] ASC người chơi ở chế độ Mixed; tag trạng thái replicate đúng.
-- [~] Test `ProjectAscendant.Network` pass (`PANetworkReplicationTests.cpp`).
+- [x] PIE 2 client + dedicated server, Iris bật (`net.Iris.UseIrisReplication=1`) (PR #38, PR #39; `test_multi_client_replication.py` PASS).
+- [x] ASC người chơi ở chế độ Mixed; tag trạng thái replicate đúng (PR #19, PR #38, PR #39; `PAGasReplicationModeTests.cpp`, `PANetworkReplicationTests.cpp` PASS).
+- [x] Test `ProjectAscendant.Network` pass (`PANetworkReplicationTests.cpp`) (13/13 PASS).
 - [ ] 🛑 Chủ dự án tự chơi thử: 2 cửa sổ PIE, `Net PktLag=150`, `Net PktLoss=2`, cùng đánh một quái; Hurt/Dead hiển thị giống nhau ở cả hai bên.
 
 ---

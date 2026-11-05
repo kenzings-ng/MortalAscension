@@ -32,5 +32,7 @@ public class ProjectAscendant : ModuleRules
 			"Slate",
 			"SlateCore"
 		});
+
+		SetupIrisSupport(Target);
 	}
 }
