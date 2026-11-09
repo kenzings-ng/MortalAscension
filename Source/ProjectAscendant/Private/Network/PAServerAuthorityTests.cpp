@@ -54,6 +54,9 @@ static_assert(std::is_same_v<decltype(&UPAServiceRequestComponent::Server_Reques
 static_assert(std::is_same_v<decltype(&UPAServiceRequestComponent::Server_RequestForgeBossSoul),
 	void (UPAServiceRequestComponent::*)(int32, AActor*, UPAInventoryComponent*, UPACurrencyComponent*, FName, FName, FName)>,
 	"X11a/X11b: boss soul request must not accept a client-chosen output item");
+static_assert(std::is_same_v<decltype(&UPAServiceRequestComponent::Server_RequestForgeBossSoulWithFourParts),
+	void (UPAServiceRequestComponent::*)(int32, AActor*, UPAInventoryComponent*, UPACurrencyComponent*, FName, FName, FName, FName, FName, FName)>,
+	"X11a/X11b: boss soul request with four parts must not accept a client-chosen output item");
 
 namespace PAServerAuthorityTestHelper
 {
@@ -609,15 +612,51 @@ bool FPAServerAuthorityBossSoulTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("No recipe: gold untouched"), PlayerA.Wallet->GetGold(), 20000LL);
 	TestEqual(TEXT("No recipe: parts kept"), PlayerA.Inventory->GetItemCount(FName("item_boss_horn")), 8);
 
-	// Valid request: output is exactly the server recipe's item.
+	// Legacy single-part request cannot bypass 4 distinct parts requirement: refused when missing other 3 parts.
+	PlayerA.Router->Server_RequestForgeBossSoul(0, Forge, PlayerA.Inventory, PlayerA.Wallet, FName("item_boss_soul_golem"), FName("item_boss_horn"), FName("void_ore"));
+	TestEqual(TEXT("Legacy single-part without 4 distinct parts refused: gold untouched"), PlayerA.Wallet->GetGold(), 20000LL);
+	TestEqual(TEXT("Legacy single-part without 4 distinct parts refused: soul kept"), PlayerA.Inventory->GetItemCount(FName("item_boss_soul_golem")), 1);
+
+	// Seed the other 3 distinct parts into inventory
+	PlayerA.Inventory->AddItemToSlot(5, MakeItem(FName("item_boss_scale"), EPAItemCategory::Material, EPAItemRarity::None, 0, 50), 2);
+	PlayerA.Inventory->AddItemToSlot(6, MakeItem(FName("item_boss_chest"), EPAItemCategory::Material, EPAItemRarity::None, 0, 50), 2);
+	PlayerA.Inventory->AddItemToSlot(7, MakeItem(FName("item_boss_wing"), EPAItemCategory::Material, EPAItemRarity::None, 0, 50), 2);
+
+	// Valid request: routes through 4 distinct parts and outputs the server recipe item.
 	PlayerA.Router->Server_RequestForgeBossSoul(0, Forge, PlayerA.Inventory, PlayerA.Wallet, FName("item_boss_soul_golem"), FName("item_boss_horn"), FName("void_ore"));
 	TestEqual(TEXT("Forged: 5,000 Gold charged"), PlayerA.Wallet->GetGold(), 15000LL);
 	TestEqual(TEXT("Forged: soul consumed"), PlayerA.Inventory->GetItemCount(FName("item_boss_soul_golem")), 0);
-	TestEqual(TEXT("Forged: 4 parts consumed"), PlayerA.Inventory->GetItemCount(FName("item_boss_horn")), 4);
+	TestEqual(TEXT("Forged: 1 horn consumed"), PlayerA.Inventory->GetItemCount(FName("item_boss_horn")), 7);
+	TestEqual(TEXT("Forged: 1 scale consumed"), PlayerA.Inventory->GetItemCount(FName("item_boss_scale")), 1);
+	TestEqual(TEXT("Forged: 1 chest consumed"), PlayerA.Inventory->GetItemCount(FName("item_boss_chest")), 1);
+	TestEqual(TEXT("Forged: 1 wing consumed"), PlayerA.Inventory->GetItemCount(FName("item_boss_wing")), 1);
 	TestEqual(TEXT("Forged: 5 void ore consumed"), PlayerA.Inventory->GetItemCount(FName("void_ore")), 5);
 	TestEqual(TEXT("Forged: output is the server recipe item"), PlayerA.Inventory->GetItemCount(FName("item_boss_soul_golem_greatsword")), 1);
 	const FPAInventoryItemEntry* Output = PlayerA.Inventory->GetItemAtSlot(0);
 	TestTrue(TEXT("Forged: output is Legendary"), Output && Output->StaticData && Output->StaticData->RarityTier == EPAItemRarity::Legendary);
+
+	// Re-seed 1 soul for 4-part explicit test
+	PlayerA.Inventory->AddItemToSlot(1, MakeItem(FName("item_boss_soul_golem"), EPAItemCategory::Material, EPAItemRarity::None, 0, 10), 1);
+
+	// Duplicate part rejected:
+	PlayerA.Router->Server_RequestForgeBossSoulWithFourParts(0, Forge, PlayerA.Inventory, PlayerA.Wallet,
+		FName("item_boss_soul_golem"),
+		FName("item_boss_horn"), FName("item_boss_horn"), FName("item_boss_chest"), FName("item_boss_wing"),
+		FName("void_ore"));
+	TestEqual(TEXT("4-part duplicate rejected: gold untouched"), PlayerA.Wallet->GetGold(), 15000LL);
+
+	// Valid 4-part request:
+	PlayerA.Router->Server_RequestForgeBossSoulWithFourParts(0, Forge, PlayerA.Inventory, PlayerA.Wallet,
+		FName("item_boss_soul_golem"),
+		FName("item_boss_horn"), FName("item_boss_scale"), FName("item_boss_chest"), FName("item_boss_wing"),
+		FName("void_ore"));
+	TestEqual(TEXT("4-part forged: 5,000 Gold charged -> 10,000 remaining"), PlayerA.Wallet->GetGold(), 10000LL);
+	TestEqual(TEXT("4-part forged: soul consumed"), PlayerA.Inventory->GetItemCount(FName("item_boss_soul_golem")), 0);
+	TestEqual(TEXT("4-part forged: horn consumed"), PlayerA.Inventory->GetItemCount(FName("item_boss_horn")), 6);
+	TestEqual(TEXT("4-part forged: scale consumed"), PlayerA.Inventory->GetItemCount(FName("item_boss_scale")), 0);
+	TestEqual(TEXT("4-part forged: chest consumed"), PlayerA.Inventory->GetItemCount(FName("item_boss_chest")), 0);
+	TestEqual(TEXT("4-part forged: wing consumed"), PlayerA.Inventory->GetItemCount(FName("item_boss_wing")), 0);
+	TestEqual(TEXT("4-part forged: void ore consumed"), PlayerA.Inventory->GetItemCount(FName("void_ore")), 0);
 
 	Forge->Destroy();
 	DestroyPlayer(PlayerA);
