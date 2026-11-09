@@ -71,9 +71,9 @@ WEAPON_SPECS = [
         "desc": "Cấp 2 (Nguyên Tố Băng): Khảm ngọc Sapphire. Thép xanh đóng băng tinh thể ngọc, cổ ngữ cyan phát quang."
     },
     {
-        "id": "Vanguard_05_Broadsword_Tier3_DivineAscendant",
-        "name": "Thần Binh Tối Thượng (+10 Divine)",
-        "source": "Art_Gallery/01_Living_Weapon_Mutations/05_Broadsword_Tier3_DivineAscendant_32x32_native.png",
+        "id": "Vanguard_05_Broadsword_Tier3_LegendaryAscendant",
+        "name": "Thần Binh Tối Thượng (+10 Legendary)",
+        "source": "Art_Gallery/01_Living_Weapon_Mutations/05_Broadsword_Tier3_LegendaryAscendant_32x32_native.png",
         "class": "Vanguard",
         "rarity": "legendary",
         "desc": "Cấp 3 (Thần Binh +10): Đúc từ Linh hồn Lãnh chúa tại Lò Rèn Cấm Địa. Tinh thể cosmic phát quang plasma tím-vàng."

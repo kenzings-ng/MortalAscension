@@ -90,7 +90,7 @@ CLASSES = {
     "Templar": {
         "theme": "Holy Paladin",
         "armor_hi": (220, 215, 200, 255), "armor_mid": (150, 145, 130, 255), "armor_sha": (85, 80, 70, 255),
-        "accent": (245, 215, 60, 255), # Divine Gold
+        "accent": (245, 215, 60, 255), # Holy Gold
         "crest_name": "Crest_Templar_SteelWings", "crest_shape": "wings",
         "tabard_name": "Tabard_Templar_GoldCross", "tabard_color": (220, 185, 45, 255),
         "stance": "tower_shield_planted", "weapon_reach_x": 16, "weapon_angle": 90

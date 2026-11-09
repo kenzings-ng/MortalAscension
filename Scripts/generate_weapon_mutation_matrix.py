@@ -170,14 +170,14 @@ MUTATION_CONFIGS = [
         "Level 2: Băng Tinh Sương Lạnh (+6 Khảm Sapphire) — Thép xanh cobalt đóng băng tinh thể ngọc, cổ ngữ cyan phát quang."
     ),
     (
-        "05_Broadsword_Tier3_DivineAscendant",
+        "05_Broadsword_Tier3_LegendaryAscendant",
         ((25, 0, 50, 255), (241, 147, 255, 255), (140, 56, 222, 255), (93, 38, 155, 255), (254, 240, 138, 255)),
         (234, 179, 8, 255),
         ((69, 10, 10, 255), (153, 27, 27, 255), (40, 5, 5, 255)),
         (254, 240, 138, 255),
         None,
         "legendary",
-        "Level 3: Thần Binh Tối Thượng (+10 Divine) — Rèn từ Linh hồn Lãnh chúa tại Lò Rèn Cấm Địa. Tinh thể vũ trụ phát quang plasma."
+        "Level 3: Thần Binh Tối Thượng (+10 Legendary) — Rèn từ Linh hồn Lãnh chúa tại Lò Rèn Cấm Địa. Tinh thể vũ trụ phát quang plasma."
     ),
     (
         "06_Broadsword_Combat_Bloodied",
