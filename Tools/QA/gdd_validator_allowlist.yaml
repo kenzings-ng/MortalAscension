@@ -17,14 +17,4 @@
 # Format note: the validator reads this file with a small stdlib reader. Keep to
 # "entries:" followed by "- key: value" items with plain or double-quoted scalars.
 
-entries:
-  - file: design/art/art-bible.md
-    check: rarity_tier_numbering
-    pattern: "^- \\*\\*Khung Viền Phân Hạng 5 Bậc Hiếm \\(5-Tier Rarity\\)\\*\\*:"
-    match: "Bậc Hiếm"
-    reason: "OWNER AESTHETIC DECISION PENDING: art-bible.md:127-128 rarity frame scale (heading). Needs owner aesthetic approval (CLAUDE.md stop rule); not edited by X13."
-  - file: design/art/art-bible.md
-    check: divine_immortal_rarity
-    pattern: "Immortal \\(Đỏ `#DC2626`\\), Divine \\(Hoàng Kim `#F59E0B` \\+ Tím `#7C3AED`\\)"
-    match: "Trang bị 'Immortal' / 'Divine'"
-    reason: "OWNER AESTHETIC DECISION PENDING: art-bible.md:128 frame colours still include Immortal/Divine (outside DECISIONS §5). Needs owner aesthetic approval (CLAUDE.md stop rule); not edited by X13."
+entries: []

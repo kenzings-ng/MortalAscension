@@ -124,8 +124,8 @@ Mọi màu sắc mang tính cảnh báo sống còn **tuyệt đối không đư
 - **Góc Đặt Thẩm Mỹ Chuẩn Mực**:
   - Vũ khí cận chiến & Cung trượng: Đặt chéo góc cố định $45^\circ$ từ góc dưới-trái lên góc trên-phải (chuẩn *Stardew Valley*).
   - Potion & Trang bị mặc: Đặt thẳng đứng $90^\circ$ chính diện.
-- **Khung Viền Phân Hạng 5 Bậc Hiếm (5-Tier Rarity)**:
-  - Normal (Xám `#4B5563`), Rare (Lam `#2563EB`), Legendary (Cam `#D97706`), Immortal (Đỏ `#DC2626`), Divine (Hoàng Kim `#F59E0B` + Tím `#7C3AED`).
+- **Khung Viền Phân Hạng 5 Cấp Độ Hiếm (5-Rarity Scale)**:
+  - Common (Trắng / Xám `#D1D5DB`), Uncommon (Xanh Lục `#10B981`), Rare (Xanh Lam `#3B82F6`), Epic (Tím `#8B5CF6`), Legendary (Cam Hoàng Kim `#F59E0B`).
 - *Chi tiết quy chuẩn*: Xem tài liệu chi tiết tại [`design/art/pixel-asset-specifications.md#3-quy-chuẩn-kỹ-thuật-vật-phẩm-vũ-khí--nguyên-liệu-items--gear`](pixel-asset-specifications.md#3-quy-chuẩn-kỹ-thuật-vật-phẩm-vũ-khí--nguyên-liệu-items--gear).
 
 ---
