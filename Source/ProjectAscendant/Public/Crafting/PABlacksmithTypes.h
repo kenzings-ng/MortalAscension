@@ -519,8 +519,8 @@ struct PROJECTASCENDANT_API FPABlacksmithFormulas
 	static bool IsBossChestArmorItem(FName ItemId)
 	{
 		const FString Str = ItemId.ToString().ToLower();
-		return Str.Contains(TEXT("chest")) || Str.Contains(TEXT("carapace")) ||
-		       Str.Contains(TEXT("armor")) || ItemId == FName("boss_chest") ||
+		return Str.Contains(TEXT("boss_chest")) || Str.Contains(TEXT("carapace")) ||
+		       Str.Contains(TEXT("boss_armor")) || ItemId == FName("boss_chest") ||
 		       ItemId == FName("item_boss_chest") || ItemId == FName("Item_Hardened_Carapace");
 	}
 

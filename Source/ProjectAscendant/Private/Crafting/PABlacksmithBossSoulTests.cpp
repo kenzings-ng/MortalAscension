@@ -420,6 +420,17 @@ bool FPABlacksmithBossSoulTests::RunTest(const FString& Parameters)
 			TestFalse(TEXT("DECISIONS §13: Formulas distinct parts validation rejects non-part item (iron_ore)"),
 				FPABlacksmithFormulas::ValidateFourDistinctBossParts(
 					FName("item_boss_horn"), FName("item_boss_scale"), FName("iron_ore"), FName("item_boss_wing")));
+			TestFalse(TEXT("DECISIONS §13: Formulas distinct parts validation rejects generic wearable armor (Item_Armor_IronPlate)"),
+				FPABlacksmithFormulas::ValidateFourDistinctBossParts(
+					FName("item_boss_horn"), FName("item_boss_scale"), FName("Item_Armor_IronPlate"), FName("item_boss_wing")));
+			TestFalse(TEXT("DECISIONS §13: IsBossChestArmorItem rejects generic armor Item_Armor_IronPlate"),
+				FPABlacksmithFormulas::IsBossChestArmorItem(FName("Item_Armor_IronPlate")));
+			TestFalse(TEXT("DECISIONS §13: IsBossChestArmorItem rejects generic armor item_leather_armor"),
+				FPABlacksmithFormulas::IsBossChestArmorItem(FName("item_leather_armor")));
+			TestTrue(TEXT("DECISIONS §13: IsBossChestArmorItem accepts Item_Hardened_Carapace"),
+				FPABlacksmithFormulas::IsBossChestArmorItem(FName("Item_Hardened_Carapace")));
+			TestTrue(TEXT("DECISIONS §13: IsBossChestArmorItem accepts item_boss_chest"),
+				FPABlacksmithFormulas::IsBossChestArmorItem(FName("item_boss_chest")));
 
 			// Seed inventory
 			Inventory->AddItemToSlot(1, SoulAsset, 1);
