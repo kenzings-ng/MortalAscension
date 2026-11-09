@@ -25,6 +25,7 @@
 #include "Crafting/PABlacksmithForge.h"
 #include "Inventory/PAInventoryComponent.h"
 #include "Economy/PACurrencyComponent.h"
+#include "Account/PAAccountSubsystem.h"
 #include "EngineUtils.h"
 
 APABasePlayerController::APABasePlayerController(const FObjectInitializer& ObjectInitializer)
@@ -101,6 +102,40 @@ void APABasePlayerController::AcknowledgePossession(APawn* InPawn)
 	if (IsLocalController())
 	{
 		SetupGameplayHUD();
+
+		// Synchronize client-selected CharacterClass from UPAAccountSubsystem to dedicated server
+		if (const UGameInstance* GI = GetGameInstance())
+		{
+			if (const UPAAccountSubsystem* AccSub = GI->GetSubsystem<UPAAccountSubsystem>())
+			{
+				const FName SelectedClassTag = AccSub->GetSelectedCharacterClass();
+				EPACharacterClass SelectedClass = EPACharacterClass::Vanguard;
+				if (SelectedClassTag == FName(TEXT("Class.Line.Scout.Ranger")))
+				{
+					SelectedClass = EPACharacterClass::Ranger;
+				}
+				else if (SelectedClassTag == FName(TEXT("Class.Line.Caster.Arcanist")))
+				{
+					SelectedClass = EPACharacterClass::Arcanist;
+				}
+				Server_SetCharacterClass(SelectedClass);
+			}
+		}
+	}
+}
+
+bool APABasePlayerController::Server_SetCharacterClass_Validate(EPACharacterClass NewClass)
+{
+	return NewClass == EPACharacterClass::Vanguard ||
+	       NewClass == EPACharacterClass::Ranger ||
+	       NewClass == EPACharacterClass::Arcanist;
+}
+
+void APABasePlayerController::Server_SetCharacterClass_Implementation(EPACharacterClass NewClass)
+{
+	if (APABaseCharacter* BaseChar = Cast<APABaseCharacter>(GetPawn()))
+	{
+		BaseChar->SetCharacterClass(NewClass);
 	}
 }
 

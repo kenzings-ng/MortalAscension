@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
 #include "InputActionValue.h"
+#include "UI/PACharacterSelectTypes.h"
 #include "PABasePlayerController.generated.h"
 
 class UInputMappingContext;
@@ -61,6 +62,10 @@ public:
 	/** Quét tìm Actor tương tác trong bán kính (mặc định 300cm theo DECISIONS.md §13) */
 	UFUNCTION(BlueprintCallable, Category = "ProjectAscendant|Interaction")
 	AActor* FindBestInteractableActor(float MaxDistance = 300.0f) const;
+
+	/** Server RPC to synchronize the player's selected foundational character class. */
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "ProjectAscendant|Character")
+	void Server_SetCharacterClass(EPACharacterClass NewClass);
 
 	// -------------------------------------------------------------------------
 	// Camera Look-Ahead & Occlusion Dither (Story 003)

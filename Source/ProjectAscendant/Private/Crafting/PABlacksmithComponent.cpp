@@ -1069,6 +1069,47 @@ bool UPABlacksmithComponent::ServerHandleForgeBossSoul(const APlayerController* 
 		return false;
 	}
 
+	// DECISIONS §13 & blacksmithing-system.md §B:
+	// Route legacy request through the 4 distinct parts requirement so it cannot be bypassed.
+	FName HornId = FPABlacksmithFormulas::IsBossHornItem(BossPartItemId) ? BossPartItemId : NAME_None;
+	FName TailScaleId = FPABlacksmithFormulas::IsBossTailScaleItem(BossPartItemId) ? BossPartItemId : NAME_None;
+	FName ChestArmorId = FPABlacksmithFormulas::IsBossChestArmorItem(BossPartItemId) ? BossPartItemId : NAME_None;
+	FName WingId = FPABlacksmithFormulas::IsBossWingItem(BossPartItemId) ? BossPartItemId : NAME_None;
+
+	if (Inventory)
+	{
+		const int32 MaxSlots = Inventory->GetCurrentMaxSlots();
+		for (int32 SlotIdx = 0; SlotIdx < MaxSlots; ++SlotIdx)
+		{
+			const FPAInventoryItemEntry* Entry = Inventory->GetItemAtSlot(SlotIdx);
+			if (!Entry || Entry->ItemDefId.IsNone() || Entry->StackCount <= 0) continue;
+
+			if (HornId.IsNone() && FPABlacksmithFormulas::IsBossHornItem(Entry->ItemDefId))
+			{
+				HornId = Entry->ItemDefId;
+			}
+			else if (TailScaleId.IsNone() && FPABlacksmithFormulas::IsBossTailScaleItem(Entry->ItemDefId))
+			{
+				TailScaleId = Entry->ItemDefId;
+			}
+			else if (ChestArmorId.IsNone() && FPABlacksmithFormulas::IsBossChestArmorItem(Entry->ItemDefId))
+			{
+				ChestArmorId = Entry->ItemDefId;
+			}
+			else if (WingId.IsNone() && FPABlacksmithFormulas::IsBossWingItem(Entry->ItemDefId))
+			{
+				WingId = Entry->ItemDefId;
+			}
+		}
+	}
+
+	if (!FPABlacksmithFormulas::ValidateFourDistinctBossParts(HornId, TailScaleId, ChestArmorId, WingId))
+	{
+		OutError = EPACraftingError::InvalidItemType;
+		OnCraftingFailed.Broadcast(OutError);
+		return false;
+	}
+
 	EPACharacterClass CharClass = EPACharacterClass::Vanguard;
 	if (Requester)
 	{
@@ -1078,7 +1119,17 @@ bool UPABlacksmithComponent::ServerHandleForgeBossSoul(const APlayerController* 
 		}
 	}
 
-	return ForgeBossSoulEquipment(Inventory, Wallet, BossSoulItemId, BossPartItemId, VoidOreItemId, CharClass, OutError);
+	return ForgeBossSoulEquipmentWithFourParts(
+		Inventory,
+		Wallet,
+		BossSoulItemId,
+		HornId,
+		TailScaleId,
+		ChestArmorId,
+		WingId,
+		VoidOreItemId,
+		CharClass,
+		OutError);
 }
 
 bool UPABlacksmithComponent::ServerHandleForgeBossSoulWithFourParts(
