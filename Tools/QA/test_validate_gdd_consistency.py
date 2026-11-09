@@ -385,8 +385,8 @@ class ScopeAndAllowlistTests(unittest.TestCase):
         row_bad = ("| **2. Two-Handed Heavy** | `Weapon.2H.Heavy` | Bổ dọc 180cm. | **Berserker, Templar, Inquisitor** | Khóa cứng 2 tay. |")
         yaml_ok = '  - name: weapon_family_2h_heavy\n    attributes:\n      classes: ["Berserker"]\n'
         self.tp.write("design/registry/entities.yaml", yaml_ok)
-        art = ("- **Khung Viền Phân Hạng 5 Bậc Hiếm (5-Tier Rarity)**:\n"
-               "  - Normal (Xám `#4B5563`), Rare (Lam `#2563EB`), Legendary (Cam `#D97706`), Immortal (Đỏ `#DC2626`), Divine (Hoàng Kim `#F59E0B` + Tím `#7C3AED`).\n")
+        art = ("- **Khung Viền Phân Hạng 5 Cấp Độ Hiếm (5-Rarity Scale)**:\n"
+               "  - Common (Trắng / Xám `#D1D5DB`), Uncommon (Xanh Lục `#10B981`), Rare (Xanh Lam `#3B82F6`), Epic (Tím `#8B5CF6`), Legendary (Cam Hoàng Kim `#F59E0B`).\n")
         self.tp.write("design/art/art-bible.md", art)
 
         self.tp.write("design/gdd/itemization.md", row_ok + "\n" + yaml_ok)

@@ -784,3 +784,32 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   7. **Kiểm Thử Tự Động (`PABlacksmithBossSoulTests.cpp` & `PAServerAuthorityTests.cpp`)**:
      - Kiểm tra đầy đủ các điều kiện: Tier gating, trùng lặp bộ phận (duplicate parts), thiếu vàng (< 5.000 Gold), thiếu nguyên liệu, và thành công xuất trang bị theo từng class (Vanguard, Ranger, Arcanist).
      - Kiểm tra RPC Server Authority và tĩnh hóa giao diện mạng (`static_assert`).
+- **Kết quả Cổng Tự Động**:
+  - Gate 1: GDD Consistency Validator: 108/108 files PASS (0 errors, 0 warnings).
+  - Gate 2: Git LFS Pointers: PASS (0 violations).
+  - Gate 3: UE Automation Tests: `ProjectAscendant.Crafting` 3/3 PASS; `ProjectAscendant.Network` 13/13 PASS.
+- **Reviewer độc lập**: Tiểu tổ thẩm định độc lập Code Reviewer đã duyệt (APPROVED). Đã squash-merge vào `main` tại commit `af08c2a` (PR #42).
+
+---
+
+## 11. Nhật Ký Đầu Việc: Nhánh `docs/y6-art-bible-rarity-colors` (Bước Y6 - Chuẩn Hóa Bảng Màu Độ Hiếm Art Bible & Xóa Bỏ Allowlist)
+
+- **Mục tiêu**: Bước Y6 trong `production/plans/playable-slice-and-approvals-2026-10-10.md:57` và `DECISIONS.md` §13:
+  1. `art-bible.md:127-128` dùng bảng màu ở `inventory-system.md` §1, không tự chọn màu mới.
+  2. Gỡ bỏ 2 mục allowlist cuối cùng trong `Tools/QA/gdd_validator_allowlist.yaml`.
+- **Nhánh**: `docs/y6-art-bible-rarity-colors`.
+- **Nội dung thực hiện**:
+  1. **Chuẩn Hóa Khung Viền Độ Hiếm (`design/art/art-bible.md`)**:
+     - Chuyển `Khung Viền Phân Hạng 5 Bậc Hiếm (5-Tier Rarity)` thành `Khung Viền Phân Hạng 5 Cấp Độ Hiếm (5-Rarity Scale)`.
+     - Cập nhật đúng 5 độ hiếm và mã màu từ `inventory-system.md` §1:
+       * Common (Trắng / Xám `#D1D5DB`)
+       * Uncommon (Xanh Lục `#10B981`)
+       * Rare (Xanh Lam `#3B82F6`)
+       * Epic (Tím `#8B5CF6`)
+       * Legendary (Cam Hoàng Kim `#F59E0B`)
+     - Xóa bỏ hoàn toàn nhãn cấm `Immortal` và `Divine`.
+  2. **Gỡ Bỏ Allowlist (`Tools/QA/gdd_validator_allowlist.yaml`)**:
+     - Thiết lập `entries: []`, đưa số lượng allowlist về 0.
+- **Kết quả Cổng Tự Động**:
+  - Gate 1: GDD Consistency Validator: 108/108 files PASS (0 errors, 0 warnings, 0 allowlisted).
+  - Gate 2: Git LFS Pointers: PASS (0 violations).
