@@ -153,7 +153,7 @@ FAMILIES = {
         "weapon_hi": (245, 215, 90, 255),  # Sacred gold relic & steel mace
         "weapon_mid":(180, 145, 45, 255),
         "weapon_sha":(110, 85, 20, 255),
-        "accent":    (255, 215, 0, 255),   # Divine golden halo / cross
+        "accent":    (255, 215, 0, 255),   # Holy golden halo / cross
         "pauldron_w": 7,
         "chest_w": 13,
     }

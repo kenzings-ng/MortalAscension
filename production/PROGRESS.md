@@ -813,3 +813,34 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
 - **Kết quả Cổng Tự Động**:
   - Gate 1: GDD Consistency Validator: 108/108 files PASS (0 errors, 0 warnings, 0 allowlisted).
   - Gate 2: Git LFS Pointers: PASS (0 violations).
+- **Reviewer độc lập**: Tiểu tổ thẩm định độc lập Code Reviewer đã duyệt (APPROVED). Đã squash-merge vào `main` tại commit `82226c6` (PR #43).
+
+---
+
+## 12. Nhật Ký Đầu Việc: Nhánh `refactor/y7-rename-divine-to-legendary` (Bước Y7 - Đổi Tên Asset và Nhãn "Divine" sang Legendary)
+
+- **Mục tiêu**: Bước Y7 trong `production/plans/playable-slice-and-approvals-2026-10-10.md:58` và `DECISIONS.md` §13:
+  1. Đổi tên asset và nhãn "Divine" sang Legendary (script gallery, tên file art, tham chiếu).
+  2. Tuân thủ quyết định DECISIONS §13: "Đổi tên các asset và nhãn 'Divine' sang Legendary".
+- **Nhánh**: `refactor/y7-rename-divine-to-legendary`.
+- **Nội dung thực hiện**:
+  1. **Đổi tên tệp tài nguyên vũ khí (Art Assets)**:
+     - `Art_Gallery/legacy/weapons/Vanguard_05_Broadsword_Tier3_DivineAscendant_32x32_native.png` -> `Vanguard_05_Broadsword_Tier3_LegendaryAscendant_32x32_native.png`
+     - `Art_Gallery/legacy/weapons/Vanguard_05_Broadsword_Tier3_DivineAscendant_64x64_ingame.png` -> `Vanguard_05_Broadsword_Tier3_LegendaryAscendant_64x64_ingame.png`
+     - `Art_Gallery/legacy/weapons/Vanguard_05_Broadsword_Tier3_DivineAscendant_256x256_framed_legendary.png` -> `Vanguard_05_Broadsword_Tier3_LegendaryAscendant_256x256_framed_legendary.png`
+     - `Content/Art/Weapons/WPN_Vanguard_05_Broadsword_Tier3_DivineAscendant.png` -> `WPN_Vanguard_05_Broadsword_Tier3_LegendaryAscendant.png`
+     - `Content/Art/Weapons/WPN_Vanguard_05_Broadsword_Tier3_DivineAscendant_meta.json` -> `WPN_Vanguard_05_Broadsword_Tier3_LegendaryAscendant_meta.json` (cập nhật `asset_name`, `source_legacy_path`, `target_engine_path`).
+  2. **Cập nhật Scripts & Gallery Showcase**:
+     - `Art_Gallery/legacy/index.html`: Cập nhật tên asset và nhãn modal/card `Thần Binh Tối Thượng (+10 Legendary)` và `Vanguard (+10 Legendary)`.
+     - `Scripts/build_master_gallery.py`: Đổi tên file và nhãn sang `(+10 Legendary)`.
+     - `Scripts/build_perfect_gallery_html.py`: Đổi tên file và nhãn sang `(+10 Legendary)`.
+     - `Scripts/build_full_class_arsenal_32px.py`: Đổi ID và tên sang `LegendaryAscendant` và `(+10 Legendary)`.
+     - `Scripts/generate_weapon_mutation_matrix.py`: Đổi ID và mô tả sang `05_Broadsword_Tier3_LegendaryAscendant` và `(+10 Legendary)`.
+     - `Scripts/build_class_idle_crest_tabard.py` & `Scripts/build_upper_body_weapons.py`: Chuẩn hóa ghi chú màu sắc.
+  3. **Đồng Bộ Tài Liệu Báo Cáo Art**:
+     - `production/art/legacy-art-inventory.md`: Cập nhật bảng kiểm kê sang `LegendaryAscendant`.
+     - `production/art/m1-weapon-migration-report.md`: Cập nhật bảng báo cáo di trú sang `LegendaryAscendant`.
+- **Kết quả Cổng Tự Động**:
+  - Gate 1: GDD Consistency Validator: 108/108 files PASS (0 errors, 0 warnings, 0 allowlisted).
+  - Gate 2: Git LFS Pointers: PASS (0 violations).
+  - Gate 3: UE Automation Tests: PASS.
