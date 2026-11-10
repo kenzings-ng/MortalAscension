@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ==============================================================================
-# Project Ascendant - Game & Editor Launcher
+# Mortal Ascension - Game & Editor Launcher
 # 2.5D Isometric HD-2D Dark Fantasy Action RPG / MMO
 # Playable Slice & Multi-Client Playtest Runner (DECISIONS §13 & ROADMAP 1.5)
 # ==============================================================================
@@ -33,7 +33,7 @@ if [ ! -f "${UPROJECT}" ]; then
 fi
 
 echo "============================================================"
-echo " Project Ascendant Launcher"
+echo " Mortal Ascension Launcher"
 echo " Engine: Unreal Engine 5.8 (Linux x86_64)"
 echo " Mode  : ${MODE}"
 echo "============================================================"
@@ -48,7 +48,7 @@ case "${MODE}" in
             WINDOW_FLAG="-Fullscreen"
             echo "[INFO] Running in Fullscreen mode for 1920x1080 to prevent swapchain resize deadlock."
         fi
-        echo "[INFO] Launching Project Ascendant in Standalone Mode (${RES_X}x${RES_Y} ${WINDOW_FLAG})..."
+        echo "[INFO] Launching Mortal Ascension in Standalone Mode (${RES_X}x${RES_Y} ${WINDOW_FLAG})..."
         echo "[INFO] Game log is saved to Saved/Logs/ProjectAscendant.log"
         exec "${ENGINE_BIN}" "${UPROJECT}" -game -ResX="${RES_X}" -ResY="${RES_Y}" "${WINDOW_FLAG}"
         ;;
@@ -56,7 +56,7 @@ case "${MODE}" in
     "game-log")
         RES_X="${2:-1280}"
         RES_Y="${3:-720}"
-        echo "[INFO] Launching Project Ascendant with live terminal log (${RES_X}x${RES_Y})..."
+        echo "[INFO] Launching Mortal Ascension with live terminal log (${RES_X}x${RES_Y})..."
         exec "${ENGINE_BIN}" "${UPROJECT}" -game -ResX="${RES_X}" -ResY="${RES_Y}" -Windowed -log
         ;;
 

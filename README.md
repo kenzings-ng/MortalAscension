@@ -1,4 +1,6 @@
-# Project Ascendant
+# Mortal Ascension
+
+Tên chính thức: **Mortal Ascension**. `ProjectAscendant` được giữ làm định danh kỹ thuật cho Unreal project, module C++, đường dẫn asset và bộ kiểm thử.
 
 <p align="center">
   <strong>2.5D Isometric Hardcore Action RPG MMO</strong>
@@ -18,7 +20,7 @@
 
 ## ⚔️ Tổng quan (Elevator Pitch)
 
-**Project Ascendant** là tựa game **2.5D Isometric Action RPG MMO Thế Giới Mở (Open World)** hardcore lấy cảm hứng từ thể loại LitRPG và lối chơi biểu đạt kỹ năng cao (*Hades, Elden Ring, Albion Online*):
+**Mortal Ascension** là tựa game **2.5D Isometric Action RPG MMO Thế Giới Mở (Open World)** hardcore lấy cảm hứng từ thể loại LitRPG và lối chơi biểu đạt kỹ năng cao (*Hades, Elden Ring, Albion Online*):
 
 - **Chiến đấu cạnh tranh thực tế (Contested Combat / Open Tagging)**: Không có cơ chế khóa mục tiêu (no kill-lock). Mọi người chơi đều có thể cùng tham gia săn Boss thế giới mở.
 - **Thanh Posture Chung & Quyền Kết Liễu (Execution)**: Đòn đánh bẻ gãy thế đứng (Posture Break) mở ra cửa sổ 3.0s quỳ gối; người chơi kết liễu tung đòn rút **25% Max HP True Damage** với $1.5\text{s}$ I-Frame và khóa choáng mục tiêu $1.5\text{s}$.
@@ -99,7 +101,7 @@ ProjectAscendant/
 Dự án áp dụng triệt để mô hình **Pure Data Model** cho mọi hệ thống logic, cho phép chạy kiểm thử đơn vị & tích hợp không cần nạp giao diện đồ họa (Headless Automation Tests):
 
 ```bash
-# Chạy toàn bộ bộ kiểm thử tự động của Project Ascendant qua UnrealEditor-Cmd
+# Chạy toàn bộ bộ kiểm thử tự động của Mortal Ascension qua UnrealEditor-Cmd
 /mnt/Data/Engine/Binaries/Linux/UnrealEditor-Cmd \
     ProjectAscendant.uproject \
     -ExecCmds="Automation RunTests ProjectAscendant" \
@@ -138,7 +140,7 @@ Hệ thống CI được phân tách thành 2 jobs độc lập:
    - Chạy kiểm thử Backend Database & Anti-Dupe PostgreSQL thực tế: `python Tools/QA/test_backend_postgres.py`.
 2. **`ue-tests` (UE Automation Tests - CHỈ chạy thủ công qua `workflow_dispatch`)**:
    - **Cơ chế kích hoạt an toàn**: Job này **KHÔNG** tự động chạy trên push hoặc pull_request để tránh tình trạng xếp hàng vĩnh viễn (Queued indefinitely). Chỉ kích hoạt thủ công qua giao diện GitHub Actions (`workflow_dispatch`).
-   - **Ràng buộc bảo mật nghiêm ngặt**: Chỉ chạy khi `github.repository == 'kenzings-ng/ProjectAscendant'` và commit thuộc repo gốc (chặn triệt để mọi pull request từ fork chạy trên máy self-hosted).
+   - **Ràng buộc bảo mật nghiêm ngặt**: Chỉ chạy khi `github.repository == 'kenzings-ng/MortalAscension'` và commit thuộc repo gốc (chặn triệt để mọi pull request từ fork chạy trên máy self-hosted).
    - > [!WARNING]
    - > **Cảnh báo bảo mật**: TUYỆT ĐỐI KHÔNG sử dụng self-hosted runner cho repository công khai (public repository) do nguy cơ bị khai thác thực thi mã độc từ bên ngoài.
    - **Cấu hình đường dẫn Engine (`UE_EDITOR_CMD`)**:
@@ -156,5 +158,6 @@ Hệ thống CI được phân tách thành 2 jobs độc lập:
 
 ## 📜 Bản quyền & Giấy phép
 
-Dự án phát triển nội bộ cho **Project Ascendant**.  
+Dự án phát triển nội bộ cho **Mortal Ascension**.
+
 Bản quyền thuộc về © Project Ascendant Team. Mọi quyền được bảo lưu.

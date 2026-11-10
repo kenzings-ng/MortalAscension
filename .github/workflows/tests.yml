@@ -68,7 +68,7 @@ jobs:
     name: Run UE Automation Tests (Manual Dispatch Only)
     if: >-
       github.event_name == 'workflow_dispatch' &&
-      github.repository == 'kenzings-ng/ProjectAscendant' &&
+      github.repository == 'kenzings-ng/MortalAscension' &&
       (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
     runs-on: [self-hosted]
     steps:

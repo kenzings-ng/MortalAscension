@@ -335,7 +335,7 @@ def generate_html_gallery():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Ascendant — Trung Tâm Xem Xét Art & Đồ Họa (Art Review Gallery)</title>
+    <title>Mortal Ascension — Trung Tâm Xem Xét Art & Đồ Họa (Art Review Gallery)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -682,7 +682,7 @@ def generate_html_gallery():
 </head>
 <body>
     <header>
-        <div class="brand-subtitle">Project Ascendant &bull; 2.5D Isometric HD-2D Dark Fantasy</div>
+        <div class="brand-subtitle">Mortal Ascension &bull; 2.5D Isometric HD-2D Dark Fantasy</div>
         <h1>Phòng Trưng Bày Đồ Họa & Art Thiết Kế</h1>
         <p class="lead-text">Thư viện tổng hợp toàn bộ các tác phẩm Art, Spritesheet 8 hướng, Hoạt ảnh PaperZD, Sprite trang bị Modular Paperdoll và Bối cảnh thế giới trước khi tiến hành ghép nối vào Unreal Engine.</p>
     </header>
