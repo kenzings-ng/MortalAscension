@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Project Ascendant — Playable Vertical Slice Sandbox</title>
+<title>Project Ascendant — Playable Vertical Slice: Outpost Crossroads</title>
 <style>
   :root {
-    --bg: #090c10;
-    --panel-bg: #161b22;
-    --border: #30363d;
+    --bg: #07090e;
+    --panel-bg: #141923;
+    --border: #242c3d;
     --accent: #58a6ff;
     --gold: #f1c40f;
     --crimson: #e03131;
@@ -21,13 +21,13 @@
     background: var(--bg);
     color: var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    padding: 16px;
+    padding: 14px;
     display: flex;
     flex-direction: column;
     align-items: center;
   }
   .container {
-    max-width: 1100px;
+    max-width: 1060px;
     width: 100%;
   }
   header {
@@ -35,8 +35,8 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid var(--border);
-    padding-bottom: 12px;
-    margin-bottom: 14px;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
   }
   h1 {
     font-size: 20px;
@@ -65,18 +65,18 @@
     background: var(--panel-bg);
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 12px 18px;
-    margin-bottom: 14px;
+    padding: 10px 16px;
+    margin-bottom: 12px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 12px;
+    gap: 10px;
     font-size: 13px;
   }
   .key-badge {
-    background: #21262d;
-    border: 1px solid #484f58;
+    background: #1f2737;
+    border: 1px solid #374258;
     color: var(--gold);
     padding: 2px 7px;
     border-radius: 4px;
@@ -88,70 +88,71 @@
   .toggles {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 12px;
     font-size: 12px;
   }
   .toggles label {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 4px;
     cursor: pointer;
   }
   .canvas-wrapper {
     position: relative;
-    border: 2px solid #30363d;
+    border: 2px solid var(--border);
     border-radius: 10px;
     overflow: hidden;
-    background: #0d1117;
-    box-shadow: 0 12px 36px rgba(0,0,0,0.7);
+    background: #06080c;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.8);
   }
   canvas {
     display: block;
-    width: 100%;
+    width: 1000px;
     height: 600px;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
   }
   .hud-overlay {
     position: absolute;
-    top: 14px;
-    left: 14px;
-    background: rgba(13, 17, 23, 0.85);
-    border: 1px solid #30363d;
+    top: 12px;
+    left: 12px;
+    background: rgba(10, 13, 19, 0.88);
+    border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 10px 14px;
+    padding: 8px 12px;
     pointer-events: none;
     font-family: monospace;
-    font-size: 12px;
-    line-height: 1.6;
+    font-size: 11px;
+    line-height: 1.5;
   }
   .hud-title {
     color: var(--gold);
     font-weight: bold;
     margin-bottom: 4px;
     font-family: sans-serif;
+    font-size: 12px;
   }
   .bar-wrap {
-    width: 180px;
-    height: 8px;
-    background: #21262d;
-    border-radius: 4px;
+    width: 160px;
+    height: 7px;
+    background: #1e2535;
+    border-radius: 3px;
     overflow: hidden;
-    margin-top: 3px;
-    margin-bottom: 6px;
+    margin-top: 2px;
+    margin-bottom: 5px;
   }
-  .bar-hp { height: 100%; background: var(--crimson); width: 100%; }
-  .bar-sta { height: 100%; background: var(--cyan); width: 100%; }
+  .bar-hp { height: 100%; background: var(--crimson); width: 100%; transition: width 0.1s; }
+  .bar-sta { height: 100%; background: var(--cyan); width: 100%; transition: width 0.05s; }
   .hud-combat {
     position: absolute;
-    bottom: 14px;
-    right: 14px;
-    background: rgba(13, 17, 23, 0.85);
-    border: 1px solid #30363d;
+    bottom: 12px;
+    right: 12px;
+    background: rgba(10, 13, 19, 0.88);
+    border: 1px solid var(--border);
     border-radius: 6px;
-    padding: 10px 14px;
+    padding: 8px 12px;
     pointer-events: none;
-    font-size: 12px;
+    font-size: 11px;
   }
   .status-text {
     color: var(--gold);
@@ -163,6 +164,18 @@
     font-size: 13px;
   }
   .link-gallery:hover { text-decoration: underline; }
+  .map-info {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    background: rgba(10, 13, 19, 0.88);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 11px;
+    color: #8b949e;
+    pointer-events: none;
+  }
 </style>
 </head>
 <body>
@@ -170,9 +183,9 @@
 <div class="container">
   <header>
     <h1>
-      <span>🛡️ Vanguard Vertical Slice — Playable Sandbox</span>
+      <span>🌲 Sanctuary Outpost Crossroads — Playable Map</span>
       <span class="badge-phase">GIAI ĐOẠN 3</span>
-      <span class="badge-playable">PLAYABLE DEMO</span>
+      <span class="badge-playable">MAP & ART THẬT</span>
     </h1>
     <a href="vanguard_phase3_vertical_slice_review.html" class="link-gallery">← Quay lại Visual Review Gallery</a>
   </header>
@@ -204,12 +217,17 @@
       <div class="bar-wrap"><div id="hpBar" class="bar-hp"></div></div>
       <div>STAMINA: <span id="staVal">100 / 100</span></div>
       <div class="bar-wrap"><div id="staBar" class="bar-sta"></div></div>
-      <div style="margin-top:6px; color:#8b949e;">Direction: <span id="dirVal" style="color:#f0f6fc;">S</span></div>
+      <div style="margin-top:4px; color:#8b949e;">Direction: <span id="dirVal" style="color:#f0f6fc;">S</span></div>
+    </div>
+
+    <div class="map-info">
+      📍 <b>Khu vực:</b> Sanctuary Outpost Crossroads (Ranh giới Dã ngoại)
+      <br>🌳 <b>Môi trường:</b> Rừng sồi cổ thụ, thảm cỏ hoa dại & lối mòn đá cổ
     </div>
 
     <div class="hud-combat">
-      <div>Đòn đánh: <span id="actionVal" class="status-text">Đứng thủ (Idle)</span></div>
-      <div>Combo Stage: <span id="comboVal" style="color:#58a6ff;">0 / 3</span></div>
+      <div>Hành động: <span id="actionVal" class="status-text">Đứng thủ (Idle)</span></div>
+      <div>Combo Chain: <span id="comboVal" style="color:#58a6ff;">0 / 3</span></div>
       <div>Mục tiêu: <span style="color:#f59e0b;">Stone Golem Training Dummy</span></div>
     </div>
   </div>
@@ -217,7 +235,7 @@
 
 <script>
 // ==============================================================================
-// 1. WEB AUDIO API SYNTHESIZER (No external audio files required!)
+// 1. WEB AUDIO SYNTHESIZER
 // ==============================================================================
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 let actx = null;
@@ -237,70 +255,62 @@ function playSound(type) {
 
   if (type === 'slash1') {
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(450, now);
-    osc.frequency.exponentialRampToValueAtTime(120, now + 0.12);
+    osc.frequency.setValueAtTime(420, now);
+    osc.frequency.exponentialRampToValueAtTime(130, now + 0.12);
     gain.gain.setValueAtTime(0.2, now);
     gain.gain.linearRampToValueAtTime(0.01, now + 0.12);
-    osc.start(now);
-    osc.stop(now + 0.12);
+    osc.start(now); osc.stop(now + 0.12);
   } else if (type === 'slash2') {
     osc.type = 'triangle';
-    osc.frequency.setValueAtTime(520, now);
+    osc.frequency.setValueAtTime(510, now);
     osc.frequency.exponentialRampToValueAtTime(140, now + 0.14);
-    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.setValueAtTime(0.24, now);
     gain.gain.linearRampToValueAtTime(0.01, now + 0.14);
-    osc.start(now);
-    osc.stop(now + 0.14);
+    osc.start(now); osc.stop(now + 0.14);
   } else if (type === 'slash3') {
     osc.type = 'sawtooth';
-    osc.frequency.setValueAtTime(650, now);
-    osc.frequency.exponentialRampToValueAtTime(90, now + 0.22);
+    osc.frequency.setValueAtTime(620, now);
+    osc.frequency.exponentialRampToValueAtTime(80, now + 0.2);
     gain.gain.setValueAtTime(0.3, now);
-    gain.gain.linearRampToValueAtTime(0.01, now + 0.22);
-    osc.start(now);
-    osc.stop(now + 0.22);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.2);
+    osc.start(now); osc.stop(now + 0.2);
   } else if (type === 'hit') {
     osc.type = 'square';
-    osc.frequency.setValueAtTime(180, now);
-    osc.frequency.exponentialRampToValueAtTime(40, now + 0.15);
-    gain.gain.setValueAtTime(0.35, now);
-    gain.gain.linearRampToValueAtTime(0.01, now + 0.15);
-    osc.start(now);
-    osc.stop(now + 0.15);
+    osc.frequency.setValueAtTime(160, now);
+    osc.frequency.exponentialRampToValueAtTime(40, now + 0.14);
+    gain.gain.setValueAtTime(0.32, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.14);
+    osc.start(now); osc.stop(now + 0.14);
   } else if (type === 'guard') {
     osc.type = 'triangle';
-    osc.frequency.setValueAtTime(800, now);
-    osc.frequency.exponentialRampToValueAtTime(300, now + 0.18);
-    gain.gain.setValueAtTime(0.3, now);
-    gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
-    osc.start(now);
-    osc.stop(now + 0.18);
+    osc.frequency.setValueAtTime(750, now);
+    osc.frequency.exponentialRampToValueAtTime(320, now + 0.16);
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.16);
+    osc.start(now); osc.stop(now + 0.16);
   } else if (type === 'dash') {
     osc.type = 'sine';
-    osc.frequency.setValueAtTime(280, now);
-    osc.frequency.exponentialRampToValueAtTime(500, now + 0.16);
-    gain.gain.setValueAtTime(0.18, now);
-    gain.gain.linearRampToValueAtTime(0.01, now + 0.16);
-    osc.start(now);
-    osc.stop(now + 0.16);
+    osc.frequency.setValueAtTime(260, now);
+    osc.frequency.exponentialRampToValueAtTime(480, now + 0.15);
+    gain.gain.setValueAtTime(0.16, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.15);
+    osc.start(now); osc.stop(now + 0.15);
   }
 }
 
 // ==============================================================================
-// 2. CANVAS & ENGINE SETUP
+// 2. CANVAS SETUP
 // ==============================================================================
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 ctx.imageSmoothingEnabled = false;
 
-// Layer toggles
 const chkLower = document.getElementById('chkLower');
 const chkUpper = document.getElementById('chkUpper');
 const chkCrest = document.getElementById('chkCrest');
 const chkTabard = document.getElementById('chkTabard');
 const chkHitbox = document.getElementById('chkHitbox');
 
-// HUD elements
 const hpVal = document.getElementById('hpVal');
 const hpBar = document.getElementById('hpBar');
 const staVal = document.getElementById('staVal');
@@ -310,74 +320,148 @@ const actionVal = document.getElementById('actionVal');
 const comboVal = document.getElementById('comboVal');
 
 // ==============================================================================
-// 3. SPRITE ASSET PRELOADER (From actual repo files)
+// 3. ASSET MANAGER (Environment + Character Sprites)
 // ==============================================================================
-const SPRITES = {};
+const ASSETS = {};
 const DIRECTIONS = ["S", "SE", "E", "NE", "N"];
 
-// Load Lower Body frames
+function loadImg(key, path) {
+  const img = new Image();
+  img.src = path;
+  ASSETS[key] = img;
+  return img;
+}
+
+// Map Tiles & Scenery
+loadImg('tileGrass', '../Content/Art/Environment/Sprites/Tiles/TILE_Grass_Base.png');
+loadImg('tileDirt', '../Content/Art/Environment/Sprites/Tiles/TILE_Dirt_Base.png');
+loadImg('tilePath', '../Content/Art/Environment/Sprites/Tiles/TILE_Stone_Cobble_Path.png');
+loadImg('tileCliff', '../Content/Art/Environment/Sprites/Tiles/TILE_Cliff_Ledge_Wall.png');
+
+loadImg('treeOak', '../Content/Art/Environment/Sprites/Trees/TREE_Oak_Canopy_02.png');
+loadImg('treePine', '../Content/Art/Environment/Sprites/Trees/TREE_Pine_Evergreen_03.png');
+loadImg('treeSapling', '../Content/Art/Environment/Sprites/Trees/TREE_Sapling_01.png');
+
+loadImg('propBrazier', '../Content/Art/Environment/Sprites/Props/PROP_Brazier_Torch_04_sheet.png');
+loadImg('propCrate', '../Content/Art/Environment/Sprites/Props/PROP_Crate_Oak_01.png');
+loadImg('propBarrel', '../Content/Art/Environment/Sprites/Props/PROP_Barrel_Keg_02.png');
+loadImg('propSign', '../Content/Art/Environment/Sprites/Props/PROP_Signpost_Waymarker_03.png');
+loadImg('rockBoulder', '../Content/Art/Environment/Sprites/Props/ROCK_Boulder_Mossy_02.png');
+loadImg('rockCrag', '../Content/Art/Environment/Sprites/Props/ROCK_Formation_Crag_03.png');
+
+loadImg('folBush', '../Content/Art/Environment/Sprites/Foliage/FOL_Bush_Medium_02.png');
+loadImg('folBramble', '../Content/Art/Environment/Sprites/Foliage/FOL_Bush_Bramble_03.png');
+loadImg('folFlower', '../Content/Art/Environment/Sprites/Foliage/FOL_Flower_Poppies_01.png');
+loadImg('folDaisies', '../Content/Art/Environment/Sprites/Foliage/FOL_Flower_Daisies_03.png');
+loadImg('folGrass', '../Content/Art/Environment/Sprites/Foliage/FOL_Grass_Tall_03.png');
+
+// Character Sprites (Lower Body)
 const lowerAnims = { idle: 4, walk: 6, run: 6, dash: 3, hitstun: 2 };
 for (const [anim, count] of Object.entries(lowerAnims)) {
   for (const d of DIRECTIONS) {
     for (let f = 0; f < count; f++) {
-      const key = `lower_${anim}_${d}_${f}`;
-      const img = new Image();
-      img.src = `../Content/art/characters/MasterRigs/FB_Lower_HeavyTank_Set/frames/${anim}/FB_Lower_HeavyTank_Set_${anim}_{d}_f{f < 10 ? '0' + f : f}.png`
-        .replace('{d}', d).replace('{f}', f < 10 ? '0' + f : f);
-      SPRITES[key] = img;
+      const fStr = f < 10 ? '0' + f : f;
+      loadImg(`lower_${anim}_${d}_${f}`, `../Content/art/characters/MasterRigs/FB_Lower_HeavyTank_Set/frames/${anim}/FB_Lower_HeavyTank_Set_${anim}_${d}_f${fStr}.png`);
     }
   }
 }
 
-// Load Upper Body Combat frames
+// Character Sprites (Upper Body Combat)
 const upperActions = ["atk1", "atk2", "atk3", "guard"];
 for (const act of upperActions) {
   for (const d of DIRECTIONS) {
     for (let f = 0; f < 4; f++) {
-      const key = `upper_${act}_${d}_${f}`;
-      const img = new Image();
-      img.src = `../Content/art/characters/UpperBodyWeapons/FB_Upper_1H_Blade_Combo/frames/${act}/FB_Upper_1H_Blade_Combo_${act}_{d}_f{f < 10 ? '0' + f : f}.png`
-        .replace('{d}', d).replace('{f}', f < 10 ? '0' + f : f);
-      SPRITES[key] = img;
+      const fStr = f < 10 ? '0' + f : f;
+      loadImg(`upper_${act}_${d}_${f}`, `../Content/art/characters/UpperBodyWeapons/FB_Upper_1H_Blade_Combo/frames/${act}/FB_Upper_1H_Blade_Combo_${act}_${d}_f${fStr}.png`);
     }
   }
 }
 
-// Load Vanguard Idle Upper frames
+// Character Sprites (Vanguard Idle, Crest, Tabard)
 for (const d of DIRECTIONS) {
   for (let f = 0; f < 4; f++) {
-    const key = `upper_idle_${d}_${f}`;
-    const img = new Image();
-    img.src = `../Content/art/characters/ClassIdentity/IdleStances/FB_Vanguard_Idle/FB_Vanguard_Idle_${d}_f0${f}.png`;
-    SPRITES[key] = img;
+    loadImg(`upper_idle_${d}_${f}`, `../Content/art/characters/ClassIdentity/IdleStances/FB_Vanguard_Idle/FB_Vanguard_Idle_${d}_f0${f}.png`);
   }
-}
-
-// Load Crests & Tabards
-for (const d of DIRECTIONS) {
-  const cImg = new Image();
-  cImg.src = `../Content/art/characters/ClassIdentity/HelmCrests/Crest_Vanguard_RedPlume_${d}.png`;
-  SPRITES[`crest_${d}`] = cImg;
-
-  const tImg = new Image();
-  tImg.src = `../Content/art/characters/ClassIdentity/Tabards/Tabard_Vanguard_CrimsonSash_${d}.png`;
-  SPRITES[`tabard_${d}`] = tImg;
+  loadImg(`crest_${d}`, `../Content/art/characters/ClassIdentity/HelmCrests/Crest_Vanguard_RedPlume_${d}.png`);
+  loadImg(`tabard_${d}`, `../Content/art/characters/ClassIdentity/Tabards/Tabard_Vanguard_CrimsonSash_${d}.png`);
 }
 
 // ==============================================================================
-// 4. GAME ENTITIES & LOGIC
+// 4. MAP TILES & SCENERY MATRIX
 // ==============================================================================
+const TILE_W = 48;
+const TILE_H = 48;
+const COLS = 21;
+const ROWS = 13;
 
+// 0: Grass, 1: Dirt, 2: Cobblestone Path, 3: Cliff Ledge Wall
+const MAP_MATRIX = [
+  [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],
+  [0,0,0,0,1,1,1,0,0,0,2,2,0,0,0,0,0,0,0,0,0],
+  [0,0,0,1,1,1,1,1,0,0,2,2,0,0,1,1,0,0,0,0,0],
+  [0,0,1,1,1,1,1,1,1,0,2,2,0,1,1,1,1,0,0,0,0],
+  [0,1,1,1,1,1,1,1,1,2,2,2,1,1,1,1,1,1,0,0,0],
+  [1,1,1,1,1,1,1,1,2,2,2,2,2,1,1,1,1,1,1,0,0],
+  [1,1,1,1,1,1,1,2,2,2,2,2,2,2,1,1,1,1,1,1,0],
+  [0,1,1,1,1,2,2,2,2,2,2,2,2,2,2,1,1,1,1,0,0],
+  [0,0,1,1,2,2,2,2,2,1,2,2,2,2,2,2,1,1,0,0,0],
+  [0,0,0,2,2,2,2,1,1,1,2,2,2,2,2,2,2,1,0,0,0],
+  [0,0,2,2,2,2,1,1,1,1,2,2,2,2,2,2,1,0,0,0,0],
+  [0,2,2,2,1,1,1,0,0,0,1,2,2,1,1,1,0,0,0,0,0],
+  [0,2,2,1,1,1,0,0,0,0,0,1,1,1,0,0,0,0,0,0,0]
+];
+
+// Scenery Props placed in world
+const SCENERY_OBJECTS = [
+  // Trees (Oak & Pine)
+  { type: 'treeOak', x: 80,  y: 70,  w: 120, h: 180, footY: 220, solidR: 24 },
+  { type: 'treeOak', x: 860, y: 60,  w: 130, h: 195, footY: 225, solidR: 26 },
+  { type: 'treePine', x: 40,  y: 280, w: 90,  h: 180, footY: 440, solidR: 20 },
+  { type: 'treePine', x: 920, y: 290, w: 90,  h: 180, footY: 450, solidR: 20 },
+  { type: 'treeSapling', x: 230, y: 460, w: 60, h: 90, footY: 535, solidR: 12 },
+
+  // Rocks & Boulders
+  { type: 'rockBoulder', x: 260, y: 160, w: 64, h: 64, footY: 210, solidR: 26 },
+  { type: 'rockBoulder', x: 740, y: 460, w: 64, h: 64, footY: 510, solidR: 26 },
+  { type: 'rockCrag',    x: 770, y: 140, w: 80, h: 80, footY: 200, solidR: 30 },
+
+  // Camp Outpost (Crates & Barrels)
+  { type: 'propCrate',  x: 360, y: 240, w: 48, h: 48, footY: 280, solidR: 18 },
+  { type: 'propCrate',  x: 395, y: 250, w: 48, h: 48, footY: 290, solidR: 18 },
+  { type: 'propBarrel', x: 340, y: 275, w: 44, h: 44, footY: 310, solidR: 16 },
+  { type: 'propBarrel', x: 375, y: 285, w: 44, h: 44, footY: 320, solidR: 16 },
+
+  // Waymarker Sign
+  { type: 'propSign', x: 490, y: 390, w: 48, h: 48, footY: 430, solidR: 14 },
+
+  // Foliage & Wildflowers
+  { type: 'folBush',    x: 180, y: 190, w: 48, h: 48, footY: 230 },
+  { type: 'folBush',    x: 820, y: 440, w: 48, h: 48, footY: 480 },
+  { type: 'folBramble', x: 130, y: 390, w: 48, h: 48, footY: 430 },
+  { type: 'folFlower',  x: 430, y: 170, w: 32, h: 32, footY: 190 },
+  { type: 'folFlower',  x: 620, y: 480, w: 32, h: 32, footY: 500 },
+  { type: 'folDaisies', x: 310, y: 400, w: 32, h: 32, footY: 420 },
+  { type: 'folDaisies', x: 670, y: 220, w: 32, h: 32, footY: 240 },
+  { type: 'folGrass',   x: 290, y: 130, w: 32, h: 32, footY: 150 },
+  { type: 'folGrass',   x: 580, y: 440, w: 32, h: 32, footY: 460 },
+
+  // Campfire Brazier with animated flame
+  { type: 'propBrazier', x: 500, y: 220, w: 64, h: 64, footY: 270, solidR: 18, isBrazier: true }
+];
+
+// ==============================================================================
+// 5. PLAYER & DUMMY ENTITIES
+// ==============================================================================
 const player = {
-  x: 420,
-  y: 330,
+  x: 440,
+  y: 340,
   vx: 0,
   vy: 0,
   speed: 3.4,
   dir: 'S',
   flipX: false,
-  state: 'idle', // idle, walk, run, dash, atk, guard, hitstun
-  comboStage: 0, // 1, 2, 3
+  state: 'idle',
+  comboStage: 0,
   attackTimer: 0,
   comboResetTimer: 0,
   guarding: false,
@@ -392,8 +476,8 @@ const player = {
 };
 
 const dummy = {
-  x: 620,
-  y: 330,
+  x: 640,
+  y: 340,
   hp: 500,
   maxHp: 500,
   posture: 100,
@@ -402,9 +486,9 @@ const dummy = {
   hitStunTimer: 0
 };
 
-const fctList = []; // Floating combat texts
-const sparkParticles = []; // Spark VFX
-const embers = []; // Atmospheric embers
+const fctList = [];
+const sparkParticles = [];
+const embers = [];
 
 for (let i = 0; i < 40; i++) {
   embers.push({
@@ -417,30 +501,19 @@ for (let i = 0; i < 40; i++) {
   });
 }
 
-// Keyboard input state
+// Input listeners
 const keys = {};
 window.addEventListener('keydown', (e) => {
   initAudio();
   keys[e.key.toLowerCase()] = true;
-
-  if ((e.key === ' ' || e.key.toLowerCase() === 'j') && player.state !== 'dash') {
-    triggerAttack();
-  }
-  if (e.key.toLowerCase() === 'k') {
-    player.guarding = true;
-  }
-  if (e.key === 'Shift' && player.dashCooldown <= 0 && player.stamina >= 20) {
-    triggerDash();
-  }
+  if ((e.key === ' ' || e.key.toLowerCase() === 'j') && player.state !== 'dash') triggerAttack();
+  if (e.key.toLowerCase() === 'k') player.guarding = true;
+  if (e.key === 'Shift' && player.dashCooldown <= 0 && player.stamina >= 20) triggerDash();
 });
-
 window.addEventListener('keyup', (e) => {
   keys[e.key.toLowerCase()] = false;
-  if (e.key.toLowerCase() === 'k') {
-    player.guarding = false;
-  }
+  if (e.key.toLowerCase() === 'k') player.guarding = false;
 });
-
 canvas.addEventListener('mousedown', (e) => {
   initAudio();
   if (e.button === 0) triggerAttack();
@@ -453,13 +526,8 @@ canvas.addEventListener('contextmenu', e => e.preventDefault());
 
 function triggerAttack() {
   if (player.state === 'dash' || player.guarding) return;
-
   if (player.attackTimer <= 0) {
-    if (player.comboResetTimer > 0 && player.comboStage < 3) {
-      player.comboStage++;
-    } else {
-      player.comboStage = 1;
-    }
+    player.comboStage = (player.comboResetTimer > 0 && player.comboStage < 3) ? player.comboStage + 1 : 1;
     player.state = 'atk';
     player.attackTimer = 16;
     player.comboResetTimer = 35;
@@ -467,14 +535,10 @@ function triggerAttack() {
     player.animTick = 0;
     playSound(`slash${player.comboStage}`);
 
-    // Hitbox detection on dummy
+    // Hit check against dummy
     const dx = dummy.x - player.x;
     const dy = dummy.y - player.y;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-
-    if (dist < 80) {
-      applyHitToDummy(player.comboStage);
-    }
+    if (Math.sqrt(dx * dx + dy * dy) < 85) applyHitToDummy(player.comboStage);
   }
 }
 
@@ -487,7 +551,6 @@ function triggerDash() {
   player.animTick = 0;
   playSound('dash');
 
-  // Determine dash direction
   let dx = 0, dy = 0;
   if (keys['w'] || keys['arrowup']) dy -= 1;
   if (keys['s'] || keys['arrowdown']) dy += 1;
@@ -508,10 +571,9 @@ function applyHitToDummy(stage) {
   dummy.hp = Math.max(0, dummy.hp - dmg);
   dummy.posture = Math.max(0, dummy.posture - 25);
 
-  // Floating text
   fctList.push({
     x: dummy.x + (Math.random() - 0.5) * 20,
-    y: dummy.y - 40,
+    y: dummy.y - 45,
     text: isCrit ? `CRIT! ${dmg}` : `${dmg}`,
     color: isCrit ? '#f1c40f' : '#ffffff',
     size: isCrit ? 18 : 14,
@@ -523,7 +585,7 @@ function applyHitToDummy(stage) {
     dummy.posture = 100;
     fctList.push({
       x: dummy.x,
-      y: dummy.y - 60,
+      y: dummy.y - 65,
       text: 'STAGGER!',
       color: '#e03131',
       size: 20,
@@ -532,7 +594,6 @@ function applyHitToDummy(stage) {
     });
   }
 
-  // Sparks
   for (let i = 0; i < (isCrit ? 18 : 8); i++) {
     sparkParticles.push({
       x: dummy.x,
@@ -546,48 +607,31 @@ function applyHitToDummy(stage) {
 }
 
 // ==============================================================================
-// 5. UPDATE LOOP (60 FPS)
+// 6. UPDATE LOOP
 // ==============================================================================
 function update() {
-  // Stamina regen
-  if (player.stamina < 100) {
-    player.stamina = Math.min(100, player.stamina + 0.5);
-  }
+  if (player.stamina < 100) player.stamina = Math.min(100, player.stamina + 0.5);
   if (player.dashCooldown > 0) player.dashCooldown--;
   if (player.comboResetTimer > 0) {
     player.comboResetTimer--;
     if (player.comboResetTimer <= 0) player.comboStage = 0;
   }
 
-  // Dash state
   if (player.state === 'dash') {
     player.x += player.dashDir.x * 7.5;
     player.y += player.dashDir.y * 7.5;
     player.dashTimer--;
-    // Afterimage ghost
     if (player.dashTimer % 2 === 0) {
-      player.ghosts.push({
-        x: player.x,
-        y: player.y,
-        dir: player.dir,
-        flipX: player.flipX,
-        alpha: 0.6
-      });
+      player.ghosts.push({ x: player.x, y: player.y, dir: player.dir, flipX: player.flipX, alpha: 0.6 });
     }
-    if (player.dashTimer <= 0) {
-      player.state = 'idle';
-    }
+    if (player.dashTimer <= 0) player.state = 'idle';
   } else if (player.state === 'atk') {
     player.attackTimer--;
-    if (player.attackTimer <= 0) {
-      player.state = 'idle';
-    }
+    if (player.attackTimer <= 0) player.state = 'idle';
   } else if (player.guarding) {
     player.state = 'guard';
   } else {
-    // Normal locomotion
-    let moveX = 0;
-    let moveY = 0;
+    let moveX = 0, moveY = 0;
     if (keys['w'] || keys['arrowup']) moveY -= 1;
     if (keys['s'] || keys['arrowdown']) moveY += 1;
     if (keys['a'] || keys['arrowleft']) moveX -= 1;
@@ -595,14 +639,12 @@ function update() {
 
     if (moveX !== 0 || moveY !== 0) {
       const len = Math.sqrt(moveX * moveX + moveY * moveY);
-      moveX /= len;
-      moveY /= len;
-
+      moveX /= len; moveY /= len;
       player.x += moveX * player.speed;
       player.y += moveY * player.speed;
       player.state = 'walk';
 
-      // Isometric direction mapping
+      // Isometric 5-direction mapping
       if (moveY < -0.3) {
         if (moveX > 0.3) { player.dir = 'NE'; player.flipX = false; }
         else if (moveX < -0.3) { player.dir = 'NE'; player.flipX = true; }
@@ -620,11 +662,23 @@ function update() {
     }
   }
 
-  // Arena clamping
-  player.x = Math.max(60, Math.min(940, player.x));
-  player.y = Math.max(90, Math.min(540, player.y));
+  // Obstacle solid collisions
+  for (const obj of SCENERY_OBJECTS) {
+    if (!obj.solidR) continue;
+    const dx = player.x - obj.x;
+    const dy = player.y - obj.footY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    if (dist < obj.solidR + 14) {
+      const angle = Math.atan2(dy, dx);
+      player.x = obj.x + Math.cos(angle) * (obj.solidR + 14);
+      player.y = obj.footY + Math.sin(angle) * (obj.solidR + 14);
+    }
+  }
 
-  // Animation frame ticks
+  // World bounds
+  player.x = Math.max(50, Math.min(950, player.x));
+  player.y = Math.max(90, Math.min(550, player.y));
+
   player.animTick++;
   const tickLimit = player.state === 'dash' ? 4 : (player.state === 'atk' ? 4 : 8);
   if (player.animTick >= tickLimit) {
@@ -632,41 +686,33 @@ function update() {
     player.frameIdx++;
   }
 
-  // Ghost decay
   for (let i = player.ghosts.length - 1; i >= 0; i--) {
     player.ghosts[i].alpha -= 0.08;
     if (player.ghosts[i].alpha <= 0) player.ghosts.splice(i, 1);
   }
 
-  // Dummy timers
   if (dummy.flashTimer > 0) dummy.flashTimer--;
   if (dummy.hitStunTimer > 0) dummy.hitStunTimer--;
 
-  // FCT update
   for (let i = fctList.length - 1; i >= 0; i--) {
-    const f = fctList[i];
-    f.y += f.vy;
-    f.life--;
-    if (f.life <= 0) fctList.splice(i, 1);
+    fctList[i].y += fctList[i].vy;
+    fctList[i].life--;
+    if (fctList[i].life <= 0) fctList.splice(i, 1);
   }
 
-  // Sparks update
   for (let i = sparkParticles.length - 1; i >= 0; i--) {
-    const p = sparkParticles[i];
-    p.x += p.vx;
-    p.y += p.vy;
-    p.life--;
-    if (p.life <= 0) sparkParticles.splice(i, 1);
+    sparkParticles[i].x += sparkParticles[i].vx;
+    sparkParticles[i].y += sparkParticles[i].vy;
+    sparkParticles[i].life--;
+    if (sparkParticles[i].life <= 0) sparkParticles.splice(i, 1);
   }
 
-  // Embers update
   for (const e of embers) {
-    e.x += e.vx;
-    e.y += e.vy;
+    e.x += e.vx; e.y += e.vy;
     if (e.y < 0) e.y = 600;
   }
 
-  // HUD Update
+  // HUD
   hpVal.innerText = `${player.hp} / 100`;
   hpBar.style.width = `${player.hp}%`;
   staVal.innerText = `${Math.floor(player.stamina)} / 100`;
@@ -683,42 +729,80 @@ function update() {
 }
 
 // ==============================================================================
-// 6. RENDER LOOP (Isometric Arena & High-Craft Sprites)
+// 7. RENDER WITH REAL TILES & Y-SORTED DEPTH
 // ==============================================================================
 function render() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // 1. Draw Isometric Cobblestone Arena Ground
-  drawArenaGround();
+  // 1. Draw Real Terrain Grid
+  drawTerrain();
 
-  // 2. Draw Embers (Ambient volumetric particles)
+  // 2. Draw Brazier Light Glow (Volumetric Radial Gradient)
+  const brazierObj = SCENERY_OBJECTS.find(o => o.isBrazier);
+  if (brazierObj) {
+    const pulse = Math.sin(Date.now() * 0.007) * 20;
+    const grad = ctx.createRadialGradient(brazierObj.x, brazierObj.y, 10, brazierObj.x, brazierObj.y, 220 + pulse);
+    grad.addColorStop(0, 'rgba(245, 158, 11, 0.42)');
+    grad.addColorStop(0.4, 'rgba(217, 119, 6, 0.16)');
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(brazierObj.x, brazierObj.y, 220 + pulse, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // 3. Embers
   for (const e of embers) {
     ctx.fillStyle = `rgba(245, 158, 11, ${e.alpha})`;
     ctx.fillRect(e.x, e.y, e.size, e.size);
   }
 
-  // 3. Draw Training Dummy
-  drawTrainingDummy();
+  // 4. Build Y-Sorted Display List (Scenery Props + Dummy + Dash Ghosts + Player)
+  const displayList = [];
 
-  // 4. Draw Player Dash Ghosts (Afterimages)
-  for (const g of player.ghosts) {
-    ctx.save();
-    ctx.globalAlpha = g.alpha * 0.5;
-    ctx.filter = 'drop-shadow(0 0 6px rgba(30, 213, 198, 0.8))';
-    drawPlayerSprite(g.x, g.y, g.dir, g.flipX, 'dash', 1);
-    ctx.restore();
+  for (const obj of SCENERY_OBJECTS) {
+    displayList.push({
+      y: obj.footY || obj.y,
+      render: () => drawScenery(obj)
+    });
   }
 
-  // 5. Draw Player Character (Composed Paper2D Layers)
-  drawPlayerSprite(player.x, player.y, player.dir, player.flipX, player.state, player.frameIdx);
+  displayList.push({
+    y: dummy.y,
+    render: () => drawTrainingDummy()
+  });
 
-  // 6. Draw Sparks VFX
+  for (const g of player.ghosts) {
+    displayList.push({
+      y: g.y - 1,
+      render: () => {
+        ctx.save();
+        ctx.globalAlpha = g.alpha * 0.5;
+        ctx.filter = 'drop-shadow(0 0 6px rgba(30, 213, 198, 0.8))';
+        drawPlayerSprite(g.x, g.y, g.dir, g.flipX, 'dash', 1);
+        ctx.restore();
+      }
+    });
+  }
+
+  displayList.push({
+    y: player.y,
+    render: () => drawPlayerSprite(player.x, player.y, player.dir, player.flipX, player.state, player.frameIdx)
+  });
+
+  // Sort objects by feet Y coordinate
+  displayList.sort((a, b) => a.y - b.y);
+  for (const item of displayList) {
+    item.render();
+  }
+
+  // 5. Sparks VFX
   for (const p of sparkParticles) {
     ctx.fillStyle = p.color;
     ctx.fillRect(p.x, p.y, 3, 3);
   }
 
-  // 7. Draw Floating Combat Texts (FCT)
+  // 6. Floating Combat Text
   for (const f of fctList) {
     ctx.font = `bold ${f.size}px -apple-system, sans-serif`;
     ctx.fillStyle = '#000000';
@@ -728,50 +812,63 @@ function render() {
   }
 }
 
-function drawArenaGround() {
-  // Dark stone floor tiles
-  const tileSize = 64;
-  for (let y = 0; y < canvas.height; y += tileSize) {
-    for (let x = 0; x < canvas.width; x += tileSize) {
-      const isAlt = ((x / tileSize) + (y / tileSize)) % 2 === 0;
-      ctx.fillStyle = isAlt ? '#131822' : '#0f131a';
-      ctx.fillRect(x, y, tileSize, tileSize);
-      ctx.strokeStyle = '#1b2230';
-      ctx.strokeRect(x, y, tileSize, tileSize);
+function drawTerrain() {
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const type = MAP_MATRIX[r][c];
+      const px = c * TILE_W;
+      const py = r * TILE_H;
+
+      let tileImg = ASSETS.tileGrass;
+      if (type === 1) tileImg = ASSETS.tileDirt;
+      else if (type === 2) tileImg = ASSETS.tilePath;
+      else if (type === 3) tileImg = ASSETS.tileCliff;
+
+      if (tileImg && tileImg.complete && tileImg.naturalWidth > 0) {
+        ctx.drawImage(tileImg, px, py, TILE_W, TILE_H);
+      } else {
+        // High-quality procedural fallback
+        if (type === 2) {
+          ctx.fillStyle = '#4a5568';
+          ctx.fillRect(px, py, TILE_W, TILE_H);
+          ctx.fillStyle = '#718096';
+          ctx.fillRect(px + 4, py + 4, TILE_W - 8, TILE_H - 8);
+        } else if (type === 1) {
+          ctx.fillStyle = '#5c4033';
+          ctx.fillRect(px, py, TILE_W, TILE_H);
+        } else if (type === 3) {
+          ctx.fillStyle = '#2d3748';
+          ctx.fillRect(px, py, TILE_W, TILE_H);
+        } else {
+          ctx.fillStyle = '#1e3a1e';
+          ctx.fillRect(px, py, TILE_W, TILE_H);
+        }
+      }
     }
   }
+}
 
-  // Arena Ring Border
-  ctx.strokeStyle = '#2a354a';
-  ctx.lineWidth = 4;
-  ctx.strokeRect(40, 50, 920, 500);
+function drawScenery(obj) {
+  const img = ASSETS[obj.type];
 
-  // Torches with radial volumetric light simulation
-  const torches = [
-    { x: 100, y: 100 },
-    { x: 900, y: 100 },
-    { x: 100, y: 500 },
-    { x: 900, y: 500 }
-  ];
+  // Animated Brazier torch frame
+  if (obj.isBrazier && img && img.complete && img.naturalWidth > 0) {
+    const fIdx = Math.floor(Date.now() / 120) % 4;
+    // Brazier sheet is 128x32 (4 frames of 32x32)
+    ctx.drawImage(img, fIdx * 32, 0, 32, 32, obj.x - obj.w / 2, obj.y - obj.h / 2, obj.w, obj.h);
+    return;
+  }
 
-  for (const t of torches) {
-    const pulse = Math.sin(Date.now() * 0.008 + t.x) * 15;
-    const grad = ctx.createRadialGradient(t.x, t.y, 10, t.x, t.y, 160 + pulse);
-    grad.addColorStop(0, 'rgba(245, 158, 11, 0.35)');
-    grad.addColorStop(0.5, 'rgba(217, 119, 6, 0.12)');
-    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    ctx.fillStyle = grad;
+  // Ground shadow for scenery
+  if (obj.solidR) {
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
     ctx.beginPath();
-    ctx.arc(t.x, t.y, 160 + pulse, 0, Math.PI * 2);
+    ctx.ellipse(obj.x, obj.footY, obj.solidR, obj.solidR * 0.45, 0, 0, Math.PI * 2);
     ctx.fill();
+  }
 
-    // Torch stand & fire flame
-    ctx.fillStyle = '#374151';
-    ctx.fillRect(t.x - 3, t.y - 10, 6, 20);
-    ctx.fillStyle = '#f59e0b';
-    ctx.beginPath();
-    ctx.arc(t.x, t.y - 14, 5, 0, Math.PI * 2);
-    ctx.fill();
+  if (img && img.complete && img.naturalWidth > 0) {
+    ctx.drawImage(img, obj.x - obj.w / 2, obj.footY - obj.h, obj.w, obj.h);
   }
 }
 
@@ -779,29 +876,23 @@ function drawTrainingDummy() {
   const x = dummy.x;
   const y = dummy.y;
 
-  // Ground shadow
-  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.fillStyle = 'rgba(0,0,0,0.45)';
   ctx.beginPath();
   ctx.ellipse(x, y + 25, 26, 12, 0, 0, Math.PI * 2);
   ctx.fill();
 
-  // Stone Golem Dummy Body
   ctx.save();
-  if (dummy.flashTimer > 0) {
-    ctx.filter = 'brightness(2.5)';
-  }
-  // Cross wooden/stone post
+  if (dummy.flashTimer > 0) ctx.filter = 'brightness(2.5)';
+
   ctx.fillStyle = '#4b5563';
   ctx.fillRect(x - 6, y - 45, 12, 70);
   ctx.fillRect(x - 28, y - 30, 56, 12);
 
-  // Stone head
   ctx.fillStyle = '#6b7280';
   ctx.fillRect(x - 14, y - 55, 28, 22);
-  ctx.fillStyle = '#ef4444'; // Red glowing target eye
+  ctx.fillStyle = '#ef4444';
   ctx.fillRect(x - 4, y - 47, 8, 4);
 
-  // Target Shield on chest
   ctx.fillStyle = '#9ca3af';
   ctx.beginPath();
   ctx.arc(x, y - 10, 16, 0, Math.PI * 2);
@@ -811,17 +902,15 @@ function drawTrainingDummy() {
   ctx.stroke();
   ctx.restore();
 
-  // Health bar over dummy
   const barW = 60;
-  const hpPct = dummy.hp / dummy.maxHp;
   ctx.fillStyle = '#1f2937';
   ctx.fillRect(x - barW / 2, y - 75, barW, 6);
   ctx.fillStyle = '#ef4444';
-  ctx.fillRect(x - barW / 2, y - 75, barW * hpPct, 6);
+  ctx.fillRect(x - barW / 2, y - 75, barW * (dummy.hp / dummy.maxHp), 6);
 }
 
 function drawPlayerSprite(px, py, dir, flipX, state, frameIdx) {
-  // Ground contact shadow
+  // Ground shadow
   ctx.fillStyle = 'rgba(0,0,0,0.45)';
   ctx.beginPath();
   ctx.ellipse(px, py + 48, 24, 10, 0, 0, Math.PI * 2);
@@ -831,57 +920,53 @@ function drawPlayerSprite(px, py, dir, flipX, state, frameIdx) {
   ctx.translate(px, py);
   if (flipX) ctx.scale(-1, 1);
 
-  // 128x128 sprite drawn with origin at center-waist (X=64, Y=64)
   const drawX = -64;
   const drawY = -64;
 
-  // Determine Lower Body frame
   let lowerKey = `lower_idle_${dir}_${frameIdx % 4}`;
   if (state === 'walk') lowerKey = `lower_walk_${dir}_${frameIdx % 6}`;
   else if (state === 'dash') lowerKey = `lower_dash_${dir}_${frameIdx % 3}`;
 
-  // Determine Upper Body frame
   let upperKey = `upper_idle_${dir}_${frameIdx % 4}`;
   if (state === 'atk') upperKey = `upper_atk${player.comboStage}_${dir}_${frameIdx % 4}`;
   else if (state === 'guard') upperKey = `upper_guard_${dir}_${frameIdx % 4}`;
 
-  // 1. LAYER 1: Lower Body Master Rig
-  if (chkLower.checked && SPRITES[lowerKey] && SPRITES[lowerKey].complete) {
-    ctx.drawImage(SPRITES[lowerKey], drawX, drawY);
+  // 1. Lower Body
+  if (chkLower.checked && ASSETS[lowerKey] && ASSETS[lowerKey].complete) {
+    ctx.drawImage(ASSETS[lowerKey], drawX, drawY);
   }
 
-  // 2. LAYER 2: Vanguard Tabard
+  // 2. Tabard
   const tabardKey = `tabard_${dir}`;
-  if (chkTabard.checked && SPRITES[tabardKey] && SPRITES[tabardKey].complete) {
-    ctx.drawImage(SPRITES[tabardKey], drawX + 40, drawY + 60);
+  if (chkTabard.checked && ASSETS[tabardKey] && ASSETS[tabardKey].complete) {
+    ctx.drawImage(ASSETS[tabardKey], drawX + 40, drawY + 60);
   }
 
-  // 3. LAYER 3: Upper Body Weapon Family
-  if (chkUpper.checked && SPRITES[upperKey] && SPRITES[upperKey].complete) {
-    ctx.drawImage(SPRITES[upperKey], drawX, drawY);
+  // 3. Upper Body
+  if (chkUpper.checked && ASSETS[upperKey] && ASSETS[upperKey].complete) {
+    ctx.drawImage(ASSETS[upperKey], drawX, drawY);
   }
 
-  // 4. LAYER 4: Vanguard Helm Crest (Red Plume)
+  // 4. Helm Crest
   const crestKey = `crest_${dir}`;
-  if (chkCrest.checked && SPRITES[crestKey] && SPRITES[crestKey].complete) {
-    ctx.drawImage(SPRITES[crestKey], drawX + 48, drawY + 20);
+  if (chkCrest.checked && ASSETS[crestKey] && ASSETS[crestKey].complete) {
+    ctx.drawImage(ASSETS[crestKey], drawX + 48, drawY + 20);
   }
 
-  // Debug Hitbox / Sockets
   if (chkHitbox.checked) {
     ctx.strokeStyle = '#22c55e';
-    ctx.strokeRect(-20, -35, 40, 80); // Body bounding box
+    ctx.strokeRect(-20, -35, 40, 80);
     ctx.fillStyle = '#ef4444';
-    ctx.fillRect(-2, -2, 4, 4); // Waist socket (0, 0)
+    ctx.fillRect(-2, -2, 4, 4);
     ctx.fillStyle = '#3b82f6';
-    ctx.fillRect(-2, -30, 4, 4); // Helm socket (0, -30)
+    ctx.fillRect(-2, -30, 4, 4);
   }
 
   ctx.restore();
 }
 
 // ==============================================================================
-// 7. MAIN GAME LOOP
+// 8. ENGINE LOOP
 // ==============================================================================
 function loop() {
   update();
