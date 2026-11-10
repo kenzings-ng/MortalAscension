@@ -66,7 +66,7 @@ Giai đoạn 2B không cần duyệt thẩm mỹ, nên agent làm 2B trong lúc 
 - [x] Mood board: 🛑 chủ dự án đã chọn 4 game tham chiếu (Octopath Traveler II, Dark Souls / Elden Ring, Children of Morta, Triangle Strategy) ngày 2026-11-10; tài liệu tổng hợp tại `design/art/vanguard-mood-board.md`.
 - [x] Cập nhật `SPEC-ART V2` theo mood board (tỷ lệ 3.2–3.5 đầu, pivot 64,114, ramp 4 tông, 5 hướng + lật) trong `design/art/pixel-asset-specifications.md:7,141-177`.
 - [x] Design sheet Vanguard 5 hướng, qua `pixel-review` ở 32×32 và 16×16 (`Art_Gallery/vanguard_design_sheet_5dir.png`, `vanguard_design_sheet_32x32.png`, `vanguard_design_sheet_16x16.png`, review tool `Art_Gallery/vanguard_phase2_design_sheet_review.html`, test `Scripts/test_vanguard_design_sheet_art_gate.py` PASS 100%).
-- [ ] 🛑 Chủ dự án duyệt design sheet.
+- [x] 🛑 Chủ dự án duyệt design sheet (đã duyệt ngày 2026-11-10; PR #48).
 
 **Xong khi**: chủ dự án nói "chốt".
 
