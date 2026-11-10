@@ -945,4 +945,41 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   - Independent Code Reviewer: **APPROVED**.
   - Review bot findings (P2 binary alpha & thumbnail aspect ratio): Đã giải quyết và resolve 100% review threads.
   - Chủ dự án chính thức duyệt "chốt" design sheet ngày 2026-11-10 (PR #48).
-- **Cột mốc**: Giai đoạn 2 (`ROADMAP.md:62-72`) chính thức hoàn thành **100%**. Sẵn sàng merge vào `main` và chuyển sang Giai đoạn 2B / Giai đoạn 3.
+- **Cột mốc**: Giai đoạn 2 (`ROADMAP.md:62-72`) chính thức hoàn thành **100%**. Đã merge vào `main` tại commit `6f34be3` (PR #48).
+
+---
+
+## 17. Nhật Ký Đầu Việc: Nhánh `feat/phase2b-dual-class-progression-scrolls` (Giai Đoạn 2B: Hệ Thống Song Chức Nghiệp & Quyển Trục Thăng Chức)
+
+- **Mục tiêu**: Hiện thực hóa toàn bộ 8 hạng mục của Giai đoạn 2B (`ROADMAP.md:75-87`) theo `DECISIONS.md` §1, §2, §3, §4, §7, §8, §12 và `design/gdd/advanced-classes.md`:
+  1. **GameplayTags 16 Chức Nghiệp Chuẩn Hóa**:
+     - Xác thực 16 GameplayTag `Class.Line.<Nhánh>.<Class>` (4 T1 Novice, 6 T2 Intermediate, 5 T3 Master, 1 T4 Apex GodSlayer) được khai báo sẵn tại `Config/DefaultGameplayTags.ini:2-17`.
+     - Hiện thực `FPAClassProgressionHelper` hỗ trợ truy vấn Rank (T1-T4), Line (Guard, Scout, Caster, Faith, Apex) và vũ khí định danh (`PAClassProgressionTypes.h`).
+  2. **Data Asset Quyển Trục Thăng Chức (`UClassPromotionScrollDefinition`)**:
+     - Định nghĩa `ScrollID`, `TargetClassTag`, `AllowedSourceClassTags`, `RequiredMinRank`, `RequiredSourceClassLevel = 20`, `RequiredQuestFlag`.
+     - Hỗ trợ điều kiện song slot đa nhánh cho Apex: `bRequiresDualSlotCondition`, `SecondaryAllowedSourceTags`, `SecondaryRequiredMinRank`.
+     - Tích hợp logic kinh tế MVP: Phân rã ra Tàn Trang (`GetSalvageShardCount`: 3 cho T2, 8 cho T3, 25 cho T4) và giá vàng giao dịch NPC / Chợ Đen (`ClassPromotionScrollDefinition.h`, `ClassPromotionScrollDefinition.cpp`).
+  3. **Dual-Class Progression Component (`UPAClassProgressionComponent`)**:
+     - Quản lý 2 slot replicated `PrimaryClassTag` và `SecondaryClassTag`.
+     - Phân phối Class EXP kép từ chiến đấu: 70% Class Chính, 30% Class Phụ (100% nếu chưa có Class Phụ). Cấp Class Level 1-20 chạy song song Character Level 1-50.
+     - Bảo toàn lịch sử tiến trình từng class vĩnh viễn (`ProgressHistory`), đổi class không mất cấp.
+  4. **Quy Tắc A1 (Hoán Đổi Chính ↔ Phụ & Clamp Bậc)**:
+     - Kiểm tra vị trí an toàn tại Tòa Thành (`IsInCitadel` / `State.InSanctuary` / `Zone.Sanctuary`). Chặn đứng mọi nỗ lực hoán đổi ngoài chiến trường.
+     - Tự động clamp bậc Class Phụ theo bậc Class Chính (`Rank_Sub <= Rank_Primary`) thông qua `GetEffectiveSecondaryRank`.
+  5. **Quy Tắc B1 (Tương Thích Vũ Khí & Khóa Kỹ Năng Slot F)**:
+     - Phân bổ Action Deck: Slot Q, E, R (Active) + P1, P2 (Passive) thuộc Class Chính; Slot F (Active) + P3 (Passive) thuộc Class Phụ.
+     - Khi Class Phụ khác họ vũ khí với Class Chính: Chỉ cho phép kỹ năng `Weapon-Agnostic` ở slot F; kỹ năng đòi hỏi vũ khí riêng bị khóa xám (`IsSecondaryActiveSkillAllowed`).
+  6. **Server RPC Thăng Chức & Bảo Vệ Trần Nội Tại (Caps)**:
+     - `ServerPromoteClass`: Xác thực 100% Server Authority, kiểm tra tiến trình, cờ nhiệm vụ, tiêu hủy quyển trục an toàn.
+     - Hiện thực `FPAClassMatrixCaps` khóa cứng trần cộng dồn Nội tại: Giảm sát thương tối đa 60%, Tỷ lệ bạo kích tối đa 75%, Tốc độ đánh tối đa 50%, Giảm hồi chiêu tối đa 40%.
+  7. **Kiểm Thử Tự Động Toàn Diện (`PAClassProgressionTests.cpp`)**:
+     - 7/7 bài test Automation UE5 đạt **PASS 100%** (0 errors, 0 fatals):
+       * `ProjectAscendant.ClassProgression.16ClassesAndTags`: 16 class, 4 rank, 5 line, vũ khí.
+       * `ProjectAscendant.ClassProgression.PromotionScrollValidation`: Cấp độ < 20 fail, sai class nguồn fail, thiếu quest flag fail, đủ điều kiện pass.
+       * `ProjectAscendant.ClassProgression.ApexDualSlotPrerequisite`: Apex kiểm tra cả 2 slot.
+       * `ProjectAscendant.ClassProgression.RuleA1_CitadelSwapAndRankClamp`: Đổi ngoài thành fail, trong thành pass, clamp bậc chuẩn.
+       * `ProjectAscendant.ClassProgression.RuleB1_WeaponCompatibilityLock`: Khóa chiêu sai vũ khí, cho phép weapon-agnostic.
+       * `ProjectAscendant.ClassProgression.ScrollEconomyMVP`: 3/8/25 Tàn Trang, giá vàng NPC & Chợ Đen.
+       * `ProjectAscendant.ClassProgression.Matrix256PairsAndCaps`: Quét ma trận 256 cặp Chính × Phụ, xác nhận bảo vệ trần nội tại.
+     - Bộ test Character Level 1-50 (`ProjectAscendant.Progression`): 4/4 PASS (0 regression).
+- **Cột mốc**: Giai đoạn 2B (`ROADMAP.md:75-87`) chính thức hoàn thành **100%**. Sẵn sàng mở PR và merge vào `main`.
