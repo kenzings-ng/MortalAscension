@@ -277,18 +277,49 @@ void UPACivilianNPCComponent::RegisterLeftHandPropComponent(UPaperFlipbookCompon
 	}
 }
 
+void UPACivilianNPCComponent::ApplyPaletteToComponent(UPaperFlipbookComponent* TargetComp)
+{
+	if (!TargetComp)
+	{
+		return;
+	}
+
+	UMaterialInterface* CurrentMat = TargetComp->GetMaterial(0);
+	if (!CurrentMat)
+	{
+		return;
+	}
+
+	UMaterialInstanceDynamic* MID = Cast<UMaterialInstanceDynamic>(CurrentMat);
+	if (!MID)
+	{
+		MID = TargetComp->CreateDynamicMaterialInstance(0, CurrentMat);
+	}
+
+	if (MID)
+	{
+		// AC-2: Master Material M_PaperZD_Civilian_Base nhận tham số ZoneColorRamp và các kênh màu vải
+		MID->SetVectorParameterValue(TEXT("ZoneColorRamp"), Model.CurrentPalette.PrimaryColor);
+		MID->SetVectorParameterValue(TEXT("PrimaryClothColor"), Model.CurrentPalette.PrimaryColor);
+		MID->SetVectorParameterValue(TEXT("SecondaryClothColor"), Model.CurrentPalette.SecondaryColor);
+		MID->SetVectorParameterValue(TEXT("AccentColor"), Model.CurrentPalette.AccentColor);
+	}
+}
+
 void UPACivilianNPCComponent::SynchronizeVisuals()
 {
 	if (RightHandPropComponent)
 	{
 		const bool bShowRight = !Model.AttachedRightProp.IsNone();
 		RightHandPropComponent->SetVisibility(bShowRight);
+		ApplyPaletteToComponent(RightHandPropComponent);
 	}
 
 	if (LeftHandPropComponent)
 	{
 		const bool bShowLeft = !Model.AttachedLeftProp.IsNone();
 		LeftHandPropComponent->SetVisibility(bShowLeft);
+		ApplyPaletteToComponent(LeftHandPropComponent);
 	}
 
 	// Đồng bộ Master Rig với UPAPaperdollComponent nếu có trên cùng Actor
@@ -303,6 +334,10 @@ void UPACivilianNPCComponent::SynchronizeVisuals()
 				// Tái dùng đòn đâm của Weapon Family 3 (Polearms)
 				Paperdoll->SetUpperBodyWeaponFamily(EPAWeaponFamily::Polearm_2H);
 			}
+
+			// Áp dụng Palette Swap cho Lower và Upper Flipbook Components nếu có
+			ApplyPaletteToComponent(Paperdoll->GetLowerBodyComponent());
+			ApplyPaletteToComponent(Paperdoll->GetUpperBodyComponent());
 		}
 	}
 }

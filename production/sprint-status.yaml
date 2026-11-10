@@ -47,21 +47,21 @@ stories:
     name: "Helm Crest Socket & Tabard Cutout Component Integration"
     file: "production/epics/presentation-character-visual/story-002-helm-crest-tabard-overlay-system.md"
     priority: must-have
-    status: in-progress  # X14 2026-10-10: trước đây done; AC-2/AC-4 chỉ có 12/16 class
+    status: review  # Đã hoàn thiện mapping 16 class cho Crest & Tabard và ma trận test 48 kết hợp
     owner: "gameplay-programmer"
     estimate_days: 1.0
     blocker: ""
-    completed: ""  # X14 2026-10-10: trước đây "2026-09-25" = ngày commit 483e160, story chưa done
+    completed: ""
 
   - id: "visual-003"
     name: "Civilian NPC Component, Dynamic Palette Swap & Town Guard AI"
     file: "production/epics/presentation-character-visual/story-003-civilian-npc-palette-guard-ai.md"
     priority: must-have
-    status: in-progress  # X14 2026-10-10: trước đây done; AC-2 palette swap chưa làm
+    status: review  # Đã hoàn thiện ApplyPaletteToComponent với MID ZoneColorRamp cho 3 Zone
     owner: "systems-designer"
     estimate_days: 1.0
     blocker: ""
-    completed: ""  # X14 2026-10-10: trước đây "2026-09-25" = ngày commit f3c32e0, story chưa done
+    completed: ""
 
   - id: "visual-004"
     name: "4 Master Lower Body Animation Sets (420 Frames Wireframe Proxy)"
