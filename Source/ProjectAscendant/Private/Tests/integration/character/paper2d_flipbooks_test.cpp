@@ -29,11 +29,15 @@ bool FPAPaper2DFlipbooksIntegrationTest::RunTest(const FString& Parameters)
     // Test 1: AC-1 (Texture & Pixel Filtering Assets Verification)
     // -------------------------------------------------------------------------
     {
-        const FString VanguardTexAsset = ProjectContentDir / TEXT("art/characters/T_Vanguard_Spritesheet.uasset");
-        const FString BossTexAsset = ProjectContentDir / TEXT("art/characters/T_Boss_Spritesheet.uasset");
+        const FString VanguardTexAsset = ProjectContentDir / TEXT("Art/Characters/Vanguard/Textures/T_Vanguard_Spritesheet.uasset");
+        const FString LegacyVanguardTexAsset = ProjectContentDir / TEXT("art/characters/T_Vanguard_Spritesheet.uasset");
+        const FString BossTexAsset = ProjectContentDir / TEXT("Art/Characters/Boss/Textures/T_Boss_Spritesheet.uasset");
+        const FString LegacyBossTexAsset = ProjectContentDir / TEXT("art/characters/T_Boss_Spritesheet.uasset");
 
-        TestTrue(TEXT("AC-1: T_Vanguard_Spritesheet.uasset phải tồn tại trong Content"), IFileManager::Get().FileExists(*VanguardTexAsset));
-        TestTrue(TEXT("AC-1: T_Boss_Spritesheet.uasset phải tồn tại trong Content"), IFileManager::Get().FileExists(*BossTexAsset));
+        TestTrue(TEXT("AC-1: T_Vanguard_Spritesheet.uasset phải tồn tại trong Content (Art/ hoặc legacy art/)"),
+            IFileManager::Get().FileExists(*VanguardTexAsset) || IFileManager::Get().FileExists(*LegacyVanguardTexAsset));
+        TestTrue(TEXT("AC-1: T_Boss_Spritesheet.uasset phải tồn tại trong Content (Art/ hoặc legacy art/)"),
+            IFileManager::Get().FileExists(*BossTexAsset) || IFileManager::Get().FileExists(*LegacyBossTexAsset));
     }
 
     // -------------------------------------------------------------------------
@@ -51,12 +55,19 @@ bool FPAPaper2DFlipbooksIntegrationTest::RunTest(const FString& Parameters)
 
         for (const FString& FBName : VanguardFlipbooks)
         {
-            const FString AssetPath = ProjectContentDir / TEXT("art/characters/vanguard/flipbooks") / (FBName + TEXT(".uasset"));
-            const FString PackagePath = TEXT("/Game/art/characters/vanguard/flipbooks/") + FBName;
+            const FString AssetPath = ProjectContentDir / TEXT("Art/Characters/Vanguard/flipbooks") / (FBName + TEXT(".uasset"));
+            const FString LegacyAssetPath = ProjectContentDir / TEXT("art/characters/vanguard/flipbooks") / (FBName + TEXT(".uasset"));
+            const FString PackagePath = TEXT("/Game/Art/Characters/Vanguard/flipbooks/") + FBName;
+            const FString LegacyPackagePath = TEXT("/Game/art/characters/vanguard/flipbooks/") + FBName;
 
-            TestTrue(FString::Printf(TEXT("AC-2: Flipbook file %s.uasset phải tồn tại"), *FBName), IFileManager::Get().FileExists(*AssetPath));
+            TestTrue(FString::Printf(TEXT("AC-2: Flipbook file %s.uasset phải tồn tại"), *FBName),
+                IFileManager::Get().FileExists(*AssetPath) || IFileManager::Get().FileExists(*LegacyAssetPath));
 
             UPaperFlipbook* LoadedFB = LoadObject<UPaperFlipbook>(nullptr, *PackagePath);
+            if (!LoadedFB)
+            {
+                LoadedFB = LoadObject<UPaperFlipbook>(nullptr, *LegacyPackagePath);
+            }
             if (LoadedFB)
             {
                 TestNearlyEqual(FString::Printf(TEXT("AC-2: Flipbook %s tốc độ phải là 12.0 FPS"), *FBName), LoadedFB->GetFramesPerSecond(), 12.0f, 0.01f);
@@ -78,12 +89,19 @@ bool FPAPaper2DFlipbooksIntegrationTest::RunTest(const FString& Parameters)
 
         for (const FString& FBName : BossFlipbooks)
         {
-            const FString AssetPath = ProjectContentDir / TEXT("art/characters/boss/flipbooks") / (FBName + TEXT(".uasset"));
-            const FString PackagePath = TEXT("/Game/art/characters/boss/flipbooks/") + FBName;
+            const FString AssetPath = ProjectContentDir / TEXT("Art/Characters/Boss/flipbooks") / (FBName + TEXT(".uasset"));
+            const FString LegacyAssetPath = ProjectContentDir / TEXT("art/characters/boss/flipbooks") / (FBName + TEXT(".uasset"));
+            const FString PackagePath = TEXT("/Game/Art/Characters/Boss/flipbooks/") + FBName;
+            const FString LegacyPackagePath = TEXT("/Game/art/characters/boss/flipbooks/") + FBName;
 
-            TestTrue(FString::Printf(TEXT("AC-3: Flipbook file %s.uasset phải tồn tại"), *FBName), IFileManager::Get().FileExists(*AssetPath));
+            TestTrue(FString::Printf(TEXT("AC-3: Flipbook file %s.uasset phải tồn tại"), *FBName),
+                IFileManager::Get().FileExists(*AssetPath) || IFileManager::Get().FileExists(*LegacyAssetPath));
 
             UPaperFlipbook* LoadedFB = LoadObject<UPaperFlipbook>(nullptr, *PackagePath);
+            if (!LoadedFB)
+            {
+                LoadedFB = LoadObject<UPaperFlipbook>(nullptr, *LegacyPackagePath);
+            }
             if (LoadedFB)
             {
                 TestNearlyEqual(FString::Printf(TEXT("AC-3: Flipbook %s tốc độ phải là 10.0 FPS"), *FBName), LoadedFB->GetFramesPerSecond(), 10.0f, 0.01f);

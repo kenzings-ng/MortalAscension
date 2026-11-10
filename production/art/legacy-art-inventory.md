@@ -200,12 +200,12 @@ Toàn bộ 162 tệp dưới đây đã được di chuyển an toàn vào `Art_
 
 | Asset / Nhóm Asset | Original Path | Category | Ownership | Disposition | Production Status | Referenced? | Phụ thuộc kỹ thuật & Ghi chú |
 | :--- | :--- | :--- | :--- | :--- | :--- | :---: | :--- |
-| `vanguard_flipbooks_and_anim` | `Content/art/characters/vanguard/` | Character | ProjectAscendant | **REWORK** | NOT_SUBMITTED | **Yes** | 51 files (ABP_Vanguard, AS_Vanguard, 6 Flipbooks, 37 PNGs, 6 GIFs); referenced in PABaseCharacter.cpp |
-| `T_Vanguard_Spritesheet.uasset` | `Content/art/characters/T_Vanguard_Spritesheet.uasset` | Character | ProjectAscendant | **REWORK** | NOT_SUBMITTED | **Yes** | Referenced in PACharacterSelectTypes.cpp |
-| `vanguard_pixel_spritesheet.png` | `Content/art/characters/vanguard_pixel_spritesheet.png` | Character | ProjectAscendant | **REWORK** | NOT_SUBMITTED | **No** | Standalone prototype spritesheet (1024x1024) |
+| `vanguard_flipbooks_and_anim` | `Content/art/characters/vanguard/` | Character | ProjectAscendant | **ARCHIVED** | MOVED_TO_LEGACY | **No (Replaced)** | Đã chuyển vào `Art_Gallery/legacy/characters/vanguard/`; asset chuẩn hóa đã nạp tại `Content/Art/Characters/Vanguard/` |
+| `T_Vanguard_Spritesheet.uasset` | `Content/art/characters/T_Vanguard_Spritesheet.uasset` | Character | ProjectAscendant | **STANDARDIZED** | ACTIVE | **Yes** | Đã chuẩn hóa tại `Content/Art/Characters/Vanguard/Textures/T_Vanguard_Spritesheet.uasset` |
+| `vanguard_pixel_spritesheet.png` | `Content/art/characters/vanguard_pixel_spritesheet.png` | Character | ProjectAscendant | **STANDARDIZED** | ACTIVE | **Yes** | Đã chuẩn hóa tại `Content/Art/Characters/Vanguard/Textures/vanguard_pixel_spritesheet.png` |
 | `vanguard_idle_animation.gif` | `Content/art/characters/vanguard_idle_animation.gif` | Character | ProjectAscendant | **REFERENCE** | NOT_SUBMITTED | **No** | Preview GIF animation (128x128) |
-| `boss_golem_flipbooks_and_anim` | `Content/art/characters/boss/` | Boss | ProjectAscendant | **REWORK** | NOT_SUBMITTED | **Yes** | 41 files (ABP_Boss, AS_Boss, 5 Flipbooks, 29 PNGs, 5 GIFs); referenced in PAStoneGolemBoss.cpp |
-| `T_Boss_Spritesheet.uasset` | `Content/art/characters/T_Boss_Spritesheet.uasset` | Boss | ProjectAscendant | **REWORK** | NOT_SUBMITTED | **Yes** | Boss texture asset |
+| `boss_golem_flipbooks_and_anim` | `Content/art/characters/boss/` | Boss | ProjectAscendant | **ARCHIVED** | MOVED_TO_LEGACY | **No (Replaced)** | Đã chuyển vào `Art_Gallery/legacy/characters/boss/`; asset chuẩn hóa đã nạp tại `Content/Art/Characters/Boss/` |
+| `T_Boss_Spritesheet.uasset` | `Content/art/characters/T_Boss_Spritesheet.uasset` | Boss | ProjectAscendant | **STANDARDIZED** | ACTIVE | **Yes** | Đã chuẩn hóa tại `Content/Art/Characters/Boss/Textures/T_Boss_Spritesheet.uasset` |
 | `stone_golem_boss_pixel_spritesheet.png` | `Content/art/characters/stone_golem_boss_pixel_spritesheet.png` | Boss | ProjectAscendant | **REWORK** | NOT_SUBMITTED | **No** | Standalone boss spritesheet (1024x1024) |
 | `lich_necromancer_spritesheet.webp` | `Content/art/characters/lich_necromancer_spritesheet.webp` | Boss | ProjectAscendant | **REWORK** | NOT_SUBMITTED | **No** | Standalone boss spritesheet (1024x1024) |
 | `lich_idle_animation.gif` | `Content/art/characters/lich_idle_animation.gif` | Boss | ProjectAscendant | **REFERENCE** | NOT_SUBMITTED | **No** | Preview GIF animation (128x128) |
@@ -242,9 +242,10 @@ Các bộ tài sản này được phân loại: **KEEP (NOT_FORMALIZED)**. Chú
 2. **Đợt 2 — Paperdoll Equipment Layers**:
    - 12 tệp trong `Content/art/characters/paperdoll/`.
    - Nhiệm vụ: Căn chỉnh lại điểm neo ghim chân (64, 114) theo `master_rig_01.aseprite` và nộp Art Gate.
-3. **Đợt 3 — Hoán Đổi C++ Vanguard & Boss AI Rig**:
-   - Tạo bộ PaperZD AnimBP mới chuẩn hóa trong `Content/Art/Characters/`.
-   - Cập nhật đường dẫn trong `PABaseCharacter.cpp` và `PAStoneGolemBoss.cpp`.
-   - Sau khi test PASS, chuyển toàn bộ `Content/art/characters/vanguard/` và `boss/` vào kho Legacy.
+3. **Đợt 3 — Hoán Đổi C++ Vanguard & Boss AI Rig (HOÀN THÀNH)**:
+   - Đã tạo bộ PaperZD AnimBP và Flipbooks chuẩn hóa trong `Content/Art/Characters/Vanguard/` và `Content/Art/Characters/Boss/`.
+   - Đã cập nhật đường dẫn trong `PABaseCharacter.cpp`, `PAStoneGolemBoss.cpp`, `PACharacterSelectTypes.cpp`, `paper2d_flipbooks_test.cpp`.
+   - Test tự động đã PASS 100% (`ProjectAscendant.Core.Character.Paper2DFlipbooksIntegration` 1/1 PASS, `ProjectAscendant.Character` 6/6 PASS).
+   - Đã chuyển toàn bộ `Content/art/characters/vanguard/` và `boss/` vào kho Legacy `Art_Gallery/legacy/characters/`. Giai đoạn 1 hoàn tất 100%.
 4. **Đợt 4 — Tiêu Hủy Tệp Trùng Lặp (DELETE_CANDIDATE Cleanup)**:
    - Thực hiện commit xóa các tệp trùng lặp trong `Content/art/` (`complete_map_showcase.jpg`, `ruins_blockout_3d.gif`, `ruins_concept.jpg`) và các tệp scratch trong `output/` sau khi có sự chấp thuận của Orchestrator.

@@ -28,8 +28,8 @@ FPACharacterClassInfo FPACharacterClassRegistry::GetClassInfo(EPACharacterClass 
 			TEXT("Thế Thủ & Perfect Parry"),
 			TEXT("Đòn Trừng Phạt (Posture Finisher)")
 		};
-		Info.SpritesheetAssetPath = TEXT("/Game/art/characters/T_Vanguard_Spritesheet.T_Vanguard_Spritesheet");
-		Info.AnimBlueprintPath = TEXT("/Game/art/characters/vanguard/anim/ABP_Vanguard.ABP_Vanguard_C");
+		Info.SpritesheetAssetPath = TEXT("/Game/Art/Characters/Vanguard/Textures/T_Vanguard_Spritesheet.T_Vanguard_Spritesheet");
+		Info.AnimBlueprintPath = TEXT("/Game/Art/Characters/Vanguard/anim/ABP_Vanguard.ABP_Vanguard_C");
 		break;
 
 	case EPACharacterClass::Ranger:
