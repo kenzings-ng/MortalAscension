@@ -99,7 +99,6 @@ Chỉ làm **một** tổ hợp, chạy trọn pipeline trước khi sản xuấ
 - [x] Chạy lại script socket với metadata mới (`Tools/Paper2D/apply_vanguard_sockets.py`).
 - [x] Ghi nguồn gốc asset (AI / thủ công / pack) vào `THIRD_PARTY_ASSETS.md` (§4).
 - [ ] 🛑 Chủ dự án chơi thử với art thật và duyệt.
-- [ ] 🛑 Chủ dự án chơi thử với art thật và duyệt.
 
 ---
 
