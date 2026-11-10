@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 generate_vanguard_5dir_design_sheet.py
-Project Ascendant - Phase 2 Character Style Finalization
+Mortal Ascension - Phase 2 Character Style Finalization
 Generates the 5-direction Vanguard 'Iron Bastion' design sheet according to:
 - Benchmarks: Octopath Traveler II, Dark Souls / Elden Ring, Children of Morta, Triangle Strategy
 - SPEC-ART-2026-09-23-V2 §5.3 (3.2-3.5 heads, anchor (64, 114), 4-tone palette)
@@ -285,7 +285,7 @@ def main():
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Vanguard 'Iron Bastion' Design Sheet Review — Project Ascendant</title>
+  <title>Vanguard 'Iron Bastion' Design Sheet Review — Mortal Ascension</title>
   <style>
     :root {{
       --bg: #0b0d13;

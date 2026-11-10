@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Comprehensive Art Processing & Gallery Generator for Project Ascendant.
+Comprehensive Art Processing & Gallery Generator for Mortal Ascension.
 - Generates female character paperdoll transparent sprites
 - Slices individual item icons (weapons, shields, potions, jewelry, books, armor)
 - Populates the Art_Gallery folder with categorized assets
@@ -363,7 +363,7 @@ def generate_master_gallery_html():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Ascendant — Trung Tâm Xem Xét Art & Trang Bị (Master Art Review)</title>
+    <title>Mortal Ascension — Trung Tâm Xem Xét Art & Trang Bị (Master Art Review)</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -705,7 +705,7 @@ def generate_master_gallery_html():
 </head>
 <body>
     <header>
-        <div class="brand-subtitle">Project Ascendant &bull; 2.5D Isometric HD-2D Dark Fantasy</div>
+        <div class="brand-subtitle">Mortal Ascension &bull; 2.5D Isometric HD-2D Dark Fantasy</div>
         <h1>Trung Tâm Trưng Bày & Kiểm Tra Đồ Họa Master Art</h1>
         <p class="lead-text">Tập hợp toàn bộ các tác phẩm Art vẽ tay theo phong cách Stardew Valley & Octopath Traveler: Nhân vật Nữ/Nam đa tầng, Kho vũ khí & vật phẩm riêng lẻ, 4 Class cơ bản, Trùm thế giới và Bối cảnh game.</p>
     </header>
