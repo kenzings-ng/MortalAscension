@@ -76,6 +76,10 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Civilian|Palette")
 	const FPACivilianPalettePreset& GetCurrentPalettePreset() const { return Model.CurrentPalette; }
 
+	/** Áp dụng Dynamic Material Instance Palette Swap lên FlipbookComponent theo Zone (AC-2) */
+	UFUNCTION(BlueprintCallable, Category = "Civilian|Palette")
+	void ApplyPaletteToComponent(UPaperFlipbookComponent* TargetComp);
+
 	// -------------------------------------------------------------------------
 	// Hand Props & Callout API (AC-3)
 	// -------------------------------------------------------------------------

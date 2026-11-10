@@ -107,8 +107,12 @@ FName FPAPaperdollConstants::GetDefaultCrestAssetForClass(FName ClassName)
 	if (NameStr.Contains(TEXT("shadowblade")))  return FName(TEXT("FB_Crest_Shadowblade"));
 	if (NameStr.Contains(TEXT("elementalist"))) return FName(TEXT("FB_Crest_Elementalist"));
 	if (NameStr.Contains(TEXT("templar")))      return FName(TEXT("FB_Crest_Templar"));
+	if (NameStr.Contains(TEXT("swordmaster")) || NameStr.Contains(TEXT("sword master"))) return FName(TEXT("FB_Crest_Swordmaster"));
 	if (NameStr.Contains(TEXT("voidblade")) || NameStr.Contains(TEXT("void blade"))) return FName(TEXT("FB_Crest_VoidBlade"));
+	if (NameStr.Contains(TEXT("phantomstalker")) || NameStr.Contains(TEXT("phantom stalker"))) return FName(TEXT("FB_Crest_PhantomStalker"));
 	if (NameStr.Contains(TEXT("chronomancer"))) return FName(TEXT("FB_Crest_Chronomancer"));
+	if (NameStr.Contains(TEXT("inquisitor")))   return FName(TEXT("FB_Crest_Inquisitor"));
+	if (NameStr.Contains(TEXT("seraph")))       return FName(TEXT("FB_Crest_Seraph"));
 	if (NameStr.Contains(TEXT("dragonknight")) || NameStr.Contains(TEXT("dragon knight"))) return FName(TEXT("FB_Crest_DragonKnight"));
 	if (NameStr.Contains(TEXT("godslayer")) || NameStr.Contains(TEXT("god slayer"))) return FName(TEXT("FB_Crest_GodSlayer"));
 
@@ -126,8 +130,12 @@ FName FPAPaperdollConstants::GetDefaultTabardAssetForClass(FName ClassName)
 	if (NameStr.Contains(TEXT("shadowblade")))  return FName(TEXT("FB_Tabard_Shadowblade"));
 	if (NameStr.Contains(TEXT("elementalist"))) return FName(TEXT("FB_Tabard_Elementalist"));
 	if (NameStr.Contains(TEXT("templar")))      return FName(TEXT("FB_Tabard_Templar"));
+	if (NameStr.Contains(TEXT("swordmaster")) || NameStr.Contains(TEXT("sword master"))) return FName(TEXT("FB_Tabard_Swordmaster"));
 	if (NameStr.Contains(TEXT("voidblade")) || NameStr.Contains(TEXT("void blade"))) return FName(TEXT("FB_Tabard_VoidBlade"));
+	if (NameStr.Contains(TEXT("phantomstalker")) || NameStr.Contains(TEXT("phantom stalker"))) return FName(TEXT("FB_Tabard_PhantomStalker"));
 	if (NameStr.Contains(TEXT("chronomancer"))) return FName(TEXT("FB_Tabard_Chronomancer"));
+	if (NameStr.Contains(TEXT("inquisitor")))   return FName(TEXT("FB_Tabard_Inquisitor"));
+	if (NameStr.Contains(TEXT("seraph")))       return FName(TEXT("FB_Tabard_Seraph"));
 	if (NameStr.Contains(TEXT("dragonknight")) || NameStr.Contains(TEXT("dragon knight"))) return FName(TEXT("FB_Tabard_DragonKnight"));
 	if (NameStr.Contains(TEXT("godslayer")) || NameStr.Contains(TEXT("god slayer"))) return FName(TEXT("FB_Tabard_GodSlayer"));
 

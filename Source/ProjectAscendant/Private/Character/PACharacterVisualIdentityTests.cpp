@@ -71,18 +71,22 @@ bool FPACharacterVisualIdentityTest::RunTest(const FString& Parameters)
 		};
 
 		const FClassSpec AllClasses[] = {
-			{ FName(TEXT("Vanguard")),     FName(TEXT("FB_Crest_Vanguard")),     FName(TEXT("FB_Tabard_Vanguard")) },
-			{ FName(TEXT("Ranger")),       FName(TEXT("FB_Crest_Ranger")),       FName(TEXT("FB_Tabard_Ranger")) },
-			{ FName(TEXT("Arcanist")),     FName(TEXT("FB_Crest_Arcanist")),     FName(TEXT("FB_Tabard_Arcanist")) },
-			{ FName(TEXT("Acolyte")),      FName(TEXT("FB_Crest_Acolyte")),      FName(TEXT("FB_Tabard_Acolyte")) },
-			{ FName(TEXT("Berserker")),    FName(TEXT("FB_Crest_Berserker")),    FName(TEXT("FB_Tabard_Berserker")) },
-			{ FName(TEXT("Shadowblade")),  FName(TEXT("FB_Crest_Shadowblade")),  FName(TEXT("FB_Tabard_Shadowblade")) },
-			{ FName(TEXT("Elementalist")), FName(TEXT("FB_Crest_Elementalist")), FName(TEXT("FB_Tabard_Elementalist")) },
-			{ FName(TEXT("Templar")),      FName(TEXT("FB_Crest_Templar")),      FName(TEXT("FB_Tabard_Templar")) },
-			{ FName(TEXT("VoidBlade")),    FName(TEXT("FB_Crest_VoidBlade")),    FName(TEXT("FB_Tabard_VoidBlade")) },
-			{ FName(TEXT("Chronomancer")), FName(TEXT("FB_Crest_Chronomancer")), FName(TEXT("FB_Tabard_Chronomancer")) },
-			{ FName(TEXT("DragonKnight")), FName(TEXT("FB_Crest_DragonKnight")), FName(TEXT("FB_Tabard_DragonKnight")) },
-			{ FName(TEXT("GodSlayer")),    FName(TEXT("FB_Crest_GodSlayer")),    FName(TEXT("FB_Tabard_GodSlayer")) },
+			{ FName(TEXT("Vanguard")),       FName(TEXT("FB_Crest_Vanguard")),       FName(TEXT("FB_Tabard_Vanguard")) },
+			{ FName(TEXT("Templar")),        FName(TEXT("FB_Crest_Templar")),        FName(TEXT("FB_Tabard_Templar")) },
+			{ FName(TEXT("Berserker")),      FName(TEXT("FB_Crest_Berserker")),      FName(TEXT("FB_Tabard_Berserker")) },
+			{ FName(TEXT("Swordmaster")),    FName(TEXT("FB_Crest_Swordmaster")),    FName(TEXT("FB_Tabard_Swordmaster")) },
+			{ FName(TEXT("DragonKnight")),   FName(TEXT("FB_Crest_DragonKnight")),   FName(TEXT("FB_Tabard_DragonKnight")) },
+			{ FName(TEXT("VoidBlade")),      FName(TEXT("FB_Crest_VoidBlade")),      FName(TEXT("FB_Tabard_VoidBlade")) },
+			{ FName(TEXT("Ranger")),         FName(TEXT("FB_Crest_Ranger")),         FName(TEXT("FB_Tabard_Ranger")) },
+			{ FName(TEXT("Shadowblade")),    FName(TEXT("FB_Crest_Shadowblade")),    FName(TEXT("FB_Tabard_Shadowblade")) },
+			{ FName(TEXT("PhantomStalker")), FName(TEXT("FB_Crest_PhantomStalker")), FName(TEXT("FB_Tabard_PhantomStalker")) },
+			{ FName(TEXT("Arcanist")),       FName(TEXT("FB_Crest_Arcanist")),       FName(TEXT("FB_Tabard_Arcanist")) },
+			{ FName(TEXT("Elementalist")),   FName(TEXT("FB_Crest_Elementalist")),   FName(TEXT("FB_Tabard_Elementalist")) },
+			{ FName(TEXT("Chronomancer")),   FName(TEXT("FB_Crest_Chronomancer")),   FName(TEXT("FB_Tabard_Chronomancer")) },
+			{ FName(TEXT("Acolyte")),        FName(TEXT("FB_Crest_Acolyte")),        FName(TEXT("FB_Tabard_Acolyte")) },
+			{ FName(TEXT("Inquisitor")),     FName(TEXT("FB_Crest_Inquisitor")),     FName(TEXT("FB_Tabard_Inquisitor")) },
+			{ FName(TEXT("Seraph")),         FName(TEXT("FB_Crest_Seraph")),         FName(TEXT("FB_Tabard_Seraph")) },
+			{ FName(TEXT("GodSlayer")),      FName(TEXT("FB_Crest_GodSlayer")),      FName(TEXT("FB_Tabard_GodSlayer")) },
 		};
 
 		FPAPaperdollModel Model;
@@ -223,16 +227,20 @@ bool FPACharacterVisualIdentityTest::RunTest(const FString& Parameters)
 
 		const FName ClassTags[] = {
 			FName(TEXT("Class.Line.Guard.Vanguard")),
-			FName(TEXT("Class.Line.Scout.Ranger")),
-			FName(TEXT("Class.Line.Caster.Arcanist")),
-			FName(TEXT("Class.Line.Faith.Acolyte")),
-			FName(TEXT("Class.Line.Guard.Berserker")),
-			FName(TEXT("Class.Line.Scout.Shadowblade")),
-			FName(TEXT("Class.Line.Caster.Elementalist")),
 			FName(TEXT("Class.Line.Guard.Templar")),
-			FName(TEXT("Class.Line.Guard.VoidBlade")),
-			FName(TEXT("Class.Line.Caster.Chronomancer")),
+			FName(TEXT("Class.Line.Guard.Berserker")),
+			FName(TEXT("Class.Line.Guard.Swordmaster")),
 			FName(TEXT("Class.Line.Guard.DragonKnight")),
+			FName(TEXT("Class.Line.Guard.VoidBlade")),
+			FName(TEXT("Class.Line.Scout.Ranger")),
+			FName(TEXT("Class.Line.Scout.Shadowblade")),
+			FName(TEXT("Class.Line.Scout.PhantomStalker")),
+			FName(TEXT("Class.Line.Caster.Arcanist")),
+			FName(TEXT("Class.Line.Caster.Elementalist")),
+			FName(TEXT("Class.Line.Caster.Chronomancer")),
+			FName(TEXT("Class.Line.Faith.Acolyte")),
+			FName(TEXT("Class.Line.Faith.Inquisitor")),
+			FName(TEXT("Class.Line.Faith.Seraph")),
 			FName(TEXT("Class.Line.Apex.GodSlayer"))
 		};
 
@@ -271,7 +279,7 @@ bool FPACharacterVisualIdentityTest::RunTest(const FString& Parameters)
 			}
 		}
 
-		TestEqual(TEXT("AC-4: Exactly 36 Armor x Class combinations evaluated with zero crash"), MatrixEvaluations, 36);
+		TestEqual(TEXT("AC-4: Exactly 48 Armor x Class combinations evaluated with zero crash"), MatrixEvaluations, 48);
 
 		// Kiểm tra tính năng ẩn/hiện thủ công (Visibility toggling)
 		Comp->SetHelmCrestVisibility(false);

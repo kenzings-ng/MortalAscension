@@ -105,6 +105,11 @@ bool FPACivilianNPCTest::RunTest(const FString& Parameters)
 		CitadelComp->InitializeCitadel(FName(TEXT("Citadel_SanctumFortress")), TEXT("Sanctum Fortress"), EPAZoneTier::Tier3_ForbiddenSanctum);
 		Comp->SetZonePaletteFromCitadel(CitadelComp);
 		TestEqual(TEXT("AC-2: Synced palette from UPACitadelComponent"), Comp->GetCurrentZoneId(), FName(TEXT("Citadel_SanctumFortress")));
+
+		// 5. Kiểm tra ApplyPaletteToComponent headless-safe
+		UPaperFlipbookComponent* DummyFlipbook = NewObject<UPaperFlipbookComponent>();
+		Comp->ApplyPaletteToComponent(DummyFlipbook);
+		TestNotNull(TEXT("AC-2: DummyFlipbook valid after ApplyPaletteToComponent"), DummyFlipbook);
 	}
 
 	// =========================================================================
