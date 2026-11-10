@@ -82,16 +82,21 @@ void APAStoneGolemBoss::BeginPlay()
 
 	SetBaseMoveSpeed(BossWalkSpeed);
 
-	// Nạp Sprite Flipbook mặc định cho Boss Stone Golem
+	// Nạp Sprite Flipbook mặc định cho Boss Stone Golem (ưu tiên đường dẫn chuẩn hóa Art/)
 	if (SpriteComponent)
 	{
-		if (UPaperFlipbook* GolemIdleFb = Cast<UPaperFlipbook>(StaticLoadObject(UPaperFlipbook::StaticClass(), nullptr, TEXT("/Game/art/characters/boss/flipbooks/FB_Golem_Idle.FB_Golem_Idle"))))
+		UPaperFlipbook* GolemIdleFb = Cast<UPaperFlipbook>(StaticLoadObject(UPaperFlipbook::StaticClass(), nullptr, TEXT("/Game/Art/Characters/Boss/flipbooks/FB_Golem_Idle.FB_Golem_Idle")));
+		if (!GolemIdleFb)
+		{
+			GolemIdleFb = Cast<UPaperFlipbook>(StaticLoadObject(UPaperFlipbook::StaticClass(), nullptr, TEXT("/Game/art/characters/boss/flipbooks/FB_Golem_Idle.FB_Golem_Idle")));
+		}
+		if (GolemIdleFb)
 		{
 			SpriteComponent->SetFlipbook(GolemIdleFb);
 		}
 	}
 
-	// Nạp PaperZD Animation Blueprint cho Boss Stone Golem (hỗ trợ cả ABP_StoneGolem và ABP_Boss)
+	// Nạp PaperZD Animation Blueprint cho Boss Stone Golem (hỗ trợ cả ABP_StoneGolem và ABP_Boss, ưu tiên Art/)
 	if (PaperZDAnimComponent)
 	{
 		if (!PaperZDAnimComponent->GetAnimInstanceClass())
@@ -99,20 +104,36 @@ void APAStoneGolemBoss::BeginPlay()
 			PaperZDAnimComponent->SetAnimInstanceClass(UPAPaperZDAnimInstance::StaticClass());
 		}
 
-		UClass* BossAnimClass = StaticLoadClass(UPaperZDAnimInstance::StaticClass(), nullptr, TEXT("/Game/art/characters/boss/anim/ABP_StoneGolem.ABP_StoneGolem_C"), nullptr, LOAD_Quiet);
+		UClass* BossAnimClass = StaticLoadClass(UPaperZDAnimInstance::StaticClass(), nullptr, TEXT("/Game/Art/Characters/Boss/anim/ABP_StoneGolem.ABP_StoneGolem_C"), nullptr, LOAD_Quiet);
+		if (!BossAnimClass)
+		{
+			BossAnimClass = StaticLoadClass(UPaperZDAnimInstance::StaticClass(), nullptr, TEXT("/Game/art/characters/boss/anim/ABP_StoneGolem.ABP_StoneGolem_C"), nullptr, LOAD_Quiet);
+		}
+		if (!BossAnimClass)
+		{
+			BossAnimClass = StaticLoadClass(UPaperZDAnimInstance::StaticClass(), nullptr, TEXT("/Game/Art/Characters/Boss/anim/ABP_Boss.ABP_Boss_C"), nullptr, LOAD_Quiet);
+		}
 		if (!BossAnimClass)
 		{
 			BossAnimClass = StaticLoadClass(UPaperZDAnimInstance::StaticClass(), nullptr, TEXT("/Game/art/characters/boss/anim/ABP_Boss.ABP_Boss_C"), nullptr, LOAD_Quiet);
 		}
 		if (!BossAnimClass)
 		{
-			if (UBlueprint* BossBP = Cast<UBlueprint>(StaticLoadObject(UBlueprint::StaticClass(), nullptr, TEXT("/Game/art/characters/boss/anim/ABP_StoneGolem.ABP_StoneGolem"), nullptr, LOAD_Quiet)))
+			if (UBlueprint* BossBP = Cast<UBlueprint>(StaticLoadObject(UBlueprint::StaticClass(), nullptr, TEXT("/Game/Art/Characters/Boss/anim/ABP_StoneGolem.ABP_StoneGolem"), nullptr, LOAD_Quiet)))
 			{
 				BossAnimClass = BossBP->GeneratedClass;
 			}
-			else if (UBlueprint* LegacyBossBP = Cast<UBlueprint>(StaticLoadObject(UBlueprint::StaticClass(), nullptr, TEXT("/Game/art/characters/boss/anim/ABP_Boss.ABP_Boss"), nullptr, LOAD_Quiet)))
+			else if (UBlueprint* LegacyBossBP = Cast<UBlueprint>(StaticLoadObject(UBlueprint::StaticClass(), nullptr, TEXT("/Game/art/characters/boss/anim/ABP_StoneGolem.ABP_StoneGolem"), nullptr, LOAD_Quiet)))
 			{
 				BossAnimClass = LegacyBossBP->GeneratedClass;
+			}
+			else if (UBlueprint* BossBP2 = Cast<UBlueprint>(StaticLoadObject(UBlueprint::StaticClass(), nullptr, TEXT("/Game/Art/Characters/Boss/anim/ABP_Boss.ABP_Boss"), nullptr, LOAD_Quiet)))
+			{
+				BossAnimClass = BossBP2->GeneratedClass;
+			}
+			else if (UBlueprint* LegacyBossBP2 = Cast<UBlueprint>(StaticLoadObject(UBlueprint::StaticClass(), nullptr, TEXT("/Game/art/characters/boss/anim/ABP_Boss.ABP_Boss"), nullptr, LOAD_Quiet)))
+			{
+				BossAnimClass = LegacyBossBP2->GeneratedClass;
 			}
 		}
 		if (BossAnimClass && BossAnimClass->IsChildOf(UPaperZDAnimInstance::StaticClass()))

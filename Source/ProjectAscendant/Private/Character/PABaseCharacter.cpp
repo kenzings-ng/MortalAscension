@@ -170,7 +170,12 @@ void APABaseCharacter::BeginPlay()
 	// Fallback nạp flipbook và AnimBP cho nhân vật nếu chưa được gán trong Blueprint
 	if (SpriteComponent && !SpriteComponent->GetFlipbook())
 	{
-		if (UPaperFlipbook* IdleFb = Cast<UPaperFlipbook>(StaticLoadObject(UPaperFlipbook::StaticClass(), nullptr, TEXT("/Game/art/characters/vanguard/flipbooks/FB_Vanguard_Idle.FB_Vanguard_Idle"))))
+		UPaperFlipbook* IdleFb = Cast<UPaperFlipbook>(StaticLoadObject(UPaperFlipbook::StaticClass(), nullptr, TEXT("/Game/Art/Characters/Vanguard/flipbooks/FB_Vanguard_Idle.FB_Vanguard_Idle")));
+		if (!IdleFb)
+		{
+			IdleFb = Cast<UPaperFlipbook>(StaticLoadObject(UPaperFlipbook::StaticClass(), nullptr, TEXT("/Game/art/characters/vanguard/flipbooks/FB_Vanguard_Idle.FB_Vanguard_Idle")));
+		}
+		if (IdleFb)
 		{
 			SpriteComponent->SetFlipbook(IdleFb);
 		}
@@ -184,13 +189,21 @@ void APABaseCharacter::BeginPlay()
 			PaperZDAnimComponent->SetAnimInstanceClass(UPAPaperZDAnimInstance::StaticClass());
 		}
 
-		// Nạp AnimBP Blueprint nếu được cung cấp và có GeneratedClass hợp lệ
-		UClass* LoadedAnimBPClass = StaticLoadClass(UPaperZDAnimInstance::StaticClass(), nullptr, TEXT("/Game/art/characters/vanguard/anim/ABP_Vanguard.ABP_Vanguard_C"), nullptr, LOAD_Quiet);
+		// Nạp AnimBP Blueprint nếu được cung cấp và có GeneratedClass hợp lệ (ưu tiên đường dẫn chuẩn hóa Art/)
+		UClass* LoadedAnimBPClass = StaticLoadClass(UPaperZDAnimInstance::StaticClass(), nullptr, TEXT("/Game/Art/Characters/Vanguard/anim/ABP_Vanguard.ABP_Vanguard_C"), nullptr, LOAD_Quiet);
 		if (!LoadedAnimBPClass)
 		{
-			if (UBlueprint* AnimBP = Cast<UBlueprint>(StaticLoadObject(UBlueprint::StaticClass(), nullptr, TEXT("/Game/art/characters/vanguard/anim/ABP_Vanguard.ABP_Vanguard"), nullptr, LOAD_Quiet)))
+			LoadedAnimBPClass = StaticLoadClass(UPaperZDAnimInstance::StaticClass(), nullptr, TEXT("/Game/art/characters/vanguard/anim/ABP_Vanguard.ABP_Vanguard_C"), nullptr, LOAD_Quiet);
+		}
+		if (!LoadedAnimBPClass)
+		{
+			if (UBlueprint* AnimBP = Cast<UBlueprint>(StaticLoadObject(UBlueprint::StaticClass(), nullptr, TEXT("/Game/Art/Characters/Vanguard/anim/ABP_Vanguard.ABP_Vanguard"), nullptr, LOAD_Quiet)))
 			{
 				LoadedAnimBPClass = AnimBP->GeneratedClass;
+			}
+			else if (UBlueprint* LegacyAnimBP = Cast<UBlueprint>(StaticLoadObject(UBlueprint::StaticClass(), nullptr, TEXT("/Game/art/characters/vanguard/anim/ABP_Vanguard.ABP_Vanguard"), nullptr, LOAD_Quiet)))
+			{
+				LoadedAnimBPClass = LegacyAnimBP->GeneratedClass;
 			}
 		}
 

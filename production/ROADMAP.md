@@ -44,7 +44,7 @@ Giai đoạn 2B không cần duyệt thẩm mỹ, nên agent làm 2B trong lúc 
 - [x] State Hurt / Stunned / Dead điều khiển bằng GameplayTag (`State.Hurt`, `State.Stunned`, `State.Dead`) (PR #1, PR #12a; test `ProjectAscendant.Character` PASS 6/6).
 - [x] Tạo Sprite Socket tự động từ `vanguard_metadata.json` (`PAPaper2DSocketUtility`) (PR #1, PR #45; `PAPaper2DSocketUtility.cpp` trên main).
 - [x] Test `ProjectAscendant.Character.VanguardRuntimeWiring` pass (bằng chứng log `Tests/evidence/y8-character-automation.log`: filter `ProjectAscendant.Character` 6/6 PASS gồm `VanguardRuntimeWiring`, `PaperdollModularSystem`, `StoneGolemEncounter`, và 3 test `CharacterVisual`; `QueueFinished=1`).
-- [ ] Legacy Đợt 3: AnimBP mới, đổi đường dẫn trong `PABaseCharacter.cpp` và `PAStoneGolemBoss.cpp`, test pass, rồi chuyển `Content/art/characters/vanguard/` và `boss/` vào kho legacy (theo `legacy-art-inventory.md` mục 5).
+- [x] Legacy Đợt 3: AnimBP mới chuẩn hóa trong `Content/Art/Characters/`, đổi đường dẫn trong `PABaseCharacter.cpp`, `PAStoneGolemBoss.cpp`, `PACharacterSelectTypes.cpp`, `paper2d_flipbooks_test.cpp`; test pass (`ProjectAscendant.Core.Character.Paper2DFlipbooksIntegration` PASS 1/1, `ProjectAscendant.Character` PASS 6/6); chuyển `Content/art/characters/vanguard/` và `boss/` vào kho legacy `Art_Gallery/legacy/characters/` (theo `legacy-art-inventory.md` mục 5). Bằng chứng: `Tests/evidence/legacy-batch3-character-automation.log`. Giai đoạn 1 hoàn thành 100%.
 
 **Kiểm chứng**: chạy UE test local, dán log. Code đã có trên main (`PAPaper2DSocketUtility.cpp`).
 

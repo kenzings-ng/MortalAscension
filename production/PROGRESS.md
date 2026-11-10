@@ -885,3 +885,32 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   - Gate 1: GDD Consistency Validator: 108/108 files PASS (0 errors, 0 warnings, 0 allowlisted).
   - Gate 2: Git LFS Pointers: PASS (0 violations).
   - Gate 3: UE Automation Tests: PASS (6/6 Character tests tại `Tests/evidence/y8-character-automation.log`, 13/13 Network tests tại `Saved/Logs/AutomationTest_Headless.log`).
+
+---
+
+## 15. Nhật Ký Đầu Việc: Nhánh `chore/legacy-art-batch3-intake` (Legacy Đợt 3 — Hoàn Thành 100% Giai Đoạn 1)
+
+- **Mục tiêu**: Thực thi trọn vẹn mục tiêu cuối cùng của Giai đoạn 1 tại `ROADMAP.md:47` và `legacy-art-inventory.md` mục 5 (Legacy Đợt 3):
+  1. **Chuẩn hóa cây thư mục asset sản xuất trong `Content/Art/Characters/`**:
+     - `Content/Art/Characters/Vanguard/anim/`: `ABP_Vanguard.uasset`, `AS_Vanguard.uasset`.
+     - `Content/Art/Characters/Vanguard/flipbooks/`: 6 flipbooks chuẩn (`FB_Vanguard_Idle`, `FB_Vanguard_Run`, `FB_Vanguard_Attack1`, `FB_Vanguard_Dash`, `FB_Vanguard_Hurt`, `FB_Vanguard_Death`).
+     - `Content/Art/Characters/Vanguard/Textures/`: `T_Vanguard_Spritesheet.uasset`, `vanguard_pixel_spritesheet.png`.
+     - `Content/Art/Characters/Boss/anim/`: `ABP_StoneGolem.uasset`, `AS_StoneGolem.uasset`.
+     - `Content/Art/Characters/Boss/flipbooks/`: 5 flipbooks chuẩn (`FB_Golem_Idle`, `FB_Golem_Walk`, `FB_Golem_Slam`, `FB_Golem_Stagger`, `FB_Golem_Death`).
+     - `Content/Art/Characters/Boss/Textures/`: `T_Boss_Spritesheet.uasset`, `stone_golem_boss_pixel_spritesheet.png`.
+     - `Content/Art/Characters/Boss/Spine/`: `stone_golem.json`, `stone_golem.atlas`, `stone_golem.png`, `stone_golem.uasset`, `stone_golem_idle.gif`, `stone_golem_slam.gif`, `stone_golem_walk.gif`.
+  2. **Cập nhật mã nguồn C++ chuyển hướng sang đường dẫn chuẩn hóa**:
+     - `Source/ProjectAscendant/Private/Character/PABaseCharacter.cpp`: Nạp AnimBP và Flipbook ưu tiên `/Game/Art/Characters/Vanguard/...` (giữ fallback đường dẫn legacy để tương thích ngược).
+     - `Source/ProjectAscendant/Private/Character/PAStoneGolemBoss.cpp`: Nạp Boss AnimBP (`ABP_StoneGolem` / `ABP_Boss`) và Flipbook ưu tiên `/Game/Art/Characters/Boss/...` (giữ fallback đường dẫn legacy).
+     - `Source/ProjectAscendant/Private/UI/PACharacterSelectTypes.cpp`: Cập nhật cấu hình đăng ký class Vanguard trỏ vào `/Game/Art/Characters/Vanguard/Textures/T_Vanguard_Spritesheet` và `/Game/Art/Characters/Vanguard/anim/ABP_Vanguard`.
+     - `Source/ProjectAscendant/Private/Tests/integration/character/paper2d_flipbooks_test.cpp`: Cập nhật bộ kiểm tra xác thực file trên đĩa và tải package qua `LoadObject` kiểm tra cả đường dẫn chuẩn hóa mới và fallback legacy.
+  3. **Lưu trữ dữ liệu prototype thô vào Kho Legacy**:
+     - Di chuyển an toàn toàn bộ thư mục `Content/art/characters/vanguard/` và `Content/art/characters/boss/` (chứa các folder frame png thô và preview gif) vào `Art_Gallery/legacy/characters/vanguard/` và `Art_Gallery/legacy/characters/boss/` theo đúng `legacy-art-inventory.md` §5.
+  4. **Kiểm tra và xác thực Cổng QA tự động**:
+     - Gate 1: GDD Consistency Validator đạt 108/108 PASS (0 errors, 0 warnings, 0 allowlisted).
+     - Gate 2: Git LFS Pointers đạt 208/208 PASS (100% con trỏ LFS ~130 bytes hợp lệ).
+     - Gate 3: Unreal Engine Automation Tests PASS 100%:
+       * `ProjectAscendant.Core.Character.Paper2DFlipbooksIntegration`: 1/1 PASS.
+       * `ProjectAscendant.Character`: 6/6 PASS (`VanguardRuntimeWiring`, `PaperdollModularSystem`, `StoneGolemEncounter`, 3 test `CharacterVisual`).
+       * Bằng chứng log: `Tests/evidence/legacy-batch3-character-automation.log`.
+- **Cột mốc**: Giai đoạn 1 (`ROADMAP.md:41-50`) chính thức hoàn thành **100%** trọn vẹn mọi mục tiêu.
