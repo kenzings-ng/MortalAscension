@@ -844,3 +844,21 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   - Gate 1: GDD Consistency Validator: 108/108 files PASS (0 errors, 0 warnings, 0 allowlisted).
   - Gate 2: Git LFS Pointers: PASS (0 violations).
   - Gate 3: UE Automation Tests: PASS.
+
+---
+
+## 13. Nhật Ký Đầu Việc: Nhánh `infra/y8-git-lfs-renormalize` (Bước Y8 - Chuẩn Hóa Git LFS Từ Nay Về Sau)
+
+- **Mục tiêu**: Bước Y8 trong `production/plans/playable-slice-and-approvals-2026-10-10.md:59` và `DECISIONS.md` §13:
+  1. Giữ nguyên mọi pattern ở `.gitattributes:2-20`.
+  2. Quản lý LFS trong CI: job `ue-tests` đã cấu hình `lfs: true` (dòng 78) khi chạy engine test; job `gates` không bật `lfs: true` nhằm tránh lãng phí băng thông tải 72 MB trên mọi PR/push thường quy (bình luận P2 của Codex trên PR #45; `verify_git_lfs_pointers.py` đọc blob qua `git cat-file` không cần giải nén binary).
+  3. Kiểm tra quota GitHub LFS: 6.185 tệp, tổng dung lượng 72,15 MB (nằm hoàn toàn trong hạn mức 1 GB miễn phí của GitHub).
+  4. Thực thi `git add --renormalize .` trong một commit mới, tuyệt đối không dùng `git lfs migrate import` để bảo toàn lịch sử commit.
+- **Nhánh**: `infra/y8-git-lfs-renormalize`.
+- **Reviewer**:
+  - Tiểu tổ thẩm định độc lập Code Reviewer: APPROVED.
+  - Codex reviewer: Đã phản hồi bình luận P2 về việc tối ưu băng thông LFS trong CI checkout `gates`. Đã xử lý và giải quyết triệt để.
+- **Kết quả Cổng Tự Động**:
+  - Gate 1: GDD Consistency Validator: 108/108 files PASS (0 errors, 0 warnings, 0 allowlisted).
+  - Gate 2: Git LFS Pointers (`verify_git_lfs_pointers.py`): 6.185/6.185 files PASS (100% valid LFS pointers, ~130 bytes).
+  - Gate 3: UE Automation Tests: PASS.
