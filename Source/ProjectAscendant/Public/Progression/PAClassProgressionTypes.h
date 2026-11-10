@@ -66,7 +66,8 @@ enum class EPAClassPromotionError : uint8
 	AlreadyAtOrAboveRank,
 	NotInCitadel,
 	InvalidClassSlot,
-	InvalidTargetClass
+	InvalidTargetClass,
+	MissingScrollItem
 };
 
 /**
@@ -236,6 +237,50 @@ struct PROJECTASCENDANT_API FPAClassProgressionHelper
 			return FName(TEXT("Weapon.1H.Blade"));
 		}
 		return NAME_None;
+	}
+
+	/**
+	 * Danh sách họ vũ khí được chức nghiệp hỗ trợ (DECISIONS.md §7).
+	 * Riêng God Slayer hỗ trợ cả Weapon.1H.Blade và Weapon.2H.Polearm.
+	 * Acolyte & Seraph hỗ trợ Weapon.1H.Mace và Relic.
+	 */
+	static TArray<FName> GetClassSupportedWeaponFamilies(const FGameplayTag& Tag)
+	{
+		const FString Str = Tag.GetTagName().ToString();
+		if (Str.Contains(TEXT("GodSlayer")))
+		{
+			return { FName(TEXT("Weapon.1H.Blade")), FName(TEXT("Weapon.2H.Polearm")) };
+		}
+		if (Str.Contains(TEXT("Acolyte")) || Str.Contains(TEXT("Seraph")))
+		{
+			return { FName(TEXT("Weapon.1H.Mace")), FName(TEXT("Weapon.Relic")) };
+		}
+		const FName DefaultFamily = GetClassDefaultWeaponFamily(Tag);
+		if (!DefaultFamily.IsNone())
+		{
+			return { DefaultFamily };
+		}
+		return {};
+	}
+
+	static bool AreWeaponFamiliesCompatible(const FGameplayTag& ClassTagA, const FGameplayTag& ClassTagB)
+	{
+		const TArray<FName> FamiliesA = GetClassSupportedWeaponFamilies(ClassTagA);
+		const TArray<FName> FamiliesB = GetClassSupportedWeaponFamilies(ClassTagB);
+		for (const FName& FamA : FamiliesA)
+		{
+			if (FamiliesB.Contains(FamA))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	static bool IsWeaponFamilySupportedByClass(const FGameplayTag& ClassTag, const FName& WeaponFamily)
+	{
+		const TArray<FName> Families = GetClassSupportedWeaponFamilies(ClassTag);
+		return Families.Contains(WeaponFamily);
 	}
 
 	static TArray<FGameplayTag> GetAll16ClassTags()

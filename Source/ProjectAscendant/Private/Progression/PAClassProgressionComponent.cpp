@@ -2,6 +2,7 @@
 
 #include "Progression/PAClassProgressionComponent.h"
 #include "Progression/ClassPromotionScrollDefinition.h"
+#include "Inventory/PAInventoryComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "AbilitySystemInterface.h"
 #include "AbilitySystemComponent.h"
@@ -261,20 +262,23 @@ bool UPAClassProgressionComponent::IsSecondaryActiveSkillAllowed(FName AbilityWe
 		return false;
 	}
 
-	const FName PrimaryWeapon = FPAClassProgressionHelper::GetClassDefaultWeaponFamily(PrimaryClassTag);
-	const FName SecondaryWeapon = FPAClassProgressionHelper::GetClassDefaultWeaponFamily(SecondaryClassTag);
-
-	// Nếu cùng họ vũ khí, cho phép mọi kỹ năng của Class Phụ
-	if (PrimaryWeapon == SecondaryWeapon && PrimaryWeapon != NAME_None)
+	// Nếu cùng họ vũ khí (hoặc class hỗ trợ chung họ vũ khí như God Slayer hỗ trợ Blade & Polearm)
+	if (FPAClassProgressionHelper::AreWeaponFamiliesCompatible(PrimaryClassTag, SecondaryClassTag))
 	{
-		return true;
+		// Nếu kỹ năng yêu cầu một họ vũ khí cụ thể, kiểm tra xem cả Class Chính và Class Phụ có hỗ trợ không
+		if (AbilityWeaponFamily.IsNone() ||
+			(FPAClassProgressionHelper::IsWeaponFamilySupportedByClass(PrimaryClassTag, AbilityWeaponFamily) &&
+			 FPAClassProgressionHelper::IsWeaponFamilySupportedByClass(SecondaryClassTag, AbilityWeaponFamily)))
+		{
+			return true;
+		}
 	}
 
 	// Quy tắc B1: Khác họ vũ khí -> Chỉ cho phép kỹ năng Không Phụ Thuộc Vũ Khí (Weapon-Agnostic)
 	return bIsWeaponAgnostic;
 }
 
-EPAClassPromotionError UPAClassProgressionComponent::ServerPromoteClass(
+EPAClassPromotionError UPAClassProgressionComponent::ExecutePromotion(
 	const UClassPromotionScrollDefinition* ScrollDef,
 	EPAClassSlot TargetSlot,
 	const FGameplayTagContainer& CharacterFlags)
@@ -287,6 +291,16 @@ EPAClassPromotionError UPAClassProgressionComponent::ServerPromoteClass(
 	if (!ScrollDef || !ScrollDef->TargetClassTag.IsValid())
 	{
 		return EPAClassPromotionError::InvalidScroll;
+	}
+
+	// Kiểm tra vật phẩm quyển trục trong túi đồ nếu nhân vật có gắn InventoryComponent (ADR-0003, ROADMAP.md:83)
+	UPAInventoryComponent* InventoryComp = GetOwner() ? GetOwner()->FindComponentByClass<UPAInventoryComponent>() : nullptr;
+	if (InventoryComp && !ScrollDef->ScrollID.IsNone())
+	{
+		if (InventoryComp->GetItemCount(ScrollDef->ScrollID) < 1)
+		{
+			return EPAClassPromotionError::MissingScrollItem;
+		}
 	}
 
 	// Kiểm tra điều kiện thăng chức
@@ -319,6 +333,12 @@ EPAClassPromotionError UPAClassProgressionComponent::ServerPromoteClass(
 		}
 	}
 
+	// Tiêu hao quyển trục khỏi túi đồ (Server-Authoritative)
+	if (InventoryComp && !ScrollDef->ScrollID.IsNone() && InventoryComp->GetItemCount(ScrollDef->ScrollID) >= 1)
+	{
+		InventoryComp->ConsumeItemQuantity(ScrollDef->ScrollID, 1);
+	}
+
 	// Ghi nhận thăng chức
 	const FGameplayTag NewClassTag = ScrollDef->TargetClassTag;
 	if (TargetSlot == EPAClassSlot::Primary)
@@ -348,6 +368,24 @@ EPAClassPromotionError UPAClassProgressionComponent::ServerPromoteClass(
 
 	OnClassPromoted.Broadcast(TargetSlot, NewClassTag);
 	return EPAClassPromotionError::None;
+}
+
+void UPAClassProgressionComponent::ServerPromoteClass_Implementation(
+	const UClassPromotionScrollDefinition* ScrollDef,
+	EPAClassSlot TargetSlot)
+{
+	const EPAClassPromotionError Error = ExecutePromotion(ScrollDef, TargetSlot, OwnedQuestFlags);
+	if (Error != EPAClassPromotionError::None)
+	{
+		OnClassPromotionFailed.Broadcast(TargetSlot, Error);
+	}
+}
+
+bool UPAClassProgressionComponent::ServerPromoteClass_Validate(
+	const UClassPromotionScrollDefinition* ScrollDef,
+	EPAClassSlot TargetSlot)
+{
+	return ScrollDef != nullptr && (TargetSlot == EPAClassSlot::Primary || TargetSlot == EPAClassSlot::Secondary);
 }
 
 void UPAClassProgressionComponent::AddQuestFlag(const FGameplayTag& FlagTag)

@@ -5,6 +5,8 @@
 #include "Progression/PAClassProgressionTypes.h"
 #include "Progression/PAClassProgressionComponent.h"
 #include "Progression/ClassPromotionScrollDefinition.h"
+#include "Inventory/PAInventoryComponent.h"
+#include "Inventory/PAItemStaticDataAsset.h"
 #include "GameplayTagsManager.h"
 
 namespace ClassProgressionTestHelper
@@ -115,7 +117,7 @@ bool FPAClassProgressionScrollValidationTest::RunTest(const FString& Parameters)
 
 	// 1. Thất bại khi Class Level < 20
 	FGameplayTagContainer EmptyFlags;
-	EPAClassPromotionError Err1 = Ctx.ClassComp->ServerPromoteClass(TemplarScroll, EPAClassSlot::Primary, EmptyFlags);
+	EPAClassPromotionError Err1 = Ctx.ClassComp->ExecutePromotion(TemplarScroll, EPAClassSlot::Primary, EmptyFlags);
 	TestEqual(TEXT("Promotion must fail when Class Level < 20"), Err1, EPAClassPromotionError::RequirementsNotMet);
 	TestEqual(TEXT("Primary class remains Vanguard"), Ctx.ClassComp->GetPrimaryClassTag(), VanguardTag);
 
@@ -130,18 +132,18 @@ bool FPAClassProgressionScrollValidationTest::RunTest(const FString& Parameters)
 	ShadowbladeScroll->AllowedSourceClassTags = { RangerTag }; // Chỉ cho phép Ranger
 	ShadowbladeScroll->RequiredSourceClassLevel = 20;
 
-	EPAClassPromotionError Err2 = Ctx.ClassComp->ServerPromoteClass(ShadowbladeScroll, EPAClassSlot::Primary, EmptyFlags);
+	EPAClassPromotionError Err2 = Ctx.ClassComp->ExecutePromotion(ShadowbladeScroll, EPAClassSlot::Primary, EmptyFlags);
 	TestEqual(TEXT("Promotion must fail when source class is not allowed"), Err2, EPAClassPromotionError::RequirementsNotMet);
 
 	// 3. Thất bại khi thiếu cờ nhiệm vụ bắt buộc
 	TemplarScroll->RequiredQuestFlag = HolyQuestTag;
-	EPAClassPromotionError Err3 = Ctx.ClassComp->ServerPromoteClass(TemplarScroll, EPAClassSlot::Primary, EmptyFlags);
+	EPAClassPromotionError Err3 = Ctx.ClassComp->ExecutePromotion(TemplarScroll, EPAClassSlot::Primary, EmptyFlags);
 	TestEqual(TEXT("Promotion must fail when required quest flag is missing"), Err3, EPAClassPromotionError::MissingQuestFlag);
 
 	// 4. Thành công khi thỏa mãn mọi điều kiện
 	FGameplayTagContainer ValidFlags;
 	ValidFlags.AddTag(HolyQuestTag);
-	EPAClassPromotionError Err4 = Ctx.ClassComp->ServerPromoteClass(TemplarScroll, EPAClassSlot::Primary, ValidFlags);
+	EPAClassPromotionError Err4 = Ctx.ClassComp->ExecutePromotion(TemplarScroll, EPAClassSlot::Primary, ValidFlags);
 	TestEqual(TEXT("Promotion must succeed with all requirements met"), Err4, EPAClassPromotionError::None);
 	TestEqual(TEXT("Primary class successfully promoted to Templar"), Ctx.ClassComp->GetPrimaryClassTag(), TemplarTag);
 	TestTrue(TEXT("Templar class is unlocked"), Ctx.ClassComp->IsClassUnlocked(TemplarTag));
@@ -185,7 +187,7 @@ bool FPAClassProgressionApexDualSlotTest::RunTest(const FString& Parameters)
 	FGameplayTagContainer Flags;
 
 	// 1. Thất bại vì slot phụ chưa đạt yêu cầu (đang rỗng)
-	EPAClassPromotionError Err1 = Ctx.ClassComp->ServerPromoteClass(ApexScroll, EPAClassSlot::Primary, Flags);
+	EPAClassPromotionError Err1 = Ctx.ClassComp->ExecutePromotion(ApexScroll, EPAClassSlot::Primary, Flags);
 	TestEqual(TEXT("Apex promotion must fail when secondary slot condition not met"), Err1, EPAClassPromotionError::ApexDualSlotPrerequisiteNotMet);
 
 	// Thiết lập slot phụ là Chronomancer T3 Level 20
@@ -194,7 +196,7 @@ bool FPAClassProgressionApexDualSlotTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Secondary slot set to Chronomancer"), Ctx.ClassComp->GetSecondaryClassTag(), ChronomancerTag);
 
 	// Thử lại Apex khi cả 2 slot đều thỏa mãn T3
-	EPAClassPromotionError Err2 = Ctx.ClassComp->ServerPromoteClass(ApexScroll, EPAClassSlot::Primary, Flags);
+	EPAClassPromotionError Err2 = Ctx.ClassComp->ExecutePromotion(ApexScroll, EPAClassSlot::Primary, Flags);
 	TestEqual(TEXT("Apex promotion succeeds when both slots meet requirements"), Err2, EPAClassPromotionError::None);
 	TestEqual(TEXT("Primary class is now GodSlayer (Apex T4)"), Ctx.ClassComp->GetPrimaryClassTag(), GodSlayerTag);
 
@@ -292,6 +294,27 @@ bool FPAClassProgressionRuleB1WeaponCompatibilityTest::RunTest(const FString& Pa
 	bool bSameWeaponAllowed = Ctx.ClassComp->IsSecondaryActiveSkillAllowed(FName(TEXT("Weapon.1H.Blade")), false);
 	TestTrue(TEXT("Weapon-dependent skill allowed when both classes share weapon family"), bSameWeaponAllowed);
 
+	// Trường hợp 3: God Slayer (Apex) hỗ trợ cả 1H.Blade và 2H.Polearm (DECISIONS.md §7)
+	const FGameplayTag GodSlayerTag = FGameplayTag::RequestGameplayTag(FName(TEXT("Class.Line.Apex.GodSlayer")));
+	const FGameplayTag DragonKnightTag = FGameplayTag::RequestGameplayTag(FName(TEXT("Class.Line.Guard.DragonKnight"))); // 2H.Polearm
+
+	// Primary = Vanguard (1H.Blade), Secondary = GodSlayer -> Cho phép 1H.Blade
+	Ctx.ClassComp->SetSecondaryClass(GodSlayerTag);
+	bool bGodSlayerBladeAllowed = Ctx.ClassComp->IsSecondaryActiveSkillAllowed(FName(TEXT("Weapon.1H.Blade")), false);
+	TestTrue(TEXT("God Slayer allows 1H.Blade pairing with Vanguard"), bGodSlayerBladeAllowed);
+
+	// Primary = DragonKnight (2H.Polearm), Secondary = GodSlayer -> Cho phép 2H.Polearm
+	Ctx.ClassComp->InitializeFoundationalClass(DragonKnightTag);
+	bool bGodSlayerPolearmAllowed = Ctx.ClassComp->IsSecondaryActiveSkillAllowed(FName(TEXT("Weapon.2H.Polearm")), false);
+	TestTrue(TEXT("God Slayer allows 2H.Polearm pairing with DragonKnight"), bGodSlayerPolearmAllowed);
+
+	// Primary = Ranger (2H.Bow), Secondary = GodSlayer -> Khác vũ khí, khóa kỹ năng Polearm/Blade
+	Ctx.ClassComp->InitializeFoundationalClass(RangerTag);
+	bool bGodSlayerBowMismatch = Ctx.ClassComp->IsSecondaryActiveSkillAllowed(FName(TEXT("Weapon.2H.Polearm")), false);
+	TestFalse(TEXT("God Slayer locks weapon skill when paired with incompatible Ranger bow"), bGodSlayerBowMismatch);
+	bool bGodSlayerAgnostic = Ctx.ClassComp->IsSecondaryActiveSkillAllowed(NAME_None, true);
+	TestTrue(TEXT("God Slayer still allows weapon-agnostic skill when paired with Ranger"), bGodSlayerAgnostic);
+
 	World->DestroyWorld(false);
 	return true;
 }
@@ -381,5 +404,77 @@ bool FPAClassProgressionMatrix256PairsTest::RunTest(const FString& Parameters)
 	}
 
 	TestEqual(TEXT("Exhaustive matrix must test all 16x16 = 256 pairs"), TestedPairs, 256);
+	return true;
+}
+
+// =========================================================================
+// TEST 8: Xác Thực & Tiêu Hao Quyển Trục Trong Túi Đồ & Server RPC (ROADMAP.md:83)
+// =========================================================================
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FPAClassProgressionScrollInventoryAndServerRPCTest,
+	"ProjectAscendant.ClassProgression.InventoryScrollAndServerRPC",
+	EAutomationTestFlags_ApplicationContextMask | EAutomationTestFlags::ProductFilter
+)
+
+bool FPAClassProgressionScrollInventoryAndServerRPCTest::RunTest(const FString& Parameters)
+{
+	UWorld* World = UWorld::CreateWorld(EWorldType::Game, false);
+	auto Ctx = ClassProgressionTestHelper::CreateTestContext(World);
+
+	// Gắn thêm UPAInventoryComponent vào TestActor
+	UPAInventoryComponent* InvComp = NewObject<UPAInventoryComponent>(Ctx.TestActor);
+	InvComp->RegisterComponent();
+
+	const FGameplayTag VanguardTag = FGameplayTag::RequestGameplayTag(FName(TEXT("Class.Line.Guard.Vanguard")));
+	const FGameplayTag TemplarTag = FGameplayTag::RequestGameplayTag(FName(TEXT("Class.Line.Guard.Templar")));
+
+	Ctx.ClassComp->InitializeFoundationalClass(VanguardTag);
+	Ctx.ClassComp->GrantCombatClassXP(500000); // Lên level 20
+
+	TObjectPtr<UClassPromotionScrollDefinition> TemplarScroll = NewObject<UClassPromotionScrollDefinition>();
+	TemplarScroll->ScrollID = FName(TEXT("Scroll_Templar_T2"));
+	TemplarScroll->TargetClassTag = TemplarTag;
+	TemplarScroll->AllowedSourceClassTags = { VanguardTag };
+	TemplarScroll->RequiredMinRank = 1;
+	TemplarScroll->RequiredSourceClassLevel = 20;
+
+	FGameplayTagContainer Flags;
+
+	// 1. Thất bại khi túi đồ có 0 quyển trục -> MissingScrollItem
+	EPAClassPromotionError ErrMissing = Ctx.ClassComp->ExecutePromotion(TemplarScroll, EPAClassSlot::Primary, Flags);
+	TestEqual(TEXT("Must fail with MissingScrollItem when inventory has 0 scrolls"), ErrMissing, EPAClassPromotionError::MissingScrollItem);
+
+	// 2. Thêm 1 quyển trục vào túi đồ
+	UItemStaticDataAsset* ScrollItemAsset = NewObject<UItemStaticDataAsset>();
+	ScrollItemAsset->ItemId = FName(TEXT("Scroll_Templar_T2"));
+	ScrollItemAsset->MaxStackSize = 1;
+	ScrollItemAsset->Category = EPAItemCategory::Consumable;
+
+	int32 Remaining = 0;
+	bool bAdded = InvComp->TryAddItem(ScrollItemAsset, 1, Remaining);
+	TestTrue(TEXT("Successfully added scroll item to inventory"), bAdded);
+	TestEqual(TEXT("Inventory now has 1 scroll"), InvComp->GetItemCount(FName(TEXT("Scroll_Templar_T2"))), 1);
+
+	// 3. Thực hiện thăng chức thành công và tiêu hao quyển trục
+	EPAClassPromotionError ErrSuccess = Ctx.ClassComp->ExecutePromotion(TemplarScroll, EPAClassSlot::Primary, Flags);
+	TestEqual(TEXT("Promotion succeeds with scroll in inventory"), ErrSuccess, EPAClassPromotionError::None);
+	TestEqual(TEXT("Primary class promoted to Templar"), Ctx.ClassComp->GetPrimaryClassTag(), TemplarTag);
+	TestEqual(TEXT("Scroll was consumed, inventory count is now 0"), InvComp->GetItemCount(FName(TEXT("Scroll_Templar_T2"))), 0);
+
+	// 4. Kiểm tra Server RPC (ServerPromoteClass)
+	bool bFailedFired = false;
+	EPAClassPromotionError CapturedError = EPAClassPromotionError::None;
+	Ctx.ClassComp->OnClassPromotionFailed.AddLambda([&bFailedFired, &CapturedError](EPAClassSlot Slot, EPAClassPromotionError Err)
+	{
+		bFailedFired = true;
+		CapturedError = Err;
+	});
+
+	// Thử gọi ServerPromoteClass khi không còn scroll trong túi đồ -> Bị từ chối
+	Ctx.ClassComp->ServerPromoteClass(TemplarScroll, EPAClassSlot::Primary);
+	TestTrue(TEXT("Server RPC broadcasted promotion failure"), bFailedFired);
+	TestEqual(TEXT("Server RPC failure error is MissingScrollItem"), CapturedError, EPAClassPromotionError::MissingScrollItem);
+
+	World->DestroyWorld(false);
 	return true;
 }

@@ -148,17 +148,41 @@ public:
 	bool IsSecondaryActiveSkillAllowed(FName AbilityWeaponFamily, bool bIsWeaponAgnostic) const;
 
 	/**
-	 * Thăng chức chức nghiệp bằng Quyển trục (Server-Authoritative).
+	 * Thăng chức chức nghiệp bằng Quyển trục (Server-Authoritative logic).
+	 * Kiểm tra điều kiện cấp độ (Class Level 20), class nguồn, cờ nhiệm vụ, và tiêu thụ quyển trục từ túi đồ (ADR-0003, ROADMAP.md:83).
 	 * @param ScrollDef Data Asset quyển trục thăng chức.
 	 * @param TargetSlot Slot muốn thăng chức (Primary hoặc Secondary).
 	 * @param CharacterFlags Tập cờ nhiệm vụ của nhân vật để kiểm tra kỳ ngộ.
 	 * @return EPAClassPromotionError::None nếu thành công.
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Progression|Promotion")
-	EPAClassPromotionError ServerPromoteClass(
+	EPAClassPromotionError ExecutePromotion(
 		const UClassPromotionScrollDefinition* ScrollDef,
 		EPAClassSlot TargetSlot,
 		const FGameplayTagContainer& CharacterFlags
+	);
+
+	/**
+	 * Wrapper C++ / Blueprint gọi ExecutePromotion.
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Progression|Promotion")
+	EPAClassPromotionError PromoteClass(
+		const UClassPromotionScrollDefinition* ScrollDef,
+		EPAClassSlot TargetSlot,
+		const FGameplayTagContainer& CharacterFlags
+	)
+	{
+		return ExecutePromotion(ScrollDef, TargetSlot, CharacterFlags);
+	}
+
+	/**
+	 * Server RPC cho remote client yêu cầu thăng chức chức nghiệp (ADR-0001, ROADMAP.md:83).
+	 * Server tự động xác thực bằng OwnedQuestFlags và tiêu thụ quyển trục qua InventoryComponent.
+	 */
+	UFUNCTION(Server, Reliable, WithValidation, BlueprintCallable, Category = "Progression|Promotion")
+	void ServerPromoteClass(
+		const UClassPromotionScrollDefinition* ScrollDef,
+		EPAClassSlot TargetSlot
 	);
 
 	/**
@@ -192,6 +216,9 @@ public:
 
 	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnClassPromoted, EPAClassSlot /* Slot */, const FGameplayTag& /* NewClassTag */);
 	FOnClassPromoted OnClassPromoted;
+
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnClassPromotionFailed, EPAClassSlot /* Slot */, EPAClassPromotionError /* Error */);
+	FOnClassPromotionFailed OnClassPromotionFailed;
 
 	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnClassesSwapped, const FGameplayTag& /* NewPrimary */, const FGameplayTag& /* NewSecondary */);
 	FOnClassesSwapped OnClassesSwapped;
