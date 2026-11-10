@@ -4,7 +4,7 @@
 > **Mã hợp đồng**: `SPEC-ART-2026-09-23-V2`  
 > **Cơ quan ban hành**: Lead Game Designer & Technical Art Director  
 > **Tiêu chuẩn áp dụng**: `game-art-studio` (Anti-AI Craft Guide, Asset Contract Presets & Meowa Pipeline)  
-> **Game tham chiếu chuẩn mực (Benchmarks)**: *Stardew Valley* (ConcernedApe), *Terraria* (Re-Logic), *Octopath Traveler* (Square Enix), *Capcom CPS2 Arcade* (Capcom).  
+> **Game tham chiếu chuẩn mực (Benchmarks)**: *Octopath Traveler II* (Square Enix — HD-2D dynamic lighting & volumetric fog), *Dark Souls / Elden Ring* (FromSoftware — Dark fantasy grit & weathered iron armor), *Children of Morta* (Dead Mage — Fluid action choreography & weight), *Triangle Strategy* (Artdink/Square Enix — Military armor blocks & deep tonal ramps).  
 > **Engine mục tiêu**: Unreal Engine 5.7 (Paper2D / PaperZD / CommonUI / Lumen HD-2D)  
 > **Hiệu lực**: **BẮT BUỘC THỰC THI (MANDATORY)** — Mọi tài nguyên đồ họa vi phạm bất kỳ điều răn nào sẽ bị hệ thống QA Gate Check tự động từ chối.
 
@@ -140,6 +140,41 @@ Trong hoạt ảnh game hành động hardcore, khung hình đầu tiên của a
 │                       (Khóa cứng với UE5 Capsule)                         │
 (0, 128) ───────────────────────────────────────────────────────── (128, 128)
 ```
+
+### 5.3 Quy Chuẩn Hình Học Nhân Vật SPEC-ART V2 (Mood Board Benchmarked)
+Căn cứ quyết định thẩm mỹ từ 4 game tham chiếu (*Octopath Traveler II*, *Dark Souls*, *Children of Morta*, *Triangle Strategy*), quy chuẩn hình học nhân vật được khóa cứng như sau:
+
+1. **Tỷ Lệ Cơ Thể (Head-to-Body Proportion)**:
+   - Chuẩn hóa: **$3.2 - 3.5$ đầu** (Chunky Heroic Dark Fantasy).
+   - Chiều cao nhân vật tiêu chuẩn: $68 - 72$ pixels (đầu: $18 - 20$px, thân trên: $24 - 26$px, thân dưới + chân: $24 - 26$px) trên canvas $128 \times 128$.
+   - Tỷ lệ này tạo độ đầm chắc, trọng lượng cơ bắp rõ rệt của chiến binh trong thế giới Dark Fantasy, đồng thời giữ được mắt to vừa đủ để người chơi nhận diện cảm xúc và hướng ngắm từ góc nhìn Isometric $-45^\circ$.
+
+2. **Khóa Tọa Độ Điểm Neo Tiếp Đất (Pivot Foot Anchor)**:
+   - Điểm neo tiếp đất cố định tại tọa độ: **`(64, 114)`**.
+   - Khớp thắt lưng / đai hông: $Y = 80$.
+   - Khớp cổ áo / nẹp giáp ngực: $Y = 56$.
+   - Trục mắt / vành mũ: $Y = 44$.
+   - Đảm bảo khi cắm vào Unreal Engine `CapsuleComponent`, nhân vật đứng vững chắc trên mặt sàn 3D, không bay bổng, không chìm lún chân.
+
+3. **Bảng Màu 4 Nấc Sắc Độ (4-Tone Color Ramp with Hue-Shifting)**:
+   - Mọi vật liệu (sắt thép, da thú, vải thô, da người) đều tuân thủ chặt chẽ 4 nấc sắc độ:
+     * **Tone 1 (Specular / Highlight)**: Ánh sáng gắt phản xạ (ngả vàng chanh `#FFF2A8` hoặc trắng ngà `#F0F4F8`).
+     * **Tone 2 (Base Albedo)**: Màu nền nhận diện vật liệu.
+     * **Tone 3 (Core Shadow)**: Vùng bóng đổ thân khối (Hue-shifted ngả tím Navy `#2E284A` hoặc xanh chàm sẫm `#1C2938`).
+     * **Tone 4 (Ambient Occlusion / Creep)**: Rãnh kẹt giáp, nếp nhăn tối sâu nhất (than sẫm `#120E1C`).
+
+4. **Quy Chuẩn 5 Hướng Quan Sát & Lật Ngang (5-Directional Isometric + Horizontal Mirroring)**:
+   - Tối ưu hóa bộ nhớ và sản xuất thông qua 5 hướng kết xuất thực:
+     * **South (S)**: Trực diện phía trước ($0^\circ$).
+     * **South-East (SE)**: Chếch trước bên phải ($45^\circ$).
+     * **East (E)**: Nhìn ngang mạn phải ($90^\circ$).
+     * **North-East (NE)**: Chếch sau lưng bên phải ($135^\circ$).
+     * **North (N)**: Lưng trực diện ($180^\circ$).
+   - 3 hướng đối xứng được lật ngang tự động bằng runtime (`X = -1`):
+     * **South-West (SW)**: Lật ngang từ **SE**.
+     * **West (W)**: Lật ngang từ **E**.
+     * **North-West (NW)**: Lật ngang từ **NE**.
+   - Với trang bị bất đối xứng (Khiên tay trái, Kiếm tay phải), hệ thống `PAPaper2DSocketUtility` sẽ tự động tráo đổi layer thứ tự vẽ (Z-sort) để giữ khiên luôn hướng ra ngoài về phía hiểm họa.
 
 ---
 
