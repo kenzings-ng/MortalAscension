@@ -56,10 +56,6 @@ def draw_vanguard_direction(direction_name):
 
     cx, ground_y = 64, 114
 
-    # Ground shadow (oval)
-    shadow_w, shadow_h = 36, 10
-    d.ellipse([cx - shadow_w//2, ground_y - shadow_h//2 + 2, cx + shadow_w//2, ground_y + shadow_h//2 + 2], fill=(12, 10, 20, 110))
-
     if direction_name == "S":
         # -------------------------------------------------------------
         # SOUTH (0° - Directly facing front)
@@ -271,10 +267,8 @@ def main():
 
     # 2. 32x32 In-Game Scale Crop (Centered on SE main isometric pose)
     se_img = frames[1] # SE
-    # Character bbox in SE frame
-    bbox = se_img.getbbox()
-    # Crop to 48x48 around character center and downscale to 32x32 Nearest Neighbor
-    char_crop = se_img.crop((40, 42, 88, 116))
+    # Square 80x80 crop (X: 25..105, Y: 38..118) to preserve exact 1:1 aspect ratio and full silhouette (sword & shield)
+    char_crop = se_img.crop((25, 38, 105, 118))
     scale_32 = char_crop.resize((32, 32), Image.Resampling.NEAREST)
     scale_32_path = f"{OUTPUT_DIR}/vanguard_design_sheet_32x32.png"
     scale_32.save(scale_32_path)

@@ -30,7 +30,7 @@ def test_art_gate():
         w, h = img.size
         assert w == 128 and h == 128, f"Canvas size must be 128x128, got {w}x{h}"
 
-        # 1. Binary Alpha
+        # 1. Strict Binary Alpha (0 < alpha < 255 strictly prohibited)
         semi_transparent = 0
         palette = set()
         lowest_opaque_y = 0
@@ -40,17 +40,23 @@ def test_art_gate():
                 pixel = img.getpixel((x, y))
                 a = pixel[3]
                 if 0 < a < 255:
-                    # Note: shadow oval can have alpha for ground shadow, but character body itself is checked
                     semi_transparent += 1
                 if a > 0:
                     palette.add(pixel)
-                    if a > 128:
+                    if a == 255:
                         lowest_opaque_y = max(lowest_opaque_y, y)
 
         print(f"[{path}]")
         print(f"  Canvas: {w}x{h}")
         print(f"  Unique colors: {len(palette)}")
         print(f"  Lowest character ground Y: {lowest_opaque_y} (Target: 114 +/- 2px)")
+
+        # Verify strict binary alpha
+        if semi_transparent > 0:
+            print(f"  [FAIL] Found {semi_transparent} semi-transparent pixels (0 < A < 255 prohibited)")
+            all_passed = False
+        else:
+            print("  [PASS] Binary alpha strictly verified (0 semi-transparent pixels)")
 
         # Verify palette budget (Max 32 colors)
         if len(palette) > 32:
