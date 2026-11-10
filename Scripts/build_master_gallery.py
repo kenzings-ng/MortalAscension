@@ -167,7 +167,7 @@ def generate_gallery():
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Project Ascendant — Master Art Gallery (Anti-AI Handcrafted Standard)</title>
+    <title>Mortal Ascension — Master Art Gallery (Anti-AI Handcrafted Standard)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {{
@@ -211,7 +211,7 @@ def generate_gallery():
                 </div>
                 <div>
                     <h1 class="text-xl font-extrabold tracking-tight text-white flex items-center gap-2">
-                        Project Ascendant <span class="text-xs px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">Anti-AI Handcrafted</span>
+                        Mortal Ascension <span class="text-xs px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-400 border border-indigo-500/30">Anti-AI Handcrafted</span>
                     </h1>
                     <p class="text-xs text-slate-400">Capcom CPS2 128x128 Action-First & 32x32 HD-2D Weapon Arsenal</p>
                 </div>

@@ -2,7 +2,7 @@
 	"FileVersion": 3,
 	"EngineAssociation": "5.8",
 	"Category": "",
-	"Description": "Project Ascendant - 2.5D Isometric HD-2D Dark Fantasy Action RPG MMO",
+	"Description": "Mortal Ascension - 2.5D Isometric HD-2D Dark Fantasy Action RPG MMO",
 	"Modules": [
 		{
 			"Name": "ProjectAscendant",
