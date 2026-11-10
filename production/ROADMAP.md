@@ -43,7 +43,7 @@ Giai đoạn 2B không cần duyệt thẩm mỹ, nên agent làm 2B trong lúc 
 - [x] `Speed` / `bIsRunning` trong `UPAPaperZDAnimInstance`, flipbook Walk/Run 6 frame (PR #1, PR #45; test `ProjectAscendant.Character` PASS 6/6).
 - [x] State Hurt / Stunned / Dead điều khiển bằng GameplayTag (`State.Hurt`, `State.Stunned`, `State.Dead`) (PR #1, PR #12a; test `ProjectAscendant.Character` PASS 6/6).
 - [x] Tạo Sprite Socket tự động từ `vanguard_metadata.json` (`PAPaper2DSocketUtility`) (PR #1, PR #45; `PAPaper2DSocketUtility.cpp` trên main).
-- [x] Test `ProjectAscendant.Character.VanguardRuntimeWiring` pass (Discovered=6, Passed=6, Failed=0, Errors=0, QueueFinished=1).
+- [x] Test `ProjectAscendant.Character.VanguardRuntimeWiring` pass (bằng chứng log `Tests/evidence/y8-character-automation.log`: filter `ProjectAscendant.Character` 6/6 PASS gồm `VanguardRuntimeWiring`, `PaperdollModularSystem`, `StoneGolemEncounter`, và 3 test `CharacterVisual`; `QueueFinished=1`).
 - [ ] Legacy Đợt 3: AnimBP mới, đổi đường dẫn trong `PABaseCharacter.cpp` và `PAStoneGolemBoss.cpp`, test pass, rồi chuyển `Content/art/characters/vanguard/` và `boss/` vào kho legacy (theo `legacy-art-inventory.md` mục 5).
 
 **Kiểm chứng**: chạy UE test local, dán log. Code đã có trên main (`PAPaper2DSocketUtility.cpp`).

@@ -874,8 +874,14 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
      - `Speed`/`bIsRunning` trong `UPAPaperZDAnimInstance`, flipbook 6 frame đã merge trên `main`.
      - Tags `State.Hurt`, `State.Stunned`, `State.Dead` đã merge trên `main`.
      - `PAPaper2DSocketUtility.cpp` đã merge trên `main`.
-     - Bộ kiểm thử UE Automation `ProjectAscendant.Character` (gồm `VanguardRuntimeWiring`, `BaseMovement`, `IsometricAim`) đạt 6/6 PASS trọn vẹn (`QueueFinished=1`, 0 Error, 0 Failed, ExitCode=1 Linux clean exit).
+     - Bộ kiểm thử UE Automation chạy với `--filter=ProjectAscendant.Character` đạt 6/6 PASS trọn vẹn (`QueueFinished=1`, 0 Error, 0 Failed, ExitCode=1 Linux clean exit), bằng chứng lưu tại `Tests/evidence/y8-character-automation.log`. 6 bài test thực tế gồm:
+       * `ProjectAscendant.Character.VanguardRuntimeWiring`
+       * `ProjectAscendant.Character.PaperdollModularSystem`
+       * `ProjectAscendant.Character.StoneGolemEncounter`
+       * `ProjectAscendant.CharacterVisual.CivilianNPCAndTownGuardAI`
+       * `ProjectAscendant.CharacterVisual.IdentitySocketsAndOverlays`
+       * `ProjectAscendant.CharacterVisual.MasterRigDecoupledStateMachine`
 - **Kết quả Cổng Tự Động**:
   - Gate 1: GDD Consistency Validator: 108/108 files PASS (0 errors, 0 warnings, 0 allowlisted).
   - Gate 2: Git LFS Pointers: PASS (0 violations).
-  - Gate 3: UE Automation Tests: PASS (6/6 Character tests, 13/13 Network tests).
+  - Gate 3: UE Automation Tests: PASS (6/6 Character tests tại `Tests/evidence/y8-character-automation.log`, 13/13 Network tests tại `Saved/Logs/AutomationTest_Headless.log`).
