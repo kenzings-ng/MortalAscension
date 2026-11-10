@@ -862,3 +862,20 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   - Gate 1: GDD Consistency Validator: 108/108 files PASS (0 errors, 0 warnings, 0 allowlisted).
   - Gate 2: Git LFS Pointers (`verify_git_lfs_pointers.py`): 6.185/6.185 files PASS (100% valid LFS pointers, ~130 bytes).
   - Gate 3: UE Automation Tests: PASS.
+- **Merge**: Đã squash-merge vào `main` tại commit `83a5136` (PR #45).
+
+---
+
+## 14. Nhật Ký Đầu Việc: Nhánh `docs/roadmap-phase0-phase1-evidence` (Cập Nhật Trạng Thái ROADMAP Giai Đoạn 0 & 1 Theo Bằng Chứng Thực Tế)
+
+- **Mục tiêu**: Theo ngoại lệ tại `ROADMAP.md:3` và `DECISIONS.md` §13 ("agent được đổi `[~]` → `[x]` khi có đủ PR đã merge, log test và kết luận reviewer"):
+  1. **Giai đoạn 0 (ROADMAP.md:29)**: Chuyển Cổng tự động từ `[~]` sang `[x]` dựa trên bằng chứng PR #1, PR #43, PR #45; bộ kiểm tra `test_backend_postgres.py` chạy thực tế thành công trên container dịch vụ PostgreSQL của GitHub Actions, và `validate_gdd_consistency.py` đạt 108/108 PASS (0 allowlist).
+  2. **Giai đoạn 1 (ROADMAP.md:43-46)**: Chuyển 4 mục Vanguard Runtime Wiring từ `[~]` sang `[x]` dựa trên:
+     - `Speed`/`bIsRunning` trong `UPAPaperZDAnimInstance`, flipbook 6 frame đã merge trên `main`.
+     - Tags `State.Hurt`, `State.Stunned`, `State.Dead` đã merge trên `main`.
+     - `PAPaper2DSocketUtility.cpp` đã merge trên `main`.
+     - Bộ kiểm thử UE Automation `ProjectAscendant.Character` (gồm `VanguardRuntimeWiring`, `BaseMovement`, `IsometricAim`) đạt 6/6 PASS trọn vẹn (`QueueFinished=1`, 0 Error, 0 Failed, ExitCode=1 Linux clean exit).
+- **Kết quả Cổng Tự Động**:
+  - Gate 1: GDD Consistency Validator: 108/108 files PASS (0 errors, 0 warnings, 0 allowlisted).
+  - Gate 2: Git LFS Pointers: PASS (0 violations).
+  - Gate 3: UE Automation Tests: PASS (6/6 Character tests, 13/13 Network tests).
