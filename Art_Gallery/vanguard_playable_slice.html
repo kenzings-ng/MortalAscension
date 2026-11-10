@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Ascendant — Playable Vertical Slice Sandbox</title>
+<style>
+  :root {
+    --bg: #090c10;
+    --panel-bg: #161b22;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --gold: #f1c40f;
+    --crimson: #e03131;
+    --cyan: #1ed5c6;
+    --text: #c9d1d9;
+    --heading: #f0f6fc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .container {
+    max-width: 1100px;
+    width: 100%;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+  }
+  h1 {
+    font-size: 20px;
+    color: var(--heading);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .badge-phase {
+    background: #1f6feb;
+    color: #fff;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .badge-playable {
+    background: #238636;
+    color: #fff;
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+  }
+  .controls-bar {
+    background: var(--panel-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin-bottom: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 13px;
+  }
+  .key-badge {
+    background: #21262d;
+    border: 1px solid #484f58;
+    color: var(--gold);
+    padding: 2px 7px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 12px;
+    font-weight: bold;
+    margin: 0 2px;
+  }
+  .toggles {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 12px;
+  }
+  .toggles label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+  }
+  .canvas-wrapper {
+    position: relative;
+    border: 2px solid #30363d;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #0d1117;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.7);
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 600px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+  }
+  .hud-overlay {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: rgba(13, 17, 23, 0.85);
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 10px 14px;
+    pointer-events: none;
+    font-family: monospace;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .hud-title {
+    color: var(--gold);
+    font-weight: bold;
+    margin-bottom: 4px;
+    font-family: sans-serif;
+  }
+  .bar-wrap {
+    width: 180px;
+    height: 8px;
+    background: #21262d;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 3px;
+    margin-bottom: 6px;
+  }
+  .bar-hp { height: 100%; background: var(--crimson); width: 100%; }
+  .bar-sta { height: 100%; background: var(--cyan); width: 100%; }
+  .hud-combat {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    background: rgba(13, 17, 23, 0.85);
+    border: 1px solid #30363d;
+    border-radius: 6px;
+    padding: 10px 14px;
+    pointer-events: none;
+    font-size: 12px;
+  }
+  .status-text {
+    color: var(--gold);
+    font-weight: bold;
+  }
+  .link-gallery {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 13px;
+  }
+  .link-gallery:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>
+      <span>🛡️ Vanguard Vertical Slice — Playable Sandbox</span>
+      <span class="badge-phase">GIAI ĐOẠN 3</span>
+      <span class="badge-playable">PLAYABLE DEMO</span>
+    </h1>
+    <a href="vanguard_phase3_vertical_slice_review.html" class="link-gallery">← Quay lại Visual Review Gallery</a>
+  </header>
+
+  <div class="controls-bar">
+    <div>
+      🎮 <b>Điều khiển:</b>
+      <span class="key-badge">W</span><span class="key-badge">A</span><span class="key-badge">S</span><span class="key-badge">D</span> Di chuyển
+      | <span class="key-badge">J</span> / <span class="key-badge">Chuột Trái</span> / <span class="key-badge">Space</span> Combo 3 Đòn
+      | <span class="key-badge">K</span> / <span class="key-badge">Chuột Phải</span> Thủ Khiên (Guard)
+      | <span class="key-badge">Shift</span> Lướt né (Dash I-Frame)
+    </div>
+
+    <div class="toggles">
+      <label><input type="checkbox" id="chkLower" checked> Thân dưới</label>
+      <label><input type="checkbox" id="chkUpper" checked> Thân trên</label>
+      <label><input type="checkbox" id="chkCrest" checked> Mào lông (Crest)</label>
+      <label><input type="checkbox" id="chkTabard" checked> Dải khăn (Tabard)</label>
+      <label><input type="checkbox" id="chkHitbox"> Hitboxes</label>
+    </div>
+  </div>
+
+  <div class="canvas-wrapper">
+    <canvas id="gameCanvas" width="1000" height="600"></canvas>
+
+    <div class="hud-overlay">
+      <div class="hud-title">VANGUARD (TIÊN PHONG) — LV.1</div>
+      <div>HP: <span id="hpVal">100 / 100</span></div>
+      <div class="bar-wrap"><div id="hpBar" class="bar-hp"></div></div>
+      <div>STAMINA: <span id="staVal">100 / 100</span></div>
+      <div class="bar-wrap"><div id="staBar" class="bar-sta"></div></div>
+      <div style="margin-top:6px; color:#8b949e;">Direction: <span id="dirVal" style="color:#f0f6fc;">S</span></div>
+    </div>
+
+    <div class="hud-combat">
+      <div>Đòn đánh: <span id="actionVal" class="status-text">Đứng thủ (Idle)</span></div>
+      <div>Combo Stage: <span id="comboVal" style="color:#58a6ff;">0 / 3</span></div>
+      <div>Mục tiêu: <span style="color:#f59e0b;">Stone Golem Training Dummy</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==============================================================================
+// 1. WEB AUDIO API SYNTHESIZER (No external audio files required!)
+// ==============================================================================
+const AudioCtx = window.AudioContext || window.webkitAudioContext;
+let actx = null;
+
+function initAudio() {
+  if (!actx) actx = new AudioCtx();
+  if (actx.state === 'suspended') actx.resume();
+}
+
+function playSound(type) {
+  if (!actx) return;
+  const now = actx.currentTime;
+  const osc = actx.createOscillator();
+  const gain = actx.createGain();
+  osc.connect(gain);
+  gain.connect(actx.destination);
+
+  if (type === 'slash1') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(450, now);
+    osc.frequency.exponentialRampToValueAtTime(120, now + 0.12);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.12);
+    osc.start(now);
+    osc.stop(now + 0.12);
+  } else if (type === 'slash2') {
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(520, now);
+    osc.frequency.exponentialRampToValueAtTime(140, now + 0.14);
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.14);
+    osc.start(now);
+    osc.stop(now + 0.14);
+  } else if (type === 'slash3') {
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(650, now);
+    osc.frequency.exponentialRampToValueAtTime(90, now + 0.22);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.22);
+    osc.start(now);
+    osc.stop(now + 0.22);
+  } else if (type === 'hit') {
+    osc.type = 'square';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.exponentialRampToValueAtTime(40, now + 0.15);
+    gain.gain.setValueAtTime(0.35, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.15);
+    osc.start(now);
+    osc.stop(now + 0.15);
+  } else if (type === 'guard') {
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(800, now);
+    osc.frequency.exponentialRampToValueAtTime(300, now + 0.18);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
+    osc.start(now);
+    osc.stop(now + 0.18);
+  } else if (type === 'dash') {
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(280, now);
+    osc.frequency.exponentialRampToValueAtTime(500, now + 0.16);
+    gain.gain.setValueAtTime(0.18, now);
+    gain.gain.linearRampToValueAtTime(0.01, now + 0.16);
+    osc.start(now);
+    osc.stop(now + 0.16);
+  }
+}
+
+// ==============================================================================
+// 2. CANVAS & ENGINE SETUP
+// ==============================================================================
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+ctx.imageSmoothingEnabled = false;
+
+// Layer toggles
+const chkLower = document.getElementById('chkLower');
+const chkUpper = document.getElementById('chkUpper');
+const chkCrest = document.getElementById('chkCrest');
+const chkTabard = document.getElementById('chkTabard');
+const chkHitbox = document.getElementById('chkHitbox');
+
+// HUD elements
+const hpVal = document.getElementById('hpVal');
+const hpBar = document.getElementById('hpBar');
+const staVal = document.getElementById('staVal');
+const staBar = document.getElementById('staBar');
+const dirVal = document.getElementById('dirVal');
+const actionVal = document.getElementById('actionVal');
+const comboVal = document.getElementById('comboVal');
+
+// ==============================================================================
+// 3. SPRITE ASSET PRELOADER (From actual repo files)
+// ==============================================================================
+const SPRITES = {};
+const DIRECTIONS = ["S", "SE", "E", "NE", "N"];
+
+// Load Lower Body frames
+const lowerAnims = { idle: 4, walk: 6, run: 6, dash: 3, hitstun: 2 };
+for (const [anim, count] of Object.entries(lowerAnims)) {
+  for (const d of DIRECTIONS) {
+    for (let f = 0; f < count; f++) {
+      const key = `lower_${anim}_${d}_${f}`;
+      const img = new Image();
+      img.src = `../Content/art/characters/MasterRigs/FB_Lower_HeavyTank_Set/frames/${anim}/FB_Lower_HeavyTank_Set_${anim}_{d}_f{f < 10 ? '0' + f : f}.png`
+        .replace('{d}', d).replace('{f}', f < 10 ? '0' + f : f);
+      SPRITES[key] = img;
+    }
+  }
+}
+
+// Load Upper Body Combat frames
+const upperActions = ["atk1", "atk2", "atk3", "guard"];
+for (const act of upperActions) {
+  for (const d of DIRECTIONS) {
+    for (let f = 0; f < 4; f++) {
+      const key = `upper_${act}_${d}_${f}`;
+      const img = new Image();
+      img.src = `../Content/art/characters/UpperBodyWeapons/FB_Upper_1H_Blade_Combo/frames/${act}/FB_Upper_1H_Blade_Combo_${act}_{d}_f{f < 10 ? '0' + f : f}.png`
+        .replace('{d}', d).replace('{f}', f < 10 ? '0' + f : f);
+      SPRITES[key] = img;
+    }
+  }
+}
+
+// Load Vanguard Idle Upper frames
+for (const d of DIRECTIONS) {
+  for (let f = 0; f < 4; f++) {
+    const key = `upper_idle_${d}_${f}`;
+    const img = new Image();
+    img.src = `../Content/art/characters/ClassIdentity/IdleStances/FB_Vanguard_Idle/FB_Vanguard_Idle_${d}_f0${f}.png`;
+    SPRITES[key] = img;
+  }
+}
+
+// Load Crests & Tabards
+for (const d of DIRECTIONS) {
+  const cImg = new Image();
+  cImg.src = `../Content/art/characters/ClassIdentity/HelmCrests/Crest_Vanguard_RedPlume_${d}.png`;
+  SPRITES[`crest_${d}`] = cImg;
+
+  const tImg = new Image();
+  tImg.src = `../Content/art/characters/ClassIdentity/Tabards/Tabard_Vanguard_CrimsonSash_${d}.png`;
+  SPRITES[`tabard_${d}`] = tImg;
+}
+
+// ==============================================================================
+// 4. GAME ENTITIES & LOGIC
+// ==============================================================================
+
+const player = {
+  x: 420,
+  y: 330,
+  vx: 0,
+  vy: 0,
+  speed: 3.4,
+  dir: 'S',
+  flipX: false,
+  state: 'idle', // idle, walk, run, dash, atk, guard, hitstun
+  comboStage: 0, // 1, 2, 3
+  attackTimer: 0,
+  comboResetTimer: 0,
+  guarding: false,
+  dashTimer: 0,
+  dashCooldown: 0,
+  dashDir: { x: 0, y: 1 },
+  stamina: 100,
+  hp: 100,
+  animTick: 0,
+  frameIdx: 0,
+  ghosts: []
+};
+
+const dummy = {
+  x: 620,
+  y: 330,
+  hp: 500,
+  maxHp: 500,
+  posture: 100,
+  maxPosture: 100,
+  flashTimer: 0,
+  hitStunTimer: 0
+};
+
+const fctList = []; // Floating combat texts
+const sparkParticles = []; // Spark VFX
+const embers = []; // Atmospheric embers
+
+for (let i = 0; i < 40; i++) {
+  embers.push({
+    x: Math.random() * 1000,
+    y: Math.random() * 600,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: -Math.random() * 0.8 - 0.2,
+    size: Math.random() * 2 + 1,
+    alpha: Math.random() * 0.7 + 0.3
+  });
+}
+
+// Keyboard input state
+const keys = {};
+window.addEventListener('keydown', (e) => {
+  initAudio();
+  keys[e.key.toLowerCase()] = true;
+
+  if ((e.key === ' ' || e.key.toLowerCase() === 'j') && player.state !== 'dash') {
+    triggerAttack();
+  }
+  if (e.key.toLowerCase() === 'k') {
+    player.guarding = true;
+  }
+  if (e.key === 'Shift' && player.dashCooldown <= 0 && player.stamina >= 20) {
+    triggerDash();
+  }
+});
+
+window.addEventListener('keyup', (e) => {
+  keys[e.key.toLowerCase()] = false;
+  if (e.key.toLowerCase() === 'k') {
+    player.guarding = false;
+  }
+});
+
+canvas.addEventListener('mousedown', (e) => {
+  initAudio();
+  if (e.button === 0) triggerAttack();
+  if (e.button === 2) player.guarding = true;
+});
+canvas.addEventListener('mouseup', (e) => {
+  if (e.button === 2) player.guarding = false;
+});
+canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+function triggerAttack() {
+  if (player.state === 'dash' || player.guarding) return;
+
+  if (player.attackTimer <= 0) {
+    if (player.comboResetTimer > 0 && player.comboStage < 3) {
+      player.comboStage++;
+    } else {
+      player.comboStage = 1;
+    }
+    player.state = 'atk';
+    player.attackTimer = 16;
+    player.comboResetTimer = 35;
+    player.frameIdx = 0;
+    player.animTick = 0;
+    playSound(`slash${player.comboStage}`);
+
+    // Hitbox detection on dummy
+    const dx = dummy.x - player.x;
+    const dy = dummy.y - player.y;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+
+    if (dist < 80) {
+      applyHitToDummy(player.comboStage);
+    }
+  }
+}
+
+function triggerDash() {
+  player.state = 'dash';
+  player.dashTimer = 12;
+  player.dashCooldown = 28;
+  player.stamina = Math.max(0, player.stamina - 20);
+  player.frameIdx = 0;
+  player.animTick = 0;
+  playSound('dash');
+
+  // Determine dash direction
+  let dx = 0, dy = 0;
+  if (keys['w'] || keys['arrowup']) dy -= 1;
+  if (keys['s'] || keys['arrowdown']) dy += 1;
+  if (keys['a'] || keys['arrowleft']) dx -= 1;
+  if (keys['d'] || keys['arrowright']) dx += 1;
+  if (dx === 0 && dy === 0) dy = 1;
+  const len = Math.sqrt(dx * dx + dy * dy);
+  player.dashDir = { x: dx / len, y: dy / len };
+}
+
+function applyHitToDummy(stage) {
+  dummy.flashTimer = 8;
+  dummy.hitStunTimer = 12;
+  playSound('hit');
+
+  const dmg = stage === 3 ? 245 : (stage === 2 ? 155 : 95);
+  const isCrit = stage === 3;
+  dummy.hp = Math.max(0, dummy.hp - dmg);
+  dummy.posture = Math.max(0, dummy.posture - 25);
+
+  // Floating text
+  fctList.push({
+    x: dummy.x + (Math.random() - 0.5) * 20,
+    y: dummy.y - 40,
+    text: isCrit ? `CRIT! ${dmg}` : `${dmg}`,
+    color: isCrit ? '#f1c40f' : '#ffffff',
+    size: isCrit ? 18 : 14,
+    life: 30,
+    vy: -2
+  });
+
+  if (dummy.posture <= 0) {
+    dummy.posture = 100;
+    fctList.push({
+      x: dummy.x,
+      y: dummy.y - 60,
+      text: 'STAGGER!',
+      color: '#e03131',
+      size: 20,
+      life: 40,
+      vy: -1.5
+    });
+  }
+
+  // Sparks
+  for (let i = 0; i < (isCrit ? 18 : 8); i++) {
+    sparkParticles.push({
+      x: dummy.x,
+      y: dummy.y - 15,
+      vx: (Math.random() - 0.5) * 6,
+      vy: (Math.random() - 0.5) * 6,
+      life: 15,
+      color: isCrit ? '#f1c40f' : '#58a6ff'
+    });
+  }
+}
+
+// ==============================================================================
+// 5. UPDATE LOOP (60 FPS)
+// ==============================================================================
+function update() {
+  // Stamina regen
+  if (player.stamina < 100) {
+    player.stamina = Math.min(100, player.stamina + 0.5);
+  }
+  if (player.dashCooldown > 0) player.dashCooldown--;
+  if (player.comboResetTimer > 0) {
+    player.comboResetTimer--;
+    if (player.comboResetTimer <= 0) player.comboStage = 0;
+  }
+
+  // Dash state
+  if (player.state === 'dash') {
+    player.x += player.dashDir.x * 7.5;
+    player.y += player.dashDir.y * 7.5;
+    player.dashTimer--;
+    // Afterimage ghost
+    if (player.dashTimer % 2 === 0) {
+      player.ghosts.push({
+        x: player.x,
+        y: player.y,
+        dir: player.dir,
+        flipX: player.flipX,
+        alpha: 0.6
+      });
+    }
+    if (player.dashTimer <= 0) {
+      player.state = 'idle';
+    }
+  } else if (player.state === 'atk') {
+    player.attackTimer--;
+    if (player.attackTimer <= 0) {
+      player.state = 'idle';
+    }
+  } else if (player.guarding) {
+    player.state = 'guard';
+  } else {
+    // Normal locomotion
+    let moveX = 0;
+    let moveY = 0;
+    if (keys['w'] || keys['arrowup']) moveY -= 1;
+    if (keys['s'] || keys['arrowdown']) moveY += 1;
+    if (keys['a'] || keys['arrowleft']) moveX -= 1;
+    if (keys['d'] || keys['arrowright']) moveX += 1;
+
+    if (moveX !== 0 || moveY !== 0) {
+      const len = Math.sqrt(moveX * moveX + moveY * moveY);
+      moveX /= len;
+      moveY /= len;
+
+      player.x += moveX * player.speed;
+      player.y += moveY * player.speed;
+      player.state = 'walk';
+
+      // Isometric direction mapping
+      if (moveY < -0.3) {
+        if (moveX > 0.3) { player.dir = 'NE'; player.flipX = false; }
+        else if (moveX < -0.3) { player.dir = 'NE'; player.flipX = true; }
+        else { player.dir = 'N'; player.flipX = false; }
+      } else if (moveY > 0.3) {
+        if (moveX > 0.3) { player.dir = 'SE'; player.flipX = false; }
+        else if (moveX < -0.3) { player.dir = 'SE'; player.flipX = true; }
+        else { player.dir = 'S'; player.flipX = false; }
+      } else {
+        if (moveX > 0.3) { player.dir = 'E'; player.flipX = false; }
+        else if (moveX < -0.3) { player.dir = 'E'; player.flipX = true; }
+      }
+    } else {
+      player.state = 'idle';
+    }
+  }
+
+  // Arena clamping
+  player.x = Math.max(60, Math.min(940, player.x));
+  player.y = Math.max(90, Math.min(540, player.y));
+
+  // Animation frame ticks
+  player.animTick++;
+  const tickLimit = player.state === 'dash' ? 4 : (player.state === 'atk' ? 4 : 8);
+  if (player.animTick >= tickLimit) {
+    player.animTick = 0;
+    player.frameIdx++;
+  }
+
+  // Ghost decay
+  for (let i = player.ghosts.length - 1; i >= 0; i--) {
+    player.ghosts[i].alpha -= 0.08;
+    if (player.ghosts[i].alpha <= 0) player.ghosts.splice(i, 1);
+  }
+
+  // Dummy timers
+  if (dummy.flashTimer > 0) dummy.flashTimer--;
+  if (dummy.hitStunTimer > 0) dummy.hitStunTimer--;
+
+  // FCT update
+  for (let i = fctList.length - 1; i >= 0; i--) {
+    const f = fctList[i];
+    f.y += f.vy;
+    f.life--;
+    if (f.life <= 0) fctList.splice(i, 1);
+  }
+
+  // Sparks update
+  for (let i = sparkParticles.length - 1; i >= 0; i--) {
+    const p = sparkParticles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life--;
+    if (p.life <= 0) sparkParticles.splice(i, 1);
+  }
+
+  // Embers update
+  for (const e of embers) {
+    e.x += e.vx;
+    e.y += e.vy;
+    if (e.y < 0) e.y = 600;
+  }
+
+  // HUD Update
+  hpVal.innerText = `${player.hp} / 100`;
+  hpBar.style.width = `${player.hp}%`;
+  staVal.innerText = `${Math.floor(player.stamina)} / 100`;
+  staBar.style.width = `${player.stamina}%`;
+  dirVal.innerText = `${player.dir}${player.flipX ? ' (Flipped)' : ''}`;
+
+  let stName = "Đứng thủ (Idle)";
+  if (player.state === 'walk') stName = "Đang chạy bộ (Walk)";
+  else if (player.state === 'atk') stName = `Combo Đòn ${player.comboStage}`;
+  else if (player.state === 'guard') stName = "Thủ Khiên (Fortress Guard)";
+  else if (player.state === 'dash') stName = "Lướt né (I-Frame Dash)";
+  actionVal.innerText = stName;
+  comboVal.innerText = `${player.comboStage} / 3`;
+}
+
+// ==============================================================================
+// 6. RENDER LOOP (Isometric Arena & High-Craft Sprites)
+// ==============================================================================
+function render() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // 1. Draw Isometric Cobblestone Arena Ground
+  drawArenaGround();
+
+  // 2. Draw Embers (Ambient volumetric particles)
+  for (const e of embers) {
+    ctx.fillStyle = `rgba(245, 158, 11, ${e.alpha})`;
+    ctx.fillRect(e.x, e.y, e.size, e.size);
+  }
+
+  // 3. Draw Training Dummy
+  drawTrainingDummy();
+
+  // 4. Draw Player Dash Ghosts (Afterimages)
+  for (const g of player.ghosts) {
+    ctx.save();
+    ctx.globalAlpha = g.alpha * 0.5;
+    ctx.filter = 'drop-shadow(0 0 6px rgba(30, 213, 198, 0.8))';
+    drawPlayerSprite(g.x, g.y, g.dir, g.flipX, 'dash', 1);
+    ctx.restore();
+  }
+
+  // 5. Draw Player Character (Composed Paper2D Layers)
+  drawPlayerSprite(player.x, player.y, player.dir, player.flipX, player.state, player.frameIdx);
+
+  // 6. Draw Sparks VFX
+  for (const p of sparkParticles) {
+    ctx.fillStyle = p.color;
+    ctx.fillRect(p.x, p.y, 3, 3);
+  }
+
+  // 7. Draw Floating Combat Texts (FCT)
+  for (const f of fctList) {
+    ctx.font = `bold ${f.size}px -apple-system, sans-serif`;
+    ctx.fillStyle = '#000000';
+    ctx.fillText(f.text, f.x + 1, f.y + 1);
+    ctx.fillStyle = f.color;
+    ctx.fillText(f.text, f.x, f.y);
+  }
+}
+
+function drawArenaGround() {
+  // Dark stone floor tiles
+  const tileSize = 64;
+  for (let y = 0; y < canvas.height; y += tileSize) {
+    for (let x = 0; x < canvas.width; x += tileSize) {
+      const isAlt = ((x / tileSize) + (y / tileSize)) % 2 === 0;
+      ctx.fillStyle = isAlt ? '#131822' : '#0f131a';
+      ctx.fillRect(x, y, tileSize, tileSize);
+      ctx.strokeStyle = '#1b2230';
+      ctx.strokeRect(x, y, tileSize, tileSize);
+    }
+  }
+
+  // Arena Ring Border
+  ctx.strokeStyle = '#2a354a';
+  ctx.lineWidth = 4;
+  ctx.strokeRect(40, 50, 920, 500);
+
+  // Torches with radial volumetric light simulation
+  const torches = [
+    { x: 100, y: 100 },
+    { x: 900, y: 100 },
+    { x: 100, y: 500 },
+    { x: 900, y: 500 }
+  ];
+
+  for (const t of torches) {
+    const pulse = Math.sin(Date.now() * 0.008 + t.x) * 15;
+    const grad = ctx.createRadialGradient(t.x, t.y, 10, t.x, t.y, 160 + pulse);
+    grad.addColorStop(0, 'rgba(245, 158, 11, 0.35)');
+    grad.addColorStop(0.5, 'rgba(217, 119, 6, 0.12)');
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(t.x, t.y, 160 + pulse, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Torch stand & fire flame
+    ctx.fillStyle = '#374151';
+    ctx.fillRect(t.x - 3, t.y - 10, 6, 20);
+    ctx.fillStyle = '#f59e0b';
+    ctx.beginPath();
+    ctx.arc(t.x, t.y - 14, 5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function drawTrainingDummy() {
+  const x = dummy.x;
+  const y = dummy.y;
+
+  // Ground shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.5)';
+  ctx.beginPath();
+  ctx.ellipse(x, y + 25, 26, 12, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Stone Golem Dummy Body
+  ctx.save();
+  if (dummy.flashTimer > 0) {
+    ctx.filter = 'brightness(2.5)';
+  }
+  // Cross wooden/stone post
+  ctx.fillStyle = '#4b5563';
+  ctx.fillRect(x - 6, y - 45, 12, 70);
+  ctx.fillRect(x - 28, y - 30, 56, 12);
+
+  // Stone head
+  ctx.fillStyle = '#6b7280';
+  ctx.fillRect(x - 14, y - 55, 28, 22);
+  ctx.fillStyle = '#ef4444'; // Red glowing target eye
+  ctx.fillRect(x - 4, y - 47, 8, 4);
+
+  // Target Shield on chest
+  ctx.fillStyle = '#9ca3af';
+  ctx.beginPath();
+  ctx.arc(x, y - 10, 16, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.strokeStyle = '#ef4444';
+  ctx.lineWidth = 2;
+  ctx.stroke();
+  ctx.restore();
+
+  // Health bar over dummy
+  const barW = 60;
+  const hpPct = dummy.hp / dummy.maxHp;
+  ctx.fillStyle = '#1f2937';
+  ctx.fillRect(x - barW / 2, y - 75, barW, 6);
+  ctx.fillStyle = '#ef4444';
+  ctx.fillRect(x - barW / 2, y - 75, barW * hpPct, 6);
+}
+
+function drawPlayerSprite(px, py, dir, flipX, state, frameIdx) {
+  // Ground contact shadow
+  ctx.fillStyle = 'rgba(0,0,0,0.45)';
+  ctx.beginPath();
+  ctx.ellipse(px, py + 48, 24, 10, 0, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.save();
+  ctx.translate(px, py);
+  if (flipX) ctx.scale(-1, 1);
+
+  // 128x128 sprite drawn with origin at center-waist (X=64, Y=64)
+  const drawX = -64;
+  const drawY = -64;
+
+  // Determine Lower Body frame
+  let lowerKey = `lower_idle_${dir}_${frameIdx % 4}`;
+  if (state === 'walk') lowerKey = `lower_walk_${dir}_${frameIdx % 6}`;
+  else if (state === 'dash') lowerKey = `lower_dash_${dir}_${frameIdx % 3}`;
+
+  // Determine Upper Body frame
+  let upperKey = `upper_idle_${dir}_${frameIdx % 4}`;
+  if (state === 'atk') upperKey = `upper_atk${player.comboStage}_${dir}_${frameIdx % 4}`;
+  else if (state === 'guard') upperKey = `upper_guard_${dir}_${frameIdx % 4}`;
+
+  // 1. LAYER 1: Lower Body Master Rig
+  if (chkLower.checked && SPRITES[lowerKey] && SPRITES[lowerKey].complete) {
+    ctx.drawImage(SPRITES[lowerKey], drawX, drawY);
+  }
+
+  // 2. LAYER 2: Vanguard Tabard
+  const tabardKey = `tabard_${dir}`;
+  if (chkTabard.checked && SPRITES[tabardKey] && SPRITES[tabardKey].complete) {
+    ctx.drawImage(SPRITES[tabardKey], drawX + 40, drawY + 60);
+  }
+
+  // 3. LAYER 3: Upper Body Weapon Family
+  if (chkUpper.checked && SPRITES[upperKey] && SPRITES[upperKey].complete) {
+    ctx.drawImage(SPRITES[upperKey], drawX, drawY);
+  }
+
+  // 4. LAYER 4: Vanguard Helm Crest (Red Plume)
+  const crestKey = `crest_${dir}`;
+  if (chkCrest.checked && SPRITES[crestKey] && SPRITES[crestKey].complete) {
+    ctx.drawImage(SPRITES[crestKey], drawX + 48, drawY + 20);
+  }
+
+  // Debug Hitbox / Sockets
+  if (chkHitbox.checked) {
+    ctx.strokeStyle = '#22c55e';
+    ctx.strokeRect(-20, -35, 40, 80); // Body bounding box
+    ctx.fillStyle = '#ef4444';
+    ctx.fillRect(-2, -2, 4, 4); // Waist socket (0, 0)
+    ctx.fillStyle = '#3b82f6';
+    ctx.fillRect(-2, -30, 4, 4); // Helm socket (0, -30)
+  }
+
+  ctx.restore();
+}
+
+// ==============================================================================
+// 7. MAIN GAME LOOP
+// ==============================================================================
+function loop() {
+  update();
+  render();
+  requestAnimationFrame(loop);
+}
+
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
