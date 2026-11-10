@@ -26,7 +26,7 @@ Giai đoạn 2B không cần duyệt thẩm mỹ, nên agent làm 2B trong lúc 
 **Mục tiêu**: repo an toàn, build và test chạy được bằng lệnh.
 
 - [x] Git LFS (`.gitattributes`) cho ảnh, `.aseprite`, `.atlas`, `.spine`, `.uasset`, `.umap`.
-- [~] Cổng tự động: `validate_gdd_consistency.py`, `test_backend_postgres.py` (PostgreSQL thật), CI job `gates` (PR #1). _(Hạ về `[~]` ngày 2026-10-10 theo DECISIONS §13: chưa có bằng chứng — xem PROGRESS.md:38, Đính chính X14 mục 2; M20 trong `production/qa/review-plan-vs-code-2026-10-09.md`.)_
+- [x] Cổng tự động: `validate_gdd_consistency.py`, `test_backend_postgres.py` (PostgreSQL thật), CI job `gates` (PR #1, PR #43, PR #45; 108/108 validator pass, PostgreSQL test pass trên CI runner).
 - [x] Nhánh Stone Golem Spine: asset đã có trên main (`Content/art/characters/boss/spine/`). Cần kiểm chứng: Walk không trượt chân, Slam có squash tiếp đất, texture Filter = Nearest, không mipmap.
 - [x] `.claude/settings.json` đúng cú pháp Claude Code và **đã chứng minh** chặn được lệnh cấm.
 - [x] Hook `pre-push` được cài (`git config core.hooksPath Tools/git-hooks`) và đã chứng minh chặn push vào main.
@@ -40,13 +40,13 @@ Giai đoạn 2B không cần duyệt thẩm mỹ, nên agent làm 2B trong lúc 
 
 ## Giai đoạn 1 — Nối hình vào Vanguard (M6.1 Runtime Wiring)
 
-- [~] `Speed` / `bIsRunning` trong `UPAPaperZDAnimInstance`, flipbook Walk/Run 6 frame.
-- [~] State Hurt / Stunned / Dead điều khiển bằng GameplayTag (`State.Hurt`, `State.Stunned`, `State.Dead`).
-- [~] Tạo Sprite Socket tự động từ `vanguard_metadata.json` (`PAPaper2DSocketUtility`).
-- [~] Test `ProjectAscendant.Character.VanguardRuntimeWiring` pass.
+- [x] `Speed` / `bIsRunning` trong `UPAPaperZDAnimInstance`, flipbook Walk/Run 6 frame (PR #1, PR #45; test `ProjectAscendant.Character` PASS 6/6).
+- [x] State Hurt / Stunned / Dead điều khiển bằng GameplayTag (`State.Hurt`, `State.Stunned`, `State.Dead`) (PR #1, PR #12a; test `ProjectAscendant.Character` PASS 6/6).
+- [x] Tạo Sprite Socket tự động từ `vanguard_metadata.json` (`PAPaper2DSocketUtility`) (PR #1, PR #45; `PAPaper2DSocketUtility.cpp` trên main).
+- [x] Test `ProjectAscendant.Character.VanguardRuntimeWiring` pass (bằng chứng log `Tests/evidence/y8-character-automation.log`: filter `ProjectAscendant.Character` 6/6 PASS gồm `VanguardRuntimeWiring`, `PaperdollModularSystem`, `StoneGolemEncounter`, và 3 test `CharacterVisual`; `QueueFinished=1`).
 - [ ] Legacy Đợt 3: AnimBP mới, đổi đường dẫn trong `PABaseCharacter.cpp` và `PAStoneGolemBoss.cpp`, test pass, rồi chuyển `Content/art/characters/vanguard/` và `boss/` vào kho legacy (theo `legacy-art-inventory.md` mục 5).
 
-**Kiểm chứng `[~]`**: chạy UE test local, dán log. Code đã có trên main (`PAPaper2DSocketUtility.cpp`).
+**Kiểm chứng**: chạy UE test local, dán log. Code đã có trên main (`PAPaper2DSocketUtility.cpp`).
 
 ---
 
