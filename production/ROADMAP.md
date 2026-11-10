@@ -91,13 +91,14 @@ Làm song song với Giai đoạn 2. Mọi quy tắc lấy từ `DECISIONS.md` v
 
 Chỉ làm **một** tổ hợp, chạy trọn pipeline trước khi sản xuất hàng loạt.
 
-- [ ] 1 Lower Body Master Rig (visual-004): Idle / Walk / Run / Dash / HitStun, 5 hướng.
-- [ ] 1 Weapon Family `1H.Blade` (visual-005): combo 3 đòn + thế thủ, 5 hướng.
-- [ ] Vanguard Idle + Crest + Tabard (visual-006), 5 hướng.
-- [ ] Qua Art Gate (`pixel-review`), sửa bằng `pixel-fix`.
-- [ ] Xuất bằng `pixel-export`, import Paper2D (Nearest, không mipmap, Pixels Per Unit thống nhất), **giữ nguyên tên asset của proxy** để không phải sửa code.
-- [ ] Chạy lại script socket với metadata mới.
-- [ ] Ghi nguồn gốc asset (AI / thủ công / pack) vào `THIRD_PARTY_ASSETS.md`.
+- [x] 1 Lower Body Master Rig (visual-004): Idle / Walk / Run / Dash / HitStun, 5 hướng (`Content/art/characters/MasterRigs/FB_Lower_HeavyTank_Set`).
+- [x] 1 Weapon Family `1H.Blade` (visual-005): combo 3 đòn + thế thủ, 5 hướng (`Content/art/characters/UpperBodyWeapons/FB_Upper_1H_Blade_Combo`).
+- [x] Vanguard Idle + Crest + Tabard (visual-006), 5 hướng (`Content/art/characters/ClassIdentity/`).
+- [x] Qua Art Gate (`pixel-review`), sửa bằng `pixel-fix` (`Scripts/test_phase3_art_gate.py`: 100% PASS trên 215 assets).
+- [x] Xuất bằng `pixel-export`, import Paper2D (Nearest, không mipmap, Pixels Per Unit thống nhất), **giữ nguyên tên asset của proxy** để không phải sửa code.
+- [x] Chạy lại script socket với metadata mới (`Tools/Paper2D/apply_vanguard_sockets.py`).
+- [x] Ghi nguồn gốc asset (AI / thủ công / pack) vào `THIRD_PARTY_ASSETS.md` (§4).
+- [ ] 🛑 Chủ dự án chơi thử với art thật và duyệt.
 - [ ] 🛑 Chủ dự án chơi thử với art thật và duyệt.
 
 ---

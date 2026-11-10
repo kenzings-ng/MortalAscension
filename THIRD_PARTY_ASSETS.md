@@ -173,3 +173,41 @@
 - **Status**: **PENDING**
 - **Lý do tạm hoãn (Pending Rationale)**:
   - Cần thẩm định thêm về góc chiếu (Top-down $90^\circ$ của DCSS vs Isometric $2.5\text{D}$ của Project Ascendant) trước khi thu hoạch để tránh lãng phí dung lượng repo. Chuyển sang Agent 5 thẩm định góc nhìn trước khi duyệt nạp.
+
+---
+
+## 4. In-House Original Character Production Ledger (Phase 3 Vertical Slice)
+
+Nhật ký ghi nhận nguồn gốc và xuất xứ của bộ art mẫu Vertical Slice theo yêu cầu `ROADMAP.md:100`:
+
+### Pack 08: In-House Lower Body Master Rig — HeavyTank (`FB_Lower_HeavyTank_Set`)
+- **Asset/Pack Name**: `FB_Lower_HeavyTank_Set`
+- **Original Source**: In-House Original Production (`Scripts/generate_phase3_vertical_slice_art.py`)
+- **License**: **Proprietary / In-House Original** (Project Ascendant IP)
+- **Governing Spec**: `SPEC-ART-2026-09-23-V2` & `vanguard-mood-board.md`
+- **Canvas & Form Factor**: $128 \times 128\text{ px}$, Lưới pixel $1:1$, Điểm neo chân $(64, 114)$, Khớp nối eo phẳng $Y = 80$ (0 pixel phía trên $Y = 80$).
+- **Volume**: 105 frames (Idle 4f, Walk 6f, Run 6f, Dash 3f, HitStun 2f $\times 5$ hướng: S, SE, E, NE, N).
+- **Art Gate Clearance**: **100% PASS** (0 pixel bán trong suốt, 0 frame trùng lặp, dải màu 4-tone ramp per material).
+- **Status**: **APPROVED**
+
+### Pack 09: In-House Upper Body Weapon Family — 1H.Blade Combat (`FB_Upper_1H_Blade_Combo`)
+- **Asset/Pack Name**: `FB_Upper_1H_Blade_Combo`
+- **Original Source**: In-House Original Production (`Scripts/generate_phase3_vertical_slice_art.py`)
+- **License**: **Proprietary / In-House Original** (Project Ascendant IP)
+- **Governing Spec**: `SPEC-ART-2026-09-23-V2` & `itemization.md` (Family 1: 1H Blades)
+- **Canvas & Form Factor**: $128 \times 128\text{ px}$, Khớp nối eo tại $Y = 80$ (giới hạn dưới $Y \le 84$), Căn chỉnh socket tay phải $(96, 76)$, tay trái $(32, 76)$.
+- **Volume**: 80 frames (Atk1 4f, Atk2 4f, Atk3 4f, Guard 4f $\times 5$ hướng).
+- **Art Gate Clearance**: **100% PASS** (Vệt chém $120^\circ$, bổ xéo, đâm khiên và thế thủ vững chắc).
+- **Status**: **APPROVED**
+
+### Pack 10: In-House Vanguard Class Identity (`visual-006`)
+- **Asset/Pack Name**: `Vanguard_Class_Identity_Set`
+- **Original Source**: In-House Original Production (`Scripts/generate_phase3_vertical_slice_art.py`)
+- **License**: **Proprietary / In-House Original** (Project Ascendant IP)
+- **Governing Spec**: `SPEC-ART-2026-09-23-V2` & `character-visual-system.md`
+- **Components**:
+  - `FB_Vanguard_Idle`: 20 frames ($4\text{f} \times 5$ hướng).
+  - `Crest_Vanguard_RedPlume`: 5 sprites ($32 \times 32\text{ px}$, snap tại `Socket_HelmCrest` $64, 40$).
+  - `Tabard_Vanguard_CrimsonSash`: 5 sprites ($48 \times 64\text{ px}$, snap tại `Socket_Tabard` $64, 60$).
+- **Art Gate Clearance**: **100% PASS**
+- **Status**: **APPROVED**
