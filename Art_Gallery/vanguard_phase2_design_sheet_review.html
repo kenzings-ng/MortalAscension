@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Vanguard 'Iron Bastion' Design Sheet Review — Project Ascendant</title>
+  <style>
+    :root {
+      --bg: #0b0d13;
+      --card-bg: #141824;
+      --border: #242c40;
+      --accent: #5b8ab5;
+      --gold: #f5d06e;
+      --text: #e0e6ed;
+      --subtext: #8e9bb0;
+    }
+    body {
+      margin: 0;
+      padding: 24px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    h1, h2, h3 { color: var(--gold); margin-top: 0; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: #1e293b;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      margin-bottom: 12px;
+    }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .pixel-box {
+      background: #050608;
+      border: 2px dashed var(--border);
+      border-radius: 6px;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: auto;
+    }
+    img.pixelated {
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+    .swatches { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    .swatch {
+      width: 48px;
+      height: 48px;
+      border-radius: 4px;
+      border: 1px solid #ffffff22;
+      display: flex;
+      align-items: flex-end;
+      padding: 4px;
+      font-size: 9px;
+      font-family: monospace;
+      color: #fff;
+      text-shadow: 0 1px 2px #000;
+    }
+    .btn {
+      background: #1e293b;
+      color: #fff;
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-right: 8px;
+    }
+    .btn:hover { background: var(--accent); }
+    .btn.active { background: var(--accent); border-color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="badge">Giai Đoạn 2 — Chốt Phong Cách Nhân Vật</span>
+    <h1>Thiết Kế Nhân Vật: Vanguard "Iron Bastion" (5 Hướng)</h1>
+    <p style="color: var(--subtext)">
+      Tổng hợp định hướng từ Tứ Trụ Tham Chiếu: <b>Octopath Traveler II</b> (HD-2D UE5), <b>Dark Souls</b> (Dark Fantasy giáp sắt tôi), <b>Children of Morta</b> (Động lực học hành động), <b>Triangle Strategy</b> (Tỷ lệ mảng khối 3.5 đầu).
+    </p>
+
+    <!-- 5 DIRECTIONS SHEET -->
+    <div class="card">
+      <h2>1. Bản Vẽ 5 Hướng Chuẩn Hóa (5-Directional Isometric Design Sheet)</h2>
+      <p style="color: var(--subtext)">Canvas 128×128 pixel per frame | Điểm neo tiếp đất: (64, 114) | Tỷ lệ cơ thể: 3.5 đầu</p>
+      <div style="margin-bottom: 12px;">
+        <button class="btn active" onclick="setZoom(1)">1x Native</button>
+        <button class="btn" onclick="setZoom(2)">2x Zoom</button>
+        <button class="btn" onclick="setZoom(3)">3x Zoom</button>
+        <button class="btn" onclick="setZoom(4)">4x HD-2D</button>
+        <button class="btn" onclick="toggleBlackout()">Toggle Blackout Silhouette</button>
+      </div>
+      <div class="pixel-box" id="viewport">
+        <img id="sheetImg" class="pixelated" src="vanguard_design_sheet_5dir.png" style="transform-origin: center; transform: scale(3); margin: 60px 0;">
+      </div>
+      <div style="display: flex; justify-content: space-around; margin-top: 12px; font-weight: 600; color: var(--gold);">
+        <div>South (0°) - Trực diện</div>
+        <div>South-East (45°) - Isometric</div>
+        <div>East (90°) - Nhìn ngang</div>
+        <div>North-East (135°) - Lưng chếch</div>
+        <div>North (180°) - Sau lưng</div>
+      </div>
+    </div>
+
+    <!-- IN-GAME SCALE REVIEW (32x32 & 16x16) -->
+    <div class="grid-2">
+      <div class="card">
+        <h2>2. Kiểm Thử Kích Thước In-Game 32×32</h2>
+        <p style="color: var(--subtext)">Độ hiển thị nhân vật ở tỷ lệ pixel chuẩn trong gameplay:</p>
+        <div class="pixel-box" style="gap: 32px;">
+          <div>
+            <div style="font-size: 11px; margin-bottom: 6px; color: var(--subtext)">1x Native (32×32)</div>
+            <img class="pixelated" src="vanguard_design_sheet_32x32.png">
+          </div>
+          <div>
+            <div style="font-size: 11px; margin-bottom: 6px; color: var(--subtext)">4x Camera Zoom</div>
+            <img class="pixelated" src="vanguard_design_sheet_32x32.png" style="width: 128px; height: 128px;">
+          </div>
+          <div>
+            <div style="font-size: 11px; margin-bottom: 6px; color: var(--subtext)">8x Inspection</div>
+            <img class="pixelated" src="vanguard_design_sheet_32x32.png" style="width: 256px; height: 256px;">
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>3. Kiểm Thử Icon Minimap / HUD 16×16</h2>
+        <p style="color: var(--subtext)">Nhận diện silhouette tối thiểu ở kích thước siêu nhỏ:</p>
+        <div class="pixel-box" style="gap: 32px;">
+          <div>
+            <div style="font-size: 11px; margin-bottom: 6px; color: var(--subtext)">1x Native (16×16)</div>
+            <img class="pixelated" src="vanguard_design_sheet_16x16.png">
+          </div>
+          <div>
+            <div style="font-size: 11px; margin-bottom: 6px; color: var(--subtext)">8x Minimap Zoom</div>
+            <img class="pixelated" src="vanguard_design_sheet_16x16.png" style="width: 128px; height: 128px;">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4-TONE PALETTES -->
+    <div class="card">
+      <h2>4. Bảng Màu 4 Nấc Sắc Độ (4-Tone Hue-Shifted Palette Specification)</h2>
+      <p style="color: var(--subtext)">Tuyệt đối không pha trộn màu bẩn (Zero Micro-Color Bleed), đổ bóng ngả tím Navy.</p>
+      
+      <div style="margin-bottom: 16px;">
+        <div style="font-weight: 600; margin-bottom: 4px;">Giáp Sắt Tôi Đen (Blackened Steel)</div>
+        <div class="swatches">
+          <div class="swatch" style="background: #e0e6ed; color: #000;">#E0E6ED<br>Tone 1</div>
+          <div class="swatch" style="background: #7a889b;">#7A889B<br>Tone 2</div>
+          <div class="swatch" style="background: #373f4d;">#373F4D<br>Tone 3</div>
+          <div class="swatch" style="background: #191d24;">#191D24<br>Tone 4</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 16px;">
+        <div style="font-weight: 600; margin-bottom: 4px;">Vải Tabard Xanh Chàm Phong Trần (Worn Azure Cloth)</div>
+        <div class="swatches">
+          <div class="swatch" style="background: #5b8ab5;">#5B8AB5<br>Tone 1</div>
+          <div class="swatch" style="background: #32527b;">#32527B<br>Tone 2</div>
+          <div class="swatch" style="background: #1e2f47;">#1E2F47<br>Tone 3</div>
+          <div class="swatch" style="background: #101826;">#101826<br>Tone 4</div>
+        </div>
+      </div>
+
+      <div>
+        <div style="font-weight: 600; margin-bottom: 4px;">Đinh Tán & Thánh Giá Đồng Cổ (Antique Bronze)</div>
+        <div class="swatches">
+          <div class="swatch" style="background: #f5d06e; color: #000;">#F5D06E<br>Tone 1</div>
+          <div class="swatch" style="background: #b88a30;">#B88A30<br>Tone 2</div>
+          <div class="swatch" style="background: #734e1a;">#734E1A<br>Tone 3</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let isBlackout = false;
+    function setZoom(scale) {
+      document.getElementById('sheetImg').style.transform = `scale(${scale})`;
+      document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+    function toggleBlackout() {
+      isBlackout = !isBlackout;
+      const img = document.getElementById('sheetImg');
+      if (isBlackout) {
+        img.style.filter = 'brightness(0)';
+      } else {
+        img.style.filter = 'none';
+      }
+    }
+  </script>
+</body>
+</html>

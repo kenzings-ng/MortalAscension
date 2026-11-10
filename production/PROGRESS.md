@@ -914,3 +914,31 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
        * `ProjectAscendant.Character`: 6/6 PASS (`VanguardRuntimeWiring`, `PaperdollModularSystem`, `StoneGolemEncounter`, 3 test `CharacterVisual`).
        * Bằng chứng log: `Tests/evidence/legacy-batch3-character-automation.log`.
 - **Cột mốc**: Giai đoạn 1 (`ROADMAP.md:41-50`) chính thức hoàn thành **100%** trọn vẹn mọi mục tiêu.
+
+---
+
+## 16. Nhật Ký Đầu Việc: Nhánh `feat/phase2-vanguard-moodboard-design-sheet` (Giai Đoạn 2: Chốt Phong Cách Nhân Vật & Design Sheet)
+
+- **Mục tiêu**: Thực thi các mục tiêu của Giai đoạn 2 theo `ROADMAP.md:62-72`:
+  1. **Tứ Trụ Game Tham Chiếu Thẩm Mỹ (Mood Board)**:
+     - Chủ dự án đã chính thức lựa chọn 4 tựa game đỉnh cao: *Octopath Traveler II*, *Dark Souls / Elden Ring*, *Children of Morta*, *Triangle Strategy*.
+     - Biên soạn tài liệu định hướng chính thức: `design/art/vanguard-mood-board.md`.
+  2. **Cập nhật Hợp đồng Kỹ thuật SPEC-ART V2 (`design/art/pixel-asset-specifications.md`)**:
+     - Cập nhật mục Benchmarks với 4 tựa game được duyệt.
+     - Bổ sung Mục 5.3 khóa cứng:
+       * Tỷ lệ cơ thể: $3.2 - 3.5$ đầu (Chunky Heroic Dark Fantasy, chiều cao $\approx 70$px).
+       * Tọa độ điểm neo tiếp đất: `(64, 114)`.
+       * Bảng màu 4 nấc sắc độ (4-Tone Ramp Hue-Shifting) cho thép tôi, vải tabard, đinh tán đồng.
+       * Quy chuẩn 5 hướng quan sát ($0^\circ, 45^\circ, 90^\circ, 135^\circ, 180^\circ$) + lật ngang runtime ($X = -1$).
+  3. **Sản xuất Design Sheet Vanguard 5 Hướng & Công Cụ Trực Quan**:
+     - Tạo 5 frame 128x128 cho 5 hướng: `Art_Gallery/vanguard_design_sheet_{S,SE,E,NE,N}.png`.
+     - Tạo spritesheet tổng hợp 5 hướng: `Art_Gallery/vanguard_design_sheet_5dir.png` (640x128).
+     - Tạo crop tỷ lệ in-game: `Art_Gallery/vanguard_design_sheet_32x32.png`.
+     - Tạo icon minimap/HUD: `Art_Gallery/vanguard_design_sheet_16x16.png`.
+     - Tạo công cụ review tương tác HTML: `Art_Gallery/vanguard_phase2_design_sheet_review.html` (hỗ trợ zoom 1x-4x, chế độ Blackout Silhouette, kiểm tra bảng màu swatches).
+  4. **Kiểm tra Art Gate & Pixel-Review (`Scripts/test_vanguard_design_sheet_art_gate.py`)**:
+     - 100% frame đạt chuẩn điểm neo tiếp đất $Y=114$ ($\pm 0$px).
+     - Palette độc nhất: 5–12 màu/frame (nằm hoàn toàn trong hạn mức tối đa 32 màu).
+     - Bounding box 32x32 và 16x16 hợp lệ.
+     - Toàn bộ bài kiểm tra Art Gate: **PASS 100%**.
+- **Trạng thái**: Sẵn sàng trình duyệt Chủ dự án duyệt "chốt" theo `ROADMAP.md:69-71`.
