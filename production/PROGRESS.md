@@ -982,4 +982,37 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
        * `ProjectAscendant.ClassProgression.ScrollEconomyMVP`: 3/8/25 Tàn Trang, giá vàng NPC & Chợ Đen.
        * `ProjectAscendant.ClassProgression.Matrix256PairsAndCaps`: Quét ma trận 256 cặp Chính × Phụ, xác nhận bảo vệ trần nội tại.
      - Bộ test Character Level 1-50 (`ProjectAscendant.Progression`): 4/4 PASS (0 regression).
-- **Cột mốc**: Giai đoạn 2B (`ROADMAP.md:75-87`) chính thức hoàn thành **100%**. Sẵn sàng mở PR và merge vào `main`.
+- **Cột mốc**: Giai đoạn 2B (`ROADMAP.md:75-87`) chính thức hoàn thành **100%**. Đã merge vào `main` tại commit `0273c83` (PR #49).
+
+---
+
+## 18. Nhật Ký Đầu Việc: Nhánh `feat/phase3-vertical-slice-sample-art` (Giai Đoạn 3: Bộ Art Mẫu Vertical Slice)
+
+- **Mục tiêu**: Hiện thực hóa bộ art mẫu hoàn chỉnh cho một tổ hợp đơn lẻ (HeavyTank Lower Body + 1H.Blade Combat Upper Body + Vanguard Crest & Tabard) theo `ROADMAP.md:90-102` và `SPEC-ART-2026-09-23-V2`:
+  1. **Lower Body Master Rig (`FB_Lower_HeavyTank_Set`) — 105 Frames**:
+     - 5 Trạng thái hoạt ảnh: `Idle` (4f), `Walk` (6f), `Run` (6f), `Dash` (3f), `HitStun` (2f).
+     - 5 Hướng nhìn Isometric: S (0°), SE (45°), E (90°), NE (135°), N (180°).
+     - Quy chuẩn khớp nối: Đường cắt eo tuyệt đối phẳng tại $Y = 80$ (0 pixel phía trên $Y = 80$), điểm neo tiếp đất cố định tại $(64, 114)$.
+     - Xuất xưởng 105 file PNG frame riêng lẻ, master spritesheet ($2688 \times 640\text{ px}$) và 25 file animated GIF.
+  2. **Upper Body Weapon Family (`FB_Upper_1H_Blade_Combo`) — 80 Frames**:
+     - 4 Động tác chiến đấu: `Atk1` (4f chém ngang $120^\circ$), `Atk2` (4f bổ xéo lên), `Atk3` (4f đâm khiên kết liễu), `Guard` (4f thế thủ vững chắc).
+     - 5 Hướng nhìn Isometric: S, SE, E, NE, N.
+     - Căn chỉnh khớp nối tay và vũ khí, chừa khoảng đệm vệt chém Niagara Slash Trail $32\text{ px}$.
+     - Xuất xưởng 80 file PNG frame riêng lẻ, master spritesheet ($2048 \times 640\text{ px}$) và 20 file animated GIF.
+  3. **Vanguard Class Identity (`visual-006`) — 30 Assets**:
+     - `FB_Vanguard_Idle`: 20 frames Upper Body Idle stance ($4\text{f} \times 5$ hướng).
+     - `Crest_Vanguard_RedPlume`: 5 sprites mào nón lông vũ đỏ thắm ($32 \times 32\text{ px}$, snap tại `Socket_HelmCrest` $64, 40$).
+     - `Tabard_Vanguard_CrimsonSash`: 5 sprites cờ ngực sa-tanh đỏ thêu chỉ vàng ($48 \times 64\text{ px}$, snap tại `Socket_Tabard` $64, 60$).
+  4. **Kiểm Tra & Vượt Qua Art Gate Tự Động (`Scripts/test_phase3_art_gate.py`)**:
+     - **215/215 assets đạt chuẩn PASS 100%**:
+       * 100% Binary Alpha: 0 pixel bán trong suốt ($0 < A < 255$ bị cấm tuyệt đối).
+       * Khớp nối eo: 0 pixel lower body phía trên $Y = 80$; 0 pixel upper body dưới $Y = 84$.
+       * Điểm neo chân: Tiếp đất chuẩn xác tại $Y = 114$ ($\pm 0$px).
+       * Chuyển động chủ đích: 0 frame trùng lặp tĩnh trên toàn bộ chu kỳ animation.
+       * Bảng màu 4-tone ramp per material, zero mixels.
+  5. **Cập Nhật Socket Script & Sổ Cái Nguồn Gốc**:
+     - Chạy lại `Tools/Paper2D/apply_vanguard_sockets.py` với metadata 22 frames socket chuẩn xác.
+     - Ghi nhận đầy đủ nguồn gốc bản quyền In-House Original vào `THIRD_PARTY_ASSETS.md` (§4).
+  6. **Công Cụ Thẩm Mỹ Trực Quan**:
+     - Tạo công cụ xem và phát animation tương tác tại `Art_Gallery/vanguard_phase3_vertical_slice_review.html` hỗ trợ hiển thị 5 hướng, tỷ lệ 1x / 2x zoom và ghép layer tổng hợp (Composite Assembly).
+- **Cột mốc**: Hoàn thành 100% các hạng mục kỹ thuật của Giai đoạn 3 (`ROADMAP.md:94-100`). Sẵn sàng cho trạm kiểm duyệt của Chủ dự án (`ROADMAP.md:101`).
