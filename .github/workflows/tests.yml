@@ -54,6 +54,10 @@ jobs:
         run: |
           python Tools/QA/validate_gdd_consistency.py
 
+      - name: Run Backend Service Unit Tests
+        run: |
+          python Tools/QA/test_backend_service_unit.py
+
       - name: Run Backend PostgreSQL Tests
         env:
           PGHOST: localhost

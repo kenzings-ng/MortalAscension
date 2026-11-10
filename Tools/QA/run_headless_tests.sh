@@ -72,7 +72,8 @@ else
 fi
 
 # 2. Backend Postgres & Anti-Dupe Transaction Suite
-echo -e "\n[GATE 2/3] Running Backend Postgres & Anti-Dupe Test Suite..."
+echo -e "\n[GATE 2/3] Running Backend Service Unit & Anti-Dupe Test Suite..."
+python3 "${PROJECT_ROOT}/Tools/QA/test_backend_service_unit.py"
 set +e
 python3 "${PROJECT_ROOT}/Tools/QA/test_backend_postgres.py"
 PG_STATUS=$?
