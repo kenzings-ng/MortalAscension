@@ -76,14 +76,14 @@ Giai đoạn 2B không cần duyệt thẩm mỹ, nên agent làm 2B trong lúc 
 
 Làm song song với Giai đoạn 2. Mọi quy tắc lấy từ `DECISIONS.md` và `advanced-classes.md`.
 
-- [ ] GameplayTags `Class.Line.<Nhánh>.<Class>` cho 16 class, khai báo trong `DefaultGameplayTags.ini`.
-- [ ] `UClassPromotionScrollDefinition` (Data Asset): `TargetClassTag`, `AllowedSourceClassTags`, `RequiredMinRank`, `RequiredSourceClassLevel`, `RequiredQuestFlag`, điều kiện hai slot cho Apex.
-- [ ] Component tiến trình class: slot Chính / Phụ replicated, lưu tiến trình từng class đã chơi, Class Level 1–20 song song Character Level 1–50.
-- [ ] Quy tắc A1: đổi Chính ↔ Phụ tại Tòa Thành, clamp bậc Phụ theo bậc Chính.
-- [ ] Quy tắc B1: Class Phụ 1 Active (slot F, không phụ thuộc vũ khí) + 1 Passive; kỹ năng cần vũ khí bị khóa.
-- [ ] Server RPC thăng chức, kiểm tra cả hai slot, tiêu hủy quyển trục.
-- [ ] Test tự động: thăng chức hợp lệ / không hợp lệ, clamp bậc, khóa kỹ năng sai vũ khí, **test ma trận** mọi cặp Chính × Phụ kiểm tra Passive không cộng dồn vượt giới hạn.
-- [ ] Quyển trục MVP: bán cho NPC lấy vàng, Chợ Đen bán lại, phân rã thành Tàn Trang.
+- [x] GameplayTags `Class.Line.<Nhánh>.<Class>` cho 16 class, khai báo trong `DefaultGameplayTags.ini:2-17`.
+- [x] `UClassPromotionScrollDefinition` (Data Asset): `TargetClassTag`, `AllowedSourceClassTags`, `RequiredMinRank`, `RequiredSourceClassLevel`, `RequiredQuestFlag`, điều kiện hai slot cho Apex (`ClassPromotionScrollDefinition.h`, `ClassPromotionScrollDefinition.cpp`).
+- [x] Component tiến trình class: slot Chính / Phụ replicated, lưu tiến trình từng class đã chơi, Class Level 1–20 song song Character Level 1–50 (`PAClassProgressionComponent.h`, `PAClassProgressionComponent.cpp`).
+- [x] Quy tắc A1: đổi Chính ↔ Phụ tại Tòa Thành, clamp bậc Phụ theo bậc Chính (`PAClassProgressionComponent::SwapPrimarySecondaryClasses`, `GetEffectiveSecondaryRank`).
+- [x] Quy tắc B1: Class Phụ 1 Active (slot F, không phụ thuộc vũ khí) + 1 Passive; kỹ năng cần vũ khí bị khóa (`IsSecondaryActiveSkillAllowed`).
+- [x] Server RPC thăng chức, kiểm tra cả hai slot, tiêu hủy quyển trục (`ServerPromoteClass`).
+- [x] Test tự động: thăng chức hợp lệ / không hợp lệ, clamp bậc, khóa kỹ năng sai vũ khí, **test ma trận** mọi cặp Chính × Phụ kiểm tra Passive không cộng dồn vượt giới hạn (`PAClassProgressionTests.cpp`: 7/7 PASS, bao gồm ma trận 256 cặp).
+- [x] Quyển trục MVP: bán cho NPC lấy vàng, Chợ Đen bán lại, phân rã thành Tàn Trang (`GetSalvageShardCount`, `GetVendorGoldPrice`, `GetBlackMarketBuybackPrice`).
 
 ---
 
