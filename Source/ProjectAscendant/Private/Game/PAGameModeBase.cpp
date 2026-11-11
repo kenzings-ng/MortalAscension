@@ -56,30 +56,10 @@ void APAGameModeBase::PreLogin(
 	const FUniqueNetIdRepl& UniqueId,
 	FString& ErrorMessage)
 {
-	// Trích xuất mã xác thực từ chuỗi tham số kết nối (URL Options: ?token=... hoặc ?AuthToken=...)
-	FString Token = UGameplayStatics::ParseOption(Options, TEXT("token"));
-	if (Token.IsEmpty())
+	if (!CheckAuthToken(Options, bRequireAuthToken, ErrorMessage))
 	{
-		Token = UGameplayStatics::ParseOption(Options, TEXT("AuthToken"));
-	}
-
-	if (bRequireAuthToken)
-	{
-		if (Token.IsEmpty())
-		{
-			ErrorMessage = TEXT("Authentication failed: Missing session token.");
-			UE_LOG(LogTemp, Warning, TEXT("[APAGameModeBase::PreLogin] Connection rejected from %s: Missing token."), *Address);
-			return;
-		}
-
-		// Kiểm tra tính hợp lệ cơ bản của token (định dạng PA-TOKEN- hoặc JWT RFC 7519)
-		const bool bIsValidTokenFormat = Token.StartsWith(TEXT("PA-TOKEN-")) || (Token.CountChar(TEXT('.')) == 2);
-		if (!bIsValidTokenFormat)
-		{
-			ErrorMessage = TEXT("Authentication failed: Invalid token format.");
-			UE_LOG(LogTemp, Warning, TEXT("[APAGameModeBase::PreLogin] Connection rejected from %s: Malformed token."), *Address);
-			return;
-		}
+		UE_LOG(LogTemp, Warning, TEXT("[APAGameModeBase::PreLogin] Connection rejected from %s: %s"), *Address, *ErrorMessage);
+		return;
 	}
 
 	Super::PreLogin(Options, Address, UniqueId, ErrorMessage);
@@ -161,27 +141,71 @@ void APAGameModeBase::TriggerImmediateCharacterSave(APlayerController* PC)
 			{
 				FPASavedItemInstance SavedItem;
 				SavedItem.ItemInstanceUID = Entry->ItemInstanceUID;
-				SavedItem.ItemDefId = Entry->ItemDefinitionId;
+				SavedItem.ItemDefId = Entry->ItemDefId;
 				SavedItem.SlotIndex = i;
-				SavedItem.StackCount = Entry->Quantity;
-				SavedItem.CurrentDurability = Entry->InstanceData.CurrentDurability;
-				SavedItem.EnhancementLevel = Entry->InstanceData.EnhancementLevel;
+				SavedItem.StackCount = Entry->StackCount;
+				SavedItem.CurrentDurability = Entry->DynamicData.CurrentDurability;
+				SavedItem.EnhancementLevel = Entry->DynamicData.EnhancementLevel;
 				CharData.Items.Add(SavedItem);
 			}
 		}
 	}
 
-	// Gọi bất đồng bộ tới Backend Game Service thông qua FHttpModule
-	BackendSubsystem->SaveCharacter(CharData, FPABackendSaveCharacterDelegate::CreateLambda(
-		[CharId = CharData.CharacterId](bool bSuccess, const FString& Message)
+	// Gọi bất đồng bộ tới Backend Game Service thông qua FHttpModule.
+	// FPABackendSaveCharacterDelegate là dynamic delegate nên không gắn được lambda; gắn UFUNCTION để ghi kết quả.
+	// Delegate không mang CharacterId, nên log yêu cầu ở đây để nối với dòng kết quả.
+	UE_LOG(LogTemp, Log, TEXT("[APAGameModeBase] Requesting character save for %s (%d item(s))."), *CharData.CharacterId, CharData.Items.Num());
+	FPABackendSaveCharacterDelegate OnSaved;
+	OnSaved.BindUFunction(this, GET_FUNCTION_NAME_CHECKED(APAGameModeBase, HandleCharacterSaveComplete));
+	BackendSubsystem->SaveCharacter(CharData, OnSaved);
+}
+
+bool APAGameModeBase::CheckAuthToken(const FString& Options, bool bRequireToken, FString& OutErrorMessage)
+{
+	if (!bRequireToken)
+	{
+		return true;
+	}
+
+	// Trích xuất mã xác thực từ chuỗi tham số kết nối (URL Options: ?token=... hoặc ?AuthToken=...)
+	FString Token = UGameplayStatics::ParseOption(Options, TEXT("token"));
+	if (Token.IsEmpty())
+	{
+		Token = UGameplayStatics::ParseOption(Options, TEXT("AuthToken"));
+	}
+
+	if (Token.IsEmpty())
+	{
+		OutErrorMessage = TEXT("Authentication failed: Missing session token.");
+		return false;
+	}
+
+	// Kiểm tra tính hợp lệ cơ bản của token (định dạng PA-TOKEN- hoặc JWT RFC 7519)
+	int32 DotCount = 0;
+	for (const TCHAR Ch : Token)
+	{
+		if (Ch == TEXT('.'))
 		{
-			if (bSuccess)
-			{
-				UE_LOG(LogTemp, Log, TEXT("[APAGameModeBase] Auto-Save completed successfully for %s."), *CharId);
-			}
-			else
-			{
-				UE_LOG(LogTemp, Warning, TEXT("[APAGameModeBase] Auto-Save failed for %s: %s"), *CharId, *Message);
-			}
-		}));
+			++DotCount;
+		}
+	}
+	if (!Token.StartsWith(TEXT("PA-TOKEN-")) && DotCount != 2)
+	{
+		OutErrorMessage = TEXT("Authentication failed: Invalid token format.");
+		return false;
+	}
+
+	return true;
+}
+
+void APAGameModeBase::HandleCharacterSaveComplete(bool bSuccess, const FString& Message)
+{
+	if (bSuccess)
+	{
+		UE_LOG(LogTemp, Log, TEXT("[APAGameModeBase] Character save completed: %s"), *Message);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[APAGameModeBase] Character save FAILED: %s"), *Message);
+	}
 }

@@ -1229,3 +1229,25 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
 - **Chuyển cho đầu việc sau** (world-bible.md mục 11): vị trí hồi sinh và Lửa Trại (N4); "World Boss Thần Linh" cụ thể và phân tầng Lãnh Chúa (N6; sửa điều kiện mở God Slayer là 🛑); "Liên Minh" trùng tên tổ đội đột kích (N4); sửa từ vựng lệch tông từng chỗ (N5); Lãnh Chúa xuất hiện lại trong MMO (N6); đăng ký "Ascendant" vào registry (N4); tên thế giới (N4, sau khi kiểm trùng tên); chỉ dẫn art Tháp Đồng Hồ Vĩnh Hằng (Provisional, N4/N5).
 - **Trạng thái**: chưa push, chưa merge. _(Đã lỗi thời, xem "Cập nhật sau merge" bên dưới.)_
 - **Cập nhật sau merge (2026-11-11)**: nhánh push tại `97a0cfd`, PR #69. CI "Fast Gates (GDD & Backend QA)" pass (39s). Squash-merge thành `75cdfda` trên `main`; `git ls-remote origin refs/heads/main` trả `75cdfdae5bd9972aa4bdc9c33bf9839548bbca71`. Nhánh `docs/n3-closure` đổi N3 thành `[x]` trong ROADMAP. Chốt sổ N2 (PR #68) merge thành `1550220`.
+
+---
+
+## 27. Nhật Ký Đầu Việc: Nhánh `fix/backend-subsystem-uht-config` (sửa build: `main` không biên dịch được)
+
+- **Ngày**: 2026-11-11.
+- **Bối cảnh**: khi chuẩn bị greybox vòng lõi, build `ProjectAscendantEditor` trên `main` (tại `b2e1666`) thất bại. CI hiện chỉ chạy "Fast Gates (GDD & Backend QA)", không biên dịch C++, nên lỗi lọt vào `main`. Đây là việc sửa lỗi chặn, không phải đầu việc roadmap mới.
+- **Nội dung thực hiện**:
+  1. `PABackendPersistenceSubsystem.h`: `UCLASS()` → `UCLASS(Config = Game)` (UHT báo lỗi vì có `UPROPERTY(Config)` mà class không khai báo file config).
+  2. `PAGameModeBase.cpp`: sửa 6 lỗi biên dịch (`CountChar` không tồn tại, dùng sai tên trường `FPAInventoryItemEntry`, `CreateLambda` trên dynamic delegate). Tách kiểm tra token ra hàm tĩnh `CheckAuthToken` để test được không cần World. Kết quả lưu nhân vật được ghi log qua callback `UFUNCTION` `HandleCharacterSaveComplete` (thành công: Log; thất bại: Warning).
+  3. `PABackendPersistenceTests.cpp`: test làm crash (SIGSEGV) vì tạo subsystem sai outer và gọi `PreLogin` không có World; nay tạo dưới `UGameInstance` tạm và test `CheckAuthToken` trực tiếp (5 trường hợp).
+  - Commit `6798139`, `3d1faec`.
+- **Log cổng tự động** (tại `3d1faec`): build Linux Development `ProjectAscendantEditor` thành công; `./Tools/QA/run_headless_tests.sh --ue-only`: Discovered=89, Passed=89, Failed=0, Errors=0, QueueFinished=1, exit 0 (trước khi sửa: crash sau 3/89). **Không chạy** test backend Python trong phiên này. CI không biên dịch C++, nên log build cục bộ là bằng chứng duy nhất.
+- **Kết luận reviewer**:
+  - Vòng 1 (tại `6798139`): CHƯA. Lỗi chặn: delegate rỗng làm mất kết quả lưu (lỗi lưu bị bỏ qua im lặng). Các mục khác không chặn.
+  - Vòng 2 (tại `3d1faec`): **ĐỒNG Ý merge**. Callback bind bằng `GET_FUNCTION_NAME_CHECKED`; reviewer đối chiếu thời gian build `.so` (22:06:11) trước log test (22:06:19), 89 `Result={Success}`.
+- **Việc riêng, chưa sửa** (ghi vào roadmap như việc theo dõi):
+  1. Secret mặc định viết cứng: `PABackendPersistenceSubsystem.h:117`, `Services/Backend/config.py:20`; so sánh secret bằng `==` ở `Services/Backend/app.py:55` (nên dùng so sánh hằng thời gian).
+  2. `CheckAuthToken` chỉ kiểm định dạng token; `ValidateClientToken` có nhưng chưa được gọi.
+  3. Auto-save mỗi 300 s gửi dữ liệu giả lên `localhost:8080` (CharacterId = tên actor, cấp và class viết cứng); subsystem cũng được tạo trên client; `save_character` phía backend không kiểm quyền sở hữu.
+  4. Test PreLogin chỉ phủ `CheckAuthToken`, chưa phủ đường kết nối thật.
+  5. CI nên thêm bước biên dịch C++ (hoặc ít nhất UHT) để lỗi kiểu này không lọt vào `main`.

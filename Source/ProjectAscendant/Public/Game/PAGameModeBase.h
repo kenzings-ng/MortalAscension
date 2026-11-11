@@ -56,7 +56,17 @@ public:
 	UFUNCTION(BlueprintPure, Category = "ProjectAscendant|Security")
 	bool IsAuthTokenRequired() const { return bRequireAuthToken; }
 
+	/**
+	 * Kiểm tra token xác thực trong chuỗi tham số kết nối, không cần World.
+	 * Trả về false và ghi OutErrorMessage khi bị từ chối. Dùng bởi PreLogin và bởi test.
+	 */
+	static bool CheckAuthToken(const FString& Options, bool bRequireToken, FString& OutErrorMessage);
+
 protected:
+	/** Nhận kết quả lưu nhân vật từ Backend (dynamic delegate cần UFUNCTION). */
+	UFUNCTION()
+	void HandleCharacterSaveComplete(bool bSuccess, const FString& Message);
+
 	/** Có bắt buộc kiểm tra Token hợp lệ ở PreLogin hay không (bật mặc định trên Dedicated Server phát hành) */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProjectAscendant|Security")
 	bool bRequireAuthToken = false;
