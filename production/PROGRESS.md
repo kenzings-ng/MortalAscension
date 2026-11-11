@@ -1201,4 +1201,5 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   3. Asset và code lệch bảng §0 (chỉ liệt kê, làm ở Giai đoạn 4 / N7): `Tabard_Vanguard_CrimsonSash` đỏ; khiên tròn trong `vanguard_metadata.json:45`; sheet m5 2816×128 > atlas 2048; comment màu độ hiếm `PAPaperdollTypes.h:140,143`; comment "Khiên tròn" `PAPaperdollTypes.h:196`; tư thế God Slayer `Scripts/build_class_idle_crest_tabard.py:397`.
   4. Bề rộng silhouette Vanguard: mood board ghi 44 px, design sheet đo 43–53 px theo hướng (S/SE/E 52–53, NE 48, N 43; gồm khiên). Chưa hỏi chủ dự án.
 - **Việc cần chủ dự án sau này**: duyệt hình Vanguard có mào đỏ (và xác nhận trọng tâm 60/40 của Vanguard ở `character-visual-system.md:76` cùng lúc); duyệt chiều cao các nhóm class ở N5.
-- **Trạng thái**: chưa push, chưa merge.
+- **Trạng thái**: chưa push, chưa merge. _(Đã lỗi thời, xem "Cập nhật sau merge" bên dưới.)_
+- **Cập nhật sau merge (2026-11-11)**: nhánh push tại `93b480d`, PR #67. CI "Fast Gates (GDD & Backend QA)" pass (43s). Squash-merge thành `fd29b22` trên `main`; `git ls-remote origin refs/heads/main` trả `fd29b22b9aa6f81ba27e22f7012a99c95f3bd902`. Nhánh `docs/n2-closure` đổi N2 thành `[x]` trong ROADMAP.
