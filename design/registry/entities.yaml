@@ -33,7 +33,7 @@
 #   Deprecated entries:      Grep pattern="status: deprecated"
 #
 # FORMAT: YAML. Consistent indentation is critical for grep reliability.
-#   Sections: entities | items | formulas | constants
+#   Sections: entities | locations | items | formulas | constants
 #   Each entry: name, status, source, referenced_by[], attributes{}, added, revised
 
 version: 1
@@ -278,6 +278,27 @@ entities:
 #         drop_rate: 0.8          # 0.0–1.0
 #     added: 2026-03-26
 #     revised: ""
+
+
+  # ─── NARRATIVE ENTITIES (N0, 2026-11-11) ─────────────────────────
+  # Các nhóm dưới đây hiện để trống. Chỉ đăng ký tên đã được chủ dự án chọn
+  # (ROADMAP Giai đoạn N; nguồn: design/narrative/**). Không tự đặt tên mới.
+  # Mỗi mục thêm trường `kind:` để phân nhóm, và `canon:` theo
+  # .claude/rules/narrative.md (Established / Provisional / Under Review).
+  #   kind: faction   -> source: design/narrative/factions/<slug>.md      (N4)
+  #   kind: npc       -> source: design/narrative/npcs/<slug>.md          (N6)
+  #   kind: boss      -> source: design/narrative/bestiary/<slug>.md      (N6)
+  #   kind: enemy     -> source: design/narrative/bestiary/<slug>.md      (N6)
+
+
+# ─── LOCATIONS (N0, 2026-11-11) ──────────────────────────────────────────────
+# Vùng (region), tòa thành (citadel) và địa điểm có tên. Hiện để trống; điền ở
+# ROADMAP Giai đoạn N mục N4 sau khi chủ dự án chốt một tên chính thức cho mỗi nơi.
+#
+# Required fields: name, kind (region | citadel | site), status, canon, source,
+#   referenced_by, added. Bí danh bị loại ghi vào `deprecated_aliases:`.
+
+locations: []
 
 
 # ─── ITEMS ───────────────────────────────────────────────────────────────────
