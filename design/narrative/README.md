@@ -24,7 +24,7 @@ Skill `team-narrative` còn ghi vào `design/narrative/lore/` và `design/narrat
 
 ## Quy tắc
 
-1. **Không tự đặt tên mới.** Không tên thế giới, phe phái, vùng, NPC hay boss mới nào được ghi vào repo trước khi chủ dự án chọn; phương án chưa được chọn chỉ nằm trên trang xem trước. (DECISIONS §13, bổ sung 2026-11-11.)
+1. **Không tự đặt tên mới.** Không tên thế giới, vùng, thành, địa điểm, phe phái, NPC, boss hay quái mới nào được ghi vào repo trước khi chủ dự án chọn; phương án chưa được chọn chỉ nằm trên trang xem trước. (DECISIONS §13, bổ sung 2026-11-11.)
 2. **Mỗi mục ghi mức canon** ở đầu file. Cả ba mức đều là nội dung chủ dự án đã chọn: `Established` (đã chốt), `Provisional` (đã chọn nhưng còn chờ một đầu việc sau của Giai đoạn N xác nhận), `Under Review` (đã chọn, đang mâu thuẫn với file khác và chờ xử lý).
 3. **Tên class, nhánh, bậc, vũ khí** lấy nguyên từ DECISIONS §2 và §7. Không viết tên tiếng Việt khác.
 4. **Một nơi, một tên.** Tên cũ bị loại giữ trong `design/registry/entities.yaml` thành mục `status: deprecated` kèm `replaced_by:`, không dùng lại trong văn bản.

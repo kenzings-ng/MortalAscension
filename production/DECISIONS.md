@@ -257,6 +257,6 @@ Thống nhất dứt điểm mọi phân bổ weapon family cho toàn bộ 16 Cl
 
 - **Phạm vi**: làm nền tảng đầy đủ theo thứ tự world bible → phe phái và vùng đất → bản sắc 16 class → character sheet → boss, quái, NPC. Nội dung nằm trong `design/narrative/`.
 - **Tiền đề thế giới**: thế giới fantasy **có thật**. Hệ Thống (cấp độ, class, kỹ năng) là quy luật của thế giới mà cư dân nhìn thấy.
-- **Cách tạo canon**: agent đề xuất 2–3 phương án cho mỗi quyết định lớn trên một trang xem trước, chủ dự án chọn. Không tên thế giới, phe phái, vùng, NPC hay boss mới nào được ghi vào repo trước khi chủ dự án chọn; phương án chưa được chọn chỉ nằm trên trang xem trước.
+- **Cách tạo canon**: agent đề xuất 2–3 phương án cho mỗi quyết định lớn trên một trang xem trước, chủ dự án chọn. Không tên thế giới, vùng, thành, địa điểm, phe phái, NPC, boss hay quái mới nào được ghi vào repo trước khi chủ dự án chọn; phương án chưa được chọn chỉ nằm trên trang xem trước.
 - **ROADMAP**: thêm **Giai đoạn N — Nền tảng Narrative** (N0–N8), chạy **song song** Giai đoạn 4 và không chặn sản xuất art.
 - Các mục §1–§12 không đổi. Điểm nào của Giai đoạn N chạm tới mục đã chốt (tên nhánh ở §2, boss và phong cách ở §10, bộ phận boss ở §13) vẫn phải dừng và hỏi.

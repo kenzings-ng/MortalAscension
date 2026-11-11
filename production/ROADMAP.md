@@ -15,7 +15,7 @@
 
 ```
 0 → 1 → 1.5 → [2 (chờ duyệt thẩm mỹ) song song 2B] → 3 → 4 → 5 → 6 → 7
-                                                       N (song song Giai đoạn 4)
+                                                         N (song song Giai đoạn 4)
 ```
 
 Giai đoạn 2B không cần duyệt thẩm mỹ, nên agent làm 2B trong lúc chờ chủ dự án duyệt ở Giai đoạn 2.
@@ -162,10 +162,10 @@ _Thêm ngày 2026-11-11 theo quyết định của chủ dự án (DECISIONS §1
 
 **Tiền đề đã chốt**: thế giới fantasy có thật; Hệ Thống (cấp độ, class, kỹ năng) là quy luật mà cư dân nhìn thấy.
 
-**Cách tạo canon**: agent đề xuất 2–3 phương án trên một trang xem trước, chủ dự án chọn. Không tên thế giới, phe phái, vùng, NPC hay boss mới nào được ghi vào repo trước khi chủ dự án chọn; phương án chưa được chọn chỉ nằm trên trang xem trước.
+**Cách tạo canon**: agent đề xuất 2–3 phương án trên một trang xem trước, chủ dự án chọn. Không tên thế giới, vùng, thành, địa điểm, phe phái, NPC, boss hay quái mới nào được ghi vào repo trước khi chủ dự án chọn; phương án chưa được chọn chỉ nằm trên trang xem trước.
 
-- [ ] N0 — Hạ tầng: khung `design/narrative/`, validator quét `design/narrative/**`, quy ước `kind:` cho vùng, thành, phe phái, NPC, boss, quái trong `entities.yaml`.
-- [ ] N1 — Thống nhất tên gọi hiện có theo DECISIONS §2/§7: tên tiếng Việt của 16 class, bổ sung 4 class thiếu trong registry, tên game "Mortal Ascension", check `class_vn_name` trong validator. Theo §2, "Du Hiệp" là tên nhánh Scout và Ranger là "Xạ Thủ"; GDD đang gọi Ranger là "Du Hiệp" phải sửa theo.
+- [ ] N0 — Hạ tầng: khung `design/narrative/`, validator quét `design/narrative/**`, quy ước `kind:` cho vùng, thành, địa điểm, phe phái, NPC, boss, quái trong `entities.yaml`.
+- [ ] N1 — Thống nhất tên gọi hiện có theo DECISIONS §2/§7: tên tiếng Việt của 16 class, bổ sung 4 class thiếu trong registry, tên game "Mortal Ascension" (theo `README.md`), check `class_vn_name` trong validator. 🛑 Xác nhận trước khi sửa: áp §2 nguyên văn, "Du Hiệp" là tên nhánh Scout và Ranger là "Xạ Thủ" (GDD đang gọi Ranger là "Du Hiệp").
 - [ ] N2 — Hòa giải thông số sprite về một bảng duy nhất trong `pixel-asset-specifications.md`; retrofit `art-bible.md` §5–§6. 🛑 Các điểm chưa có nguồn chốt: số lớp paperdoll, PPU, ngân sách màu, khiên và tabard Vanguard, tư thế 90° / 50-50.
 - [ ] N3 — World bible và tone guide (`design/narrative/world/`). 🛑 Chủ dự án chọn trên trang đề xuất.
 - [ ] N4 — Địa lý và phe phái: 3 vùng, 3 thành, địa điểm mở khóa class, phe phái; chốt vị trí lò rèn, Chợ Đen, Lửa Trại. 🛑
