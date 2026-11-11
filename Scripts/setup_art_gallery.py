@@ -211,7 +211,7 @@ ASSET_MAPPINGS = [
         "cat_title": "Môi Trường & Thế Giới Mở (Environment & World)",
         "items": [
             {
-                "src": os.path.join(PROJECT_ROOT, "Content/art/complete_map_showcase.jpg"),
+                "src": os.path.join(PROJECT_ROOT, "Art_Gallery/legacy/environment/Complete_Map_Showcase.jpg"),
                 "dest": "Complete_Map_Showcase.jpg",
                 "title": "Toàn Cảnh Bản Đồ Thế Giới Mở (Complete Map Showcase)",
                 "desc": "Góc nhìn Isometric tổng quan từ Tiền Đồn Tân Thủ (Tier 1 Verdant Outpost), Bờ thành phế tích qua Vùng Tro Tàn (Tier 2 Ashen Keep).",
@@ -219,7 +219,7 @@ ASSET_MAPPINGS = [
                 "tags": ["Isometric", "World Map", "HD-2D"]
             },
             {
-                "src": os.path.join(PROJECT_ROOT, "Content/art/ruins_concept.jpg"),
+                "src": os.path.join(PROJECT_ROOT, "Art_Gallery/legacy/environment/Ruins_Concept.jpg"),
                 "dest": "Ruins_Concept.jpg",
                 "title": "Bản Vẽ Ý Niệm Phế Tích Cổ (Ancient Ruins Concept)",
                 "desc": "Khái niệm kiến trúc gothic cổ kính, bia mộ đổ nát và ánh sáng thể tích mờ ảo giữa rừng rậm.",
@@ -227,7 +227,7 @@ ASSET_MAPPINGS = [
                 "tags": ["Ruins", "Architecture", "Atmosphere"]
             },
             {
-                "src": os.path.join(PROJECT_ROOT, "Content/art/ruins_blockout_3d.gif"),
+                "src": os.path.join(PROJECT_ROOT, "Art_Gallery/legacy/environment/Ruins_Blockout_3D_Isometric.gif"),
                 "dest": "Ruins_Blockout_3D_Isometric.gif",
                 "title": "Khối Dựng 3D Isometric Xoay Tròn (3D Blockout Demo)",
                 "desc": "Animation xoay vòng 360 độ chứng minh chiều sâu hình học 3D thật kết hợp hài hòa với Pixel Art 2D.",

@@ -213,9 +213,9 @@ Toàn bộ 162 tệp dưới đây đã được di chuyển an toàn vào `Art_
 | `arcanist_pixel_spritesheet.png` | `Content/art/characters/arcanist_pixel_spritesheet.png` | Character | ProjectAscendant | **REWORK** | NOT_SUBMITTED | **Yes** | Referenced in PACharacterSelectTypes.cpp |
 | `acolyte_pixel_spritesheet.png` | `Content/art/characters/acolyte_pixel_spritesheet.png` | Character | ProjectAscendant | **REWORK** | NOT_SUBMITTED | **No** | Standalone class spritesheet (1024x1024) |
 | `paperdoll_transparent_layers` | `Content/art/characters/paperdoll/` | Paperdoll | ProjectAscendant | **KEEP** | NOT_SUBMITTED | **Yes** | 12 files (32x32 transparent PNGs + thumbs); candidate for Master Rig integration |
-| `complete_map_showcase.jpg` | `Content/art/complete_map_showcase.jpg` | Environment | ProjectAscendant | **DELETE_CANDIDATE** | NOT_SUBMITTED | **No** | Duplicate of Art_Gallery/legacy/environment/Complete_Map_Showcase.jpg |
-| `ruins_blockout_3d.gif` | `Content/art/ruins_blockout_3d.gif` | Environment | ProjectAscendant | **DELETE_CANDIDATE** | NOT_SUBMITTED | **No** | Duplicate of Art_Gallery/legacy/environment/Ruins_Blockout_3D_Isometric.gif |
-| `ruins_concept.jpg` | `Content/art/ruins_concept.jpg` | Environment | ProjectAscendant | **DELETE_CANDIDATE** | NOT_SUBMITTED | **No** | Duplicate of Art_Gallery/legacy/environment/Ruins_Concept.jpg |
+| `complete_map_showcase.jpg` | `Content/art/complete_map_showcase.jpg` | Environment | ProjectAscendant | **DELETED** | NOT_SUBMITTED | **No** | Đã xóa ở Đợt 4; bản gốc lưu tại Art_Gallery/legacy/environment/Complete_Map_Showcase.jpg |
+| `ruins_blockout_3d.gif` | `Content/art/ruins_blockout_3d.gif` | Environment | ProjectAscendant | **DELETED** | NOT_SUBMITTED | **No** | Đã xóa ở Đợt 4; bản gốc lưu tại Art_Gallery/legacy/environment/Ruins_Blockout_3D_Isometric.gif |
+| `ruins_concept.jpg` | `Content/art/ruins_concept.jpg` | Environment | ProjectAscendant | **DELETED** | NOT_SUBMITTED | **No** | Đã xóa ở Đợt 4; bản gốc lưu tại Art_Gallery/legacy/environment/Ruins_Concept.jpg |
 | `preview_character_test.png` | `output/preview_character_test.png` | QA / Test | ProjectAscendant | **DELETE_CANDIDATE** | NOT_SUBMITTED | **No** | Scratch script test preview output |
 | `preview_character_test_8x.png` | `output/preview_character_test_8x.png` | QA / Test | ProjectAscendant | **DELETE_CANDIDATE** | NOT_SUBMITTED | **No** | Scratch script 8x zoom test output |
 | `preview_overlay_wireframe.png` | `output/preview_overlay_wireframe.png` | QA / Test | ProjectAscendant | **DELETE_CANDIDATE** | NOT_SUBMITTED | **No** | Scratch script grid overlay test output |
@@ -247,5 +247,6 @@ Các bộ tài sản này được phân loại: **KEEP (NOT_FORMALIZED)**. Chú
    - Đã cập nhật đường dẫn trong `PABaseCharacter.cpp`, `PAStoneGolemBoss.cpp`, `PACharacterSelectTypes.cpp`, `paper2d_flipbooks_test.cpp`.
    - Test tự động đã PASS 100% (`ProjectAscendant.Core.Character.Paper2DFlipbooksIntegration` 1/1 PASS, `ProjectAscendant.Character` 6/6 PASS).
    - Đã chuyển toàn bộ `Content/art/characters/vanguard/` và `boss/` vào kho Legacy `Art_Gallery/legacy/characters/`. Giai đoạn 1 hoàn tất 100%.
-4. **Đợt 4 — Tiêu Hủy Tệp Trùng Lặp (DELETE_CANDIDATE Cleanup)**:
-   - Thực hiện commit xóa các tệp trùng lặp trong `Content/art/` (`complete_map_showcase.jpg`, `ruins_blockout_3d.gif`, `ruins_concept.jpg`) và các tệp scratch trong `output/` sau khi có sự chấp thuận của Orchestrator.
+4. **Đợt 4 — Tiêu Hủy Tệp Trùng Lặp (DELETE_CANDIDATE Cleanup — HOÀN THÀNH)**:
+   - Đã xóa 3 tệp trùng lặp trong `Content/art/` (`complete_map_showcase.jpg`, `ruins_blockout_3d.gif`, `ruins_concept.jpg`).
+   - Đã cập nhật `Scripts/setup_art_gallery.py` dòng 214/222/230 trỏ vào `Art_Gallery/legacy/environment/`. Giai đoạn 4 Legacy Đợt 4 hoàn tất 100%.
