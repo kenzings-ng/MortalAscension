@@ -249,7 +249,7 @@ Thống nhất dứt điểm mọi phân bổ weapon family cho toàn bộ 16 Cl
 
 **Hạ tầng**
 - Git LFS áp dụng từ giờ về sau: chuyển các file hiện có bằng **một commit mới**, không viết lại lịch sử.
-- Antigravity: chủ dự án tự mở rộng allow-list. Sau đó agy chỉ nhận việc tài liệu/rà soát, và có Claude reviewer kiểm lại.
+- Antigravity: chủ dự án tự mở rộng allow-list. Sau đó agy chỉ nhận việc tài liệu/rà soát, và có Claude reviewer kiểm lại. _(Thay bằng khối "Hướng đi và phân công agent" bên dưới, 2026-11-12: Codex và Antigravity làm cả code và art, Claude rà PR.)_
 
 **Narrative (bổ sung 2026-11-11)**
 
@@ -278,3 +278,11 @@ Thống nhất dứt điểm mọi phân bổ weapon family cho toàn bộ 16 Cl
   - Sự thật ẩn (lượt hỏi thứ hai, "Cơn đói đánh thức tự vệ"): tia lửa thức dậy vì cơn đói bắt đầu gặm mảnh thần ở ba Tòa Thành, như phản xạ tự vệ của xác thần.
   - Tông: u tối có phẩm giá.
   - Tên nhóm người chơi: **Ascendant**. Tên thế giới: chưa đặt; kiểm tra trùng tên trước, hỏi lại ở N4.
+- **Hướng đi và phân công agent (chủ dự án chọn trong terminal ngày 2026-11-11 và 2026-11-12)**:
+  - Hướng đi, sau khi rà theo khung RPG và prototype-fast: **"Chơi thử vòng lõi trước"** (né chuẩn để hạ Lãnh Chúa vượt cấp: Vanguard, Stone Golem, map Verdant Frontier). N5 và N6 tạm hoãn tới khi chủ dự án chơi thử xong.
+  - Kể chuyện: **"Lore vật phẩm + NPC có thoại ngắn"**, không phân nhánh. Thêm đầu việc N9; phải có GDD trước khi làm. Hệ thống nhiệm vụ đầy đủ chưa làm.
+  - Lửa Trại, nguyên văn: *"ý là không cần lửa trại nữa mà nó kiểu như game thế giới mở fantasy mà"* (nhắc lại `zone-system.md:15`). Vị trí hồi sinh chốt ở N4.
+  - Vì nhân vật chưa hiện, chưa di chuyển và chưa có hitbox nên chưa chơi thử được, chủ dự án chọn **"Greybox vòng lõi"**: làm cho vòng lõi chơi được bằng hình tạm trước khi làm art.
+  - Bản Ashen Gate (nhánh `art/ashen-gate-runtime`, chưa commit): **"Ashen Gate; giữ làm mẫu hình"**. Greybox làm trên map Outpost; Ashen Gate là mẫu hình chờ chủ dự án xem và quyết merge sau.
+  - Phân công: **"Làm code và art, Claude rà PR"**. Codex và Antigravity được nhận thẻ code và art theo `AGENTS.md`; mọi PR của họ do một phiên Claude (subagent `reviewer`) rà trước khi merge.
+  - Trạng thái ROADMAP cũ: **"Đánh lại theo kiểm chứng"**. Các mục `[x]` được kiểm lại bằng lệnh chạy được; bảng so sánh cũ/mới trình chủ dự án duyệt trong PR roadmap.

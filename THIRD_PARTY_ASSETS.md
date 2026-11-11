@@ -179,7 +179,7 @@
 
 ## 4. In-House Original Character Production Ledger (Phase 3 Vertical Slice)
 
-Nhật ký ghi nhận nguồn gốc và xuất xứ của bộ art mẫu Vertical Slice theo yêu cầu `ROADMAP.md:100`:
+Nhật ký ghi nhận nguồn gốc và xuất xứ của bộ art mẫu Vertical Slice theo yêu cầu của ROADMAP Giai đoạn 3 (mục ghi nguồn gốc asset):
 
 ### Pack 08: In-House Lower Body Master Rig — HeavyTank (`FB_Lower_HeavyTank_Set`)
 - **Asset/Pack Name**: `FB_Lower_HeavyTank_Set`

@@ -2,25 +2,51 @@
 
 > **Trạng thái**: Đã duyệt bởi chủ dự án. Chỉ chủ dự án được sửa nội dung file này. Ngoại lệ (DECISIONS §13): agent được đổi `[~]` → `[x]` khi có đủ PR đã merge, log test và kết luận reviewer.
 > **Nguồn chuẩn đi kèm**: `production/DECISIONS.md`. Mâu thuẫn giữa hai file → dừng và hỏi.
-> **Quy trình thực thi**: theo `CLAUDE.md` (Autonomous Mode).
+> **Quy trình thực thi**: Claude theo `CLAUDE.md` (Autonomous Mode); Codex, Antigravity và agent khác theo `AGENTS.md`.
+> **Bản v2 (2026-11-12)**: thêm thứ tự greybox trước, các mảng G/H/A/L/S và thẻ việc trong `production/roadmap/`; trạng thái Giai đoạn 0–7 đánh lại theo kiểm chứng (bảng so sánh: `production/qa/roadmap-restatus-2026-11-12.md`). Mã cũ giữ nguyên.
 
 ## Quy ước trạng thái
 
 - `[x]` Đã xong **và có bằng chứng** (link PR đã merge, commit trên remote, log test).
 - `[~]` Được báo là xong nhưng **chưa có bằng chứng**. Agent phải kiểm chứng trước, ghi bằng chứng vào `PROGRESS.md`, rồi mới đổi thành `[x]`. Không kiểm chứng được → đổi về `[ ]`.
 - `[ ]` Chưa làm.
+- ⏸ Tạm hoãn theo quyết định của chủ dự án; không nhận việc.
 - 🛑 **Điểm dừng**: agent bắt buộc dừng và hỏi chủ dự án.
+
+Mỗi đầu việc có **mã** (ví dụ `G3`, `N4`). Cách nhận việc, mẫu thẻ và quy tắc tránh hai agent làm trùng: `production/roadmap/README.md`.
 
 ## Thứ tự thực hiện
 
 ```
-0 → 1 → 1.5 → [2 (chờ duyệt thẩm mỹ) song song 2B] → 3 → 4 → 5 → 6 → 7
-                                                         N (song song Giai đoạn 4)
+Nền đã có:   0 · 1 · 1.5 (phần code) · 2 · 2B · N0–N3        (xem trạng thái từng mục bên dưới)
+
+Bây giờ:     G0 → G1 → G2…G8 (song song được) → G9 → G10 🛑 chủ dự án chơi thử greybox
+             N4 🛑 chạy song song mảng G (chỉ tài liệu)
+             S1–S5 chạy song song bất kỳ lúc nào
+
+Sau G10 "giữ": H1 🛑 → H2 → A0 🛑 nhân vật mẫu → N5 🛑 ∥ L1 → N6 🛑 → H3
+               → Giai đoạn 4 (A1–A5) ∥ L2–L4 → N9 → N7 → N8 → Giai đoạn 7 (Alpha)
+Sau G10 "dừng lại sửa": quay lại mảng G với ghi chú chơi thử; không mở mảng khác.
 ```
 
-Giai đoạn 2B không cần duyệt thẩm mỹ, nên agent làm 2B trong lúc chờ chủ dự án duyệt ở Giai đoạn 2.
+Nguyên tắc: không làm art hàng loạt hay nội dung lớn khi vòng lõi chưa được chủ dự án chơi thử và chọn "giữ" (DECISIONS §13 "Hướng đi và phân công agent").
 
-Giai đoạn N (Nền tảng Narrative) chạy song song Giai đoạn 4 và không chặn sản xuất art (DECISIONS §13, bổ sung 2026-11-11).
+## Bảng mảng việc
+
+| Mảng | Nội dung | Thẻ việc | Trạng thái |
+|---|---|---|---|
+| G | Greybox vòng lõi | `production/roadmap/G-greybox.md` | [ ] G0–G10 |
+| H | Hitbox bản chính thức | `production/roadmap/H-hitbox.md` | [ ] H1–H3 |
+| A | Sản xuất art (chi tiết hóa Giai đoạn 4) | `production/roadmap/A-art.md` | [ ] A0–A5 |
+| L | Bối cảnh và màn chơi | `production/roadmap/L-levels.md` | [ ] L1–L4 |
+| S | Theo dõi bảo mật, backend, CI | `production/roadmap/S-followups.md` | [ ] S1–S5 |
+| N | Nền tảng Narrative | mục Giai đoạn N bên dưới | xem bên dưới |
+
+## Đầu vào đang chờ chủ dự án
+
+- [ ] **V1** 🛑 Bản mẫu hình Ashen Gate (nhánh `art/ashen-gate-runtime`, hiện chỉ nằm trong worktree `/tmp/mortal-ashen-gate-runtime`, chưa commit). Người làm bản này phải commit và push trước khi máy dọn `/tmp`. Chứa art sinh bằng AI (idle Vanguard 4 frame) nên phải duyệt theo lô. Sửa trùng `PAGameModeBase.cpp` và `PABackendPersistenceSubsystem.h` với PR #71, sẽ xung đột khi gộp. Chủ dự án xem hình rồi quyết gộp phần nào.
+- [ ] **U1** 🛑 Spec UX và mockup 6 màn hình (nhánh `design/z1-ux-frontend-hud`, đã có trên remote): login, đăng ký, chọn nhân vật, HUD, shop, lò rèn. Chờ chủ dự án duyệt mockup; HUD debug của G9 không phụ thuộc mục này.
+- [ ] **P1** Ghi chú tích hợp PaperZD cho nhân vật mới (nhánh `chore/m5-paperzd-integration-research`, **chỉ có ở máy cục bộ**, cần push). Đầu vào cho H2 và A0.
 
 ---
 
@@ -116,6 +142,8 @@ Khối lượng theo 5 hướng + lật (story-004 → 007), 16 class:
 | visual-006 | 16 class Idle + Crest + Tabard, cộng cánh Seraph | ~480 + 20 asset |
 | visual-007 | Civilian Upper Body & Town Props | 255 asset |
 
+Thẻ việc chi tiết: `production/roadmap/A-art.md` (A0 nhân vật mẫu trọn bộ → A1–A5 nhân bản). Không bắt đầu trước khi G10 chọn "giữ".
+
 - [ ] Sản xuất theo từng lô, mỗi lô qua Art Gate trước khi import.
 - [ ] Sổ cái CC0: thẩm định pack Pending, thay 7 asset bị từ chối, rà `doficia/project-cordon-sprites`.
 - [x] Legacy Đợt 4: xóa 3 file DELETE_CANDIDATE trùng lặp, sửa `Scripts/setup_art_gallery.py` dòng 214/222/230.
@@ -143,6 +171,8 @@ Khối lượng theo 5 hướng + lật (story-004 → 007), 16 class:
 - [x] Test backend gọi vào **code service backend thật** (công nghệ chưa chốt, ADR-0006) (không chỉ câu SQL trong file test): chống dupe, hoán đổi ô đồ, thăng chức bằng quyển trục.
 - [x] Lưu khi thoát và lưu định kỳ.
 
+Việc theo dõi bảo mật và backend sau PR #71: `production/roadmap/S-followups.md` (S1–S5).
+
 ---
 
 ## Giai đoạn 7 — Alpha
@@ -156,7 +186,7 @@ Khối lượng theo 5 hướng + lật (story-004 → 007), 16 class:
 
 ## Giai đoạn N — Nền tảng Narrative (thế giới, phe phái, thiết kế nhân vật)
 
-_Thêm ngày 2026-11-11 theo quyết định của chủ dự án (DECISIONS §13, bổ sung 2026-11-11). Chạy song song Giai đoạn 4, không chặn sản xuất art._
+_Thêm ngày 2026-11-11 theo quyết định của chủ dự án (DECISIONS §13, bổ sung 2026-11-11). Chạy song song Giai đoạn 4, không chặn sản xuất art. Bản v2 (2026-11-12): thứ tự mới theo mục "Thứ tự thực hiện" ở đầu file — N5/N6 chờ G10._
 
 **Mục tiêu**: một nguồn canon duy nhất cho thế giới và nhân vật trong `design/narrative/`; mọi GDD và registry trỏ về đó; validator chặn tên lệch tái phát.
 
@@ -168,13 +198,14 @@ _Thêm ngày 2026-11-11 theo quyết định của chủ dự án (DECISIONS §1
 - [x] N1 — Thống nhất tên gọi hiện có theo DECISIONS §2/§7: tên tiếng Việt của 16 class, bổ sung 4 class thiếu trong registry, tên game "Mortal Ascension" (theo `README.md`), check `class_vn_name` trong validator. 🛑 Xác nhận trước khi sửa: áp §2 nguyên văn, "Du Hiệp" là tên nhánh Scout và Ranger là "Xạ Thủ" (GDD đang gọi Ranger là "Du Hiệp"). _(Xong 2026-11-11: PR #65, commit `3c8efde` trên main; validator 112 file 0 lỗi 1 allowlist, self-test 37/37, CI "Fast Gates" pass; reviewer đồng ý ở vòng 4; chủ dự án xác nhận áp §2 và duyệt mục "Ngôn ngữ tên gọi" — PROGRESS.md mục 24.)_
 - [x] N2 — Hòa giải thông số sprite về một bảng duy nhất trong `pixel-asset-specifications.md`; retrofit `art-bible.md` §5–§6. 🛑 Các điểm chưa có nguồn chốt: số lớp paperdoll, PPU, ngân sách màu, khiên và tabard Vanguard, tư thế 90° / 50-50. _(Xong 2026-11-11: PR #67, commit `fd29b22` trên main; validator 112 file 0 lỗi 1 allowlist, self-test 37/37, CI "Fast Gates" pass; reviewer đồng ý ở vòng 3 tại `b7d2242`, commit sau đó chỉ sửa nhật ký; các điểm 🛑 của dòng này do chủ dự án chọn qua hộp chọn, riêng khiên vuông theo DECISIONS §7 đã chốt từ trước — PROGRESS.md mục 25.)_
 - [x] N3 — World bible và tone guide (`design/narrative/world/`). 🛑 Chủ dự án chọn trên trang đề xuất. _(Xong 2026-11-11: PR #69, commit `75cdfda` trên main; validator 114 file 0 lỗi 1 allowlist, self-test 37/37, CI "Fast Gates" pass; reviewer đồng ý ở vòng 3 tại `28f777a`, commit sau đó chỉ sửa nhật ký; hướng thế giới và các điểm 🛑 do chủ dự án chọn qua hai lượt hộp chọn trong terminal (bản đề xuất nằm ngoài repo), phần thân tài liệu do agent viết trong khuôn khổ đó — PROGRESS.md mục 26.)_
-- [ ] N4 — Địa lý và phe phái: 3 vùng, 3 thành, địa điểm mở khóa class, phe phái; chốt vị trí lò rèn, Chợ Đen, Lửa Trại. 🛑
-- [ ] N5 — Character sheet 16 class, 5 lô theo nhánh (`design/narrative/characters/`). 🛑 Mỗi lô; giới tính / kiểu thân nhân vật.
-- [ ] N6 — Boss, bestiary, NPC có tên. 🛑 Quan hệ Stone Golem ↔ Ironclad Warlord và danh sách bộ phận boss (chạm DECISIONS §10, §13).
+- [ ] N4 — Địa lý và phe phái: 3 vùng, 3 thành, địa điểm mở khóa class, phe phái; chốt vị trí lò rèn, Chợ Đen và **vị trí hồi sinh** (không dùng Lửa Trại — DECISIONS §13 "Hướng đi và phân công agent"); tên thế giới sau khi kiểm trùng tên. 🛑 Chạy song song mảng G.
+- [ ] N5 — Character sheet 16 class, 5 lô theo nhánh (`design/narrative/characters/`). 🛑 Mỗi lô; giới tính / kiểu thân nhân vật. ⏸ _(Tạm hoãn tới khi chủ dự án chơi thử greybox ở G10.)_
+- [ ] N6 — Boss, bestiary, NPC có tên. 🛑 Quan hệ Stone Golem ↔ Ironclad Warlord và danh sách bộ phận boss (chạm DECISIONS §10, §13). ⏸ _(Tạm hoãn tới khi chủ dự án chơi thử greybox ở G10.)_
 - [ ] N7 — Đồng bộ chuỗi hiển thị trong code với canon (chỉ text; không sửa logic).
 - [ ] N8 — Rà soát chéo cuối: `/review-all-gdds`, `/consistency-check full`, cổng `nd-consistency` và `cd-narrative`.
+- [ ] N9 — Hệ thống kể chuyện tối thiểu: lore trên vật phẩm (Boss Soul, Sách Kỹ Năng, Thần Binh…) và NPC ở mỗi Tòa Thành có vài dòng thoại ngắn, không phân nhánh. Viết GDD mới trước khi làm. _(Thêm theo lựa chọn "Lore vật phẩm + NPC có thoại ngắn" của chủ dự án.)_
 
-**Thứ tự**: N0 → (N1 song song N2) → N3 → N4 → N5 → N6 → N7 → N8.
+**Thứ tự**: N0 → (N1 song song N2) → N3 → N4 (song song mảng G) → **G10 chơi thử** → N5 → N6 → N9 → N7 → N8.
 
 **Xong khi**: mọi mục trên là `[x]`.
 

@@ -5,7 +5,7 @@
 > **Chủ đề nhân vật**: Tiền Tuyến Sắt Đá — Tiên Phong (Vanguard "Iron Bastion")  
 > **Bộ vũ khí & trang bị**: Kiếm Bản Rộng (Broadsword) & Khiên Sắt Vuông (Square Shield, `Item.Shield.Square` — DECISIONS §7)  
 > **Hợp đồng quy chuẩn**: `SPEC-ART-2026-09-23-V2` (Mục 5.3)  
-> **Cơ sở phê duyệt**: Quyết định lựa chọn của Chủ dự án (2026-11-10) theo `ROADMAP.md:66`
+> **Cơ sở phê duyệt**: Quyết định lựa chọn của Chủ dự án (2026-11-10) theo ROADMAP Giai đoạn 2 (mục mood board)
 
 ---
 
