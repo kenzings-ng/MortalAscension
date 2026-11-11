@@ -86,7 +86,7 @@ Gồm 6 vị trí trang bị cố định, liên kết trực tiếp với `UAsc
   - **Lớp Vũ Khí Phụ / Khiên (`EPAPaperdollLayer::OffhandShield`):** Khiên sắt, Dao găm, Sách phép.
 - **Đồng Bộ Khung Hình Hoạt Ảnh (Frame Lockstep Synchronization):**
   - Các lớp Flipbook đồ họa trang bị được gắn trực tiếp vào `APABaseCharacter` và điều khiển qua `UPAPaperdollComponent`.
-  - Trong mỗi chu kỳ Tick, khung hình hiển thị (`PlaybackPositionInFrames`) của các lớp trang phục được khóa cứng và đồng bộ chính xác với khung hình của `BaseSprite` (PaperZD Animation Component), loại bỏ hiện tượng trôi lệch frame giữa nhân vật và vũ khí/áo giáp khi di chuyển 8 hướng hoặc vung đòn.
+  - Trong mỗi chu kỳ Tick, khung hình hiển thị (`PlaybackPositionInFrames`) của các lớp trang phục được khóa cứng và đồng bộ chính xác với khung hình của `BaseSprite` (PaperZD Animation Component), loại bỏ hiện tượng trôi lệch frame giữa nhân vật và vũ khí/áo giáp khi di chuyển 8 hướng (5 hướng vẽ + 3 hướng lật, DECISIONS §10) hoặc vung đòn.
 - **Tương Tác Click-to-Equip Trực Quan:** Khi người chơi nhấp chọn hoặc kéo trang bị từ túi đồ vào ô Paperdoll tương ứng, hệ thống phát thanh sự kiện `OnPaperdollVisualChanged`, vừa cập nhật thuộc tính GAS vừa lập tức tráo đổi sprite hiển thị trên mô hình nhân vật theo thời gian thực.
 - **Quy Tắc Hiển Thị Song Chức Nghiệp (Dual-Class Visual Priority)**:
   - Mô hình Paperdoll luôn ưu tiên thể hiện bản sắc thị giác của **Class Chính**: Dáng đứng tĩnh (Idle Stance), Mũ nón/Crest và Khăn choàng/Tabard.
@@ -258,7 +258,7 @@ $$\text{SellValue} = \text{BasePrice} \times \text{VendorSellPenalty} \times \te
 
 ### UI Requirements (CommonUI)
 - **Bố Cục Cửa Sổ Kho Đồ (Phím tắt `[I]` hoặc `[Tab]`):**
-  - Cửa sổ bên trái: Mô hình 3D nhân vật xoay tròn kèm 6 ô Paperdoll trang bị xung quanh.
+  - Cửa sổ bên trái: Sprite paperdoll 2D của nhân vật (xoay qua 5 hướng + lật) kèm 6 ô Paperdoll trang bị xung quanh.
   - Cửa sổ bên phải: Lưới 30 ô chứa đồ chính, có thanh chuyển Tab danh mục (Tất Cả / Trang Bị / Tiêu Hao / Nguyên Liệu / Sách).
   - Phía dưới: Nút Tự Động Sắp Xếp `[R]`, Bán Tất Cả Rác `[J]`, số dư Vàng hiện có.
 - **Bảng So Sánh Chỉ Số (Tooltip Comparison):** Khi rê chuột vào một trang bị trong túi, hiển thị song song bảng so sánh chỉ số với món đồ đang mặc trên người (dòng xanh lá nếu tăng, đỏ nếu giảm).

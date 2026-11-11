@@ -15,7 +15,7 @@
 
 Thiết lập toàn bộ khung kiến trúc bản sắc thị giác cho 16 Class nhân vật, 4 bậc quái vật thế giới và hệ thống NPC dân cư thị trấn trong Project Ascendant:
 - **Nguyên tắc "100% Placeholder Trước, Ráp Art Thật Sau"**: Tách rời hoàn toàn các story lập trình (Code/Engineering) khỏi các story sản xuất mỹ thuật (Art/Asset). Toàn bộ logic lắp ghép rig, chuyển động phân tầng, socket mào mũ, rãnh cờ giáp và đổi bảng màu Palette Swap được hoàn thiện và kiểm thử tự động 100% bằng dummy placeholder textures trước khi nhập sprite hoàn thiện.
-- **Giải bài toán 8.400 frame**: Triển khai 4 Master Animation Rigs kết hợp phân tách Upper Body (7 Weapon Families) và Lower Body (Locomotion), cắt giảm 86.4% khối lượng vẽ cho toàn dự án.
+- **Giải bài toán ngân sách frame**: Triển khai 4 Master Animation Rigs kết hợp phân tách Upper Body (7 Weapon Families) và Lower Body (Locomotion), cắt giảm ≈86% khối lượng vẽ cho toàn dự án (số chi tiết: `character-visual-system.md` §7.2).
 - **Bảo toàn nhận diện không phụ thuộc màu giáp**: Tích hợp các điểm neo silhouette (Custom Idle Stance 4f, Helm Crest Socket, Tabard Overlay) vào hệ thống Paperdoll 9-Slot.
 
 > [!IMPORTANT]

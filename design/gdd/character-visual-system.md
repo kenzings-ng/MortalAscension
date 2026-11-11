@@ -73,21 +73,21 @@ flowchart TD
 
 | Class & Bậc | Weapon Family Mặc Định | Khối Hình Học Cơ Sở (Shape Grammar) | Trọng Tâm & Dáng Đứng (Line of Action & Stance) | Silhouette Anchor Độc Nhất (Nhận Diện Mù Màu) | Thử Nghiệm Thumbnail (16x16 / 32x32) |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **1. Vanguard**<br>*(Bậc 1 - Sơ cấp)* | Family 1: `1H.Blade` + Khiên Sắt Vuông | **Hình thang đáy lớn (Heavy Trapezoid)** | Chân tấn rộng, trọng tâm thấp (60% chân trước), cột sống hơi khum đón lực. | Khiên sắt vuông vức che trọn 40% thân trái; mũi kiếm hạ thấp hướng $45^\circ$ xuống đất. | Một khối vuông dày dặn, nổi bật mảng nhô góc trái của khiên. |
+| **1. Vanguard**<br>*(Bậc 1 - Sơ cấp)* | Family 1: `1H.Blade` + Khiên Sắt Vuông | **Hình thang đáy lớn (Heavy Trapezoid)** | Chân tấn rộng, trọng tâm thấp (60% chân trước), cột sống hơi khum đón lực. *(Lệch mặc định 80/20; chờ chủ dự án xác nhận khi duyệt hình Vanguard có mào — SPEC §0.)* | Khiên sắt vuông vức che trọn 40% thân trái; mũi kiếm hạ thấp hướng $45^\circ$ xuống đất. | Một khối vuông dày dặn, nổi bật mảng nhô góc trái của khiên. |
 | **2. Ranger**<br>*(Bậc 1 - Sơ cấp)* | Family 4: `2H.Bow` | **Tam giác ngược xiên nhọn (Slanted Triangle)** | Đứng nghiêng $30^\circ$, chân sau kiễng nhẹ, thân người thanh mảnh, hướng nhìn căng cước. | Cánh cung dài vươn cao vượt đỉnh đầu 12px; tà khăn choàng dã ngoại bay lệch về sau. | Đường xiên chéo dài xé toạc hình elip thân người. |
-| **3. Arcanist**<br>*(Bậc 1 - Sơ cấp)* | Family 6: `2H.Staff` | **Trụ đứng thẳng (Vertical Column)** | Đứng thẳng $90^\circ$, kiêu hãnh, chân khép hẹp, tà áo chùng buông thẳng xuống đất. | Trượng ma pháp cao hơn đầu 16px cắm đất; 2 viên đá phép bay lơ lửng quanh vai trái. | Dáng cột thon dài có điểm nhô sáng ở đầu trượng. |
-| **4. Acolyte**<br>*(Bậc 1 - Sơ cấp)* | Family 7: `1H.Mace` / Relic | **Đồng hồ cát / Chữ thập (Hourglass)** | Trọng tâm cân bằng 50/50, mã bộ tĩnh, ngực ưỡn thẳng, hai tay mở rộng đón nhận. | Cầu vai rộng đối xứng, dải kinh sách thả dài dọc 2 bên hông; tay cầm chùy thả lỏng. | Khối thắt eo rõ rệt giữa vai rộng và tà váy pháp sư xòe. |
+| **3. Arcanist**<br>*(Bậc 1 - Sơ cấp)* | Family 6: `2H.Staff` | **Trụ đứng thẳng (Vertical Column)** | Đứng thẳng $90^\circ$, kiêu hãnh, chân khép hẹp, tà áo chùng buông thẳng xuống đất. *(Ngoại lệ có chủ đích về tư thế — SPEC §0.)* | Trượng ma pháp cao hơn đầu 16px cắm đất; 2 viên đá phép bay lơ lửng quanh vai trái. | Dáng cột thon dài có điểm nhô sáng ở đầu trượng. |
+| **4. Acolyte**<br>*(Bậc 1 - Sơ cấp)* | Family 7: `1H.Mace` / Relic | **Đồng hồ cát / Chữ thập (Hourglass)** | Trọng tâm cân bằng 50/50, mã bộ tĩnh, ngực ưỡn thẳng, hai tay mở rộng đón nhận. *(Ngoại lệ có chủ đích về tư thế — SPEC §0.)* | Cầu vai rộng đối xứng, dải kinh sách thả dài dọc 2 bên hông; tay cầm chùy thả lỏng. | Khối thắt eo rõ rệt giữa vai rộng và tà váy pháp sư xòe. |
 | **5. Berserker**<br>*(Bậc 2 - Trung cấp)* | Family 2: `2H.Heavy` (Đại Đao) | **Tam giác phình ngang (Bulky Wedge)** | Lưng còng gù về phía trước $25^\circ$, đầu rụt giữa hai vai cuồn cuộn, tư thế như dã thú săn mồi. | Phiến đại đao khổng lồ vác chéo ngang vai nhô ra ngoài cơ thể 18px; tóc/bờm xõa dài. | Khối gai góc, lệch trọng tâm dữ dội về bên vác vũ khí. |
-| **6. Templar**<br>*(Bậc 2 - Trung cấp)* | Family 7: `1H.Mace` + Đại Thuẫn | **Tòa tháp Gothic (Gothic Spire)** | Đứng thẳng tắp, ngực ưỡn cao, chân giáp thép đóng đinh xuống nền đá. | Đại thuẫn tháp (Tower Shield) dựng đứng từ cằm xuống đất; chóp mũ Greathelm hình chóp nhọn. | Cạnh dựng đứng tuyệt đối ở mạn khiên, chóp đỉnh mũ nhọn hoắt. |
+| **6. Templar**<br>*(Bậc 2 - Trung cấp)* | Family 7: `1H.Mace` + Đại Thuẫn | **Tòa tháp Gothic (Gothic Spire)** | Đứng thẳng tắp, ngực ưỡn cao, chân giáp thép đóng đinh xuống nền đá. *(Ngoại lệ có chủ đích về tư thế — SPEC §0.)* | Đại thuẫn tháp (Tower Shield) dựng đứng từ cằm xuống đất; chóp mũ Greathelm hình chóp nhọn. | Cạnh dựng đứng tuyệt đối ở mạn khiên, chóp đỉnh mũ nhọn hoắt. |
 | **7. Swordmaster (Kiếm Sư)**<br>*(Bậc 2 - Trung cấp)* | Family 1: `1H.Blade` (Kiếm đơn, bỏ khiên) | **Đường kiếm thanh thoát (Sharp Stance)** | Chân trước kiễng nhẹ, thân người nghiêng $15^\circ$, tay trái thủ thế sau lưng. | Kiếm đơn chúc đất $45^\circ$, không mang khiên, bờ vai trái tự do thanh thoát. | Dáng hình thanh mảnh, lưỡi kiếm đơn vát chéo sắc bén. |
-| **8. Shadowblade**<br>*(Bậc 2 - Trung cấp)* | Family 5: `Dual.Daggers` | **Mũi tên dốc thấp (Low-Slung Chevron)** | Hạ thấp sát đất (chỉ cao bằng 75% chiều cao thường), chân gập sâu, tư thế sẵn sàng bật lò xo. | Cặp song đao bắt chéo chữ X trước ngực hoặc chỉa ngược về sau; khăn trùm kín mặt. | Khối bóng dẹt, bề ngang bè rộng hơn bề cao, hai mũi dao sắc lẹm. |
+| **8. Shadowblade**<br>*(Bậc 2 - Trung cấp)* | Family 5: `Dual.Daggers` | **Mũi tên dốc thấp (Low-Slung Chevron)** | Hạ thấp sát đất (dáng khom: đỉnh đầu chỉ bằng khoảng 75% chiều cao đứng; chiều cao thân vẫn theo nhóm ở §5), chân gập sâu, tư thế sẵn sàng bật lò xo. | Cặp song đao bắt chéo chữ X trước ngực hoặc chỉa ngược về sau; khăn trùm kín mặt. | Khối bóng dẹt, bề ngang bè rộng hơn bề cao, hai mũi dao sắc lẹm. |
 | **9. Elementalist**<br>*(Bậc 2 - Trung cấp)* | Family 6: `2H.Staff` / Orbs | **Hình thoi lơ lửng (Floating Diamond)** | Hai chân không chạm đất (hovering 4px), thân trên nghiêng nhẹ theo luồng khí động. | Hai quả cầu nguyên tố bay vòng tròn tạo thành quỹ đạo elip lớn bao quanh thân. | Bóng chân lơ lửng cách mặt bóng đổ (Cast Shadow) 4px. |
-| **10. Inquisitor (Thẩm Phán Dị Giáo)**<br>*(Bậc 2 - Trung cấp)* | Family 7: `1H.Mace` (Chiến Chùy) | **Hình khối phán quyết (Rigid Monolith)** | Đứng thẳng nghiêm cẩn, ngực ưỡn đón bão, chùy sắt giơ ngang ngực sẵn sàng giáng tội. | Mũ trùm che nửa khuôn mặt bí ẩn; chùy gai sắt nhô cao sẵn sàng đập nện. | Khối tam giác chóp nhọn của mũ trùm và đầu chùy nhô cao. |
+| **10. Inquisitor (Thẩm Phán Dị Giáo)**<br>*(Bậc 2 - Trung cấp)* | Family 7: `1H.Mace` (Chiến Chùy) | **Hình khối phán quyết (Rigid Monolith)** | Đứng thẳng nghiêm cẩn, ngực ưỡn đón bão, chùy sắt giơ ngang ngực sẵn sàng giáng tội. *(Ngoại lệ có chủ đích về tư thế — SPEC §0.)* | Mũ trùm che nửa khuôn mặt bí ẩn; chùy gai sắt nhô cao sẵn sàng đập nện. | Khối tam giác chóp nhọn của mũ trùm và đầu chùy nhô cao. |
 | **11. Dragon Knight**<br>*(Bậc 3 - Cao cấp)* | Family 3: `2H.Polearm` (Chiến Kích) | **Mũi thương chọc trời (Ascending Lance)** | Đứng chéo chân kiên cố, ngực vươn cao, tay cầm thương dựng đứng góc $75^\circ$. | Mũi chiến kích lưỡi trăng khuyết vươn cao vượt đầu 24px; đuôi mũ giáp vảy rồng dài. | Điểm cao nhất trong tất cả các class, đỉnh nhọn áp đảo khung hình. |
 | **12. Void Blade**<br>*(Bậc 3 - Cao cấp)* | Family 1: `1H.Blade` (Kiếm đơn Hư Không) | **Đường zigzag bất ổn (Fractured Zigzag)** | Thân người chao đảo nhẹ như tàn ảnh, một tay giấu sau lưng, một tay cầm kiếm dốc ngược. | Tà áo choàng hư không rách xơ xác bay ngược chiều gió; lưỡi kiếm dài mảnh như đường chỉ. | Vạt áo xé răng cưa bay hỗn loạn, tạo cảm giác phi vật lý. |
 | **13. Chronomancer**<br>*(Bậc 3 - Cao cấp)* | Family 7: `Relic` (Đồng Hồ Cát) | **Con lắc dao động (Pendulum Asymmetry)** | Dáng đứng thong thả, bước chân lệch nhịp, tay nâng pháp bảo lơ lửng ngang tầm mắt. | Vòng kim cô thời gian xoay lơ lửng sau lưng; dây xích đồng hồ cát rủ dài đung đưa. | Vòng hào quang tròn rỗng bao quanh đầu và vai. |
 | **14. Phantom Stalker**<br>*(Bậc 3 - Cao cấp)* | Family 5: `Dual.Daggers` / Cung ám khí | **Bóng mờ u linh (Shadow Silhouette)** | Dáng đứng mờ ảo, trọng tâm chìm sâu trong làn khói đen hư vô. | Vệt tàn ảnh đen bốc lên sau lưng; mặt nạ u linh phát quang le lói. | Khối bóng mờ nhòe với viền răng cưa sương khói. |
-| **15. Seraph (Thiên Sứ Lục Dực)**<br>*(Bậc 3 - Cao cấp)* | Family 7: `1H.Mace` / Thánh Tích | **Thánh giá phát quang (Radiant Cross)** | Chân chạm đất kiên định (kế thừa Rig 4), thân người thẳng tắp trong ánh hào quang. | Đôi cánh ánh sáng 6 cánh (Wings Overlay) vươn rộng sau lưng qua Socket_Back. | Đôi cánh lớn đối xứng tạo thành hình chữ thập thánh áp đảo. |
+| **15. Seraph (Thiên Sứ Lục Dực)**<br>*(Bậc 3 - Cao cấp)* | Family 7: `1H.Mace` / Thánh Tích | **Thánh giá phát quang (Radiant Cross)** | Chân chạm đất kiên định (kế thừa Rig 4), thân người thẳng tắp trong ánh hào quang. *(Ngoại lệ có chủ đích về tư thế — SPEC §0.)* | Đôi cánh ánh sáng 6 cánh (Wings Overlay) vươn rộng sau lưng qua Socket_Back. | Đôi cánh lớn đối xứng tạo thành hình chữ thập thánh áp đảo. |
 | **16. God Slayer**<br>*(Bậc 4 - Ẩn/Mythic)* | Family 1 / Family 3 | **Hư vô biến dạng (Distorted Negative Space)** | Tĩnh lặng tuyệt đối (No idle breathing), không có chuyển động thở thông thường. | Lưỡi kiếm/kích cắm thẳng xuống đất phía trước mặt; bóng đổ dưới chân loang lổ như mực đen. | Khoảng rỗng (Negative space) lớn giữa thân người và vũ khí cắm đất. |
 
 ---
@@ -123,7 +123,7 @@ TIỂU THỂ (TRASH)      TINH ANH (ELITE)       THỦ LĨNH (MINI-BOSS)      L�
 
 ## 4. Kiến Trúc Chia Sẻ Hoạt Ảnh & Ngân Sách Sprite (Animation Sharing Architecture)
 
-### 4.1 Phân Tích Bài Toán Ngân Sách "8.400 Frames"
+### 4.1 Phân Tích Bài Toán Ngân Sách Frame
 Nếu làm theo cách ngây thơ (Brute Force):
 $$\text{Chi phí} = 16\text{ Classes} \times 7\text{ Weapon Types} \times 8\text{ Directions} \times 10\text{ Actions} \times 10\text{ Frames} \approx \mathbf{89.600}\text{ frames (bất khả thi)}.$$
 Ngay cả khi cắt giảm chỉ cho mỗi class dùng 1-2 vũ khí:
@@ -154,6 +154,7 @@ Trong Unreal Engine 5.7 / 5.8, nhân vật được cấu hình với 2 State Ma
    - Chỉ chịu trách nhiệm cho: `Idle`, `Walk`, `Run`, `Dash` (I-frame dodge), `HitStun`.
    - Chia sẻ hoàn toàn giữa các Class thuộc cùng 1 Master Rig!
    - 4 Master Rigs $\times$ 5 hướng $\times$ 21 frames cơ bản (Idle 4f, Walk 6f, Run 6f, Dash 3f, HitStun 2f) = **420 frames** (khớp story-004).
+   - State **Stunned** và **Dead** (AnimBP đã có): số frame chờ chốt khi chủ dự án duyệt cảm giác chơi (SPEC §0).
 2. **Upper Body State Machine (Ngực, Tay & Đầu)**:
    - Gắn trực tiếp với **7 Weapon Families**, **HOÀN TOÀN ĐỘC LẬP VỚI CLASS**!
     - Khi một động tác chém kiếm `Weapon.1H.Blade` được vẽ, cả Vanguard, Swordmaster, Void Blade và God Slayer đều dùng chung chính xác bộ sprite đó!
@@ -202,7 +203,7 @@ Làm thế nào để các class cùng dùng chung 1 Rig hoặc 1 Weapon Family 
 
 ## 5. Tích Hợp Hệ Thống Paperdoll 9-Slot & Bảo Toàn Silhouette
 
-`UPAPaperdollComponent` quản lý 9 sub-component theo cấu trúc phân lớp Z-Order và tọa độ gốc bàn chân cố định `(X: 64, Y: 114)`:
+`UPAPaperdollComponent` quản lý 9 slot trang bị (dữ liệu) với tọa độ gốc bàn chân cố định `(X: 64, Y: 114)`. Lớp vẽ (render) là 5 lớp `EPAPaperdollLayer` cộng 2 lớp phủ theo class, theo bảng §0 của `design/art/pixel-asset-specifications.md`. Thứ tự slot:
 `Helm` $\rightarrow$ `Chest` $\rightarrow$ `Gloves` $\rightarrow$ `Pants` $\rightarrow$ `Boots` $\rightarrow$ `MainHand` $\rightarrow$ `OffHand` $\rightarrow$ `Amulet` $\rightarrow$ `Ring`.
 
 ### 5.1 Thách Thức Khi Mặc Giáp Chung
@@ -229,7 +230,7 @@ Khi người chơi mặc full bộ giáp `Armor_Heavy_T1` (Sắt thô dã chiế
 
 1. **Vùng 1: Socket Phụ Kiện Đầu & Mào Giáp (Headwear / Crest Profile)**:
    - Dù mũ giáp là nồi sắt tròn trơn (Greathelm T1) hay giáp rồng hắc thạch (T3), slot `Helm` luôn chừa một điểm gắn socket phụ kiện độc quyền của Class:
-     - Vanguard: Luôn có chùm lông bờm ngựa màu đỏ thẫm dựng đứng.
+     - Vanguard: Luôn có chùm lông bờm ngựa màu đỏ thẫm dựng đứng. *(Chốt 2026-11-11; design sheet đã duyệt chưa có mào, nên cần chủ dự án duyệt hình Vanguard có mào.)*
      - Berserker: Luôn có cặp sừng thú thô ráp chĩa ngang.
      - Templar: Luôn có cánh thép thiên thần nhỏ gắn 2 bên mang tai.
      - Dragon Knight: Luôn có sừng rồng vươn dài nhọn hoắt về phía sau.
@@ -253,17 +254,19 @@ Khi người chơi mặc full bộ giáp `Armor_Heavy_T1` (Sắt thô dã chiế
 > 
 > **Lý do kỹ thuật & mỹ thuật**:
 > 1. **Triệt tiêu hoàn toàn Mixels (Zero Mixels)**: Theo Điều răn số 5 trong `SPEC-ART-2026-09-23-V2`, co giãn trục X/Y không đồng dạng sẽ bóp méo hạt pixel (pixel hình chữ nhật thay vì hình vuông $1:1$), phá hủy tính thẩm mỹ HD-2D.
-> 2. **Bảo toàn tọa độ Hand Socket tuyệt đối**: Giữ nguyên `HandSocket_R` $(96, 76)$ và `HandSocket_L` $(32, 76)$ cố định so với Pivot chân $(64, 114)$ trên lưới $128 \times 128$. Không làm trôi lệch chuôi kiếm/khiên khỏi bàn tay nhân vật giữa 16 class.
+> 2. **Bảo toàn Hand Socket**: `HandSocket_R` $(96, 76)$ và `HandSocket_L` $(32, 76)$ là mốc tham chiếu so với Pivot chân $(64, 114)$ trên lưới $128 \times 128$; vị trí thật đọc theo từng frame từ metadata (SPEC §0). Không làm trôi lệch chuôi kiếm/khiên khỏi bàn tay nhân vật giữa 16 class.
 > 3. **Bảo đảm hoạt ảnh Upper Body dùng chung không bị biến dạng**: Chuỗi đòn đánh của 7 Weapon Families khi áp lên Vanguard, Templar hay Void Blade đều giữ nguyên tỷ lệ pixel sắc nét tuyệt đối.
 
 Thay vì dùng Engine Scale, sự khác biệt về vóc dáng giữa các nhóm Class được **thể hiện thuần túy qua nét vẽ thủ công (Handcrafted Pixel Anatomy) bên trong cùng canvas $128 \times 128$**:
 
-| Nhóm Class | Chiều Rộng Vai (Vẽ Tay) | Chiều Cao Đỉnh Đầu (Vẽ Tay) | Phân Bổ Khối Cơ Thể Trên Sprite | Bản Sắc Vóc Dáng |
+> Cột chiều cao (cập nhật 2026-11-11, SPEC §0): chuẩn 75 px theo design sheet Vanguard đã duyệt; các nhóm lệch trong $\pm 4$ px, Templar/Dragon Knight cao hơn, Ranger/Shadowblade thấp hơn (theo lựa chọn của chủ dự án ngày 2026-11-11; bảng cũ ghi đỉnh đầu $Y = 56 / 50 / 56 / 52$). Chỉ 75 px của Vanguard là đã đo; mọi số khác là **tạm**, duyệt hình ở N5.
+
+| Nhóm Class | Chiều Rộng Vai (Vẽ Tay) | Chiều Cao Nhân Vật (Vẽ Tay) | Phân Bổ Khối Cơ Thể Trên Sprite | Bản Sắc Vóc Dáng |
 | :--- | :---: | :---: | :--- | :--- |
-| **Vanguard / Berserker** | $28\text{ px}$ (Bè rộng) | $Y = 56$ (Thấp, tấn chìm) | Thân trên cơ bắp, chân tấn choãi rộng sang hai bên. | Vững chãi, đầm chắc như khối đá. |
-| **Templar / Dragon Knight** | $26\text{ px}$ (Vuông vức) | $Y = 50$ (Cao sừng sững) | Lưng thẳng tắp $90^\circ$, cổ cao, giáp vai dựng đứng. | Uy nghiêm, bệ vệ, khí chất hộ vệ. |
-| **Ranger / Shadowblade** | $20\text{ px}$ (Thon gọn) | $Y = 56$ (Tiêu chuẩn) | Thắt eo hẹp, chân thu gọn, thân người nghiêng $15^\circ$. | Thanh mảnh, cơ động, khí động học. |
-| **Arcanist / Chronomancer** | $20\text{ px}$ (Thanh thoát) | $Y = 52$ (Thon dài) | Tà áo chùng buông thẳng, vai xuôi nhẹ, tay vươn mở. | Khí chất học giả thông thái, thoát tục. |
+| **Vanguard / Berserker** | $28\text{ px}$ (Bè rộng) | $75\text{ px}$ (Vanguard đã đo; Berserker tạm) (Tấn chìm) | Thân trên cơ bắp, chân tấn choãi rộng sang hai bên. | Vững chãi, đầm chắc như khối đá. |
+| **Templar / Dragon Knight** | $26\text{ px}$ (Vuông vức) | $79\text{ px}$, tạm (Cao sừng sững) | Lưng thẳng tắp $90^\circ$ (ngoại lệ có chủ đích — SPEC §0), cổ cao, giáp vai dựng đứng. | Uy nghiêm, bệ vệ, khí chất hộ vệ. |
+| **Ranger / Shadowblade** | $20\text{ px}$ (Thon gọn) | $72\text{ px}$, tạm (Thấp hơn chuẩn) | Thắt eo hẹp, chân thu gọn, thân người nghiêng $15^\circ$. | Thanh mảnh, cơ động, khí động học. |
+| **Arcanist / Chronomancer** | $20\text{ px}$ (Thanh thoát) | $77\text{ px}$, tạm (Thon dài) | Tà áo chùng buông thẳng, vai xuôi nhẹ, tay vươn mở. | Khí chất học giả thông thái, thoát tục. |
 
 
 ---
@@ -337,7 +340,9 @@ Silhouette của nhân vật có bị biến thành một "khối trụ vô hồ
 | **NPC Dân Cư - Lower Body** | $1.200\text{ frames}$ | **$0\text{ frames (FREE)}$** | **Tái dùng $100\%$ Lower Body từ 4 Master Rigs**. |
 | **NPC Dân Cư - Upper Body** | $1.800\text{ frames}$ | **$205\text{ frames}$** | 5 vai trò $\times 5$ hướng $\times (8\text{f} \text{ đến } 9\text{f})$. |
 | **NPC Dân Cư - Prop Cầm Tay** | $600\text{ frames}$ | **$50\text{ sprites}$** | 10 loại đạo cụ $\times 5$ hướng xoay tĩnh. |
-| **TỔNG ASSET TOÀN BỘ GAME** | **$\approx 12.192\text{ FRAMES}$** | **$\mathbf{1.715\text{ ASSETS}}$** | **TIẾT KIỆM 85.9% TOÀN BỘ NGÂN SÁCH!** |
+| **TỔNG ASSET TOÀN BỘ GAME** | **$\approx 12.496\text{ FRAMES}$** | **$\mathbf{1.715\text{ ASSETS}}$** | **TIẾT KIỆM ≈ 86,3% TOÀN BỘ NGÂN SÁCH!** |
+
+> *Cập nhật 2026-11-11 (N2): tổng cột cũ cộng lại là 12.496 (bản trước ghi 12.192). `epic-overview.md` ghi 1.735 = 1.715 + 20 sprite cánh Seraph (story-006).*
 
 ---
 

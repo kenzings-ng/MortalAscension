@@ -103,10 +103,10 @@ Mọi màu sắc mang tính cảnh báo sống còn **tuyệt đối không đư
 ---
 
 ## 5. Character Design Direction
-- **Tỷ Lệ Cơ Thể**: 3.2 - 3.5 Đầu (Heroic Chibi tỉ lệ vàng phong cách *Stardew Valley* x *Octopath Traveler*), cao 86px trên lưới bản vẽ gốc.
-- **Hệ Thống Modular Paperdoll**: Phân tách 7 lớp đồ họa độc lập (Thân trần, Đồ vải tân thủ, Giáp thân, Mũ nón, Vũ khí chính, Vũ khí phụ/khiên, VFX). Khóa cứng tọa độ mốc giải phẫu: Trục mắt `Y=44`, Thắt lưng `Y=80`, Khớp cầm tay `(X:96, Y:76)` để hoán đổi trang bị liền mạch theo thời gian thực.
-- **Động Lực Học (Line of Action)**: Cấm cột sống thẳng đứng $90^\circ$. Bắt buộc dáng đứng nghiêng góc uốn lượn chữ S hoặc C, trọng tâm chân chịu lực 80/20 (Contrapposto).
-- *Chi tiết quy chuẩn*: Xem tài liệu chi tiết tại [`design/art/pixel-asset-specifications.md#2-quy-chuẩn-kỹ-thuật-hệ-thống-nhân-vật--modular-paperdoll`](pixel-asset-specifications.md#2-quy-chuẩn-kỹ-thuật-hệ-thống-nhân-vật--modular-paperdoll).
+- **Tỷ Lệ Cơ Thể**: 3.2 - 3.5 Đầu, không chibi. Chiều cao và mọi số đo: xem [bảng §0 của SPEC](pixel-asset-specifications.md#0-bảng-thông-số-sprite-nhân-vật-nguồn-duy-nhất).
+- **Hệ Thống Modular Paperdoll**: 5 lớp render cộng 2 lớp phủ theo class; mốc giải phẫu và socket theo bảng §0 của SPEC, để hoán đổi trang bị liền mạch theo thời gian thực.
+- **Động Lực Học (Line of Action)**: Mặc định dáng đứng uốn lượn chữ S hoặc C, trọng tâm chân chịu lực 80/20 (Contrapposto). Class có dáng thẳng hoặc cân bằng trong `character-visual-system.md` §2.1 là ngoại lệ có chủ đích (bảng §0 của SPEC).
+- *Chi tiết quy chuẩn*: Xem tài liệu chi tiết tại [`design/art/pixel-asset-specifications.md` §0](pixel-asset-specifications.md#0-bảng-thông-số-sprite-nhân-vật-nguồn-duy-nhất).
 
 ---
 
@@ -126,15 +126,15 @@ Mọi màu sắc mang tính cảnh báo sống còn **tuyệt đối không đư
   - Potion & Trang bị mặc: Đặt thẳng đứng $90^\circ$ chính diện.
 - **Khung Viền Phân Hạng 5 Cấp Độ Hiếm (5-Rarity Scale)**:
   - Common (Trắng / Xám `#D1D5DB`), Uncommon (Xanh Lục `#10B981`), Rare (Xanh Lam `#3B82F6`), Epic (Tím `#8B5CF6`), Legendary (Cam Hoàng Kim `#F59E0B`).
-- *Chi tiết quy chuẩn*: Xem tài liệu chi tiết tại [`design/art/pixel-asset-specifications.md#3-quy-chuẩn-kỹ-thuật-vật-phẩm-vũ-khí--nguyên-liệu-items--gear`](pixel-asset-specifications.md#3-quy-chuẩn-kỹ-thuật-vật-phẩm-vũ-khí--nguyên-liệu-items--gear).
+- *Chi tiết quy chuẩn*: Xem tài liệu chi tiết tại [`design/art/pixel-asset-specifications.md` §6](pixel-asset-specifications.md#6-quy-chuẩn-kỹ-thuật-icon-trang-bị--ma-trận-5-độ-hiếm).
 
 ---
 
 ## 8. Asset Standards & Pipeline (Pixel HD-2D)
-- **Pixel Density (PPU)**: 32 pixels per Unreal Unit (100 units = 1 meter).
+- **Pixel Density (PPU)**: 1.0 (bảng §0 của SPEC).
 - **Texture Filtering**: Nearest Neighbor (Strictly NO Mipmapping).
-- **Atlas Resolution**: Max $2048 \times 2048$ per character flipbook set.
-- **Frame Pivot Point**: Ghim đáy giữa `(X: 64, Y: 114)` trên canvas $128 \times 128$ đồng bộ với chân Capsule trong UE 5.7.
+- **Atlas Resolution**: Max $2048 \times 2048$ per character flipbook set (bảng §0 của SPEC).
+- **Frame Pivot Point**: Ghim đáy giữa theo bảng §0 của SPEC, đồng bộ với chân Capsule trong UE.
 - **Lighting Shader**: Custom unlit/lit hybrid sprite material receiving directional sun + local point lights with custom normal mapping.
 
 ---
@@ -152,7 +152,7 @@ Mọi màu sắc mang tính cảnh báo sống còn **tuyệt đối không đư
 Mọi asset đồ họa pixel trong game bắt buộc phải vượt qua 6 bài kiểm tra nghiệm thu khắt khe trước khi được chấp thuận:
 1. `Blackout Silhouette Test` (Nhận diện vật thể khi đổ đen 100%).
 2. `Zero Border Bleed Test` (Đảm bảo alpha=0 tại 4 cạnh biên, không cụt góc).
-3. `Color Budget Audit` (Tối đa 24-32 màu độc nhất cho mỗi icon $32 \times 32$).
+3. `Color Budget Audit` (ngân sách màu theo bảng §0 của SPEC).
 4. `Mixel-Free Audit` (Đồng nhất tỷ lệ hạt pixel 1:1 giữa nhân vật và vật phẩm).
 5. `Landmark Lockstep Test` (Khớp tuyệt đối 100% khi ghép trang phục Paperdoll).
 6. `HD-2D Lighting Test` (Khối phản xạ ánh sáng chân thực dưới đèn thời gian thực).
