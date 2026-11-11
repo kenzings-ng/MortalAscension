@@ -2,7 +2,7 @@
 
 > **Canon**: Established.
 > **Người chơi thấy**: Không (tài liệu nội bộ cho người viết và người vẽ).
-> **Nguồn quyết định**: chủ dự án chọn qua hộp chọn trong terminal ngày 2026-11-11 (ROADMAP Giai đoạn N, mục N3): tông **"U tối có phẩm giá"** (`10A`), từ vựng `9C`. Ghi tại `production/DECISIONS.md` §13 "World bible (N3)".
+> **Nguồn quyết định**: chủ dự án chọn qua hộp chọn trong terminal ngày 2026-11-11 (ROADMAP Giai đoạn N, mục N3): tông **"U tối có phẩm giá"** (`10A`); lượt hỏi thứ hai cùng ngày: từ vựng **"Giữ cái có tương đương trung cổ"** (`9C`), danh sách cấm (chỉ hai mục được chọn ở §5). Ghi tại `production/DECISIONS.md` §13 "World bible (N3)".
 > **Đi cùng**: `world-bible.md` cùng thư mục.
 
 ## 1. Core Concept
@@ -19,7 +19,7 @@ U tối có phẩm giá (grim-heroic), cùng họ với các tham chiếu art đ
 
 ## 3. Mức độ
 
-- **U tối**: cao. Có chết chóc, tha hóa, thân xác biến dạng. Không máu me chi tiết (pixel art); không bạo lực tình dục; không hại trẻ em trên màn hình.
+- **U tối**: cao. Có chết chóc, tha hóa, thân xác biến dạng. Không máu me chi tiết (pixel art); không bạo lực tình dục; không hại trẻ em trên màn hình *(chủ dự án chọn 2026-11-11)*.
 - **Hài hước**: hiếm, khô, đen; chỉ đến từ NPC, không phá không khí.
 - **Độ tuổi nhắm tới**: chưa chốt (cần chủ dự án quyết khi chuẩn bị phát hành).
 
@@ -45,9 +45,10 @@ Không đổi tên class nào (DECISIONS §2). Việc sửa từng chỗ trong G
 - Sci-fi, súng, máy móc cơ khí lạc thời, bánh răng lộ ra (`production/qa/art-gate-criteria.md`).
 - Hình ảnh vũ trụ, sao, thiên hà, plasma.
 - Meme, tiếng lóng hiện đại, tham chiếu văn hóa đại chúng trong văn bản trong game. Lưu ý: tên chiêu "Judgement Cut" (`game-concept.md:131`, `advanced-classes.md:63`) trùng tên chiêu của một tác phẩm khác; N5 xem lại.
-- **Từ ngữ meta trong văn bản trong game** (lời thoại, mô tả vật phẩm, thông báo): "server", "máy chủ", "NPC", "PK", "respawn", "farm", "buff". Tài liệu thiết kế vẫn được dùng các từ này khi nói về hệ thống.
 - Thành ngữ không dịch được (`.claude/rules/narrative.md`).
-- Sao chép mô típ đặc trưng của tác phẩm khác (ví dụ đống lửa nghỉ chân, "linh hồn" làm tiền tệ). Nét riêng của game: Hệ Thống là **chữ** của thần, người chơi là **mảnh của chính vị thần**.
+- Sao chép mô típ đặc trưng của tác phẩm khác (ví dụ đống lửa nghỉ chân, "linh hồn" làm tiền tệ). *(Hai mục meme và mô típ tác phẩm khác: chủ dự án chọn 2026-11-11.)* Nét riêng của game: Hệ Thống là **chữ** của thần, người chơi là **mảnh của chính vị thần**.
+
+Không cấm: từ ngữ meta ("server", "respawn"…) trong văn bản trong game. Mục này đã được đề xuất nhưng chủ dự án không chọn (2026-11-11).
 
 ## 6. Ngôn ngữ
 

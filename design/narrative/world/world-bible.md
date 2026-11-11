@@ -2,7 +2,7 @@
 
 > **Canon**: Established cho các mục 1–10, trừ chỗ ghi rõ "Provisional". Mục 11 là danh sách mâu thuẫn còn mở, chưa phải canon.
 > **Người chơi thấy**: Một phần. Mục "Sự thật ẩn" chỉ dành cho người làm game.
-> **Nguồn quyết định**: chủ dự án chọn qua hộp chọn trong terminal ngày 2026-11-11 (ROADMAP Giai đoạn N, mục N3): **Gói B — Xác Thần** (`1A · 2B · 3B · 4B · 5B · 6B · 7B · 8B`), từ vựng `9C`, tông `10A`; tên nhóm người chơi **Ascendant**; tên thế giới **chưa đặt** (kiểm tra trùng tên trước, hỏi lại ở N4). Ghi tại `production/DECISIONS.md` §13 "World bible (N3)".
+> **Nguồn quyết định**: chủ dự án chọn qua hộp chọn trong terminal ngày 2026-11-11 (ROADMAP Giai đoạn N, mục N3): **Gói B — Xác Thần** (`1A · 2B · 3B · 4B · 5B · 6B · 7B · 8B`), tông `10A`; lượt hỏi thứ hai cùng ngày: từ vựng `9C`, danh sách cấm của tone guide, và đáp án sự thật ẩn "vì sao tia lửa thức dậy"; tên nhóm người chơi **Ascendant**; tên thế giới **chưa đặt** (kiểm tra trùng tên trước, hỏi lại ở N4). Ghi tại `production/DECISIONS.md` §13 "World bible (N3)".
 > **Tiền đề đã chốt** (DECISIONS §13, 2026-11-11): thế giới fantasy có thật; Hệ Thống là quy luật mà cư dân nhìn thấy.
 > **Tông**: theo `tone-guide.md` cùng thư mục.
 
@@ -120,7 +120,7 @@ Chuyển Sinh Linh Hồn (`systems-index.md:40`, `:78`) là việc một Ascenda
 | 3 | "Lãnh Chúa" vừa là boss thường (`game-concept.md:173`) vừa là World Boss bậc 4 (`character-visual-system.md:100`, `:112`). | Lore: Lãnh Chúa = sinh vật đã nuốt mảnh thần, ở mọi bậc; bậc do lượng mảnh. Phân tầng boss: **N6**. |
 | 4 | Nguồn sức mạnh Vệ Binh. | Đã giải quyết: luật 18. |
 | 5 | "Liên Minh" vừa là chính thể (`merchant-economy.md:91`) vừa là tổ đội đột kích (`multiplayer-coop.md:314`). | Lore: Liên Minh = chính thể. Tổ đội đột kích cần tên khác: **N4** (ghi lại). |
-| 6 | Từ vựng lệch tông (khí công, Chân Khí, plasma, vũ trụ) và từ ngữ meta. | Quy tắc ở `tone-guide.md`; sửa từng chỗ: **N5** (class) và các đầu việc sau. |
+| 6 | Từ vựng lệch tông (khí công, Chân Khí, plasma, vũ trụ). | Quy tắc ở `tone-guide.md`; sửa từng chỗ: **N5** (class) và các đầu việc sau. |
 | 7 | "chuyển sinh vào Ngục Tối" (`zone-system.md:397`) trùng tên hệ thống Chuyển Sinh. | Đã sửa trong N3 thành "áp giải vào Ngục Tối". |
 | 8 | Gần mô típ Dark Souls (lửa, tro, linh hồn, lãnh chúa). | Nét riêng bắt buộc: Hệ Thống là **chữ** của thần; người chơi là **mảnh của chính vị thần**. Art và văn bản không sao chép mô típ đống lửa/linh hồn của tác phẩm khác. |
 | 9 | Lãnh Chúa và boss bị nhiều người chơi hạ đi hạ lại (MMO), trong khi lore nói Lãnh Chúa chết thì rơi mảnh thần. | Chưa có lời giải trong truyện. **N6** quyết (ví dụ mảnh thần trở về và tái tụ). |
