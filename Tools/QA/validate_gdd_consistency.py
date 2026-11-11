@@ -592,11 +592,11 @@ def check_file(file_path: Path, decisions: Dict) -> Tuple[List[Finding], List[st
         if m12:
             add(line_idx, "class_count_12", "Lỗi số lượng: Còn sót '12 Class' / '12 Chức nghiệp'. Tổng số class chính thức là 16 Class theo DECISIONS.md Mục 2.")
 
-        # A retired Vietnamese class gloss must not be paired with its class name (DECISIONS §2)
+        # A retired Vietnamese class gloss must not be paired with its class name (DECISIONS §2).
+        # Every pair on the line is reported, so an allowlisted pair cannot hide another one.
         for g_start, g_end, english, found, approved in class_gloss_findings(line, decisions.get("class_vn_gloss", {}), decisions.get("retired_glosses", {})):
             if not in_deprecated_entry and not is_marked_deprecated(line, g_start, g_end):
                 add(line_idx, "class_vn_name", f"Chú thích tiếng Việt '{found}' của class '{english}' đã bị loại. Theo DECISIONS.md Mục 2 chỉ dùng '{approved}'.")
-                break
 
         # Prohibited Class Tier / Rarity Terminology
         for pat, err_msg in CLASS_TIER_RARITY_PATTERNS:

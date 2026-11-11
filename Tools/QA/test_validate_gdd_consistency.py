@@ -525,6 +525,26 @@ class ScopeAndAllowlistTests(unittest.TestCase):
         self.assertIn("Class 'Templar'", out)
         self.assertIn("Class 'Inquisitor'", out)
 
+    def test_repo_allowlist_tabard_entry_does_not_hide_another_gloss_on_the_same_line(self):
+        # N1 review round 3 (R1): every retired pair on a line is reported, so the allowlisted item name
+        # "Khăn Quàng Du Mục (Ranger)" cannot cover a real wrong gloss next to it.
+        repo_allow = (REPO_ROOT / "Tools" / "QA" / "gdd_validator_allowlist.yaml").read_text(encoding="utf-8")
+        ok = "| *Tabard 1: Khăn Choàng Thánh Giá (Acolyte)* | *Tabard 2: Khăn Quàng Du Mục (Ranger)* |\n"
+        self.tp.write("design/gdd/itemization.md", ok)
+        code, out = self.tp.run(repo_allow)
+        self.assertEqual(code, 0, out)
+        self.assertIn("[ALLOW] design/gdd/itemization.md:1: [class_vn_name]", out)
+
+        self.tp.write("design/gdd/itemization.md", ok.replace("Khăn Choàng Thánh Giá (Acolyte)", "Tu Sĩ (Acolyte)"))
+        code, out = self.tp.run(repo_allow)
+        self.assertEqual(code, 1, out)
+        self.assertIn("'Tu Sĩ' của class 'Acolyte'", out)
+        self.assertNotIn("Stale allowlist entry", out)
+
+    def test_several_retired_pairs_on_one_line_are_all_reported(self):
+        found = [msg for _, cid, msg in findings_for("Chiến Binh (Vanguard), Du Hiệp (Ranger), Tu Sĩ (Acolyte)") if cid == "class_vn_name"]
+        self.assertEqual(len(found), 3, found)
+
     def test_repo_allowlist_parses_and_matches_pyyaml(self):
         path = REPO_ROOT / "Tools" / "QA" / "gdd_validator_allowlist.yaml"
         entries = v.load_allowlist(path)
