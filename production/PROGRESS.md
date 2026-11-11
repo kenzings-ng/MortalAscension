@@ -1118,9 +1118,14 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   - Xem câu chữ phần thêm vào `production/ROADMAP.md` và `production/DECISIONS.md` trong PR trước khi merge.
   - `CLAUDE.md:35` và `DECISIONS.md:226` vẫn ghi phạm vi tự vận hành "0 → 7, gồm 1.5 và 2B", chưa nhắc Giai đoạn N. Agent không sửa hai dòng này.
   - N1 giữ 🛑 dạng xác nhận: áp DECISIONS §2 nguyên văn (Ranger = "Xạ Thủ", "Du Hiệp" = tên nhánh Scout).
-- **Trạng thái**: nhánh đã push (`git ls-remote`: `4a76715` trên `refs/heads/docs/n0-narrative-foundation-infra`), PR #63 đã mở, chờ chủ dự án xem câu chữ. Chưa merge; mục N0 trong ROADMAP vẫn là `[ ]`.
+- **Trạng thái**: nhánh đã push (`git ls-remote`: `4a76715` trên `refs/heads/docs/n0-narrative-foundation-infra`), PR #63 đã mở, chờ chủ dự án xem câu chữ. Chưa merge; mục N0 trong ROADMAP vẫn là `[ ]`. _(Đã lỗi thời, xem "Cập nhật sau merge" bên dưới.)_
 - **Cập nhật sau merge (2026-11-11)**:
   - Chủ dự án duyệt câu chữ và cho merge PR #63 qua hộp chọn trong terminal. Squash-merge thành commit `9fabc2e` trên `main`; `git ls-remote origin refs/heads/main` trả `9fabc2e871b022a6b904610d53b10e59d3be4d07`. CI "Fast Gates (GDD & Backend QA)" pass (39s) trên PR trước khi merge.
   - Nhánh `docs/n0-closure-scope-lines`: đổi N0 thành `[x]` trong ROADMAP kèm bằng chứng trên.
   - Cùng nhánh, theo lựa chọn của chủ dự án ("Cho tôi sửa cả hai dòng"): thêm Giai đoạn N vào dòng phạm vi tự vận hành ở `CLAUDE.md:35` và `production/DECISIONS.md:226`. `production/DECISIONS.md:6` cũng ghi "Giai đoạn 0 → 7" nhưng không nằm trong câu hỏi đã được duyệt nên giữ nguyên, chờ chủ dự án.
-  - N1 chưa bắt đầu: chủ dự án hỏi lại vì sao dùng tên tiếng Việt khi game hướng global. Cần chốt ngôn ngữ của tên chính thức trước khi sửa GDD.
+  - Cổng của nhánh chốt sổ (tại `d8ca2a4`): validator 112 file, 0 lỗi, exit 0; self-test 26 test OK, exit 0; `git diff --check main..HEAD` sạch.
+  - Reviewer (context mới, tại `d8ca2a4`): **ĐỒNG Ý merge**, không lỗi chặn, 5 điểm thấp. L3, L4, L5 sửa ở commit kế tiếp. L1 (`production/DECISIONS.md:5-6` còn "Last Updated: 2026-10-10" và "Giai đoạn 0 → 7") và L2 (`CLAUDE.md:35` ghi "tuần tự" trong khi Giai đoạn N chạy song song) để chủ dự án quyết, agent không tự sửa.
+  - Chủ dự án hỏi lại vì sao dùng tên tiếng Việt khi game hướng global, rồi chọn qua hộp chọn trong terminal (2026-11-11):
+    1. Tên class: **tên tiếng Anh là tên canon duy nhất**; mỗi class giữ đúng một chú thích tiếng Việt theo DECISIONS §2. Không đổi gì trong code.
+    2. Tên canon mới của thế giới (thế giới, vùng, phe phái, NPC, boss): **tên riêng tiếng Anh, tài liệu diễn giải tiếng Việt**. Văn bản trong game đi qua localization.
+    Hai lựa chọn này sẽ được ghi vào DECISIONS §13 trong PR của N1.
