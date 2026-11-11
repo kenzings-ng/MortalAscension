@@ -50,153 +50,288 @@ last_updated: ""
 #   (health, damage, drops, faction, etc.)
 
 entities:
-  # ─── TẦNG 1: CLASS CƠ BẢN (NORMAL) ──────────────────────────────
+  # ─── 16 CLASS (DECISIONS §2, §7) ────────────────────────────────
+  # N1 2026-11-11: tên canon là tên tiếng Anh (`canonical_name`); `vn_gloss` là chú thích
+  # tiếng Việt duy nhất theo DECISIONS §2. Trường `tier:` cũ (Normal/Rare/Epic/Mythic) đã
+  # thay bằng `rank:` T1–T4 theo DECISIONS §1; `weapon:` ghi lại theo DECISIONS §7.
+  # Bổ sung 4 class còn thiếu: Swordmaster, Phantom Stalker, Inquisitor, Seraph.
+
   - name: class_vanguard
-    display_name: "Chiến Binh (Vanguard)"
-    tier: "Normal"
+    display_name: "Vanguard (Tiên Phong)"
+    canonical_name: "Vanguard"
+    vn_gloss: "Tiên Phong"
+    line: "Guard"
+    rank: "T1"
+    gameplay_tag: "Class.Line.Guard.Vanguard"
     status: active
     source: design/gdd/game-concept.md
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/foundational-classes.md
-    weapon: "Kiếm & Khiên / Đại Kiếm"
+      - design/gdd/advanced-classes.md
+    weapon: "Kiếm 1 tay (`Weapon.1H.Blade`) + Khiên Sắt Vuông (`Item.Shield.Square`)"
     role: "Parry & Frontline Defense"
     added: 2026-09-14
-
-  - name: class_ranger
-    display_name: "Du Hiệp (Ranger)"
-    tier: "Normal"
-    status: active
-    source: design/gdd/game-concept.md
-    referenced_by:
-      - design/gdd/game-concept.md
-      - design/gdd/foundational-classes.md
-    weapon: "Cung Tên / Song Đao"
-    role: "Ranged Mobility & Traps"
-    added: 2026-09-14
-
-  - name: class_arcanist
-    display_name: "Thuật Sĩ (Arcanist)"
-    tier: "Normal"
-    status: active
-    source: design/gdd/game-concept.md
-    referenced_by:
-      - design/gdd/game-concept.md
-      - design/gdd/foundational-classes.md
-    weapon: "Trượng Phép / Cổ Thư"
-    role: "AoE Crowd Control & Elemental Burst"
-    added: 2026-09-14
-
-  - name: class_acolyte
-    display_name: "Tu Sĩ (Acolyte)"
-    tier: "Normal"
-    status: active
-    source: design/gdd/game-concept.md
-    referenced_by:
-      - design/gdd/game-concept.md
-      - design/gdd/foundational-classes.md
-    weapon: "Chùy Chiến / Tràng Hạt Khí"
-    role: "Support, Shields & Stamina Regen"
-    added: 2026-09-14
-
-  # ─── TẦNG 2: CLASS HIẾM (RARE) ──────────────────────────────────
-  - name: class_berserker
-    display_name: "Cuồng Chiến Sĩ (Berserker)"
-    tier: "Rare"
-    status: active
-    source: design/gdd/game-concept.md
-    referenced_by:
-      - design/gdd/game-concept.md
-      - design/gdd/advanced-classes.md
-    weapon: "Song Rìu / Búa Tạ"
-    role: "High-Risk High-Reward & Hyper-Armor"
-    added: 2026-09-14
-
-  - name: class_shadowblade
-    display_name: "Ảo Ảnh Thích Khách (Shadowblade)"
-    tier: "Rare"
-    status: active
-    source: design/gdd/game-concept.md
-    referenced_by:
-      - design/gdd/game-concept.md
-      - design/gdd/advanced-classes.md
-    weapon: "Song Đoản Kiếm / Phi Tiêu"
-    role: "Stealth, Clones & Backstab Burst"
-    added: 2026-09-14
-
-  - name: class_elementalist
-    display_name: "Nguyên Tố Sư (Elementalist)"
-    tier: "Rare"
-    status: active
-    source: design/gdd/game-concept.md
-    referenced_by:
-      - design/gdd/game-concept.md
-      - design/gdd/advanced-classes.md
-    weapon: "Cầu Phép (Orb)"
-    role: "Triple Element Fusion & Status Reaction"
-    added: 2026-09-14
+    revised: 2026-11-11
 
   - name: class_templar
-    display_name: "Thánh Hiệp Sĩ (Templar)"
-    tier: "Rare"
+    display_name: "Templar (Thánh Hiệp Sĩ)"
+    canonical_name: "Templar"
+    vn_gloss: "Thánh Hiệp Sĩ"
+    line: "Guard"
+    rank: "T2"
+    gameplay_tag: "Class.Line.Guard.Templar"
     status: active
     source: design/gdd/game-concept.md
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/advanced-classes.md
-    weapon: "Chiến Chùy & Đại Thuẫn"
+    weapon: "Chùy 1 tay (`Weapon.1H.Mace`) + Đại Thuẫn / Khiên Tháp (`Item.Shield.Tower`)"
     role: "Aggro Tank & Radiant Retaliation"
     added: 2026-09-14
+    revised: 2026-11-11
 
-  # ─── TẦNG 3: CLASS CAO CẤP (EPIC) ──────────────────────────────
-  - name: class_void_blade
-    display_name: "Hư Không Kiếm Sư (Void Blade)"
-    tier: "Epic"
+  - name: class_berserker
+    display_name: "Berserker (Cuồng Chiến Sĩ)"
+    canonical_name: "Berserker"
+    vn_gloss: "Cuồng Chiến Sĩ"
+    line: "Guard"
+    rank: "T2"
+    gameplay_tag: "Class.Line.Guard.Berserker"
     status: active
     source: design/gdd/game-concept.md
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/advanced-classes.md
-    weapon: "Kiếm Katana Hư Không"
-    role: "Blink Dash & Dimensional Slashes"
+    weapon: "Vũ khí 2 tay hạng nặng (`Weapon.2H.Heavy`)"
+    role: "High-Risk High-Reward & Hyper-Armor"
     added: 2026-09-14
+    revised: 2026-11-11
 
-  - name: class_chronomancer
-    display_name: "Thời Gian Ma Đạo (Chronomancer)"
-    tier: "Epic"
+  - name: class_swordmaster
+    display_name: "Swordmaster (Kiếm Sư)"
+    canonical_name: "Swordmaster"
+    vn_gloss: "Kiếm Sư"
+    line: "Guard"
+    rank: "T2"
+    gameplay_tag: "Class.Line.Guard.Swordmaster"
     status: active
-    source: design/gdd/game-concept.md
+    source: design/gdd/advanced-classes.md
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/advanced-classes.md
-    weapon: "Đồng Hồ Cát Ma Thuật"
-    role: "Time-Dilation & Damage Rewind"
-    added: 2026-09-14
+    weapon: "Kiếm 1 tay (`Weapon.1H.Blade`), không dùng khiên"
+    role: "Speed Swordplay & Frame-Precise Counter"
+    added: 2026-11-11
+    revised: 2026-11-11
 
   - name: class_dragon_knight
-    display_name: "Long Kỵ Sĩ (Dragon Knight)"
-    tier: "Epic"
+    display_name: "Dragon Knight (Long Kỵ Sĩ)"
+    canonical_name: "Dragon Knight"
+    vn_gloss: "Long Kỵ Sĩ"
+    line: "Guard"
+    rank: "T3"
+    gameplay_tag: "Class.Line.Guard.DragonKnight"
     status: active
     source: design/gdd/game-concept.md
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/advanced-classes.md
-    weapon: "Thương Dài (Halberd)"
+    weapon: "Vũ khí cán dài (`Weapon.2H.Polearm`)"
     role: "Aerial Dive & Massive Posture Break"
     added: 2026-09-14
+    revised: 2026-11-11
 
-  # ─── TẦNG 4: CLASS ẨN (MYTHIC) ──────────────────────────────────
+  - name: class_void_blade
+    display_name: "Void Blade (Hư Không Kiếm)"
+    canonical_name: "Void Blade"
+    vn_gloss: "Hư Không Kiếm"
+    line: "Guard"
+    rank: "T3"
+    gameplay_tag: "Class.Line.Guard.VoidBlade"
+    status: active
+    source: design/gdd/game-concept.md
+    referenced_by:
+      - design/gdd/game-concept.md
+      - design/gdd/advanced-classes.md
+    weapon: "Kiếm đơn Hư Không (`Weapon.1H.Blade`)"
+    role: "Blink Dash & Dimensional Slashes"
+    added: 2026-09-14
+    revised: 2026-11-11
+
+  - name: class_ranger
+    display_name: "Ranger (Xạ Thủ)"
+    canonical_name: "Ranger"
+    vn_gloss: "Xạ Thủ"
+    line: "Scout"
+    rank: "T1"
+    gameplay_tag: "Class.Line.Scout.Ranger"
+    status: active
+    source: design/gdd/game-concept.md
+    referenced_by:
+      - design/gdd/game-concept.md
+      - design/gdd/foundational-classes.md
+      - design/gdd/advanced-classes.md
+    weapon: "Cung 2 tay (`Weapon.2H.Bow`); sub-set đoản đao (`Weapon.Dual.Daggers`)"
+    role: "Ranged Mobility & Traps"
+    added: 2026-09-14
+    revised: 2026-11-11
+
+  - name: class_shadowblade
+    display_name: "Shadowblade (Ảnh Nhẫn)"
+    canonical_name: "Shadowblade"
+    vn_gloss: "Ảnh Nhẫn"
+    line: "Scout"
+    rank: "T2"
+    gameplay_tag: "Class.Line.Scout.Shadowblade"
+    status: active
+    source: design/gdd/game-concept.md
+    referenced_by:
+      - design/gdd/game-concept.md
+      - design/gdd/advanced-classes.md
+    weapon: "Song đao / Dao găm (`Weapon.Dual.Daggers`)"
+    role: "Stealth, Clones & Backstab Burst"
+    added: 2026-09-14
+    revised: 2026-11-11
+
+  - name: class_phantom_stalker
+    display_name: "Phantom Stalker (U Hồn Đoạt Mệnh)"
+    canonical_name: "Phantom Stalker"
+    vn_gloss: "U Hồn Đoạt Mệnh"
+    line: "Scout"
+    rank: "T3"
+    gameplay_tag: "Class.Line.Scout.PhantomStalker"
+    status: active
+    source: design/gdd/advanced-classes.md
+    referenced_by:
+      - design/gdd/game-concept.md
+      - design/gdd/advanced-classes.md
+    weapon: "Song đao ám khí (`Weapon.Dual.Daggers`)"
+    role: "Shadow Traps & Chained Clones"
+    added: 2026-11-11
+    revised: 2026-11-11
+
+  - name: class_arcanist
+    display_name: "Arcanist (Bí Thuật Sư)"
+    canonical_name: "Arcanist"
+    vn_gloss: "Bí Thuật Sư"
+    line: "Caster"
+    rank: "T1"
+    gameplay_tag: "Class.Line.Caster.Arcanist"
+    status: active
+    source: design/gdd/game-concept.md
+    referenced_by:
+      - design/gdd/game-concept.md
+      - design/gdd/foundational-classes.md
+      - design/gdd/advanced-classes.md
+    weapon: "Pháp trượng (`Weapon.2H.Staff`)"
+    role: "AoE Crowd Control & Elemental Burst"
+    added: 2026-09-14
+    revised: 2026-11-11
+
+  - name: class_elementalist
+    display_name: "Elementalist (Nguyên Tố Sư)"
+    canonical_name: "Elementalist"
+    vn_gloss: "Nguyên Tố Sư"
+    line: "Caster"
+    rank: "T2"
+    gameplay_tag: "Class.Line.Caster.Elementalist"
+    status: active
+    source: design/gdd/game-concept.md
+    referenced_by:
+      - design/gdd/game-concept.md
+      - design/gdd/advanced-classes.md
+    weapon: "Pháp trượng (`Weapon.2H.Staff` / Orbs)"
+    role: "Triple Element Fusion & Status Reaction"
+    added: 2026-09-14
+    revised: 2026-11-11
+
+  - name: class_chronomancer
+    display_name: "Chronomancer (Thời Gian Pháp Sư)"
+    canonical_name: "Chronomancer"
+    vn_gloss: "Thời Gian Pháp Sư"
+    line: "Caster"
+    rank: "T3"
+    gameplay_tag: "Class.Line.Caster.Chronomancer"
+    status: active
+    source: design/gdd/game-concept.md
+    referenced_by:
+      - design/gdd/game-concept.md
+      - design/gdd/advanced-classes.md
+    weapon: "Thánh tích thời gian (`Weapon.1H.Mace` / `Relic`)"
+    role: "Time-Dilation & Damage Rewind"
+    added: 2026-09-14
+    revised: 2026-11-11
+
+  - name: class_acolyte
+    display_name: "Acolyte (Tập Sự)"
+    canonical_name: "Acolyte"
+    vn_gloss: "Tập Sự"
+    line: "Faith"
+    rank: "T1"
+    gameplay_tag: "Class.Line.Faith.Acolyte"
+    status: active
+    source: design/gdd/game-concept.md
+    referenced_by:
+      - design/gdd/game-concept.md
+      - design/gdd/foundational-classes.md
+      - design/gdd/advanced-classes.md
+    weapon: "Chùy chuông (`Weapon.1H.Mace` / `Relic`)"
+    role: "Support, Shields & Stamina Regen"
+    added: 2026-09-14
+    revised: 2026-11-11
+
+  - name: class_inquisitor
+    display_name: "Inquisitor (Thẩm Phán Dị Giáo)"
+    canonical_name: "Inquisitor"
+    vn_gloss: "Thẩm Phán Dị Giáo"
+    line: "Faith"
+    rank: "T2"
+    gameplay_tag: "Class.Line.Faith.Inquisitor"
+    status: active
+    source: design/gdd/advanced-classes.md
+    referenced_by:
+      - design/gdd/game-concept.md
+      - design/gdd/advanced-classes.md
+    weapon: "Chùy 1 tay (`Weapon.1H.Mace`)"
+    role: "Heretic Punishment & Armor/Posture Debuff"
+    added: 2026-11-11
+    revised: 2026-11-11
+
+  - name: class_seraph
+    display_name: "Seraph (Thiên Sứ Lục Dực)"
+    canonical_name: "Seraph"
+    vn_gloss: "Thiên Sứ Lục Dực"
+    line: "Faith"
+    rank: "T3"
+    gameplay_tag: "Class.Line.Faith.Seraph"
+    status: active
+    source: design/gdd/advanced-classes.md
+    referenced_by:
+      - design/gdd/game-concept.md
+      - design/gdd/advanced-classes.md
+    weapon: "Chùy thánh / Thánh tích (`Weapon.1H.Mace` / `Relic`)"
+    role: "Radiant Wings, Short Invulnerability Ward & Holy Lightning"
+    added: 2026-11-11
+    revised: 2026-11-11
+
   - name: class_god_slayer
-    display_name: "Thí Thần Giả (God Slayer)"
-    tier: "Mythic"
+    display_name: "God Slayer (Kẻ Diệt Thần)"
+    canonical_name: "God Slayer"
+    vn_gloss: "Kẻ Diệt Thần"
+    line: "Apex"
+    rank: "T4"
+    gameplay_tag: "Class.Line.Apex.GodSlayer"
     status: active
     source: design/gdd/game-concept.md
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/hidden-classes.md
-    weapon: "Thần Binh Tự Biến Hình (Morphing Relic)"
+      - design/gdd/advanced-classes.md
+    weapon: "Kiếm 1 tay (`Weapon.1H.Blade`) và Vũ khí cán dài (`Weapon.2H.Polearm`)"
     role: "Time Freeze on Perfect Dodge & Boss Skill Mimic"
     added: 2026-09-14
+    revised: 2026-11-11
 
   # ─── 3 FORGE FACILITIES (BLACKSMITHING & ITEMIZATION) ───────────
   - name: facility_forge_tier1_outpost
