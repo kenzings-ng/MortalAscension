@@ -1227,4 +1227,5 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   - Vòng 3 (tại `28f777a`): **ĐỒNG Ý merge**, không còn lỗi; reviewer chạy lại validator 114 file 0 lỗi, self-test 37 OK, diff-check sạch.
 - **Sai sót trong quá trình**: ghi từ vựng 9C vào DECISIONS như lựa chọn của chủ dự án khi chưa hỏi; reviewer bắt được, đã hỏi lại và ghi đúng câu trả lời.
 - **Chuyển cho đầu việc sau** (world-bible.md mục 11): vị trí hồi sinh và Lửa Trại (N4); "World Boss Thần Linh" cụ thể và phân tầng Lãnh Chúa (N6; sửa điều kiện mở God Slayer là 🛑); "Liên Minh" trùng tên tổ đội đột kích (N4); sửa từ vựng lệch tông từng chỗ (N5); Lãnh Chúa xuất hiện lại trong MMO (N6); đăng ký "Ascendant" vào registry (N4); tên thế giới (N4, sau khi kiểm trùng tên); chỉ dẫn art Tháp Đồng Hồ Vĩnh Hằng (Provisional, N4/N5).
-- **Trạng thái**: chưa push, chưa merge.
+- **Trạng thái**: chưa push, chưa merge. _(Đã lỗi thời, xem "Cập nhật sau merge" bên dưới.)_
+- **Cập nhật sau merge (2026-11-11)**: nhánh push tại `97a0cfd`, PR #69. CI "Fast Gates (GDD & Backend QA)" pass (39s). Squash-merge thành `75cdfda` trên `main`; `git ls-remote origin refs/heads/main` trả `75cdfdae5bd9972aa4bdc9c33bf9839548bbca71`. Nhánh `docs/n3-closure` đổi N3 thành `[x]` trong ROADMAP. Chốt sổ N2 (PR #68) merge thành `1550220`.
