@@ -35,7 +35,7 @@
 | Bộ animation | Thân dưới: Idle 4, Walk 6, Run 6, Dash 3, HitStun 2 (frame/hướng). Thân trên theo weapon family: Combo 12 + Guard 4. Idle riêng của class: 4. Thêm **Stunned** và **Dead**: số frame chờ chốt khi chủ dự án duyệt cảm giác chơi. | `character-visual-system.md` §4.3; chủ dự án chọn 2026-11-11 |
 | Atlas | Tối đa $2048 \times 2048$ mỗi bộ flipbook nhân vật; sheet dài hơn xuất nhiều hàng. | `control-manifest.md`; chủ dự án xác nhận 2026-11-11 |
 | Lọc texture | Nearest, không mipmap. | `art-bible.md` §8 |
-| Khung độ hiếm | Màu theo `inventory-system.md` §1 (DECISIONS §13). Viền 2 px. | DECISIONS §13 |
+| Khung độ hiếm | Màu theo `inventory-system.md` §1. Viền 2 px. | DECISIONS §13 (màu); §6.2 (viền) |
 | Vanguard | Khiên Sắt Vuông `Item.Shield.Square`; tabard navy "Worn Azure"; mào lông đỏ thẫm (cần chủ dự án duyệt hình có mào). | DECISIONS §7, §10; mood board §2; chủ dự án chọn 2026-11-11 |
 
 ---
@@ -58,7 +58,7 @@ flowchart TD
     
     Check -->|Không: Yêu cầu chung chung| Interrogate[Nhánh 2: KHẢO SÁT 3 BƯỚC BẮT BUỘC]
     Interrogate --> Q1[1. Phong Cách: 16x16 Micro / 32-bit Arcade / Stylized HD]
-    Interrogate --> Q2[2. Mục Đích & Góc Đặt: Icon 45° / Sprite 8 hướng / Tileset]
+    Interrogate --> Q2[2. Mục Đích & Góc Đặt: Icon 45° / Sprite 5 hướng + lật / Tileset]
     Interrogate --> Q3[3. Bảng Màu & Độ Hiếm: 4-Tone Ramp / 5 Độ Hiếm]
     
     P_Stardew --> Exec[Áp Dụng Bộ Lọc Anti-AI & Xuất Xưởng Engine]
@@ -102,8 +102,8 @@ flowchart TD
 | **1. Pillow Shading (Đánh bóng gối ôm)** | AI lấy trung bình màu và làm tối dần từ mép ngoài vào tâm mọi chi tiết, không có nguồn sáng vật lý. | Vật thể phồng như gối ôm, mềm nhũn như đất sét, mất chất kim loại cứng. | **Khóa chặt nguồn sáng đơn góc $45^\circ$ (Key Light)** từ góc trên-trái ($10$ giờ). Đổ bóng đổ cứng (Cast Shadow) dứt khoát dưới cằm, lưỡi kiếm, vạt áo. |
 | **2. Micro-Color Bleed (Dải màu bẩn)** | AI pha trộn hàng nghìn dải màu trung gian mờ mờ thay vì dùng bảng màu giới hạn (Indexed Palette). | Tranh bị đục, bẩn, tái ngắt, mất độ trong trẻo retro của pixel art. | **Quy tắc dải màu 3–4 bậc (3-4 Color Ramp)** kết hợp **Hue-Shifting** (Sáng ngả Vàng chanh, Tối ngả Tím Navy). |
 | **3. Ornate Greeble (Chi tiết rác ngẫu nhiên)** | Khi prompt từ khóa "knight" hay "sword", AI tự ý thêm hoa văn vàng uốn lượn, ren ren, dây đai chằng chịt. | Gây nhiễu thị giác cực độ, không thể đọc được hình dạng nhân vật từ camera -45°. | **Quy tắc tỉ lệ chi tiết 70 - 20 - 10**. Dành trọn 70% diện tích là mảng phẳng trơn để mắt nghỉ ngơi. Cấm hoa văn vàng vô nghĩa. |
-| **4. Stiff Mannequin Poses (Tư thế ma-nơ-canh)** | AI luôn vẽ nhân vật đứng thẳng tưng $90^\circ$, hai chân chịu lực đều 50/50, mắt nhìn vô hồn vào camera. | Nhân vật đơ cứng như tượng sáp hoặc đồ chơi nhựa chưa bóc hộp. | **Line of Action (Đường cong chữ C/S)**, **Contrapposto (Trọng tâm chân trụ 80/20)**, thân người ngả góc $15^\circ-25^\circ$. |
-| **5. Pixel Sins (Lỗi vỡ hạt điểm ảnh)** | AI sinh "pixel giả": pixel to nhỏ lẫn lộn (mixels), pixel đơn độc trôi nổi (orphan pixels), bậc thang gãy khúc (jaggies). | Trông như ảnh JPG chất lượng thấp bị giảm phân giải cẩu thả chứ không phải pixel art thật. | **Đường nét phân bậc toán học (1-1-1, 2-2-2, 1-2-3)**, **Viền bao ngoài 1px than sẫm**, và **Selout** (viền nội bộ theo màu gốc). |
+| **4. Stiff Mannequin Poses (Tư thế ma-nơ-canh)** | AI luôn vẽ nhân vật đứng thẳng tưng $90^\circ$, hai chân chịu lực đều 50/50, mắt nhìn vô hồn vào camera. | Nhân vật đơ cứng như tượng sáp hoặc đồ chơi nhựa chưa bóc hộp. | **Line of Action (Đường cong chữ C/S)**, **Contrapposto (Trọng tâm chân trụ 80/20)**, thân người ngả góc $15^\circ-25^\circ$. Dáng thẳng hoặc 50/50 chỉ được dùng khi là ngoại lệ có chủ đích theo §0. |
+| **5. Pixel Sins (Lỗi vỡ hạt điểm ảnh)** | AI sinh "pixel giả": pixel to nhỏ lẫn lộn (mixels), pixel đơn độc trôi nổi (orphan pixels), bậc thang gãy khúc (jaggies). | Trông như ảnh JPG chất lượng thấp bị giảm phân giải cẩu thả chứ không phải pixel art thật. | **Đường nét phân bậc toán học (1-1-1, 2-2-2, 1-2-3)**, **tách silhouette bằng tông tối nhất của ramp ở mép khuất sáng** (không bắt buộc viền ngoài — §0), và **Selout** (viền nội bộ theo màu gốc). |
 
 ---
 
@@ -205,7 +205,7 @@ Căn cứ quyết định thẩm mỹ từ 4 game tham chiếu (*Octopath Travel
      * **South-West (SW)**: Lật ngang từ **SE**.
      * **West (W)**: Lật ngang từ **E**.
      * **North-West (NW)**: Lật ngang từ **NE**.
-   - Với trang bị bất đối xứng (Khiên tay trái, Kiếm tay phải), hệ thống `PAPaper2DSocketUtility` sẽ tự động tráo đổi layer thứ tự vẽ (Z-sort) để giữ khiên luôn hướng ra ngoài về phía hiểm họa.
+   - Với trang bị bất đối xứng (Khiên tay trái, Kiếm tay phải), khi lật sang hướng Tây vũ khí và khiên đổi tay; dự án chấp nhận đánh đổi này (DECISIONS §10).
 
 ---
 
@@ -305,7 +305,7 @@ Sprite trang bị có khả năng hiển thị các lớp phủ (Overlays) tươ
 
 * ✅ **Prompt Chuẩn Studio (Đậm chất nghệ nhân thủ công Stardew/Capcom)**:
   ```text
-  16-bit arcade pixel art sprite of an athletic rogue knight mid-strike with an executioner sword. Action-first pose: body lunging forward at 20-degree angle, weight heavy on front bent knee, claymore swinging in a sharp motion arc. Clean Capcom CPS2 palette: burnished steel armor with crisp cel-shaded plane shifts, sunlight highlights from top-left shifting to deep indigo shadows. 70 percent clean resting metal plates, zero filigree, bold 1px charcoal outer contour, clear negative space between legs and blade, pure magenta background #FF00FF, no floor shadow.
+  16-bit arcade pixel art sprite of an athletic rogue knight mid-strike with an executioner sword. Action-first pose: body lunging forward at 20-degree angle, weight heavy on front bent knee, claymore swinging in a sharp motion arc. Clean Capcom CPS2 palette: burnished steel armor with crisp cel-shaded plane shifts, sunlight highlights from top-left shifting to deep indigo shadows. 70 percent clean resting metal plates, zero filigree, clear negative space between legs and blade, pure magenta background #FF00FF, no floor shadow.
   ```
 
 ---

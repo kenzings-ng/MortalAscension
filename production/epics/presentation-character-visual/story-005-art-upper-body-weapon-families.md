@@ -35,7 +35,7 @@ Tạo lập các bộ khung hình wireframe/stick-figure proxy (do script Python
 - [x] **AC-1 (Đầy Đủ 560 Frames Wireframe Proxy)**: *(X14 2026-10-10: chưa đạt / chưa có bằng chứng — xem dòng X14 ở đầu file.)*
   - Xuất xưởng 7 bộ Flipbook proxy vào `Content/Art/Characters/UpperBodyWeapons/`.
 - [x] **AC-2 (Căn Chỉnh Hand Sockets)**: *(X14 2026-10-10: chưa đạt / chưa có bằng chứng — xem dòng X14 ở đầu file.)*
-  - Khung xương tay wireframe giữ vị trí bàn tay trùng khớp với `HandSocket_R` $(96, 76)$ và `HandSocket_L` $(32, 76)$ trong tư thế chuẩn, di chuyển theo đúng quỹ đạo vung đòn để kiểm tra timing đánh và đón đòn.
+  - Khung xương tay wireframe giữ vị trí bàn tay trùng khớp với `HandSocket_R` $(96, 76)$ và `HandSocket_L` $(32, 76)$ trong tư thế chuẩn (mốc tham chiếu; vị trí thật theo metadata từng frame — SPEC §0), di chuyển theo đúng quỹ đạo vung đòn để kiểm tra timing đánh và đón đòn.
 - [x] **AC-3 (Kiểm Tra Quỹ Đạo Vũ Khí & Padding)**: *(X14 2026-10-10: chưa đạt / chưa có bằng chứng — xem dòng X14 ở đầu file.)*
   - Kiểm tra việc gắn kết các Sprite Vũ Khí cơ sở lên tay, đảm bảo vũ khí xoay theo góc vát đòn đánh mà không bị lệch chuôi.
   - Vùng phía trước mặt chừa khoảng đệm chuyển động (Motion Padding) $32\text{ px}$ để đón vệt chém Niagara Slash Trail.

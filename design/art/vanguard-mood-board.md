@@ -65,7 +65,7 @@ graph TD
                                    │
                  ┌─────────────────┴─────────────────┐
                  │    [Tấm Giáp Ngực Thép: Y=56]     │
- [Đại Khiên Sắt] │    [Tabard Vải Thô Xanh Chàm]     │ [Kiếm Bản Rộng]
+ [Khiên Sắt Vuông] │    [Tabard Vải Thô Xanh Chàm]     │ [Kiếm Bản Rộng]
  [Hình Chữ Nhật] │    [Đai Da Đóng Khóa Sắt: Y=80]   │ [Thép Tôi Rèn]
                  └─────────────────┬─────────────────┘
                                    │
@@ -94,7 +94,7 @@ graph TD
      - Viền nẹp sắt đinh tán 4 góc, lòng khiên khắc rãnh thánh giá tối giản biểu tượng của Đội Cận Vệ.
 
 3. **5 Hướng Quan Sát & Runtime Horizontal Flip**:
-   - **South ($0^\circ$)**: Trực diện mặt trước — Hiển thị toàn bộ đại khiên và giáp ngực.
+   - **South ($0^\circ$)**: Trực diện mặt trước — Hiển thị toàn bộ khiên vuông và giáp ngực.
    - **South-East ($45^\circ$)**: Chếch góc nhìn chính Isometric — Kiếm giương chéo, khiên chắn góc hiểm.
    - **East ($90^\circ$)**: Nhìn ngang mạn sườn — Silhouette mũi kiếm nhọn và thân khiên dày.
    - **North-East ($135^\circ$)**: Chếch sau lưng — Tà áo tabard bay nhẹ, lộ khiên bên sườn.

@@ -37,6 +37,6 @@ Tạo lập các tài nguyên wireframe proxy và placeholder geometric sprites 
   - Khớp khít đường nối eo $Y = 80$ với các Master Rigs Lower Body.
 - [x] **AC-2 (10 Đạo Cụ Hình Học Khớp Hand Sockets)**: *(X14 2026-10-10: chưa đạt / chưa có bằng chứng — xem dòng X14 ở đầu file.)*
   - Xuất xưởng vào `Content/Art/Characters/Civilian/Props/`.
-  - Snap chính xác vào `HandSocket_R` $(96, 76)$ hoặc `HandSocket_L` $(32, 76)$ trên 5 hướng.
+  - Snap vào `HandSocket_R` / `HandSocket_L` đọc theo metadata từng frame trên 5 hướng (mốc tham chiếu $(96, 76)$ / $(32, 76)$ — SPEC §0).
 - [x] **AC-3 (Quest Giver Callout Frame Proxy)**: *(X14 2026-10-10: chưa đạt / chưa có bằng chứng — xem dòng X14 ở đầu file.)*
   - Frame vẫy tay hình học để kiểm tra kích hoạt logic tương tác NPC từ xa.

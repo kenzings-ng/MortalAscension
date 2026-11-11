@@ -258,7 +258,7 @@ $$\text{SellValue} = \text{BasePrice} \times \text{VendorSellPenalty} \times \te
 
 ### UI Requirements (CommonUI)
 - **Bố Cục Cửa Sổ Kho Đồ (Phím tắt `[I]` hoặc `[Tab]`):**
-  - Cửa sổ bên trái: Mô hình 3D nhân vật xoay tròn kèm 6 ô Paperdoll trang bị xung quanh.
+  - Cửa sổ bên trái: Sprite paperdoll 2D của nhân vật (xoay qua 5 hướng + lật) kèm 6 ô Paperdoll trang bị xung quanh.
   - Cửa sổ bên phải: Lưới 30 ô chứa đồ chính, có thanh chuyển Tab danh mục (Tất Cả / Trang Bị / Tiêu Hao / Nguyên Liệu / Sách).
   - Phía dưới: Nút Tự Động Sắp Xếp `[R]`, Bán Tất Cả Rác `[J]`, số dư Vàng hiện có.
 - **Bảng So Sánh Chỉ Số (Tooltip Comparison):** Khi rê chuột vào một trang bị trong túi, hiển thị song song bảng so sánh chỉ số với món đồ đang mặc trên người (dòng xanh lá nếu tăng, đỏ nếu giảm).

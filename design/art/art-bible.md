@@ -134,7 +134,7 @@ Mọi màu sắc mang tính cảnh báo sống còn **tuyệt đối không đư
 - **Pixel Density (PPU)**: 1.0 (bảng §0 của SPEC).
 - **Texture Filtering**: Nearest Neighbor (Strictly NO Mipmapping).
 - **Atlas Resolution**: Max $2048 \times 2048$ per character flipbook set (bảng §0 của SPEC).
-- **Frame Pivot Point**: Ghim đáy giữa `(X: 64, Y: 114)` trên canvas $128 \times 128$ đồng bộ với chân Capsule trong UE 5.7.
+- **Frame Pivot Point**: Ghim đáy giữa theo bảng §0 của SPEC, đồng bộ với chân Capsule trong UE.
 - **Lighting Shader**: Custom unlit/lit hybrid sprite material receiving directional sun + local point lights with custom normal mapping.
 
 ---
