@@ -1224,6 +1224,7 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
 - **Kết luận reviewer**:
   - Vòng 1 (tại `65ecfa9`): CHƯA. Lỗi nguy cấp: DECISIONS và tài liệu ghi từ vựng 9C là lựa chọn của chủ dự án trong khi chưa hỏi. Lỗi cao: Templar xếp nhầm vào nhánh Tín Đồ; mọi trích dẫn `game-concept.md` lệch 6 dòng do chính mục Setting chèn vào; luật Karma đánh dấu cả người tự vệ. Thêm 10 lỗi trung bình và thấp.
   - Vòng 2 (tại `46745b5`): 14 lỗi vòng 1 đã sửa đúng, khối DECISIONS khớp câu trả lời; còn 2 lỗi thấp (đáp án sự thật ẩn chưa ghi vào DECISIONS; chỉ dẫn art tháp đồng hồ chưa được chọn). Sửa ở `01b0afb`.
+  - Vòng 3 (tại `28f777a`): **ĐỒNG Ý merge**, không còn lỗi; reviewer chạy lại validator 114 file 0 lỗi, self-test 37 OK, diff-check sạch.
 - **Sai sót trong quá trình**: ghi từ vựng 9C vào DECISIONS như lựa chọn của chủ dự án khi chưa hỏi; reviewer bắt được, đã hỏi lại và ghi đúng câu trả lời.
 - **Chuyển cho đầu việc sau** (world-bible.md mục 11): vị trí hồi sinh và Lửa Trại (N4); "World Boss Thần Linh" cụ thể và phân tầng Lãnh Chúa (N6; sửa điều kiện mở God Slayer là 🛑); "Liên Minh" trùng tên tổ đội đột kích (N4); sửa từ vựng lệch tông từng chỗ (N5); Lãnh Chúa xuất hiện lại trong MMO (N6); đăng ký "Ascendant" vào registry (N4); tên thế giới (N4, sau khi kiểm trùng tên); chỉ dẫn art Tháp Đồng Hồ Vĩnh Hằng (Provisional, N4/N5).
 - **Trạng thái**: chưa push, chưa merge.
