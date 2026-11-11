@@ -1016,3 +1016,76 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   6. **Công Cụ Thẩm Mỹ Trực Quan**:
      - Tạo công cụ xem và phát animation tương tác tại `Art_Gallery/vanguard_phase3_vertical_slice_review.html` hỗ trợ hiển thị 5 hướng, tỷ lệ 1x / 2x zoom và ghép layer tổng hợp (Composite Assembly).
 - **Cột mốc**: Hoàn thành 100% các hạng mục kỹ thuật của Giai đoạn 3 (`ROADMAP.md:94-100`). Sẵn sàng cho trạm kiểm duyệt của Chủ dự án (`ROADMAP.md:101`).
+
+---
+
+## 19. Nhật Ký Đầu Việc: Nhánh `feat/phase6-backend-services-and-data-persistence` (Giai Đoạn 6: Dịch Vụ Backend & Lưu Trữ PostgreSQL)
+
+- **Mục tiêu**: Hiện thực hóa toàn bộ 5 hạng mục của Giai đoạn 6 (`ROADMAP.md:135-143`) theo `DECISIONS.md` §9, §11, §13 và kiến trúc Zero-Trust Client Gateway:
+  1. **Kiến Trúc & Quyết Định Kỹ Thuật (ADR-0006)**:
+     - Soạn thảo và đăng ký chính thức [`docs/architecture/adr-0006-backend-services-and-data-persistence.md`](file:///mnt/Data/Projects/project-games/ProjectAscendant/docs/architecture/adr-0006-backend-services-and-data-persistence.md).
+     - Thiết lập mô hình Zero-Trust: Client chỉ gửi JWT Token; chỉ Dedicated Server xác thực với backend qua Secret Header (`X-Server-Secret`) và ghi dữ liệu.
+  2. **Dịch Vụ Backend Thực Thụ (`Services/Backend/`)**:
+     - `config.py`: Đọc cấu hình từ biến môi trường (`PGHOST`, `PGPORT`, `JWT_SECRET`, `SERVER_SECRET`).
+     - `db.py`: Cơ chế quản lý kết nối và migration DDL chuẩn hóa (`accounts`, `characters`, `items` với ràng buộc hoán đổi ô đồ `uk_owner_slot DEFERRABLE INITIALLY DEFERRED`).
+     - `auth.py`: Xác thực email RFC 5322, băm mật khẩu PBKDF2-HMAC-SHA256 và ký/giải mã RFC 7519 HS256 JWT.
+     - `service.py`: Nghiệp vụ đăng ký, đăng nhập, đối soát token handshake, lưu/tải nhân vật, hoán đổi ô đồ nguyên tử (Atomic Slot Swap), và thăng chức khóa dòng (`SELECT ... FOR UPDATE`) chống nhân bản (Anti-Dupe).
+     - `app.py`: REST API Server với xác thực `X-Server-Secret` bắt buộc trên toàn bộ endpoint quyền hạn `/api/v1/server/*`.
+  3. **Tích Hợp Dedicated Server Unreal Engine (`UPABackendPersistenceSubsystem`)**:
+     - Bổ sung module `"HTTP"` vào `ProjectAscendant.Build.cs`.
+     - Hiện thực `UPABackendPersistenceSubsystem` giao tiếp phi đồng bộ qua `FHttpModule`.
+     - Tích hợp handshake xác thực token tại `APAGameModeBase::PreLogin`, tự động lưu khi người chơi thoát (`APAGameModeBase::Logout`), và timer lưu định kỳ (300 giây).
+     - Bổ sung kiểm thử C++ tự động trong `PABackendPersistenceTests.cpp`.
+  4. **Kiểm Thử Backend Độc Lập & CI Integration**:
+     - Viết mới `Tools/QA/test_backend_service_unit.py` kiểm tra offline 100% logic auth, JWT, và routing REST API.
+     - Nâng cấp `Tools/QA/test_backend_postgres.py` gọi trực tiếp vào code service backend thật thay vì chỉ chạy câu lệnh SQL tĩnh.
+     - Tích hợp kiểm thử tự động vào CI workflow `.github/workflows/tests.yml` và `run_headless_tests.sh`.
+- **Cột mốc**: Hoàn thành và merge vào `main` tại commit `e29541b` (PR #55) và cập nhật ROADMAP tại commit `feea8f2` (PR #56).
+
+---
+
+## 20. Nhật Ký Đầu Việc: Nhánh `feat/phase5-world-pcg-depth-sorting` (Giai Đoạn 5: Dựng Thế Giới & Môi Trường PCG)
+
+- **Mục tiêu**: Hiện thực hóa các hạng mục của Giai đoạn 5 (`ROADMAP.md:124-133`):
+  1. **Quy Chuẩn Sắp Xếp Độ Sâu Isometric**:
+     - Thiết lập `TranslucentSortPolicy=SortAlongAxis` và `TranslucentSortAxis=(X=0.500000,Y=0.500000,Z=-0.707107)` trong `Config/DefaultEngine.ini` khớp chính xác với góc camera Isometric $45^\circ$.
+  2. **Quần Xã & Môi Trường PCG Biome Graphs**:
+     - Nâng cấp `Scripts/build_pcg_biome_graphs.py` nạp toàn bộ asset môi trường Package M6 (cây cối, cỏ hoa, đá tảng, công trình) vào `Content/Maps/PCG/PCG_WorldBiomeGraph.json`.
+     - Tạo đồ thị spline đường đi kết nối Tiền Đồn Tân Thủ và Tòa Thành trong `Content/Maps/PCG/PCG_CitadelRoadSplineGraph.json`.
+  3. **Hệ Thống Autotile Bitmask 32×32**:
+     - Sinh tệp cấu hình autotile bitmask chuẩn 4-bit / corner cho 16 ô địa hình modular 32×32 trong `Content/Maps/PCG/Autotile_Terrain_32x32_Bitmask.json`.
+     - Xác thực 16 tile terrain chuẩn và đường dẫn bitmap tại `Content/Art/Environment/T_Terrain_Modular_32x32.png`.
+- **Cột mốc**: Hoàn thành và merge vào `main` tại commit `4a72d42` (PR #57) và cập nhật ROADMAP tại commit `96db7e1` (PR #58).
+
+---
+
+## 21. Nhật Ký Đầu Việc: Nhánh `fix/multi-client-test-timeout` (Khắc Phục Timeout Khởi Động Multi-Client & Xác Thực Iris)
+
+- **Mục tiêu**: Khắc phục hiện tượng timeout khởi động máy chủ Dedicated Server trên môi trường Linux headless và xác thực toàn diện hệ thống Iris Replication.
+- **Nội dung thực hiện**:
+  1. Tăng timeout tải map và khởi động Dedicated Server từ 40s lên 90s, tăng hạn chót giám sát đồng bộ từ 35s lên 60s trong `Tools/QA/test_multi_client_replication.py`.
+  2. Chạy kiểm thử thực tế trên Unreal Engine 5.8: **PASS 100%** toàn bộ 5 tiêu chí chấp nhận:
+     - `AC-1`: Dedicated Server Lifecycle (Outpost world ready) & Iris Replication System Active (`bEnableIrisReplication`).
+     - `AC-2`: Dual Client Handshake (`NotifyAcceptingConnection >= 2`) & Client Join Succeeded.
+     - `AC-3`: Iris Replication Descriptors (0 lỗi FastArray) & Iris Subobject Replication.
+     - `AC-4`: Multi-Client PlayerControllers instantiated (`PABasePlayerController`).
+     - `AC-5`: Clean Teardown & 0 Crash / Hang.
+- **Cột mốc**: Hoàn thành và merge vào `main` tại commit `0d18d18` (PR #59).
+
+---
+
+## 22. Nhật Ký Đầu Việc: Dọn Dẹp Legacy Đợt 4 & Cột Mốc Alpha (Giai Đoạn 4 & 7)
+
+- **Mục tiêu**: Hoàn tất tiêu hủy tệp trùng lặp theo `ROADMAP.md:118`, thẩm định sổ cái CC0, đo đạc profiling hiệu năng và kiểm chứng đóng gói build theo `ROADMAP.md:147-150`.
+- **Nội dung thực hiện**:
+  1. **Legacy Đợt 4 (PR #60 - Commit `9b770fa`)**:
+     - Xóa bỏ an toàn 3 tệp trùng lặp thừa (`Content/art/complete_map_showcase.jpg`, `ruins_blockout_3d.gif`, `ruins_concept.jpg`) sau khi xác nhận bản gốc được bảo toàn tại `Art_Gallery/legacy/environment/`.
+     - Cập nhật `Scripts/setup_art_gallery.py` dòng 214, 222, 230 trỏ trực tiếp vào `Art_Gallery/legacy/environment/`.
+     - Cập nhật trạng thái `DELETED` trong `production/art/legacy-art-inventory.md`.
+  2. **Thẩm Định Sổ Cái CC0 & Khai Báo Nội Dung AI (PR #61 - Commit `0989eb9`)**:
+     - Thẩm định và phân loại dứt điểm Pack 07 (`dcss-dungeon-environments`) thành `REJECTED` do góc nhìn Top-down $90^\circ$ không tương thích với camera Isometric $2.5\text{D}$ $45^\circ$. Đưa số lượng Pack Pending về **0**.
+     - Bổ sung Mục 5 trong `THIRD_PARTY_ASSETS.md` với đầy đủ tuyên bố công khai nội dung AI (Steam / Epic Games Store AI-Generated Content Disclosures), khẳng định 0% runtime AI và cam kết bản quyền.
+  3. **Đóng Gói Build & Profile Hiệu Năng Bằng Unreal Insights**:
+     - Chạy Unreal Automation Tool (`RunUAT.sh BuildCookRun -cook -skipstage`) kiểm chứng toàn bộ 3,700+ asset, maps, shaders và blueprints: **BUILD SUCCESSFUL, 0 Errors, ExitCode=0**.
+     - Ghi lại tệp Unreal Insights Trace Benchmark chuyên biệt cho Outpost map và Combat: `Saved/Profiling/Alpha_Benchmark_L_VerdantFrontier_Outpost.utrace` (6.4 MB) chứa dữ liệu chi tiết về chu kỳ khung hình (Frame), xung nhịp CPU và mốc đo (Bookmarks).
+- **Cột mốc**: Cập nhật toàn bộ các mục kỹ thuật của Giai đoạn 7 trong `production/ROADMAP.md` thành `[x]`. Sẵn sàng cho trạm kiểm duyệt Alpha Playtest với người ngoài (`ROADMAP.md:147`).
