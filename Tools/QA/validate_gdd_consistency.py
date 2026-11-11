@@ -476,14 +476,18 @@ EQUIPMENT_TIER_PATTERN = re.compile(r'\b(?:ShieldTier|5-Tier\s+Items?)\b', re.IG
 # before and are now retired are listed per class in Tools/QA/retired_class_glosses.json. A retired gloss is an
 # error when it is paired with that class's English name in parentheses, in either order, in any letter case:
 #   "Ranger (Du Hiệp)", "**Ranger** (du hiệp)", "Du Hiệp (Ranger)", "##### B. DU HIỆP (RANGER)".
-# A retired gloss used on its own (a common noun, a skill or item name) is not checked, a parenthetical that
-# is not a retired gloss ("Vanguard (T1)", "Dragon Knight (Đại Kích)") is never flagged, and a retired gloss that
-# is the tail of a longer Title-Case name ("Khăn Quàng Du Mục (Ranger)", an item) is not treated as a gloss.
-# Limit: a brand-new wrong gloss that is not in the retired list is not detected; add it to the list when found.
+# A retired gloss used on its own (a common noun, a skill or item name) is not checked, and a parenthetical that
+# is not a retired gloss ("Vanguard (T1)", "Dragon Knight (Đại Kích)") is never flagged.
+# Known limits:
+#   - Not detected: a brand-new wrong gloss that is not in the retired list (add it to the list when found); other
+#     pairings such as "Ranger — Du Hiệp" or "Ranger: Du Hiệp"; a plural "Rangers (Du Hiệp)"; a retired gloss with
+#     no English name next to it; a line with an odd number of "~~" (skipped whole).
+#   - False positives: a retired gloss that is also an ordinary phrase or the tail of another name, directly next
+#     to the class name: "Chronomancer (Thời gian hồi chiêu 3s)", "Khăn Quàng Du Mục (Ranger)", "nhánh Du Hiệp
+#     (Ranger, Shadowblade)". Reword the line, or add an entry with a reason to Tools/QA/gdd_validator_allowlist.yaml.
 RETIRED_GLOSS_FILE = Path(__file__).resolve().parent / "retired_class_glosses.json"
 _STRUCK = re.compile(r"~~.*?~~")
 _WORD_CH = r"A-Za-zÀ-ỹĐđ0-9"
-_PREV_WORD = re.compile(r"([%s]+) $" % _WORD_CH)
 
 
 def load_retired_glosses(class_vn_gloss: Dict[str, str], path: Path = RETIRED_GLOSS_FILE) -> Dict[str, List[str]]:
@@ -514,21 +518,25 @@ def class_gloss_findings(line: str, class_vn_gloss: Dict[str, str], retired: Dic
     for english, glosses in retired.items():
         approved = class_vn_gloss[english]
         en = re.escape(english.casefold())
-        for gloss in glosses:
+        seen: List[Tuple[int, int]] = []  # gloss spans already reported; a shorter gloss inside one is the same finding
+        for gloss in sorted(glosses, key=len, reverse=True):
             g = re.escape(gloss.casefold())
             # "English (Gloss": the gloss opens the parenthetical
-            for m in re.finditer(r"(?<![%s])%s[`*\"'”’]{0,4}\s*\([`*\"'“‘\s]{0,3}(%s)(?![%s])" % (_WORD_CH, en, g, _WORD_CH), folded):
-                if len(gloss) < len(approved) and folded.startswith(approved.casefold(), m.start(1)):
-                    continue  # the retired gloss is only the beginning of the approved one
-                yield m.start(), m.end(), english, text[m.start(1):m.end(1)], approved
+            english_first = r"(?<![%s])%s[`*\"'”’]{0,4}\s*\([`*\"'“‘\s]{0,3}(%s)(?![%s])" % (_WORD_CH, en, g, _WORD_CH)
             # "Gloss (English": the gloss is the last thing before the parenthetical
-            for m in re.finditer(r"(?<![%s])(%s)[`*\"'”’]{0,4}\s*\([`*\"'“‘\s]{0,3}%s(?![%s])[`*]{0,3}\)?" % (_WORD_CH, g, en, _WORD_CH), folded):
-                if len(gloss) < len(approved) and folded.endswith(approved.casefold(), 0, m.end(1)):
-                    continue  # the retired gloss is only the end of the approved one
-                prev = _PREV_WORD.search(text[:m.start(1)])
-                if prev and prev.group(1)[0].isupper() and not text[m.start(1):m.end(1)].isupper():
-                    continue  # tail of a longer Title-Case name, e.g. the item "Khăn Quàng Du Mục (Ranger)"
-                yield m.start(), m.end(), english, text[m.start(1):m.end(1)], approved
+            gloss_first = r"(?<![%s])(%s)[`*\"'”’]{0,4}\s*\([`*\"'“‘\s]{0,3}%s(?![%s])[`*]{0,3}\)?" % (_WORD_CH, g, en, _WORD_CH)
+            for pattern, is_english_first in ((english_first, True), (gloss_first, False)):
+                for m in re.finditer(pattern, folded):
+                    gs, ge = m.start(1), m.end(1)
+                    if len(gloss) < len(approved):  # the retired gloss may be only a part of the approved one
+                        if is_english_first and folded.startswith(approved.casefold(), gs):
+                            continue
+                        if not is_english_first and folded.endswith(approved.casefold(), 0, ge):
+                            continue
+                    if any(s0 <= gs and ge <= e0 for s0, e0 in seen):
+                        continue
+                    seen.append((gs, ge))
+                    yield m.start(), m.end(), english, text[gs:ge], approved
 
 
 def first_unmarked(pat, line: str, unmarked):

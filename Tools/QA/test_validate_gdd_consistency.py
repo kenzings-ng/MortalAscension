@@ -256,6 +256,12 @@ class ClassVnGlossTests(unittest.TestCase):
             "Class chính: Du Hiệp (Ranger)",
             "**Tiên Phong (Vanguard)**, Du Hiệp (Ranger)",
             '> **Chủ đề nhân vật**: Tiền Tuyến Sắt Đá — Thiết Vệ (Vanguard "Iron Bastion")',
+            "### 2. Công Thức Phản Đòn Hoàn Hảo Của Chiến Binh (Vanguard Perfect Parry)",
+            "### 3. Công Thức Thể Lực & Thời Gian Lướt Du Hiệp (Ranger Acrobatic Dash)",
+            "### 4. Công Thức Sát Thương Quá Tải Ma Lực Của Thuật Sĩ (Arcanist Arcane Surge)",
+            "### 5. Công Thức Lớp Khiên Hộ Thể Của Tu Sĩ (Acolyte Aegis Barrier)",
+            "4. **If Tu Sĩ (Acolyte) tụt Stamina dưới 30%**:",
+            "│(Thánh Binh/Cuồng)│ và Berserker (Cuồng)",
         ]:
             self.assertIn("class_vn_name", check_ids(text), text)
 
@@ -276,8 +282,6 @@ class ClassVnGlossTests(unittest.TestCase):
             "Vanguard (T1): Khiên Sắt Vuông + Kiếm 1 tay.",
             "Vanguard (Khiên Sắt Vuông + Kiếm 1 tay), Vanguard (Bậc T1), Templar (Đỡ đòn chính)",
             "Ranger (Nhánh Du Hiệp), Dragon Knight (Đại Kích), Ranger (2H.Bow), Templar (Tank)",
-            "*Tabard 2: Khăn Quàng Du Mục (Ranger)*",
-            "| Khăn Quàng Du Mục (Ranger) |",
             "- Sách Kỹ Năng (Vanguard)",
             "- **Gươm Lãnh Chúa Hỏa Ngục (Vanguard):** Kỹ năng *Blade Arc*.",
             "Nhánh Du Hiệp (Scout Line - 3 Class)",
@@ -286,6 +290,10 @@ class ClassVnGlossTests(unittest.TestCase):
             "  - Arcanist: `Pyromancer` (Hỏa thuật), `Chronomancer` (Thời gian)~~ — Removed (DECISIONS §12)",
         ]:
             self.assertNotIn("class_vn_name", check_ids(text), text)
+
+    def test_retired_gloss_at_the_end_of_another_name_is_flagged_and_needs_the_allowlist(self):
+        # Documented false positive: the validator cannot tell an item name from a gloss.
+        self.assertIn("class_vn_name", check_ids("*Tabard 2: Khăn Quàng Du Mục (Ranger)*"))
 
     def test_marked_deprecated_gloss_is_accepted(self):
         self.assertNotIn("class_vn_name", check_ids('Tên cũ "Chiến Binh (Vanguard)" (deprecated) nay là Tiên Phong.'))
@@ -487,28 +495,31 @@ class ScopeAndAllowlistTests(unittest.TestCase):
         row_dk = ("| **2. Two-Handed Heavy** | `Weapon.2H.Heavy` | Bổ dọc 180cm. | **Berserker, Dragon Knight** | Khóa cứng 2 tay. |")
         row_bad = ("| **2. Two-Handed Heavy** | `Weapon.2H.Heavy` | Bổ dọc 180cm. | **Berserker, Templar, Inquisitor** | Khóa cứng 2 tay. |")
         yaml_ok = '  - name: weapon_family_2h_heavy\n    attributes:\n      classes: ["Berserker"]\n'
+        # N1 (2026-11-11): the repo allowlist now holds one class_vn_name entry for this item line; keep it
+        # in the fixture so that entry is not reported as stale.
+        tabard = "| *Tabard 2: Khăn Quàng Du Mục (Ranger)* |\n"
         self.tp.write("design/registry/entities.yaml", yaml_ok)
         art = ("- **Khung Viền Phân Hạng 5 Cấp Độ Hiếm (5-Rarity Scale)**:\n"
                "  - Common (Trắng / Xám `#D1D5DB`), Uncommon (Xanh Lục `#10B981`), Rare (Xanh Lam `#3B82F6`), Epic (Tím `#8B5CF6`), Legendary (Cam Hoàng Kim `#F59E0B`).\n")
         self.tp.write("design/art/art-bible.md", art)
 
-        self.tp.write("design/gdd/itemization.md", row_ok + "\n" + yaml_ok)
+        self.tp.write("design/gdd/itemization.md", row_ok + "\n" + yaml_ok + tabard)
         code, out = self.tp.run(repo_allow)
         self.assertEqual(code, 0, out)
 
-        self.tp.write("design/gdd/itemization.md", row_dk + "\n" + yaml_ok)
+        self.tp.write("design/gdd/itemization.md", row_dk + "\n" + yaml_ok + tabard)
         code, out = self.tp.run(repo_allow)
         self.assertEqual(code, 1)
         self.assertIn("Class 'Dragon Knight'", out)
 
-        self.tp.write("design/gdd/itemization.md", row_ok + "\n" + yaml_ok)
+        self.tp.write("design/gdd/itemization.md", row_ok + "\n" + yaml_ok + tabard)
         self.tp.write("design/registry/entities.yaml", yaml_ok.replace('"Berserker"]', '"Berserker", "Dragon Knight"]'))
         code, out = self.tp.run(repo_allow)
         self.assertEqual(code, 1)
         self.assertIn("class 'Dragon Knight'", out)
         self.tp.write("design/registry/entities.yaml", yaml_ok)
 
-        self.tp.write("design/gdd/itemization.md", row_bad + "\n" + yaml_ok)
+        self.tp.write("design/gdd/itemization.md", row_bad + "\n" + yaml_ok + tabard)
         code, out = self.tp.run(repo_allow)
         self.assertEqual(code, 1)
         self.assertIn("Class 'Templar'", out)
