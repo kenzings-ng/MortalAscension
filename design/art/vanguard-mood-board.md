@@ -3,7 +3,7 @@
 
 > **Dự án**: Mortal Ascension (2.5D Isometric HD-2D Dark Fantasy Action RPG / MMO)  
 > **Chủ đề nhân vật**: Tiền Tuyến Sắt Đá — Tiên Phong (Vanguard "Iron Bastion")  
-> **Bộ vũ khí & trang bị**: Kiếm Bản Rộng (Broadsword) & Đại Khiên Thép Vuông (Square Tower Shield)  
+> **Bộ vũ khí & trang bị**: Kiếm Bản Rộng (Broadsword) & Khiên Sắt Vuông (Square Shield, `Item.Shield.Square` — DECISIONS §7)  
 > **Hợp đồng quy chuẩn**: `SPEC-ART-2026-09-23-V2` (Mục 5.3)  
 > **Cơ sở phê duyệt**: Quyết định lựa chọn của Chủ dự án (2026-11-10) theo `ROADMAP.md:66`
 
@@ -76,7 +76,7 @@ graph TD
 
 1. **Khí chất & Hình thể**:
    - Nhân vật đứng tấn vững như bàn thạch, chân trái hơi co lùi làm trụ, khiên vuông lớn che chở toàn bộ thân trước.
-   - Chiều cao tổng thể: $70$ pixel trên canvas $128 \times 128$.
+   - Chiều cao tổng thể: $75$ pixel trên canvas $128 \times 128$ (đo trên design sheet đã duyệt; bản trước ghi 70 — chốt 2026-11-11, [bảng §0 SPEC](pixel-asset-specifications.md#0-bảng-thông-số-sprite-nhân-vật-nguồn-duy-nhất)).
    - Chiều rộng silhouette: $44$ pixel (tạo khối hình chữ nhật đứng vững chãi).
 
 2. **Bảng màu 4 nấc sắc độ (4-Tone Hue-Shifted Palette)**:
@@ -90,7 +90,7 @@ graph TD
      - Midtone: `#32527B` (Xanh hải quân trung tính)
      - Shadow: `#1E2F47` (Xanh đêm tối)
      - Deep: `#101826` (Nếp gấp u tối)
-   - **Đại Khiên Thép Vuông (Square Tower Shield)**:
+   - **Khiên Sắt Vuông (Square Shield)**:
      - Viền nẹp sắt đinh tán 4 góc, lòng khiên khắc rãnh thánh giá tối giản biểu tượng của Đội Cận Vệ.
 
 3. **5 Hướng Quan Sát & Runtime Horizontal Flip**:

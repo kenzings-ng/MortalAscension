@@ -52,8 +52,8 @@ Mọi tài sản mỹ thuật tiền kỳ khi muốn đưa vào sử dụng tron
        └──────┬──────┘
               ▼
  ┌───────────────────────────┐
- │ PRODUCTION SPECIFICATION  │  Đặc tả kỹ thuật (Lưới 32x32 px, CPS2 30 màu,
- │ (Kỹ thuật & Giải phẫu)    │  Tỷ lệ Chibi Heroic 3.2-3.5 đầu, ghim chân 64,114)
+ │ PRODUCTION SPECIFICATION  │  Đặc tả kỹ thuật: bảng §0 của
+ │ (Kỹ thuật & Giải phẫu)    │  design/art/pixel-asset-specifications.md
  └────────────┬──────────────┘
               ▼
  ┌───────────────────────────┐
@@ -86,7 +86,7 @@ Mỗi tài sản cũ khi được kiểm kê trong bản tổng điều tra ph�
 ### 3.1. KEEP (Bảo tồn & Chuẩn hóa Nguồn)
 - **Định nghĩa**: Tài sản có cấu trúc kỹ thuật sát với tiêu chuẩn sản xuất hiện hành, có thể sử dụng làm nguồn cơ sở để chuyển đổi sang Master Rig mà không cần thiết kế lại từ đầu.
 - **Lưu ý**: Nhãn `KEEP` **không** đồng nghĩa với việc tài sản đã được duyệt vào game. Nó có nghĩa: *"Giữ lại trong pipeline để chuẩn hóa qua Art Gate"*.
-- **Ví dụ**: Các lớp giáp Paperdoll 32x32 px trong `Content/art/characters/paperdoll/`, các bộ khung animation MasterRigs.
+- **Ví dụ**: Các lớp giáp Paperdoll cũ (nguồn 1024×1024) trong `Content/art/characters/paperdoll/`, các bộ khung animation MasterRigs.
 
 ### 3.2. REWORK (Tái Thiết Kế & Chuyển Đổi Format)
 - **Định nghĩa**: Ý tưởng hình ảnh, kiểu dáng thiết kế hoặc concept gameplay có giá trị cao, nhưng định dạng hiện tại (kích thước sai lệch, độ phân giải không đồng nhất 128x128/256x256, bảng màu chưa theo CPS2, thiếu tách lớp Paperdoll) đòi hỏi phải vẽ lại hoặc xuất bản lại từ file gốc thông qua Aseprite Master Rig.

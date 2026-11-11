@@ -405,7 +405,7 @@ Tích hợp trực tiếp vào thanh trạng thái CommonUI của người chơi
 ### 2. Giao Diện Chọn Nhân Vật Khởi Đầu (Character Selection Screen)
 - Bố cục màn hình chọn 1 trong 4 Class:
   - Góc bên trái: Danh sách 4 thẻ chức nghiệp kèm danh hiệu và độ khó thao tác (sao từ 1 đến 5).
-  - Trung tâm: Mô hình 3D của nhân vật trong trang phục và vũ khí Bậc 1, biểu diễn hoạt ảnh chiến đấu đặc trưng khi được chọn.
+  - Trung tâm: Sprite paperdoll 2D của nhân vật trong trang phục và vũ khí Bậc 1, biểu diễn hoạt ảnh chiến đấu đặc trưng khi được chọn.
   - Góc bên phải: Biểu đồ Radar 5 trục thể hiện rõ rệt thế mạnh: **Sinh Tồn (Survival) — Sát Thương (Damage) — Cơ Động (Mobility) — Khống Chế (Control) — Hỗ Trợ (Support)**.
 
 ---

@@ -10,6 +10,36 @@
 
 ---
 
+## 0. Bảng Thông Số Sprite Nhân Vật (Nguồn Duy Nhất)
+
+> Chốt ngày 2026-11-11 (ROADMAP Giai đoạn N, mục N2; DECISIONS §13 "Thông số sprite nhân vật"). Mọi file khác (`art-bible.md`, `vanguard-mood-board.md`, `character-visual-system.md`, story, epic) **trỏ về bảng này, không lặp số**. Báo cáo có ngày (m1–m6, `art-gate-report-batch-01.md`) là hồ sơ lịch sử; số liệu của chúng đã được bảng này thay thế.
+
+| Thông số | Giá trị chuẩn | Nguồn |
+| :--- | :--- | :--- |
+| Hướng nhìn | Vẽ 5 hướng S, SE, E, NE, N; lật ngang ra SW, W, NW. Chấp nhận vũ khí/khiên đổi tay khi lật. Ngắm và di chuyển 8 hướng là logic, hiển thị bằng 5 hướng này. | DECISIONS §10 |
+| Canvas | $128 \times 128$ | `art-gate-criteria.md` |
+| Chiều cao nhân vật | **75 px** (đỉnh đầu/mũ $Y = 40$, chân $Y = 114$), đo trên design sheet Vanguard đã duyệt. Các nhóm class lệch trong khoảng $\pm 4$ px; số từng nhóm ở `character-visual-system.md` §5 là **tạm**, duyệt hình ở N5. | Chủ dự án chọn 2026-11-11 |
+| Tỷ lệ | 3.2–3.5 đầu, **không chibi**. | `vanguard-mood-board.md` §1.4; `art-gate-criteria.md` |
+| Pivot chân | `(64, 114)` | `art-gate-criteria.md` |
+| Mốc giải phẫu | Mắt / vành mũ $Y = 44$; cổ áo / giáp ngực $Y = 56$; thắt lưng $Y = 80$. | `art-gate-criteria.md`; mood board |
+| Socket mào (Crest) | `(64, 40)`, vùng $32 \times 32$ | `art-gate-criteria.md`; `PAPaperdollComponent.cpp` |
+| Socket tabard | `(64, 60)`, vùng $48 \times 64$ | `art-gate-criteria.md`; `PAPaperdollComponent.cpp` |
+| Socket tay | `HandSocket_R (96, 76)` / `HandSocket_L (32, 76)` là **mốc tham chiếu**; vị trí thật đọc theo từng frame từ metadata (Vanguard đã duyệt: `(80, 76)` / `(48, 76)` ở frame 0). | Chủ dự án chọn 2026-11-11 |
+| Pixels per unit | **1.0** | Mood board §1.1; chủ dự án xác nhận 2026-11-11 |
+| Lớp render paperdoll | **5 lớp** `EPAPaperdollLayer` (BaseBody, ChestArmor, Helmet, MainhandWeapon, OffhandShield) **+ 2 lớp phủ theo class** (HelmCrest, Tabard). Slot trang bị là dữ liệu, không phải lớp vẽ: theo `inventory-system.md`. | Chủ dự án chọn 2026-11-11 |
+| Tư thế | Mặc định đường cong S/C, trọng tâm 80/20. Class có dáng thẳng hoặc cân bằng 50/50 trong `character-visual-system.md` §2.1 là **ngoại lệ có chủ đích**, nhưng vẫn cần một lệch nhỏ (đầu, vai hoặc vạt áo) để không đơ. | Chủ dự án chọn 2026-11-11 |
+| Viền ngoài | **Không bắt buộc** viền tối 1 px. Silhouette tách khỏi nền bằng tông tối nhất của ramp ở mép khuất sáng (như design sheet Vanguard đã duyệt). | Chủ dự án chọn 2026-11-11 |
+| Ramp màu | 4 nấc có hue-shift (§5.3 mục 3). | `art-gate-criteria.md` |
+| Nguồn sáng | Key light hướng 10 giờ (trên-trái). | `art-gate-criteria.md` |
+| Ngân sách màu | Icon $16 \times 16$: tối đa 16 màu. Icon $32 \times 32$: 16–24 màu. Sprite nhân vật: tối đa 32 màu mỗi frame. Số màu trong các prompt mẫu (§8, §9) chỉ là ví dụ. | Chủ dự án chọn 2026-11-11 |
+| Bộ animation | Thân dưới: Idle 4, Walk 6, Run 6, Dash 3, HitStun 2 (frame/hướng). Thân trên theo weapon family: Combo 12 + Guard 4. Idle riêng của class: 4. Thêm **Stunned** và **Dead**: số frame chờ chốt khi chủ dự án duyệt cảm giác chơi. | `character-visual-system.md` §4.3; chủ dự án chọn 2026-11-11 |
+| Atlas | Tối đa $2048 \times 2048$ mỗi bộ flipbook nhân vật; sheet dài hơn xuất nhiều hàng. | `control-manifest.md`; chủ dự án xác nhận 2026-11-11 |
+| Lọc texture | Nearest, không mipmap. | `art-bible.md` §8 |
+| Khung độ hiếm | Màu theo `inventory-system.md` §1 (DECISIONS §13). Viền 2 px. | DECISIONS §13 |
+| Vanguard | Khiên Sắt Vuông `Item.Shield.Square`; tabard navy "Worn Azure"; mào lông đỏ thẫm (cần chủ dự án duyệt hình có mào). | DECISIONS §7, §10; mood board §2; chủ dự án chọn 2026-11-11 |
+
+---
+
 ## 1. Giao Thức Khởi Tạo Hợp Đồng Bắt Buộc (Mandatory Asset Contract)
 
 > 🛑 **NGUYÊN TẮC TỐI THƯỢNG**: CẤM ĐOÁN MÒ VÀ CẤM SINH ẢNH BỪA BÃI KHI THIẾU RÀNG BUỘC KỸ THUẬT.  
@@ -24,7 +54,7 @@ flowchart TD
     Check -->|Có: Stardew / Capcom / Octopath| Preset[Nhánh 1: TỰ ĐỘNG KHÓA PRESET CHUẨN]
     Preset --> P_Stardew[Preset Stardew Valley: Lưới 16x16 / 24x24, 8-16 Màu, Góc 45°]
     Preset --> P_Capcom[Preset Capcom CPS2: Lưới 64x64 / 128x128, Hue-Shifting, 1px Dark Contour]
-    Preset --> P_Octopath[Preset HD-2D: 32 PPU, Normal Mapping, Lumen Grounding]
+    Preset --> P_Octopath[Preset HD-2D: PPU theo §0, Normal Mapping, Lumen Grounding]
     
     Check -->|Không: Yêu cầu chung chung| Interrogate[Nhánh 2: KHẢO SÁT 3 BƯỚC BẮT BUỘC]
     Interrogate --> Q1[1. Phong Cách: 16x16 Micro / 32-bit Arcade / Stylized HD]
@@ -47,7 +77,7 @@ flowchart TD
   * **Kích thước xuất xưởng cho UI (Export Canvas)**: Phóng to thuật toán **Nearest Neighbor $8\times$ thành $256 \times 256$ pixel** (hoặc $2\times$ thành $64 \times 64$ trong kho đồ dạng lưới).
   * **Kích thước hạt pixel**: Đạt tỷ lệ vàng giữa độ dày dặn cổ điển (Chunky) và độ sắc nét chi tiết của game HD-2D, thể hiện rõ từng vết xước thép, góc vát giác ngọc và cổ ngữ ma thuật.
 * **Ngân sách màu (Color Budget)**:
-  * Giới hạn từ **16 đến 24 màu độc nhất** cho mỗi icon $32 \times 32$.
+  * Ngân sách màu: xem bảng §0 (icon $32 \times 32$: 16–24 màu).
   * Phân bậc màu dứt khoát: Mỗi vật liệu tuân thủ **4 nấc sắc độ (4-Tone Color Ramp)** không dùng gradient mờ.
 
 ### Quy Chuẩn Màu Sắc Linh Hoạt Theo Môi Trường (Zone-Adaptive & Dynamic Lighting)
@@ -134,6 +164,7 @@ Trong hoạt ảnh game hành động hardcore, khung hình đầu tiên của a
 │                      [Cổ Áo / Giáp Ngực: Y = 56]                          │
 │  [Tay Cầm Phụ (Khiên)]                        [Tay Cầm Chính (Vũ Khí)]    │
 │    (X: 32, Y: 76)                                  (X: 96, Y: 76)         │
+│           (mốc tham chiếu; vị trí thật theo metadata từng frame — §0)     │
 │                      [Thắt Lưng / Quần: Y = 80]                           │
 │                                                                           │
 │                   ▼ PIVOT ANCHOR CHÂN TIẾP ĐẤT (X: 64, Y: 114)            │
@@ -145,8 +176,8 @@ Trong hoạt ảnh game hành động hardcore, khung hình đầu tiên của a
 Căn cứ quyết định thẩm mỹ từ 4 game tham chiếu (*Octopath Traveler II*, *Dark Souls*, *Children of Morta*, *Triangle Strategy*), quy chuẩn hình học nhân vật được khóa cứng như sau:
 
 1. **Tỷ Lệ Cơ Thể (Head-to-Body Proportion)**:
-   - Chuẩn hóa: **$3.2 - 3.5$ đầu** (Chunky Heroic Dark Fantasy).
-   - Chiều cao nhân vật tiêu chuẩn: $68 - 72$ pixels (đầu: $18 - 20$px, thân trên: $24 - 26$px, thân dưới + chân: $24 - 26$px) trên canvas $128 \times 128$.
+   - Chuẩn hóa: **$3.2 - 3.5$ đầu**, không chibi (bảng §0).
+   - Chiều cao nhân vật: xem bảng §0 (chuẩn 75 px trên canvas $128 \times 128$).
    - Tỷ lệ này tạo độ đầm chắc, trọng lượng cơ bắp rõ rệt của chiến binh trong thế giới Dark Fantasy, đồng thời giữ được mắt to vừa đủ để người chơi nhận diện cảm xúc và hướng ngắm từ góc nhìn Isometric $-45^\circ$.
 
 2. **Khóa Tọa Độ Điểm Neo Tiếp Đất (Pivot Foot Anchor)**:
@@ -195,14 +226,14 @@ Căn cứ quyết định thẩm mỹ từ 4 game tham chiếu (*Octopath Travel
 | **Trang Bị Mặc (Áo Giáp, Mũ, Ủng)** | **Chính diện $0^\circ$** | Dạng trưng bày trên giá đỡ (Armor Stand), trục dọc cân đối đối xứng. |
 
 ### 6.2 Khung Viền Phân Hạng 5 Độ Hiếm (5-Rarity Color Matrix)
-Tích hợp trực tiếp với script tự động `generate_item_icon_sheet.py`:
+Tích hợp trực tiếp với script tự động `generate_item_icon_sheet.py`. Màu lấy theo `design/gdd/inventory-system.md` §1 (DECISIONS §13); không tự chọn màu.
 
 ```python
 RARITY_COLORS = {
-    "common":    (156, 163, 175, 255),  # Gray #9CA3AF (Xám đá phiến)
-    "uncommon":  (34, 197, 94, 255),   # Green #22C55E (Xanh ngọc bích)
+    "common":    (209, 213, 219, 255),  # Trắng / Xám #D1D5DB
+    "uncommon":  (16, 185, 129, 255),   # Xanh Lục #10B981
     "rare":      (59, 130, 246, 255),   # Blue #3B82F6 (Xanh lam cobalt)
-    "epic":      (168, 85, 247, 255),   # Purple #A855F7 (Tím huyền bí)
+    "epic":      (139, 92, 246, 255),   # Tím #8B5CF6
     "legendary": (245, 158, 11, 255),   # Gold #F59E0B (Hoàng kim rực lửa)
 }
 ```
@@ -257,7 +288,7 @@ Sprite trang bị có khả năng hiển thị các lớp phủ (Overlays) tươ
 
 ### 8.2 Từ Điển Vàng Thủ Công (Positive Craft Keywords)
 > ✅ **BẮT BUỘC SỬ DỤNG**:
-> - **Pixel Art**: `16-bit arcade sprite, authentic Stardew Valley chunky pixel grid, Capcom CPS2 aesthetic, strict 4-tone color ramp, dynamic S-curve line of action, hue-shifted cool violet shadows, crisp 1px dark charcoal contour, no pillow shading, flat solid background #FF00FF`.
+> - **Pixel Art**: `16-bit arcade sprite, authentic Stardew Valley chunky pixel grid, Capcom CPS2 aesthetic, strict 4-tone color ramp, dynamic S-curve line of action, hue-shifted cool violet shadows, no pillow shading, flat solid background #FF00FF`.
 > - **HD 2D / Icons**: `Clean 32-bit RPG inventory icon, angled diagonally at 45 degrees, readable chunky silhouette, hard-edged cel-shaded facets, limited 12-color palette, solid dark charcoal border, flat solid background #FF00FF, perfectly pixelated with zero anti-aliasing`.
 
 ---
@@ -341,7 +372,7 @@ Trước khi bất kỳ file đồ họa nào được chấp thuận đưa vào
 
 - [ ] **1. Blackout Silhouette Test**: Đổ đen toàn bộ sprite thành `#000000` trên nền trắng $\rightarrow$ Phải phân biệt rõ class/loại vũ khí trong 0.2 giây.
 - [ ] **2. Zero Border Bleed Test**: Quét mảng alpha 4 cạnh biên (Top, Bottom, Left, Right) $\rightarrow$ Bắt buộc Alpha = 0, không cụt góc hay mất chuôi kiếm.
-- [ ] **3. Color Budget Audit**: Đếm số màu độc nhất $\rightarrow$ Không vượt quá 16 màu đối với icon $16 \times 16$ hoặc 32 màu đối với sprite nhân vật.
+- [ ] **3. Color Budget Audit**: Đếm số màu độc nhất $\rightarrow$ Không vượt ngân sách màu ở bảng §0.
 - [ ] **4. Mixel-Free Audit**: Kiểm tra kích thước pixel trên toàn màn hình $\rightarrow$ Kích thước hạt pixel của vũ khí trên tay phải đồng nhất $1:1$ với cơ thể nhân vật.
-- [ ] **5. Landmark Lockstep Test**: Ghép thử trang phục lên khung nhân vật $\rightarrow$ Khớp $100\%$ tại các mốc `Y=44`, `Y=56`, `Y=80`, không lòi da thịt.
+- [ ] **5. Landmark Lockstep Test**: Ghép thử trang phục lên khung nhân vật $\rightarrow$ Khớp $100\%$ tại các mốc và socket ở bảng §0, không lòi da thịt.
 - [ ] **6. HD-2D Lumen Test**: Chiếu đèn thời gian thực trong UE5 $\rightarrow$ Khối phản xạ ánh sáng nổi khối chân thực, không bị phẳng lì.
