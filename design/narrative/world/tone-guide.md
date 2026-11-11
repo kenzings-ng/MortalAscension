@@ -35,7 +35,7 @@ U tối có phẩm giá (grim-heroic), cùng họ với các tham chiếu art đ
 
 **Đổi mô tả, không đổi tên**:
 - **Void Sovereign**: thực thể Hư Không (cơn đói từ xác thần), không phải thực thể vũ trụ.
-- **Chronomancer**: thời gian gãy quanh xác thần; tháp đồng hồ vẽ thành tháp chuông, đồng hồ cát hoặc mặt trời, **không lộ bánh răng**.
+- **Chronomancer**: thời gian gãy quanh xác thần (`world-bible.md` luật 10). Không lộ bánh răng hay máy móc (`production/qa/art-gate-criteria.md`). *(Provisional, đề xuất cho N4/N5: Tháp Đồng Hồ Vĩnh Hằng vẽ thành tháp chuông, đồng hồ cát hoặc đồng hồ mặt trời.)*
 - **Seraph**: cánh là ánh sáng của mảnh thần; chân chạm đất (DECISIONS §2).
 
 Không đổi tên class nào (DECISIONS §2). Việc sửa từng chỗ trong GDD làm ở N5 (class) và các đầu việc sau; danh sách chỗ lệch tông ở `world-bible.md` mục 11.

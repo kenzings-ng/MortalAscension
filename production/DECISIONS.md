@@ -274,6 +274,7 @@ Thống nhất dứt điểm mọi phân bổ weapon family cho toàn bộ 16 Cl
 - **World bible (N3; chủ dự án chọn trong terminal ngày 2026-11-11)**. Nguồn duy nhất: `design/narrative/world/world-bible.md` và `tone-guide.md`.
   - **Gói B — Xác Thần**: một vị thần đã rơi và chết; xác ở tâm lòng chảo (Forbidden Sanctum); Hệ Thống là luật còn sót của xác thần; Lãnh Chúa là sinh vật nuốt mảnh thần; Hư Không là cơn đói mục ra từ chỗ thần tính mất, Void Sovereign là ý chí của nó; người chơi mang tia lửa của vị thần nên được nắn lại khi chết; Karma là phản xạ vô tri của luật, Liên Minh chỉ thi hành; God Slayer kết liễu tàn dư thần, đúng hay sai để người chơi tự trả lời.
   - Từ vựng (lượt hỏi thứ hai, "Giữ cái có tương đương trung cổ"): giữ Tràng Hạt, Kiếm Tông; loại khí công, Chân Khí, plasma, hình ảnh vũ trụ; không đổi tên class.
-  - Danh sách cấm trong văn bản trong game (lượt hỏi thứ hai): không bạo lực tình dục, không hại trẻ em; không meme và không sao chép mô típ đặc trưng của tác phẩm khác. Từ ngữ meta ("server", "respawn"…) **không** bị cấm.
+  - Danh sách cấm trong văn bản trong game (lượt hỏi thứ hai): không bạo lực tình dục, không hại trẻ em; không meme, tiếng lóng hiện đại và không sao chép mô típ đặc trưng của tác phẩm khác. Từ ngữ meta ("server", "respawn"…) **không** bị cấm.
+  - Sự thật ẩn (lượt hỏi thứ hai, "Cơn đói đánh thức tự vệ"): tia lửa thức dậy vì cơn đói bắt đầu gặm mảnh thần ở ba Tòa Thành, như phản xạ tự vệ của xác thần.
   - Tông: u tối có phẩm giá.
   - Tên nhóm người chơi: **Ascendant**. Tên thế giới: chưa đặt; kiểm tra trùng tên trước, hỏi lại ở N4.
