@@ -271,3 +271,8 @@ Thống nhất dứt điểm mọi phân bổ weapon family cho toàn bộ 16 Cl
   - Lớp render paperdoll: 5 lớp `EPAPaperdollLayer` + 2 lớp phủ theo class (mào, tabard); slot trang bị là dữ liệu, không phải lớp vẽ.
   - Animation theo `character-visual-system.md` §4.3, thêm Stunned và Dead với số frame chờ chốt khi duyệt cảm giác chơi.
   - PPU 1.0; atlas tối đa 2048×2048; ngân sách màu icon 16×16 ≤16, icon 32×32 16–24, sprite nhân vật ≤32 mỗi frame; socket tay (96,76)/(32,76) là mốc tham chiếu, vị trí thật đọc theo từng frame từ metadata.
+- **World bible (N3; chủ dự án chọn trong terminal ngày 2026-11-11)**. Nguồn duy nhất: `design/narrative/world/world-bible.md` và `tone-guide.md`.
+  - **Gói B — Xác Thần**: một vị thần đã rơi và chết; xác ở tâm lòng chảo (Forbidden Sanctum); Hệ Thống là luật còn sót của xác thần; Lãnh Chúa là sinh vật nuốt mảnh thần; Hư Không là cơn đói mục ra từ chỗ thần tính mất, Void Sovereign là ý chí của nó; người chơi mang tia lửa của vị thần nên được nắn lại khi chết; Karma là phản xạ vô tri của luật, Liên Minh chỉ thi hành; God Slayer kết liễu tàn dư thần, đúng hay sai để người chơi tự trả lời.
+  - Từ vựng: giữ Tràng Hạt, Kiếm Tông; loại khí công, Chân Khí, plasma, hình ảnh vũ trụ; không đổi tên class.
+  - Tông: u tối có phẩm giá.
+  - Tên nhóm người chơi: **Ascendant**. Tên thế giới: chưa đặt; kiểm tra trùng tên trước, hỏi lại ở N4.

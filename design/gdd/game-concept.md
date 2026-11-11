@@ -31,6 +31,12 @@
 
 ---
 
+### Bối Cảnh Thế Giới (Setting)
+
+> Cập nhật 2026-11-11 (ROADMAP Giai đoạn N, mục N3). Nguồn duy nhất: [`design/narrative/world/world-bible.md`](../narrative/world/world-bible.md); tông: [`tone-guide.md`](../narrative/world/tone-guide.md). Mục này chỉ tóm tắt.
+
+Một vị thần đã rơi xuống và chết; nơi thần rơi là một lòng chảo, xác thần nằm ở tâm (Forbidden Sanctum). **Hệ Thống** (cấp độ, class, kỹ năng) là luật còn sót của xác thần, mọi cư dân nhìn thấy. Phàm nhân thăng lên bằng thần tính vay mượn từ chữ thần và mảnh thần mà Lãnh Chúa đã nuốt. Người chơi là **Ascendant**: người mang tia lửa của chính vị thần, nên chết rồi được lửa Tòa Thành nắn lại. Mối đe dọa trung tâm là cơn đói Hư Không (Void Sovereign) và phe người muốn dựng lại thần. Tông: u tối có phẩm giá.
+
 ## 3. Core Fantasy & 4 Unique Hooks
 
 ### Core Fantasy
