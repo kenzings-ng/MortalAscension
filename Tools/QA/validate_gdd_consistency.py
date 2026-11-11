@@ -18,6 +18,10 @@ SCAN SCOPE (X13, 2026-10-10) -- see SCAN_TARGETS:
   - design/*.md, design/art/*.md, design/ux/*.md, docs/registry/*.yaml
   - design/narrative/**/*.md (N0, 2026-11-11: world bible, factions, character sheets, bestiary, NPCs)
 
+CLASS NAME GLOSS (N1, 2026-11-11) -- check id class_vn_name, see class_gloss_findings:
+  The English class name is canonical. Each class has one approved Vietnamese gloss, the
+  parenthetical in DECISIONS.md §2. "English (Gloss)" and "Gloss (English)" pairs must use it.
+
 SKIPPED HISTORICAL / DATED RECORDS -- see SKIP_PATH_PREFIXES / SKIP_NAME_PATTERNS:
   These files are snapshots of the past (review reports, gate checks, plans,
   progress logs, retrospectives). They quote old terms on purpose and must not be
@@ -308,6 +312,7 @@ def load_decisions(decisions_path: Path) -> Dict:
     all_approved_classes = set()
     approved_lines = set()
     canonical_classes = set()
+    class_vn_gloss = {}  # English display name (as written in §2) -> the single approved Vietnamese gloss
 
     # 1. Parse Section 2: Approved Classes, Lines, Ranks
     sec2_match = re.search(r"## 2\.\s+Cây Chuyển Chức.*?(?=## 3\.)", text, re.DOTALL)
@@ -325,6 +330,9 @@ def load_decisions(decisions_path: Path) -> Dict:
                 rank = m_rank.group(1)
                 raw_classes = m_rank.group(2)
                 classes = [c for c in re.findall(r"`([^`]+)`", raw_classes) if not c.startswith("Class.")]
+                for m_gloss in re.finditer(r"`([^`]+)`\s*\(([^()]*?)(?:\s+-\s|\))", raw_classes):
+                    if not m_gloss.group(1).startswith("Class."):
+                        class_vn_gloss[m_gloss.group(1).strip()] = m_gloss.group(2).strip()
                 for c in classes:
                     cl = c.lower().strip()
                     canonical_classes.add(cl)
@@ -377,6 +385,9 @@ def load_decisions(decisions_path: Path) -> Dict:
     missing_weapons = sorted(c for c in canonical_classes if not class_weapons.get(c))
     if missing_weapons:
         problems.append(f"§7 has no weapon family for: {missing_weapons}")
+    missing_gloss = sorted(c for c in canonical_classes if c not in {k.lower() for k in class_vn_gloss})
+    if missing_gloss:
+        problems.append(f"§2 has no Vietnamese gloss in parentheses for: {missing_gloss}")
     if problems:
         raise DecisionsParseError("DECISIONS.md parse failed: " + "; ".join(problems))
 
@@ -387,6 +398,7 @@ def load_decisions(decisions_path: Path) -> Dict:
         "canonical_classes": canonical_classes,
         "approved_lines": approved_lines,
         "class_weapons": class_weapons,
+        "class_vn_gloss": class_vn_gloss,
         "view_direction_count": view_direction_count,
     }
 
@@ -457,6 +469,33 @@ CLASS_COUNT_12_PATTERN = re.compile(r'\b12[\s-]+(?:Class(?:es)?|Chức\s+nghiệ
 EQUIPMENT_TIER_PATTERN = re.compile(r'\b(?:ShieldTier|5-Tier\s+Items?)\b', re.IGNORECASE)
 
 
+# Vietnamese gloss of a class name (N1, 2026-11-11). The English class name is the canonical name; each class
+# has exactly one approved Vietnamese gloss, written in parentheses in DECISIONS.md §2. Two written forms are checked:
+#   "English (Gloss ...)"  -> a capitalised gloss that contains Vietnamese letters must start with the approved gloss.
+#   "Gloss (English)"      -> only when the capitalised run starts a unit (line start, table cell, emphasis, quote,
+#                             bracket, list dash), so item names such as "Khăn Quàng Du Mục (Ranger)" after other
+#                             text are not treated as glosses. The run must end with the approved gloss.
+_VN_CAP_WORD = r"[A-ZÀ-ỸĐ][A-Za-zÀ-ỹĐđ]*"
+_VN_CAP_RUN = r"%s(?: %s){0,4}" % (_VN_CAP_WORD, _VN_CAP_WORD)
+_NON_ASCII_LETTER = re.compile(r"[À-ỹĐđ]")
+
+
+def class_gloss_findings(line: str, class_vn_gloss: Dict[str, str]):
+    """Yields (match, english, found_gloss, approved_gloss) for every non-approved Vietnamese class gloss on the line."""
+    if "~~" in line:  # struck-through text records removed content
+        return
+    for english, approved in class_vn_gloss.items():
+        en = re.escape(english)
+        for m in re.finditer(r"(?<![A-Za-z])%s[`*]{0,3}\s*\([`*]{0,2}(%s)" % (en, _VN_CAP_RUN), line):
+            found = m.group(1)
+            if _NON_ASCII_LETTER.search(found) and not found.startswith(approved):
+                yield m, english, found, approved
+        for m in re.finditer(r"(?:^|[|*\"“\[]|-\s)\s*(%s)[`*]{0,3}\s*\([`*]{0,3}%s[`*]{0,3}\)" % (_VN_CAP_RUN, en), line):
+            found = m.group(1)
+            if _NON_ASCII_LETTER.search(found) and not found.endswith(approved):
+                yield m, english, found, approved
+
+
 def first_unmarked(pat, line: str, unmarked):
     """First match of pat on line that is not marked deprecated (later matches are not hidden by an earlier marked one)."""
     return next((m for m in pat.finditer(line) if unmarked(m)), None)
@@ -509,6 +548,12 @@ def check_file(file_path: Path, decisions: Dict) -> Tuple[List[Finding], List[st
         m12 = first_unmarked(CLASS_COUNT_12_PATTERN, line, unmarked)
         if m12:
             add(line_idx, "class_count_12", "Lỗi số lượng: Còn sót '12 Class' / '12 Chức nghiệp'. Tổng số class chính thức là 16 Class theo DECISIONS.md Mục 2.")
+
+        # Vietnamese class gloss must be the single approved one from DECISIONS §2
+        for m_gl, english, found, approved in class_gloss_findings(line, decisions.get("class_vn_gloss", {})):
+            if unmarked(m_gl):
+                add(line_idx, "class_vn_name", f"Chú thích tiếng Việt của class '{english}' là '{found}', không khớp DECISIONS.md Mục 2: chỉ dùng '{approved}'.")
+                break
 
         # Prohibited Class Tier / Rarity Terminology
         for pat, err_msg in CLASS_TIER_RARITY_PATTERNS:

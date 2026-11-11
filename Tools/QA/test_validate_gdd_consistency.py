@@ -218,6 +218,67 @@ class BannedTermTests(unittest.TestCase):
             self.assertClean(text)
 
 
+class ClassVnGlossTests(unittest.TestCase):
+    """N1 (2026-11-11): the English class name is canonical; one Vietnamese gloss per class, from DECISIONS §2."""
+
+    def test_glosses_are_loaded_for_all_16_classes(self):
+        gloss = decisions()["class_vn_gloss"]
+        self.assertEqual(len(gloss), 16)
+        self.assertEqual(gloss["Vanguard"], "Tiên Phong")
+        self.assertEqual(gloss["Ranger"], "Xạ Thủ")
+        self.assertEqual(gloss["Seraph"], "Thiên Sứ Lục Dực")
+        self.assertEqual(gloss["God Slayer"], "Kẻ Diệt Thần")
+
+    def test_english_first_with_wrong_gloss_is_flagged(self):
+        for text in [
+            "| **Scout** | T1 | **Ranger (Du Hiệp)** | `Class.Line.Scout.Ranger` |",
+            "*Shadowblade (Thích Khách)*, *Elementalist (Nguyên Tố Sư)*",
+            "**Vanguard** (Tiên phong), **Ranger** (Xạ Thủ)",
+            "| **15. Seraph (Lục Dực)**<br>*(Bậc 3)* |",
+            "`Templar` (Thánh Binh)",
+        ]:
+            self.assertIn("class_vn_name", check_ids(text), text)
+
+    def test_vietnamese_first_with_wrong_gloss_is_flagged(self):
+        for text in [
+            "- **Chiến Binh (Vanguard) — *\"Bức Tường Thép\"***:",
+            "| **8** | **Ảo Ảnh Thích Khách (Shadowblade)** | Song Đoản Kiếm |",
+            '    display_name: "Tu Sĩ (Acolyte)"',
+            '        C7["Nguyên Tố (Elementalist)"]',
+            "- **Thí Thần Giả (God Slayer):**",
+        ]:
+            self.assertIn("class_vn_name", check_ids(text), text)
+
+    def test_approved_glosses_pass_in_both_orders(self):
+        for text in [
+            "**Vanguard (Tiên Phong)**, *Ranger (Xạ Thủ)*, `Seraph` (Thiên Sứ Lục Dực - Phương án 1)",
+            "- **Tiên Phong (Vanguard) — *\"Bức Tường Thép\"***:",
+            '    display_name: "Dragon Knight (Long Kỵ Sĩ)"',
+            "### 2. Công Thức Phản Đòn Hoàn Hảo Của Tiên Phong (Vanguard Perfect Parry)",
+            "| **Thời Gian Pháp Sư (Chronomancer)** | Epic |",
+        ]:
+            self.assertNotIn("class_vn_name", check_ids(text), text)
+
+    def test_non_gloss_parentheses_are_not_flagged(self):
+        for text in [
+            "Vanguard (T1): Khiên Sắt Vuông + Kiếm 1 tay.",
+            "Ranger (2H.Bow) bắn tầm xa; Templar (Tank) giữ aggro.",
+            "*Tabard 2: Khăn Quàng Du Mục (Ranger)*",
+            "- **Gươm Lãnh Chúa Hỏa Ngục — dành cho Vanguard:** Kỹ năng *Blade Arc*.",
+            "Bảng màu tu sĩ cao cấp; trọng lượng cơ bắp của chiến binh.",
+            "  - ~~Arcanist: `Chronomancer` (Thời gian)~~ — Removed (DECISIONS §12)",
+        ]:
+            self.assertNotIn("class_vn_name", check_ids(text), text)
+
+    def test_missing_gloss_in_decisions_fails_loudly(self):
+        text = DECISIONS.read_text(encoding="utf-8").replace("`Ranger` (Xạ Thủ)", "`Ranger`")
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "DECISIONS.md"
+            p.write_text(text, encoding="utf-8")
+            with self.assertRaises(v.DecisionsParseError):
+                v.load_decisions(p)
+
+
 class DeprecationContextTests(unittest.TestCase):
     def test_marked_on_same_line_is_accepted(self):
         for text in [
