@@ -13,8 +13,8 @@
 | :--- | :---: | :--- |
 | **Packs Audited** | **7** | Rà soát chi tiết từng pack/thư mục độc lập |
 | **Packs Approved** | **4** | Đầy đủ bằng chứng CC0-1.0, không xung đột lore/kỹ thuật |
-| **Packs Rejected** | **2** | 1 do xung đột đề tài (súng hiện đại), 1 do thiếu chứng chỉ pháp lý (UNKNOWN) |
-| **Packs Pending** | **1** | Đang chờ thẩm định tương thích góc chiếu Isometric trước khi nạp |
+| **Packs Rejected** | **3** | 1 xung đột đề tài (súng), 1 thiếu chứng chỉ (UNKNOWN), 1 sai góc chiếu (90° Top-down) |
+| **Packs Pending** | **0** | Đã thẩm định và phân loại toàn bộ 100% |
 | **Assets Harvested** | **30** | Lưu tại `Content/Art/ThirdParty/CC0_Harvested/` kèm SHA-256 |
 | **Art Gate Clearance** | **23 Approved / 7 Rejected** | Thẩm định độc lập: [`art-gate-report-batch-01.md`](production/qa/art-gate-report-batch-01.md) |
 
@@ -168,11 +168,12 @@
 - **Commit / Version**: `e27131731f89187b9842e9c6c95381a2e954aafd` (2026-08-16)
 - **License**: **CC0 1.0 Universal** (Xác thực hợp lệ)
 - **Commercial Redistribution**: Allowed
-- **Date Audited**: 2026-09-25
+- **Date Audited**: 2026-09-25 (Thẩm định kết luận: 2026-11-11)
 - **Intended Use**: Nghiên cứu làm gạch nền hầm ngục phế tích (Catacombs).
-- **Status**: **PENDING**
-- **Lý do tạm hoãn (Pending Rationale)**:
-  - Cần thẩm định thêm về góc chiếu (Top-down $90^\circ$ của DCSS vs Isometric $2.5\text{D}$ của Project Ascendant) trước khi thu hoạch để tránh lãng phí dung lượng repo. Chuyển sang Agent 5 thẩm định góc nhìn trước khi duyệt nạp.
+- **Status**: **REJECTED**
+- **Lý do từ chối (Rejection Rationale)**:
+  - *Không tương thích góc chiếu kỹ thuật (Perspective Incompatibility)*: Pack sử dụng góc nhìn Top-down phẳng $90^\circ$ của roguelike cổ điển, hoàn toàn xung đột với camera Isometric $2.5\text{D}$ nghiêng $45^\circ$ và trục sắp xếp độ sâu `TranslucentSortAxis=(X=0.5, Y=0.5, Z=-0.707107)`.
+  - Đã được thay thế hoàn toàn bởi hệ thống gạch nền $32 \times 32$ nguyên bản kèm Autotile Bitmask (`Content/Maps/PCG/Autotile_Terrain_32x32_Bitmask.json`) và quần xã PCG trong Giai đoạn 5.
 
 ---
 
@@ -211,3 +212,22 @@ Nhật ký ghi nhận nguồn gốc và xuất xứ của bộ art mẫu Vertica
   - `Tabard_Vanguard_CrimsonSash`: 5 sprites ($48 \times 64\text{ px}$, snap tại `Socket_Tabard` $64, 60$).
 - **Art Gate Clearance**: **100% PASS**
 - **Status**: **APPROVED**
+
+---
+
+## 5. Khai Báo Nội Dung AI (AI-Generated Content Disclosures)
+
+*Tuân thủ quy định công bố nội dung AI của Steam (Valve Corporation) và Epic Games Store cho bản phát hành Alpha/Commercial:*
+
+### 5.1. Nội Dung Tạo Sẵn Trước Khi Phát Hành (Pre-Generated Content)
+- **Phạm vi sử dụng**:
+  - Nghiên cứu ý niệm nhân vật sơ khởi (Concept exploration) và mood board phong cách nghệ thuật (`design/art/vanguard-mood-board.md`).
+  - Hỗ trợ phác thảo dáng đứng cơ sở trước khi đưa vào Aseprite căn chỉnh thủ công từng điểm ảnh (Pixel Art Manual Refinement) để đảm bảo chuẩn 1:1 pixel grid và bảng màu 4-tone ramp.
+- **Cam kết pháp lý & Bản quyền**:
+  - Không sử dụng dữ liệu huấn luyện vi phạm bản quyền hoặc hình ảnh có watermark/sở hữu trí tuệ của bên thứ ba.
+  - Toàn bộ sprite và flipbook runtime trong game đã qua cổng kiểm duyệt mỹ thuật tự động (100% Binary Alpha, không mixels, không nhiễu hạt) và kiểm tra pháp lý.
+
+### 5.2. Nội Dung Tạo Trực Tiếp Khi Chơi Game (Live / Runtime-Generated Content)
+- **Hoàn toàn KHÔNG CÓ (NONE)**:
+  - Game không tích hợp bất kỳ mô hình AI sinh mẫu trực tiếp (LLM, diffusion, runtime procedural audio/visual AI) nào trong client hoặc dedicated server.
+  - Mọi cơ chế chiến đấu, cây kỹ năng, xác suất rơi đồ, trạng thái boss và chuyển động môi trường được điều khiển 100% bởi mã nguồn C++, Gameplay Ability System (GAS), Behavior Tree và PCG Graphs tiền định.
