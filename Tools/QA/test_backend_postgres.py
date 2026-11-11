@@ -1,264 +1,170 @@
 #!/usr/bin/env python3
 """
-Project Ascendant - Real PostgreSQL Backend Database & Anti-Dupe Test Suite
-Validates schema, constraints, deferred slot swapping, and concurrent row-locking
-against a real PostgreSQL database (via CI service container or local docker compose).
+Project Ascendant - Real PostgreSQL Backend Database & Anti-Dupe Test Suite (ADR-0006)
+Validates schema, constraints, real BackendService business logic, deferred slot swapping,
+concurrent row-locking (SELECT ... FOR UPDATE), and REST API endpoints against
+a real PostgreSQL database (via CI service container or local docker compose).
 """
 
 import os
-import socket
 import sys
 import uuid
 import time
 import threading
+import json
+import urllib.request
+import urllib.error
 
-# Import PostgreSQL driver (psycopg2 or psycopg3)
-try:
-    import psycopg2
-    from psycopg2 import errors as pg_errors
-    PG_DRIVER = "psycopg2"
-except ImportError:
-    try:
-        import psycopg
-        from psycopg import errors as pg_errors
-        PG_DRIVER = "psycopg"
-    except ImportError:
-        PG_DRIVER = None
+# Ensure workspace root is in sys.path
+REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+if REPO_ROOT not in sys.path:
+    sys.path.insert(0, REPO_ROOT)
 
-PG_HOST = os.environ.get("PGHOST", os.environ.get("DB_HOST", "localhost"))
-PG_PORT = int(os.environ.get("PGPORT", os.environ.get("DB_PORT", "5432")))
-PG_USER = os.environ.get("PGUSER", os.environ.get("DB_USER", "postgres"))
-PG_PASSWORD = os.environ.get("PGPASSWORD", os.environ.get("DB_PASSWORD", "password"))
-PG_DATABASE = os.environ.get("PGDATABASE", os.environ.get("DB_NAME", "project_ascendant"))
+from Services.Backend.config import (
+    PG_HOST,
+    PG_PORT,
+    PG_USER,
+    PG_PASSWORD,
+    PG_DATABASE,
+    SERVER_SECRET,
+)
+from Services.Backend.db import (
+    is_db_reachable,
+    get_connection,
+    init_schema,
+    PG_DRIVER,
+)
+from Services.Backend.auth import (
+    generate_jwt,
+    verify_jwt,
+    is_valid_email,
+    is_valid_password,
+)
+from Services.Backend.service import BackendService
+from Services.Backend.app import ThreadedHTTPServer, AscendantApiHandler
 
-# Dedicated exit code: PostgreSQL server is genuinely unreachable (nothing listening /
-# host not resolvable). Callers (run_headless_tests.sh) may skip the gate locally ONLY
-# on this code. Any other non-zero code means tests ran (or could have run) and failed.
 EXIT_SERVER_UNREACHABLE = 3
 
-def is_server_reachable(timeout: float = 3.0) -> bool:
-    """Returns True if something accepts connections at PG_HOST:PG_PORT (TCP or unix socket)."""
-    if PG_HOST.startswith("/"):
-        sock_path = os.path.join(PG_HOST, f".s.PGSQL.{PG_PORT}")
-        if not os.path.exists(sock_path):
-            return False
-        try:
-            with socket.socket(socket.AF_UNIX, socket.SOCK_STREAM) as s:
-                s.settimeout(timeout)
-                s.connect(sock_path)
-            return True
-        except OSError:
-            return False
-    try:
-        with socket.create_connection((PG_HOST, PG_PORT), timeout=timeout):
-            return True
-    except OSError:
-        return False
 
-def get_db_connection():
-    """Establishes a new dedicated connection to the PostgreSQL database."""
-    if PG_DRIVER == "psycopg2":
-        return psycopg2.connect(
-            host=PG_HOST,
-            port=PG_PORT,
-            user=PG_USER,
-            password=PG_PASSWORD,
-            dbname=PG_DATABASE
-        )
-    elif PG_DRIVER == "psycopg":
-        return psycopg.connect(
-            host=PG_HOST,
-            port=PG_PORT,
-            user=PG_USER,
-            password=PG_PASSWORD,
-            dbname=PG_DATABASE
-        )
-    else:
-        raise RuntimeError("No PostgreSQL driver found. Please install psycopg2-binary: pip install psycopg2-binary")
-
-def setup_schema(conn):
-    """Applies canonical PostgreSQL DDL schema with uk_owner_slot DEFERRABLE INITIALLY DEFERRED."""
-    with conn.cursor() as cur:
-        cur.execute("""
-        CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
-        DROP TABLE IF EXISTS items CASCADE;
-        DROP TABLE IF EXISTS characters CASCADE;
-        DROP TABLE IF EXISTS accounts CASCADE;
-
-        -- 1. ACCOUNTS TABLE
-        CREATE TABLE accounts (
-            account_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-            email VARCHAR(255) UNIQUE NOT NULL,
-            password_hash VARCHAR(255) NOT NULL,
-            gold_balance BIGINT NOT NULL DEFAULT 0 CHECK (gold_balance >= 0),
-            created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-        );
-
-        -- 2. CHARACTERS TABLE
-        CREATE TABLE characters (
-            character_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-            account_id UUID NOT NULL REFERENCES accounts(account_id) ON DELETE CASCADE,
-            character_name VARCHAR(64) UNIQUE NOT NULL,
-            character_level INT NOT NULL DEFAULT 1 CHECK (character_level BETWEEN 1 AND 50),
-            character_exp BIGINT NOT NULL DEFAULT 0 CHECK (character_exp >= 0),
-            primary_class_tag VARCHAR(128) NOT NULL,
-            secondary_class_tag VARCHAR(128),
-            class_progression_history JSONB NOT NULL DEFAULT '{}',
-            completed_quests TEXT[] NOT NULL DEFAULT '{}',
-            created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-        );
-
-        -- 3. ITEMS TABLE (With DEFERRABLE INITIALLY DEFERRED unique constraint)
-        CREATE TABLE items (
-            item_instance_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-            item_def_id VARCHAR(64) NOT NULL,
-            owner_type VARCHAR(16) NOT NULL,
-            owner_id UUID NOT NULL,
-            slot_type VARCHAR(32) NOT NULL,
-            slot_index INT NOT NULL,
-            quantity INT NOT NULL DEFAULT 1 CHECK (quantity > 0),
-            durability FLOAT NOT NULL DEFAULT 100.0,
-            enhancement_level INT NOT NULL DEFAULT 0,
-            item_data JSONB NOT NULL DEFAULT '{}',
-            b_is_locked BOOLEAN NOT NULL DEFAULT FALSE,
-            created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-            CONSTRAINT uk_owner_slot UNIQUE (owner_type, owner_id, slot_type, slot_index) DEFERRABLE INITIALLY DEFERRED
-        );
-        """)
-        conn.commit()
-    print("  -> PostgreSQL schema migrated and verified cleanly.")
-
-def test_atomic_slot_swapping(conn):
+def test_real_backend_auth_and_character():
     """
-    Verifies that uk_owner_slot DEFERRABLE INITIALLY DEFERRED permits
-    swapping two items within a single transaction without triggering a unique violation.
+    Tests real BackendService methods: register_account, login_account,
+    validate_server_token, create_character, and get_character.
     """
-    print("\n[DB TEST 1] Testing Atomic Inventory Slot Swapping with DEFERRABLE INITIALLY DEFERRED...")
-    char_id = str(uuid.uuid4())
-    acc_id = str(uuid.uuid4())
-    item_a = str(uuid.uuid4())
-    item_b = str(uuid.uuid4())
+    print("\n[BACKEND TEST 1] Testing Real BackendService Authentication & Character Persistence...")
+    email = f"player_{uuid.uuid4().hex[:8]}@ascendant.io"
+    password = "StrongPassword2026!"
 
+    # 1. Register Account through real service
+    reg_result = BackendService.register_account(email, password)
+    assert "account_id" in reg_result, "Registration failed to return account_id."
+    account_id = reg_result["account_id"]
+    print(f"  -> Account registered successfully: ID={account_id}")
+
+    # 2. Login Account and verify JWT issue
+    login_result = BackendService.login_account(email, password)
+    assert "access_token" in login_result, "Login failed to return access_token."
+    token = login_result["access_token"]
+    print("  -> Login successful, JWT token issued.")
+
+    # 3. Dedicated Server Token Handshake Validation
+    token_val = BackendService.validate_server_token(token, account_id)
+    assert token_val["valid"] is True, "Token validation returned false."
+    assert token_val["account_id"] == account_id, "Token validation returned incorrect account_id."
+    print("  -> Dedicated Server token validation PASSED.")
+
+    # 4. Create Character and query state
+    char_name = f"Vanguard_{uuid.uuid4().hex[:6]}"
+    char_res = BackendService.create_character(account_id, char_name, "Class.Line.Guard.Vanguard")
+    char_id = char_res["character_id"]
+
+    loaded_char = BackendService.get_character(char_id)
+    assert loaded_char["character_name"] == char_name
+    assert loaded_char["primary_class_tag"] == "Class.Line.Guard.Vanguard"
+    assert loaded_char["character_level"] == 1
+    print("  -> Character created and loaded through real backend service successfully.")
+
+    return account_id, char_id
+
+
+def test_atomic_slot_swapping_via_service(account_id: str, char_id: str):
+    """
+    Tests that BackendService.swap_inventory_slots leverages the
+    uk_owner_slot DEFERRABLE INITIALLY DEFERRED unique constraint to atomically
+    swap two items without triggering unique violations.
+    """
+    print("\n[BACKEND TEST 2] Testing Atomic Slot Swapping via Real BackendService...")
+    item_a_id = str(uuid.uuid4())
+    item_b_id = str(uuid.uuid4())
+
+    conn = get_connection()
     with conn.cursor() as cur:
-        # Seed account & character
-        cur.execute("INSERT INTO accounts (account_id, email, password_hash) VALUES (%s, %s, %s);",
-                    (acc_id, f"swap_{uuid.uuid4()}@ascendant.io", "hash"))
-        cur.execute("INSERT INTO characters (character_id, account_id, character_name, primary_class_tag) VALUES (%s, %s, %s, %s);",
-                    (char_id, acc_id, f"Swapper_{uuid.uuid4().hex[:6]}", "Class.Line.Guard.Vanguard"))
-
-        # Seed Item A in slot 0, Item B in slot 1
+        # Seed Item A at slot 0, Item B at slot 1
         cur.execute("""
             INSERT INTO items (item_instance_id, item_def_id, owner_type, owner_id, slot_type, slot_index)
             VALUES (%s, 'sword_iron', 'CHARACTER', %s, 'INVENTORY', 0);
-        """, (item_a, char_id))
+        """, (item_a_id, char_id))
         cur.execute("""
             INSERT INTO items (item_instance_id, item_def_id, owner_type, owner_id, slot_type, slot_index)
             VALUES (%s, 'shield_square', 'CHARACTER', %s, 'INVENTORY', 1);
-        """, (item_b, char_id))
+        """, (item_b_id, char_id))
         conn.commit()
+    conn.close()
 
-        # Step 1: Prove that commiting a real duplicate slot causes UniqueViolation
-        collision_detected = False
-        try:
-            with conn.cursor() as c_col:
-                c_col.execute("""
-                    INSERT INTO items (item_instance_id, item_def_id, owner_type, owner_id, slot_type, slot_index)
-                    VALUES (%s, 'potion_heal', 'CHARACTER', %s, 'INVENTORY', 0);
-                """, (str(uuid.uuid4()), char_id))
-                conn.commit()
-        except Exception:
-            conn.rollback()
-            collision_detected = True
-        assert collision_detected, "FAIL: Real collision did not trigger uk_owner_slot UniqueViolation!"
-        print("  -> Collision test: Confirmed uk_owner_slot blocks duplicate slots at COMMIT.")
+    # Call the real BackendService atomic swap method
+    swap_res = BackendService.swap_inventory_slots("CHARACTER", char_id, "INVENTORY", 0, 1)
+    assert swap_res["status"] == "swapped", f"Expected 'swapped', got: {swap_res}"
 
-        # Step 2: Swap Item A and Item B inside a single transaction
-        # During the intermediate state, both items occupy slot 1 momentarily!
-        # Because constraint is DEFERRABLE INITIALLY DEFERRED, PostgreSQL allows this!
-        with conn.cursor() as cur_swap:
-            cur_swap.execute("UPDATE items SET slot_index = 1 WHERE item_instance_id = %s;", (item_a,))
-            cur_swap.execute("UPDATE items SET slot_index = 0 WHERE item_instance_id = %s;", (item_b,))
-            conn.commit()
+    # Verify directly from DB that slots are swapped
+    char_data = BackendService.get_character(char_id)
+    items_by_id = {it["item_instance_id"]: it for it in char_data["items"]}
 
-        # Verify final slots
-        cur.execute("SELECT slot_index FROM items WHERE item_instance_id = %s;", (item_a,))
-        final_a = cur.fetchone()[0]
-        cur.execute("SELECT slot_index FROM items WHERE item_instance_id = %s;", (item_b,))
-        final_b = cur.fetchone()[0]
+    assert items_by_id[item_a_id]["slot_index"] == 1, "Item A was not moved to slot 1."
+    assert items_by_id[item_b_id]["slot_index"] == 0, "Item B was not moved to slot 0."
+    print("  -> [PASS] Atomic slot swapping successfully executed and committed via BackendService.")
 
-        assert final_a == 1 and final_b == 0, f"Swap failed: final_a={final_a}, final_b={final_b}"
-        print("  -> [PASS] Atomic slot swapping successfully deferred until commit.")
 
-def test_concurrent_anti_dupe():
+def test_concurrent_anti_dupe_promotion(account_id: str):
     """
-    Opens 2 independent PostgreSQL connections running concurrent transactions with
-    SELECT ... FOR UPDATE on the same promotion scroll item.
-    Asserts that exactly 1 transaction succeeds and 1 transaction aborts/fails.
+    Spawns 2 threads executing BackendService.promote_class concurrently against the same
+    scroll item using 2 separate PostgreSQL connections with SELECT ... FOR UPDATE.
+    Asserts that exactly 1 promotion succeeds and 1 fails with 'not found or already consumed'.
     """
-    print("\n[DB TEST 2] Testing Concurrent SELECT ... FOR UPDATE Anti-Dupe with 2 Separate PostgreSQL Connections...")
-    conn_setup = get_db_connection()
-    acc_id = str(uuid.uuid4())
+    print("\n[BACKEND TEST 3] Testing Concurrent SELECT ... FOR UPDATE Anti-Dupe via Real BackendService...")
     char_id = str(uuid.uuid4())
     scroll_id = str(uuid.uuid4())
 
-    with conn_setup.cursor() as cur:
-        cur.execute("INSERT INTO accounts (account_id, email, password_hash) VALUES (%s, %s, %s);",
-                    (acc_id, f"dupe_{uuid.uuid4()}@ascendant.io", "hash"))
+    conn = get_connection()
+    with conn.cursor() as cur:
+        # Candidate character at Level 25
         cur.execute("""
             INSERT INTO characters (character_id, account_id, character_name, character_level, primary_class_tag)
             VALUES (%s, %s, %s, 25, 'Class.Line.Guard.Vanguard');
-        """, (char_id, acc_id, f"Candidate_{uuid.uuid4().hex[:6]}"))
+        """, (char_id, account_id, f"Candidate_{uuid.uuid4().hex[:6]}"))
+
         cur.execute("""
             INSERT INTO items (item_instance_id, item_def_id, owner_type, owner_id, slot_type, slot_index, quantity)
             VALUES (%s, 'scroll_dragon_knight', 'CHARACTER', %s, 'INVENTORY', 5, 1);
         """, (scroll_id, char_id))
-        conn_setup.commit()
-    conn_setup.close()
+        conn.commit()
+    conn.close()
 
     results = []
 
-    def client_worker(worker_id: int):
-        conn = get_db_connection()
+    def worker(worker_id: int):
         try:
-            with conn.cursor() as cur:
-                # Start transaction
-                cur.execute("BEGIN;")
-
-                # Acquire exclusive row lock
-                cur.execute("""
-                    SELECT item_instance_id, item_def_id, quantity
-                    FROM items
-                    WHERE item_instance_id = %s
-                    FOR UPDATE;
-                """, (scroll_id,))
-                row = cur.fetchone()
-
-                # If item already consumed or deleted by concurrent transaction
-                if not row or row[2] <= 0:
-                    conn.rollback()
-                    results.append((worker_id, False, "Item already consumed"))
-                    return
-
-                # Simulate work and consume item
-                time.sleep(0.05)
-                cur.execute("DELETE FROM items WHERE item_instance_id = %s;", (scroll_id,))
-                cur.execute("""
-                    UPDATE characters
-                    SET primary_class_tag = 'Class.Line.Guard.DragonKnight'
-                    WHERE character_id = %s;
-                """, (char_id,))
-                conn.commit()
-                results.append((worker_id, True, "Promotion committed"))
+            res = BackendService.promote_class(
+                character_id=char_id,
+                scroll_item_instance_id=scroll_id,
+                target_class_tag="Class.Line.Guard.DragonKnight",
+                is_secondary=False
+            )
+            results.append((worker_id, True, res))
         except Exception as e:
-            conn.rollback()
             results.append((worker_id, False, str(e)))
-        finally:
-            conn.close()
 
-    t1 = threading.Thread(target=client_worker, args=(1,))
-    t2 = threading.Thread(target=client_worker, args=(2,))
-
+    t1 = threading.Thread(target=worker, args=(1,))
+    t2 = threading.Thread(target=worker, args=(2,))
     t1.start()
     t2.start()
     t1.join()
@@ -267,32 +173,119 @@ def test_concurrent_anti_dupe():
     successes = [r for r in results if r[1] is True]
     failures = [r for r in results if r[1] is False]
 
-    print(f"  Worker 1 Result: {results[0]}")
-    print(f"  Worker 2 Result: {results[1]}")
+    print(f"  Worker 1: {results[0]}")
+    print(f"  Worker 2: {results[1]}")
 
-    assert len(successes) == 1, f"Anti-Dupe Failed: Expected exactly 1 success, got {len(successes)}"
-    assert len(failures) == 1, f"Anti-Dupe Failed: Expected exactly 1 failure, got {len(failures)}"
+    assert len(successes) == 1, f"Anti-Dupe Failed: Expected 1 success, got {len(successes)}"
+    assert len(failures) == 1, f"Anti-Dupe Failed: Expected 1 failure, got {len(failures)}"
 
-    # Verify character updated in database
-    conn_verify = get_db_connection()
-    with conn_verify.cursor() as cur:
-        cur.execute("SELECT primary_class_tag FROM characters WHERE character_id = %s;", (char_id,))
-        final_tag = cur.fetchone()[0]
-        cur.execute("SELECT COUNT(*) FROM items WHERE item_instance_id = %s;", (scroll_id,))
-        item_count = cur.fetchone()[0]
-    conn_verify.close()
+    char_final = BackendService.get_character(char_id)
+    assert char_final["primary_class_tag"] == "Class.Line.Guard.DragonKnight"
+    scroll_found = any(it["item_instance_id"] == scroll_id for it in char_final["items"])
+    assert not scroll_found, "Promotion scroll was not deleted from database."
+    print("  -> [PASS] SELECT ... FOR UPDATE strictly prevented duplicate promotion scroll consumption.")
 
-    assert final_tag == "Class.Line.Guard.DragonKnight", f"Unexpected tag: {final_tag}"
-    assert item_count == 0, f"Scroll item was not consumed: count={item_count}"
-    print("  -> [PASS] True PostgreSQL row-locking completely prevented duplicate consumption.")
+
+def test_rest_api_http_server(account_id: str, char_id: str):
+    """
+    Starts an in-process ThreadedHTTPServer on a random free port, makes real HTTP requests
+    via urllib.request, tests authentication, token validation, security header checks,
+    and save/load endpoints.
+    """
+    print("\n[BACKEND TEST 4] Testing Real Backend REST API Endpoints over HTTP...")
+    server = ThreadedHTTPServer(("127.0.0.1", 0), AscendantApiHandler)
+    host, port = server.server_address
+    server_thread = threading.Thread(target=server.serve_forever)
+    server_thread.daemon = True
+    server_thread.start()
+
+    base_url = f"http://{host}:{port}"
+
+    try:
+        # 1. Health check
+        with urllib.request.urlopen(f"{base_url}/health") as resp:
+            assert resp.status == 200
+            data = json.loads(resp.read().decode("utf-8"))
+            assert data["status"] == "ok"
+        print("  -> GET /health: 200 OK")
+
+        # 2. POST /api/v1/auth/register
+        reg_payload = json.dumps({
+            "email": f"http_player_{uuid.uuid4().hex[:6]}@ascendant.io",
+            "password": "Password123!"
+        }).encode("utf-8")
+        req = urllib.request.Request(f"{base_url}/api/v1/auth/register", data=reg_payload, headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req) as resp:
+            assert resp.status == 201
+            reg_data = json.loads(resp.read().decode("utf-8"))
+            http_acc_id = reg_data["account_id"]
+        print("  -> POST /api/v1/auth/register: 201 Created")
+
+        # 3. POST /api/v1/auth/login
+        login_payload = json.dumps({
+            "email": reg_data["email"],
+            "password": "Password123!"
+        }).encode("utf-8")
+        req = urllib.request.Request(f"{base_url}/api/v1/auth/login", data=login_payload, headers={"Content-Type": "application/json"})
+        with urllib.request.urlopen(req) as resp:
+            assert resp.status == 200
+            login_data = json.loads(resp.read().decode("utf-8"))
+            jwt_token = login_data["access_token"]
+        print("  -> POST /api/v1/auth/login: 200 OK (JWT issued)")
+
+        # 4. Security Check: Access /api/v1/server/* without X-Server-Secret should return 401 Unauthorized
+        val_payload = json.dumps({"token": jwt_token, "expected_account_id": http_acc_id}).encode("utf-8")
+        req_no_sec = urllib.request.Request(f"{base_url}/api/v1/server/validate-token", data=val_payload, headers={"Content-Type": "application/json"})
+        try:
+            urllib.request.urlopen(req_no_sec)
+            assert False, "Should have returned 401 Unauthorized!"
+        except urllib.error.HTTPError as e:
+            assert e.code == 401, f"Expected 401, got {e.code}"
+        print("  -> Security Verification: Missing X-Server-Secret properly rejected with 401 Unauthorized.")
+
+        # 5. Access /api/v1/server/validate-token with valid X-Server-Secret
+        req_with_sec = urllib.request.Request(
+            f"{base_url}/api/v1/server/validate-token",
+            data=val_payload,
+            headers={"Content-Type": "application/json", "X-Server-Secret": SERVER_SECRET}
+        )
+        with urllib.request.urlopen(req_with_sec) as resp:
+            assert resp.status == 200
+            val_data = json.loads(resp.read().decode("utf-8"))
+            assert val_data["valid"] is True
+            assert val_data["account_id"] == http_acc_id
+        print("  -> POST /api/v1/server/validate-token: 200 OK with X-Server-Secret")
+
+        # 6. Dedicated Server Save Character: POST /api/v1/server/characters/{id}/save
+        save_payload = json.dumps({
+            "character_level": 15,
+            "character_exp": 12500,
+            "primary_class_tag": "Class.Line.Guard.Vanguard",
+            "completed_quests": ["quest_ruins_scout"]
+        }).encode("utf-8")
+        req_save = urllib.request.Request(
+            f"{base_url}/api/v1/server/characters/{char_id}/save",
+            data=save_payload,
+            headers={"Content-Type": "application/json", "X-Server-Secret": SERVER_SECRET}
+        )
+        with urllib.request.urlopen(req_save) as resp:
+            assert resp.status == 200
+            save_data = json.loads(resp.read().decode("utf-8"))
+            assert save_data["status"] == "saved"
+        print("  -> POST /api/v1/server/characters/{id}/save: 200 OK (Auto-Save executed)")
+
+    finally:
+        server.shutdown()
+        server.server_close()
+
 
 def main():
     print("=" * 60)
-    print("Project Ascendant: Real PostgreSQL Backend Test Suite")
+    print("Project Ascendant: Real PostgreSQL Backend Service Test Suite")
     print(f"Target DB: {PG_USER}@{PG_HOST}:{PG_PORT}/{PG_DATABASE}")
     print("=" * 60)
 
-    if not is_server_reachable():
+    if not is_db_reachable():
         print(f"[UNREACHABLE] No PostgreSQL server accepting connections at {PG_HOST}:{PG_PORT}.")
         print("\nTo run locally with Docker:")
         print("  docker compose up -d postgres")
@@ -306,28 +299,32 @@ def main():
         return 1
 
     try:
-        conn = get_db_connection()
+        conn = get_connection()
     except Exception as e:
-        # Server is listening but the connection failed (auth, missing database, ...):
-        # this is a real failure, not a skip.
         print(f"[FAIL] PostgreSQL is reachable at {PG_HOST}:{PG_PORT} but connecting failed: {e}")
         return 1
 
     try:
-        setup_schema(conn)
-        test_atomic_slot_swapping(conn)
+        init_schema(conn)
         conn.close()
-        test_concurrent_anti_dupe()
+
+        # Run real backend tests
+        account_id, char_id = test_real_backend_auth_and_character()
+        test_atomic_slot_swapping_via_service(account_id, char_id)
+        test_concurrent_anti_dupe_promotion(account_id)
+        test_rest_api_http_server(account_id, char_id)
+
         print("\n" + "=" * 60)
-        print(">> ALL REAL POSTGRESQL DATABASE TESTS PASSED SUCCESSFULLY (Exit 0) <<")
+        print(">> ALL REAL BACKEND SERVICE POSTGRESQL TESTS PASSED SUCCESSFULLY (Exit 0) <<")
         print("=" * 60)
         return 0
     except AssertionError as e:
         print(f"\n[FAIL] Assertion failed: {e}", file=sys.stderr)
         return 1
     except Exception as e:
-        print(f"\n[ERROR] Database test encountered exception: {e}", file=sys.stderr)
+        print(f"\n[ERROR] Backend test encountered exception: {e}", file=sys.stderr)
         return 2
+
 
 if __name__ == "__main__":
     sys.exit(main())

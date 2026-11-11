@@ -25,7 +25,8 @@ public class ProjectAscendant : ModuleRules
 			"UMG",
 			"CommonUI",
 			"Json",
-			"JsonUtilities"
+			"JsonUtilities",
+			"HTTP"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {

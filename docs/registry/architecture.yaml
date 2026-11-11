@@ -178,6 +178,18 @@ api_decisions:
     added: 2026-09-16
     revised: ""
 
+  - state: persistent_character_data
+    status: active
+    owner_system: backend-persistence
+    adr: docs/architecture/adr-0006-backend-services-and-data-persistence.md
+    interface: "Dedicated Server FHttpModule REST API -> PostgreSQL (accounts, characters, items)"
+    write_access: dedicated-server-only
+    referenced_by:
+      - docs/architecture/adr-0006-backend-services-and-data-persistence.md
+      - design/gdd/authentication-account-system.md
+    added: 2026-11-10
+    revised: ""
+
 # ─── FORBIDDEN PATTERNS ──────────────────────────────────────────────────────
 forbidden_patterns:
   - pattern: client_authoritative_hit_detection
@@ -207,3 +219,10 @@ forbidden_patterns:
     why: "Prevents item duplication exploits (duping) and desynchronization in contested multiplayer trading."
     adr: docs/architecture/adr-0003-server-authoritative-grid-inventory-fast-array.md
     added: 2026-09-16
+
+  - pattern: client_direct_database_write
+    status: active
+    description: "Clients must never communicate directly with PostgreSQL or write persistent game data."
+    why: "Prevents client-side state manipulation, unauthorized item injection, and SQL injection vulnerabilities."
+    adr: docs/architecture/adr-0006-backend-services-and-data-persistence.md
+    added: 2026-11-10
