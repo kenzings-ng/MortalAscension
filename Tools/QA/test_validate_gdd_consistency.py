@@ -218,6 +218,109 @@ class BannedTermTests(unittest.TestCase):
             self.assertClean(text)
 
 
+class ClassVnGlossTests(unittest.TestCase):
+    """N1 (2026-11-11): the English class name is canonical; one Vietnamese gloss per class, from DECISIONS §2."""
+
+    def test_glosses_are_loaded_for_all_16_classes(self):
+        gloss = decisions()["class_vn_gloss"]
+        self.assertEqual(len(gloss), 16)
+        self.assertEqual(gloss["Vanguard"], "Tiên Phong")
+        self.assertEqual(gloss["Ranger"], "Xạ Thủ")
+        self.assertEqual(gloss["Seraph"], "Thiên Sứ Lục Dực")
+        self.assertEqual(gloss["God Slayer"], "Kẻ Diệt Thần")
+
+    def test_english_first_with_retired_gloss_is_flagged(self):
+        for text in [
+            "| **Scout** | T1 | **Ranger (Du Hiệp)** | `Class.Line.Scout.Ranger` |",
+            "*Shadowblade (Thích Khách)*, *Elementalist (Nguyên Tố Sư)*",
+            "**Vanguard** (Chiến binh), **Ranger** (du hiệp), **Acolyte** (tu sĩ)",
+            "| **15. Seraph (Lục Dực)**<br>*(Bậc 3)* |",
+            "`Templar` (Thánh Binh)",
+            "Void Blade (Hư Không Kiếm Sư)",
+            "GOD SLAYER (Thí Thần Giả)",
+            "~~x~~ Ranger (Du Hiệp)",
+        ]:
+            self.assertIn("class_vn_name", check_ids(text), text)
+
+    def test_vietnamese_first_with_retired_gloss_is_flagged(self):
+        for text in [
+            "- **Chiến Binh (Vanguard) — *\"Bức Tường Thép\"***:",
+            "| **8** | **Ảo Ảnh Thích Khách (Shadowblade)** | Song Đoản Kiếm |",
+            '    display_name: "Tu Sĩ (Acolyte)"',
+            "    display_name: 'Tu Sĩ (Acolyte)'",
+            '        C7["Nguyên Tố (Elementalist)"]',
+            "- **Thí Thần Giả (God Slayer):**",
+            "##### A. CHIẾN BINH (VANGUARD)",
+            "##### B. DU HIỆP (RANGER)",
+            "### Chiến Binh (Vanguard)",
+            "Class chính: Du Hiệp (Ranger)",
+            "**Tiên Phong (Vanguard)**, Du Hiệp (Ranger)",
+            '> **Chủ đề nhân vật**: Tiền Tuyến Sắt Đá — Thiết Vệ (Vanguard "Iron Bastion")',
+            "### 2. Công Thức Phản Đòn Hoàn Hảo Của Chiến Binh (Vanguard Perfect Parry)",
+            "### 3. Công Thức Thể Lực & Thời Gian Lướt Du Hiệp (Ranger Acrobatic Dash)",
+            "### 4. Công Thức Sát Thương Quá Tải Ma Lực Của Thuật Sĩ (Arcanist Arcane Surge)",
+            "### 5. Công Thức Lớp Khiên Hộ Thể Của Tu Sĩ (Acolyte Aegis Barrier)",
+            "4. **If Tu Sĩ (Acolyte) tụt Stamina dưới 30%**:",
+            "│(Thánh Binh/Cuồng)│ và Berserker (Cuồng)",
+        ]:
+            self.assertIn("class_vn_name", check_ids(text), text)
+
+    def test_approved_glosses_pass_in_both_orders(self):
+        for text in [
+            "**Vanguard (Tiên Phong)**, *Ranger (Xạ Thủ)*, `Seraph` (Thiên Sứ Lục Dực - Phương án 1)",
+            "- **Tiên Phong (Vanguard) — *\"Bức Tường Thép\"***:",
+            "##### A. TIÊN PHONG (VANGUARD)",
+            '    display_name: "Dragon Knight (Long Kỵ Sĩ)"',
+            "### 2. Công Thức Phản Đòn Hoàn Hảo Của Tiên Phong (Vanguard Perfect Parry)",
+            "| **Thời Gian Pháp Sư (Chronomancer)** | **Thiên Sứ Lục Dực (Seraph)** | Inquisitor (Thẩm Phán Dị Giáo) |",
+            "Berserker (Cuồng Chiến Sĩ), Elementalist (Nguyên Tố Sư), Thẩm Phán Dị Giáo (Inquisitor)",
+        ]:
+            self.assertNotIn("class_vn_name", check_ids(text), text)
+
+    def test_non_gloss_parentheses_and_standalone_words_are_not_flagged(self):
+        for text in [
+            "Vanguard (T1): Khiên Sắt Vuông + Kiếm 1 tay.",
+            "Vanguard (Khiên Sắt Vuông + Kiếm 1 tay), Vanguard (Bậc T1), Templar (Đỡ đòn chính)",
+            "Ranger (Nhánh Du Hiệp), Dragon Knight (Đại Kích), Ranger (2H.Bow), Templar (Tank)",
+            "- Sách Kỹ Năng (Vanguard)",
+            "- **Gươm Lãnh Chúa Hỏa Ngục (Vanguard):** Kỹ năng *Blade Arc*.",
+            "Nhánh Du Hiệp (Scout Line - 3 Class)",
+            "Bảng màu tu sĩ cao cấp; trọng lượng cơ bắp của chiến binh; Vũ Điệu Bóng Ma (Phantom Decoy).",
+            "~~Arcanist: `Chronomancer` (Thời gian)~~ — Removed (DECISIONS §12)",
+            "  - Arcanist: `Pyromancer` (Hỏa thuật), `Chronomancer` (Thời gian)~~ — Removed (DECISIONS §12)",
+        ]:
+            self.assertNotIn("class_vn_name", check_ids(text), text)
+
+    def test_retired_gloss_at_the_end_of_another_name_is_flagged_and_needs_the_allowlist(self):
+        # Documented false positive: the validator cannot tell an item name from a gloss.
+        self.assertIn("class_vn_name", check_ids("*Tabard 2: Khăn Quàng Du Mục (Ranger)*"))
+
+    def test_marked_deprecated_gloss_is_accepted(self):
+        self.assertNotIn("class_vn_name", check_ids('Tên cũ "Chiến Binh (Vanguard)" (deprecated) nay là Tiên Phong.'))
+
+    def test_retired_list_is_validated_against_decisions(self):
+        gloss = decisions()["class_vn_gloss"]
+        self.assertEqual(set(v.load_retired_glosses(gloss)) - set(gloss), set())
+        with tempfile.TemporaryDirectory() as d:
+            bad = Path(d) / "r.json"
+            bad.write_text('{"retired": {"Oracle": ["Tiên Tri"]}}', encoding="utf-8")
+            with self.assertRaises(v.DecisionsParseError):
+                v.load_retired_glosses(gloss, bad)
+            bad.write_text('{"retired": {"Vanguard": ["tiên phong"]}}', encoding="utf-8")
+            with self.assertRaises(v.DecisionsParseError):
+                v.load_retired_glosses(gloss, bad)
+            with self.assertRaises(v.DecisionsParseError):
+                v.load_retired_glosses(gloss, Path(d) / "missing.json")
+
+    def test_missing_gloss_in_decisions_fails_loudly(self):
+        text = DECISIONS.read_text(encoding="utf-8").replace("`Ranger` (Xạ Thủ)", "`Ranger`")
+        with tempfile.TemporaryDirectory() as d:
+            p = Path(d) / "DECISIONS.md"
+            p.write_text(text, encoding="utf-8")
+            with self.assertRaises(v.DecisionsParseError):
+                v.load_decisions(p)
+
+
 class DeprecationContextTests(unittest.TestCase):
     def test_marked_on_same_line_is_accepted(self):
         for text in [
@@ -392,32 +495,55 @@ class ScopeAndAllowlistTests(unittest.TestCase):
         row_dk = ("| **2. Two-Handed Heavy** | `Weapon.2H.Heavy` | Bổ dọc 180cm. | **Berserker, Dragon Knight** | Khóa cứng 2 tay. |")
         row_bad = ("| **2. Two-Handed Heavy** | `Weapon.2H.Heavy` | Bổ dọc 180cm. | **Berserker, Templar, Inquisitor** | Khóa cứng 2 tay. |")
         yaml_ok = '  - name: weapon_family_2h_heavy\n    attributes:\n      classes: ["Berserker"]\n'
+        # N1 (2026-11-11): the repo allowlist now holds one class_vn_name entry for this item line; keep it
+        # in the fixture so that entry is not reported as stale.
+        tabard = "| *Tabard 2: Khăn Quàng Du Mục (Ranger)* |\n"
         self.tp.write("design/registry/entities.yaml", yaml_ok)
         art = ("- **Khung Viền Phân Hạng 5 Cấp Độ Hiếm (5-Rarity Scale)**:\n"
                "  - Common (Trắng / Xám `#D1D5DB`), Uncommon (Xanh Lục `#10B981`), Rare (Xanh Lam `#3B82F6`), Epic (Tím `#8B5CF6`), Legendary (Cam Hoàng Kim `#F59E0B`).\n")
         self.tp.write("design/art/art-bible.md", art)
 
-        self.tp.write("design/gdd/itemization.md", row_ok + "\n" + yaml_ok)
+        self.tp.write("design/gdd/itemization.md", row_ok + "\n" + yaml_ok + tabard)
         code, out = self.tp.run(repo_allow)
         self.assertEqual(code, 0, out)
 
-        self.tp.write("design/gdd/itemization.md", row_dk + "\n" + yaml_ok)
+        self.tp.write("design/gdd/itemization.md", row_dk + "\n" + yaml_ok + tabard)
         code, out = self.tp.run(repo_allow)
         self.assertEqual(code, 1)
         self.assertIn("Class 'Dragon Knight'", out)
 
-        self.tp.write("design/gdd/itemization.md", row_ok + "\n" + yaml_ok)
+        self.tp.write("design/gdd/itemization.md", row_ok + "\n" + yaml_ok + tabard)
         self.tp.write("design/registry/entities.yaml", yaml_ok.replace('"Berserker"]', '"Berserker", "Dragon Knight"]'))
         code, out = self.tp.run(repo_allow)
         self.assertEqual(code, 1)
         self.assertIn("class 'Dragon Knight'", out)
         self.tp.write("design/registry/entities.yaml", yaml_ok)
 
-        self.tp.write("design/gdd/itemization.md", row_bad + "\n" + yaml_ok)
+        self.tp.write("design/gdd/itemization.md", row_bad + "\n" + yaml_ok + tabard)
         code, out = self.tp.run(repo_allow)
         self.assertEqual(code, 1)
         self.assertIn("Class 'Templar'", out)
         self.assertIn("Class 'Inquisitor'", out)
+
+    def test_repo_allowlist_tabard_entry_does_not_hide_another_gloss_on_the_same_line(self):
+        # N1 review round 3 (R1): every retired pair on a line is reported, so the allowlisted item name
+        # "Khăn Quàng Du Mục (Ranger)" cannot cover a real wrong gloss next to it.
+        repo_allow = (REPO_ROOT / "Tools" / "QA" / "gdd_validator_allowlist.yaml").read_text(encoding="utf-8")
+        ok = "| *Tabard 1: Khăn Choàng Thánh Giá (Acolyte)* | *Tabard 2: Khăn Quàng Du Mục (Ranger)* |\n"
+        self.tp.write("design/gdd/itemization.md", ok)
+        code, out = self.tp.run(repo_allow)
+        self.assertEqual(code, 0, out)
+        self.assertIn("[ALLOW] design/gdd/itemization.md:1: [class_vn_name]", out)
+
+        self.tp.write("design/gdd/itemization.md", ok.replace("Khăn Choàng Thánh Giá (Acolyte)", "Tu Sĩ (Acolyte)"))
+        code, out = self.tp.run(repo_allow)
+        self.assertEqual(code, 1, out)
+        self.assertIn("'Tu Sĩ' của class 'Acolyte'", out)
+        self.assertNotIn("Stale allowlist entry", out)
+
+    def test_several_retired_pairs_on_one_line_are_all_reported(self):
+        found = [msg for _, cid, msg in findings_for("Chiến Binh (Vanguard), Du Hiệp (Ranger), Tu Sĩ (Acolyte)") if cid == "class_vn_name"]
+        self.assertEqual(len(found), 3, found)
 
     def test_repo_allowlist_parses_and_matches_pyyaml(self):
         path = REPO_ROOT / "Tools" / "QA" / "gdd_validator_allowlist.yaml"

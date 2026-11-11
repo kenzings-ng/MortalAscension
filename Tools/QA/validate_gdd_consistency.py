@@ -18,6 +18,11 @@ SCAN SCOPE (X13, 2026-10-10) -- see SCAN_TARGETS:
   - design/*.md, design/art/*.md, design/ux/*.md, docs/registry/*.yaml
   - design/narrative/**/*.md (N0, 2026-11-11: world bible, factions, character sheets, bestiary, NPCs)
 
+CLASS NAME GLOSS (N1, 2026-11-11) -- check id class_vn_name, see class_gloss_findings:
+  The English class name is canonical. Each class has one approved Vietnamese gloss, the
+  parenthetical in DECISIONS.md §2. Retired glosses are listed in Tools/QA/retired_class_glosses.json
+  and are an error when paired with the class name as "English (Gloss)" or "Gloss (English)".
+
 SKIPPED HISTORICAL / DATED RECORDS -- see SKIP_PATH_PREFIXES / SKIP_NAME_PATTERNS:
   These files are snapshots of the past (review reports, gate checks, plans,
   progress logs, retrospectives). They quote old terms on purpose and must not be
@@ -308,6 +313,7 @@ def load_decisions(decisions_path: Path) -> Dict:
     all_approved_classes = set()
     approved_lines = set()
     canonical_classes = set()
+    class_vn_gloss = {}  # English display name (as written in §2) -> the single approved Vietnamese gloss
 
     # 1. Parse Section 2: Approved Classes, Lines, Ranks
     sec2_match = re.search(r"## 2\.\s+Cây Chuyển Chức.*?(?=## 3\.)", text, re.DOTALL)
@@ -325,6 +331,9 @@ def load_decisions(decisions_path: Path) -> Dict:
                 rank = m_rank.group(1)
                 raw_classes = m_rank.group(2)
                 classes = [c for c in re.findall(r"`([^`]+)`", raw_classes) if not c.startswith("Class.")]
+                for m_gloss in re.finditer(r"`([^`]+)`\s*\(([^()]*?)(?:\s+-\s|\))", raw_classes):
+                    if not m_gloss.group(1).startswith("Class."):
+                        class_vn_gloss[m_gloss.group(1).strip()] = m_gloss.group(2).strip()
                 for c in classes:
                     cl = c.lower().strip()
                     canonical_classes.add(cl)
@@ -377,6 +386,9 @@ def load_decisions(decisions_path: Path) -> Dict:
     missing_weapons = sorted(c for c in canonical_classes if not class_weapons.get(c))
     if missing_weapons:
         problems.append(f"§7 has no weapon family for: {missing_weapons}")
+    missing_gloss = sorted(c for c in canonical_classes if c not in {k.lower() for k in class_vn_gloss})
+    if missing_gloss:
+        problems.append(f"§2 has no Vietnamese gloss in parentheses for: {missing_gloss}")
     if problems:
         raise DecisionsParseError("DECISIONS.md parse failed: " + "; ".join(problems))
 
@@ -387,6 +399,8 @@ def load_decisions(decisions_path: Path) -> Dict:
         "canonical_classes": canonical_classes,
         "approved_lines": approved_lines,
         "class_weapons": class_weapons,
+        "class_vn_gloss": class_vn_gloss,
+        "retired_glosses": load_retired_glosses(class_vn_gloss),
         "view_direction_count": view_direction_count,
     }
 
@@ -457,6 +471,74 @@ CLASS_COUNT_12_PATTERN = re.compile(r'\b12[\s-]+(?:Class(?:es)?|Chức\s+nghiệ
 EQUIPMENT_TIER_PATTERN = re.compile(r'\b(?:ShieldTier|5-Tier\s+Items?)\b', re.IGNORECASE)
 
 
+# Vietnamese gloss of a class name (N1, 2026-11-11). The English class name is the canonical name; each class
+# has exactly one approved Vietnamese gloss, written in parentheses in DECISIONS.md §2. Glosses that were used
+# before and are now retired are listed per class in Tools/QA/retired_class_glosses.json. A retired gloss is an
+# error when it is paired with that class's English name in parentheses, in either order, in any letter case:
+#   "Ranger (Du Hiệp)", "**Ranger** (du hiệp)", "Du Hiệp (Ranger)", "##### B. DU HIỆP (RANGER)".
+# A retired gloss used on its own (a common noun, a skill or item name) is not checked, and a parenthetical that
+# is not a retired gloss ("Vanguard (T1)", "Dragon Knight (Đại Kích)") is never flagged.
+# Known limits:
+#   - Not detected: a brand-new wrong gloss that is not in the retired list (add it to the list when found); other
+#     pairings such as "Ranger — Du Hiệp" or "Ranger: Du Hiệp"; a plural "Rangers (Du Hiệp)"; a retired gloss with
+#     no English name next to it; a line with an odd number of "~~" (skipped whole).
+#   - False positives: a retired gloss that is also an ordinary phrase or the tail of another name, directly next
+#     to the class name: "Chronomancer (Thời gian hồi chiêu 3s)", "Khăn Quàng Du Mục (Ranger)", "nhánh Du Hiệp
+#     (Ranger, Shadowblade)". Reword the line, or add an entry with a reason to Tools/QA/gdd_validator_allowlist.yaml.
+RETIRED_GLOSS_FILE = Path(__file__).resolve().parent / "retired_class_glosses.json"
+_STRUCK = re.compile(r"~~.*?~~")
+_WORD_CH = r"A-Za-zÀ-ỹĐđ0-9"
+
+
+def load_retired_glosses(class_vn_gloss: Dict[str, str], path: Path = RETIRED_GLOSS_FILE) -> Dict[str, List[str]]:
+    """Loads {English class name: [retired glosses]}. Fails loudly on unknown classes or on a listed approved gloss."""
+    if not path.exists():
+        raise DecisionsParseError(f"retired gloss list not found at {path}")
+    with open(path, "r", encoding="utf-8") as f:
+        retired = json.load(f).get("retired", {})
+    problems = []
+    for english, glosses in retired.items():
+        if english not in class_vn_gloss:
+            problems.append(f"'{english}' is not a class in DECISIONS.md §2")
+        elif any(g.casefold() == class_vn_gloss[english].casefold() for g in glosses):
+            problems.append(f"'{english}' lists its approved gloss '{class_vn_gloss[english]}' as retired")
+    if problems:
+        raise DecisionsParseError("retired_class_glosses.json: " + "; ".join(problems))
+    return retired
+
+
+def class_gloss_findings(line: str, class_vn_gloss: Dict[str, str], retired: Dict[str, List[str]]):
+    """Yields (start, end, english, found_gloss, approved_gloss) for each retired gloss paired with its class name."""
+    if line.count("~~") % 2:  # a strike-through that opens or closes on another line: cannot tell which side is struck
+        return
+    text = _STRUCK.sub(lambda m: " " * len(m.group(0)), line)  # struck-through spans record removed content
+    folded = text.casefold()
+    if len(folded) != len(text):  # casefold changed the length (never for Vietnamese/ASCII); positions unusable
+        folded = text.lower()
+    for english, glosses in retired.items():
+        approved = class_vn_gloss[english]
+        en = re.escape(english.casefold())
+        seen: List[Tuple[int, int]] = []  # gloss spans already reported; a shorter gloss inside one is the same finding
+        for gloss in sorted(glosses, key=len, reverse=True):
+            g = re.escape(gloss.casefold())
+            # "English (Gloss": the gloss opens the parenthetical
+            english_first = r"(?<![%s])%s[`*\"'”’]{0,4}\s*\([`*\"'“‘\s]{0,3}(%s)(?![%s])" % (_WORD_CH, en, g, _WORD_CH)
+            # "Gloss (English": the gloss is the last thing before the parenthetical
+            gloss_first = r"(?<![%s])(%s)[`*\"'”’]{0,4}\s*\([`*\"'“‘\s]{0,3}%s(?![%s])[`*]{0,3}\)?" % (_WORD_CH, g, en, _WORD_CH)
+            for pattern, is_english_first in ((english_first, True), (gloss_first, False)):
+                for m in re.finditer(pattern, folded):
+                    gs, ge = m.start(1), m.end(1)
+                    if len(gloss) < len(approved):  # the retired gloss may be only a part of the approved one
+                        if is_english_first and folded.startswith(approved.casefold(), gs):
+                            continue
+                        if not is_english_first and folded.endswith(approved.casefold(), 0, ge):
+                            continue
+                    if any(s0 <= gs and ge <= e0 for s0, e0 in seen):
+                        continue
+                    seen.append((gs, ge))
+                    yield m.start(), m.end(), english, text[gs:ge], approved
+
+
 def first_unmarked(pat, line: str, unmarked):
     """First match of pat on line that is not marked deprecated (later matches are not hidden by an earlier marked one)."""
     return next((m for m in pat.finditer(line) if unmarked(m)), None)
@@ -509,6 +591,12 @@ def check_file(file_path: Path, decisions: Dict) -> Tuple[List[Finding], List[st
         m12 = first_unmarked(CLASS_COUNT_12_PATTERN, line, unmarked)
         if m12:
             add(line_idx, "class_count_12", "Lỗi số lượng: Còn sót '12 Class' / '12 Chức nghiệp'. Tổng số class chính thức là 16 Class theo DECISIONS.md Mục 2.")
+
+        # A retired Vietnamese class gloss must not be paired with its class name (DECISIONS §2).
+        # Every pair on the line is reported, so an allowlisted pair cannot hide another one.
+        for g_start, g_end, english, found, approved in class_gloss_findings(line, decisions.get("class_vn_gloss", {}), decisions.get("retired_glosses", {})):
+            if not in_deprecated_entry and not is_marked_deprecated(line, g_start, g_end):
+                add(line_idx, "class_vn_name", f"Chú thích tiếng Việt '{found}' của class '{english}' đã bị loại. Theo DECISIONS.md Mục 2 chỉ dùng '{approved}'.")
 
         # Prohibited Class Tier / Rarity Terminology
         for pat, err_msg in CLASS_TIER_RARITY_PATTERNS:

@@ -1,4 +1,4 @@
-# Core Game Loop: Project Ascendant
+# Core Game Loop: Mortal Ascension
 
 > **Trạng thái**: Draft - Sẵn sàng nghiệm thu  
 > **Phiên bản**: 1.0  
@@ -15,7 +15,7 @@
 
 ## 1. Tổng Quan Về Vòng Lặp Trò Chơi (Executive Summary)
 
-**Project Ascendant** là tựa game 2.5D Isometric Dark Fantasy Action-RPG kết hợp cơ chế MMO thế giới mở. Khác với các game ARPG truyền thống phụ thuộc thuần túy vào chỉ số và trang bị "dát vàng", Project Ascendant định vị **kỹ năng thao tác của người chơi là nhân tố quyết định sống còn**.
+**Mortal Ascension** là tựa game 2.5D Isometric Dark Fantasy Action-RPG kết hợp cơ chế MMO thế giới mở. Khác với các game ARPG truyền thống phụ thuộc thuần túy vào chỉ số và trang bị "dát vàng", Mortal Ascension định vị **kỹ năng thao tác của người chơi là nhân tố quyết định sống còn**.
 
 Vòng lặp cốt lõi (**Core Game Loop**) được vận hành qua cấu trúc 3 tầng:
 
@@ -93,7 +93,7 @@ Vòng tuần hoàn giữ chân người chơi qua nhiều tuần và tháng:
    - Cường hóa trang bị từ $+1$ đến $+10$.
    - **Khảm linh hồn Boss (Boss Soul Socketing):** Biến đổi đặc tính vũ khí (ví dụ: khảm *Core of the Stone Golem* giúp đòn đánh thường có xác suất gây chấn động diện rộng).
 2. **Cây Chức nghiệp 16 Class (16-Class Progression Tree):**
-   - Khởi đầu với 4 Class Sơ cấp (Bậc T1): **Vanguard** (Tiên phong), **Ranger** (Du hiệp), **Arcanist** (Thuật sĩ), **Acolyte** (Tu sĩ).
+   - Khởi đầu với 4 Class Sơ cấp (Bậc T1): **Vanguard** (Tiên Phong), **Ranger** (Xạ Thủ), **Arcanist** (Bí Thuật Sư), **Acolyte** (Tập Sự).
    - Mở khóa các Class Trung cấp (Bậc T2), Cao cấp (Bậc T3) và Apex Class (Bậc T4 - God Slayer) thông qua việc tìm kiếm cổ tịch, hoàn thành kỳ ngộ và thử thách bí ẩn trong thế giới (chi tiết xem tại `advanced-classes.md`).
 3. **Hệ thống Kinh tế & Điểm Danh Dự (Karma & Smuggler Economy):**
    - Vàng là tiền tệ lưu thông chính, dùng sửa chữa, mua công thức và giao dịch.

@@ -1,4 +1,4 @@
-# Systems Index: Project Ascendant
+# Systems Index: Mortal Ascension
 
 > **Status**: Approved  
 > **Created**: 2026-09-14  
@@ -10,7 +10,7 @@
 
 ## Overview
 
-Project Ascendant là một tựa game 2.5D Isometric Action RPG hardcore nơi kỹ năng người chơi là trung tâm. Vòng lặp gameplay cốt lõi (Core Loop) được vận hành bởi sự kết hợp giữa: **Tránh né i-frame chuẩn xác**, **cơ chế Phá vỡ thế đứng (Stagger) để đánh Boss vượt cấp**, **cây tiến trình 16 Chức nghiệp** với 4 Class khởi đầu làm nền tảng và các Class nâng cao mở khóa qua kỳ ngộ/kỹ năng, cùng **hệ thống Thợ rèn dã ngoại phân vùng** thúc đẩy người chơi mạo hiểm thám hiểm các vùng đất không giới hạn cấp độ.
+Mortal Ascension là một tựa game 2.5D Isometric Action RPG hardcore nơi kỹ năng người chơi là trung tâm. Vòng lặp gameplay cốt lõi (Core Loop) được vận hành bởi sự kết hợp giữa: **Tránh né i-frame chuẩn xác**, **cơ chế Phá vỡ thế đứng (Stagger) để đánh Boss vượt cấp**, **cây tiến trình 16 Chức nghiệp** với 4 Class khởi đầu làm nền tảng và các Class nâng cao mở khóa qua kỳ ngộ/kỹ năng, cùng **hệ thống Thợ rèn dã ngoại phân vùng** thúc đẩy người chơi mạo hiểm thám hiểm các vùng đất không giới hạn cấp độ.
 
 ---
 
@@ -64,7 +64,7 @@ flowchart TD
         SYS8["8. 4 Class Cơ Bản"]
         SYS10["10. Thợ Rèn Phân Vùng"]
         SYS12["12. Thương Nhân & Tiền Tệ"]
-        SYS14["14. 7 Class Nâng Cao"]
+        SYS14["14. 11 Class Nâng Cao (T2–T3)"]
         SYS15["15. Dược Sư & Dầu Tẩm Vũ Khí"]
         SYS16["16. Săn Boss Thế Giới Contested"]
     end

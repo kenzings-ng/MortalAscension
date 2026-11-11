@@ -17,4 +17,9 @@
 # Format note: the validator reads this file with a small stdlib reader. Keep to
 # "entries:" followed by "- key: value" items with plain or double-quoted scalars.
 
-entries: []
+entries:
+  - file: design/gdd/itemization.md
+    check: class_vn_name
+    pattern: "Tabard 2: Khăn Quàng Du Mục \\(Ranger\\)"
+    match: "'Du Mục' của class 'Ranger'"
+    reason: "N1 2026-11-11: 'Khăn Quàng Du Mục' là tên vật phẩm tabard của Ranger, không phải chú thích class. Câu hỏi cho chủ dự án ở N5: có đổi tên tabard này khi Ranger không còn được gọi là 'Du Mục' không?"

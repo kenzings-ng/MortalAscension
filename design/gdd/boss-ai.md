@@ -10,7 +10,7 @@
 
 ## Overview
 
-Hệ thống AI Boss Nguyên Mẫu & Cảnh Báo Đòn Đánh (Prototype Boss AI & Telegraphs System) là tiêu chuẩn vàng định hình thiết kế đối thủ đỉnh cao trong *Project Ascendant*. Được xây dựng trên nền tảng **Unreal Engine 5 Behavior Trees**, **Environment Query System (EQS)** kết hợp hệ thống Decal báo chiêu thời gian thực, hệ thống định nghĩa đối thủ thử nghiệm đầu tiên của dự án: **Lãnh Chúa Thiết Giáp (Ironclad Warlord)**.
+Hệ thống AI Boss Nguyên Mẫu & Cảnh Báo Đòn Đánh (Prototype Boss AI & Telegraphs System) là tiêu chuẩn vàng định hình thiết kế đối thủ đỉnh cao trong *Mortal Ascension*. Được xây dựng trên nền tảng **Unreal Engine 5 Behavior Trees**, **Environment Query System (EQS)** kết hợp hệ thống Decal báo chiêu thời gian thực, hệ thống định nghĩa đối thủ thử nghiệm đầu tiên của dự án: **Lãnh Chúa Thiết Giáp (Ironclad Warlord)**.
 
 Hệ thống quán triệt triết lý thiết kế cốt lõi: **Độ công bằng và khả năng đọc vị tuyệt đối (Absolute Fairness & High Readability)**. Mọi đòn đánh nguy hiểm đều có:
 1. Vùng báo chiêu mặt đất (**Ground Telegraph Decals**) với hình học chuẩn (Nón quét 120°, Vệt thẳng 800cm, Vòng tròn 400cm) hiển thị mức độ sạc đỏ dần từ 0% đến 100% trong $0.5\text{s} - 0.8\text{s}$.

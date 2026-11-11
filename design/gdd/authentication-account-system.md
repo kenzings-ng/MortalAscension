@@ -10,7 +10,7 @@
 
 ## 1. Executive Summary
 
-Hệ thống Xác thực & Định danh Người chơi (*Authentication & Player Identity*) quản lý toàn bộ vòng đời đăng nhập, đăng ký, lưu phiên và định danh người chơi trong *Project Ascendant*. Hệ thống đóng vai trò cổng kiểm soát an ninh đầu tiên (Gatekeeper) trước khi client được phép kết nối vào Unreal Engine 5.7 Dedicated Server theo quy định của `ADR-0001` (100% Server Authoritative).
+Hệ thống Xác thực & Định danh Người chơi (*Authentication & Player Identity*) quản lý toàn bộ vòng đời đăng nhập, đăng ký, lưu phiên và định danh người chơi trong *Mortal Ascension*. Hệ thống đóng vai trò cổng kiểm soát an ninh đầu tiên (Gatekeeper) trước khi client được phép kết nối vào Unreal Engine 5.7 Dedicated Server theo quy định của `ADR-0001` (100% Server Authoritative).
 
 Hệ thống được phát triển theo **lộ trình 3 giai đoạn (Phased Roadmap)**:
 - **Giai đoạn 1 (Hiện tại - Playtest & Pre-Production)**: Cung cấp chế độ **1-Click Fast Playtest** (dành cho thử nghiệm nội bộ nhanh nhiều client) và form **Email/Password tiêu chuẩn** có lưu phiên cục bộ (*Remember Me*).

@@ -1,4 +1,4 @@
-# Master Art Bible — Project Ascendant
+# Master Art Bible — Mortal Ascension
 
 > **Status**: Approved (Sections 1–4: Visual Identity Foundation)  
 > **Target Aesthetic**: 2.5D Isometric HD-2D (PaperZD Pixel Art Sprites + 3D Volumetric Lighting)  
@@ -48,15 +48,15 @@ Mọi quyết định về tạo hình, dựng shader và ánh sáng trong game 
 ## 3. Shape Language
 
 ### 3.1. Triết Lý Tạo Dáng Nhân Vật (Character Silhouette Philosophy)
-Mỗi Class nhân vật trong *Project Ascendant* được định hình bởi một khối hình học cơ bản bất biến, bảo đảm người chơi nhận diện ngay tức khắc ở góc nhìn chéo -45° từ khoảng cách 12 mét:
+Mỗi Class nhân vật trong *Mortal Ascension* được định hình bởi một khối hình học cơ bản bất biến, bảo đảm người chơi nhận diện ngay tức khắc ở góc nhìn chéo -45° từ khoảng cách 12 mét:
 
 - **Vanguard (Tiên Phong)** — **Khối Hình Thang / Vuông (Heavy Trapezoid)**:
   - *Tạo hình*: Trọng tâm thấp, vai giáp bản to gồ ghề, chiếc khiên lớn chiếm $40\%$ bề ngang thân hình. Tư thế đứng bám rễ vững chắc như pháo đài thép.
-- **Ranger (Du Mục)** — **Tam Giác Ngược / Đường Cắt Xiên (Inverted Triangle & Sharp Slits)**:
+- **Ranger (Xạ Thủ)** — **Tam Giác Ngược / Đường Cắt Xiên (Inverted Triangle & Sharp Slits)**:
   - *Tạo hình*: Dáng người thon gọn, áo choàng rách bay tà nhọn theo gió, cây cung dài vắt chéo qua lưng tạo thành đường xiên động lực học.
-- **Arcanist (Thuật Sĩ)** — **Hình Thoi / Hình Trụ Đứng (Diamond & Vertical Column)**:
+- **Arcanist (Bí Thuật Sư)** — **Hình Thoi / Hình Trụ Đứng (Diamond & Vertical Column)**:
   - *Tạo hình*: Tà áo choàng dài rủ chạm đất, cây trượng dựng thẳng đứng, quanh người có các khối ngọc ma pháp bay lơ lửng tạo thành hình thoi bảo hộ.
-- **Acolyte (Tu Sĩ)** — **Khối Đồng Hồ Cát / Chữ Thập (Hourglass & Sacred Cross)**:
+- **Acolyte (Tập Sự)** — **Khối Đồng Hồ Cát / Chữ Thập (Hourglass & Sacred Cross)**:
   - *Tạo hình*: Cầu vai giáp nhô cao kết hợp dải khăn kinh thánh buông dài đối xứng; tay cầm chùy xích và đỉnh hương tạo thế cân bằng tâm linh.
 
 ### 3.2. Ngôn Ngữ Hình Khối Môi Trường (Environment Geometry)
@@ -92,7 +92,7 @@ Mỗi Class nhân vật trong *Project Ascendant* được định hình bởi m
 | 🟡 **Vàng Hổ Phách (Amber)** | `#E6A122` | **An Toàn, Cơ Hội & Giá Trị Cao** | Lửa trại Sanctuary, Thanh Thể khí Boss bị vỡ (Stagger), Đồ rơi Legendary. |
 | 🔵 **Xanh Lam/Ngọc (Cyan)** | `#1ED5C6` | **Ma Thuật & Bất Khả Xâm Phạm** | Thanh Thể lực & Mana, Vệt bóng mờ Pixel Dash (I-Frame), Kỹ năng dịch chuyển. |
 | ⚪ **Trắng Xương (Bone White)** | `#E8ECEB` | **Thông Tin Trung Tính & Thánh Thiện** | Chữ số sát thương cơ bản, Font chữ HUD, Hào quang hồi phục của Acolyte. |
-| 🟣 **Tím Hư Không (Void Purple)** | `#6A1B9A` | **Tha Hóa & Nguyền Rủa** | Vùng đất Contested độc hại, Hiệu ứng trừ giáp, Kỹ năng Class Dark Knight ẩn. |
+| 🟣 **Tím Hư Không (Void Purple)** | `#6A1B9A` | **Tha Hóa & Nguyền Rủa** | Vùng đất Contested độc hại, Hiệu ứng trừ giáp. |
 
 ### 4.3. Thiết Kế An Toàn Cho Người Mù Màu (Colorblind Accessibility)
 Mọi màu sắc mang tính cảnh báo sống còn **tuyệt đối không được đứng đơn độc**, bắt buộc phải có hỗ trợ hình học đi kèm:

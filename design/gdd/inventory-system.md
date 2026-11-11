@@ -10,7 +10,7 @@
 
 ## Overview
 
-Hệ thống Kho Đồ & Cơ Sở Dữ Liệu Vật Phẩm 5 Cấp Độ Hiếm (Inventory & 5-Rarity Item Database) quản lý toàn bộ vòng lặp lưu trữ, nhặt đồ (loot), trang bị, rèn đúc và sử dụng vật phẩm trong Project Ascendant. Hệ thống cung cấp cơ sở dữ liệu đồng nhất theo chuẩn `PrimaryDataAsset` của Unreal Engine 5 cho:
+Hệ thống Kho Đồ & Cơ Sở Dữ Liệu Vật Phẩm 5 Cấp Độ Hiếm (Inventory & 5-Rarity Item Database) quản lý toàn bộ vòng lặp lưu trữ, nhặt đồ (loot), trang bị, rèn đúc và sử dụng vật phẩm trong Mortal Ascension. Hệ thống cung cấp cơ sở dữ liệu đồng nhất theo chuẩn `PrimaryDataAsset` của Unreal Engine 5 cho:
 1. **Kho Đồ Dạng Ô (Slot-Based Grid):** Khởi đầu 30 ô, mở rộng tối đa 60 ô qua nâng cấp túi/thắt lưng tại Thợ rèn.
 2. **Khung Trang Bị Nhân Vật (Paperdoll):** 6 vị trí trang bị cốt lõi trực tiếp kích hoạt các `GameplayEffect` trong Gameplay Ability System (GAS).
 3. **Khay Phím Tắt Tiêu Hao (Quickbar 1–4):** Cho phép kích hoạt nhanh bình dược phẩm trong lúc giao chiến.

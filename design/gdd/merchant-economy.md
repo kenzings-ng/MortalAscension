@@ -10,7 +10,7 @@
 
 ## Overview
 
-Hệ thống Vòng Lặp Kinh Tế Tiền Tệ & Mạng Lưới Thương Nhân Dã Ngoại (Merchant & Currency Economy Loop) đóng vai trò là xương sống điều tiết tài nguyên, kiểm soát lạm phát và kiến tạo huyết mạch sinh tồn trong thế giới mở Project Ascendant. Hệ thống hiện thực hóa trực tiếp Trụ cột 3 ("Kinh tế dã ngoại & Thám hiểm rủi ro cao - phần thưởng lớn") và liên kết chặt chẽ với Hệ thống Túi Đồ ([`inventory-system.md`](file:///mnt/Data/Projects/project-games/design/gdd/inventory-system.md)), Hệ thống Bản Đồ Mở & Lửa Trại ([`zone-system.md`](file:///mnt/Data/Projects/project-games/design/gdd/zone-system.md)), cùng Hệ thống Thợ Rèn Dã Ngoại ([`blacksmithing-system.md`](file:///mnt/Data/Projects/project-games/design/gdd/blacksmithing-system.md)). Kinh tế trong trò chơi vận hành xoay quanh hai loại tiền tệ chính với cơ chế cung-cầu tách biệt rõ ràng: **Vàng (Gold - `currency_gold`)**—tiền tệ giao thương vĩ mô dùng để mua nhu yếu phẩm dã ngoại, chi trả phí sửa chữa trang bị hao mòn (`repair_cost_formula`), tháo khảm ngọc (`gem_unsocket_fee = 100 gold`), và chuộc lại tội danh Karma; cùng **Tàn Trang Kỹ Năng / Skill Shards (`item_skill_shard`)**—tiền tệ linh hồn quý hiếm thu thập từ quái Tinh anh và Thủ lĩnh hoặc phân rã Sách Kỹ Năng (`item_skill_book`), dùng cho các nâng cấp thợ rèn tối thượng và đột phá kỹ năng.
+Hệ thống Vòng Lặp Kinh Tế Tiền Tệ & Mạng Lưới Thương Nhân Dã Ngoại (Merchant & Currency Economy Loop) đóng vai trò là xương sống điều tiết tài nguyên, kiểm soát lạm phát và kiến tạo huyết mạch sinh tồn trong thế giới mở Mortal Ascension. Hệ thống hiện thực hóa trực tiếp Trụ cột 3 ("Kinh tế dã ngoại & Thám hiểm rủi ro cao - phần thưởng lớn") và liên kết chặt chẽ với Hệ thống Túi Đồ ([`inventory-system.md`](file:///mnt/Data/Projects/project-games/design/gdd/inventory-system.md)), Hệ thống Bản Đồ Mở & Lửa Trại ([`zone-system.md`](file:///mnt/Data/Projects/project-games/design/gdd/zone-system.md)), cùng Hệ thống Thợ Rèn Dã Ngoại ([`blacksmithing-system.md`](file:///mnt/Data/Projects/project-games/design/gdd/blacksmithing-system.md)). Kinh tế trong trò chơi vận hành xoay quanh hai loại tiền tệ chính với cơ chế cung-cầu tách biệt rõ ràng: **Vàng (Gold - `currency_gold`)**—tiền tệ giao thương vĩ mô dùng để mua nhu yếu phẩm dã ngoại, chi trả phí sửa chữa trang bị hao mòn (`repair_cost_formula`), tháo khảm ngọc (`gem_unsocket_fee = 100 gold`), và chuộc lại tội danh Karma; cùng **Tàn Trang Kỹ Năng / Skill Shards (`item_skill_shard`)**—tiền tệ linh hồn quý hiếm thu thập từ quái Tinh anh và Thủ lĩnh hoặc phân rã Sách Kỹ Năng (`item_skill_book`), dùng cho các nâng cấp thợ rèn tối thượng và đột phá kỹ năng.
 
 Người chơi tương tác với hệ thống qua hai kênh:
 1. **Tương tác chủ động**: Tiếp cận các NPC Thương nhân phân bố theo 3 bậc nguy hiểm của thế giới để mua sắm vật tư, thanh lý chiến lợi phẩm thu gom từ dã ngoại với giá chiết khấu chuẩn (`vendor_sell_penalty = 0.30`), sử dụng danh mục mua lại đồ đã bán (Buyback Window), hoặc thực hiện các dịch vụ đặc thù phân vùng.
@@ -57,7 +57,7 @@ Hệ thống Kinh Tế & Thương Nhân phục vụ đồng thời Trụ cột 1
 
 #### 1. Hệ Thống Song Tiền Tệ (Dual Currency System)
 
-Kinh tế Project Ascendant vận hành trên hai kênh tiền tệ tách biệt chức năng:
+Kinh tế Mortal Ascension vận hành trên hai kênh tiền tệ tách biệt chức năng:
 
 | Tiền tệ | Tên Hiển Thị | Nguồn Cung (Faucets) | Kênh Tiêu Hao (Sinks) | Giới Hạn Mang |
 |---|---|---|---|---|
@@ -391,5 +391,5 @@ Bằng đúng số Gold người chơi đã nhận khi bán. Không áp dụng c
 | # | Câu Hỏi | Trạng Thái | Ghi Chú |
 |---|---|---|---|
 | Q1 | Player-to-Player Trading (Giao dịch giữa người chơi) có nên thêm ở phiên bản sau MVP? | Mở | Rủi ro RMT (Real Money Trading) và duping. Cần ADR riêng nếu triển khai. |
-| Q2 | Auction House (Nhà Đấu Giá) có phù hợp với triết lý kinh tế khan hiếm của Project Ascendant? | Mở | Có thể phá vỡ cảm giác "quý từng đồng". Cân nhắc trong Live-Ops phase. |
+| Q2 | Auction House (Nhà Đấu Giá) có phù hợp với triết lý kinh tế khan hiếm của Mortal Ascension? | Mở | Có thể phá vỡ cảm giác "quý từng đồng". Cân nhắc trong Live-Ops phase. |
 | Q3 | NPC Thương nhân có nên có hệ thống Affinity/Reputation (càng mua nhiều càng giảm giá)? | Mở | Tăng chiều sâu nhưng phức tạp hóa kinh tế. Xem xét cho Post-Launch. |

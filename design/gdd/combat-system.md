@@ -12,7 +12,7 @@
 
 ## Overview
 
-Hệ thống Chiến đấu Cốt lõi & Chuỗi Đòn Đánh (Core Combat & Combo System) là trung tâm trải nghiệm hành động của *Project Ascendant*. Được xây dựng trên nền tảng **Unreal Engine Gameplay Ability System (GAS)** kết hợp hoạt ảnh đồng bộ góc nhìn 2.5D Isometric, hệ thống cung cấp bộ đòn đánh đa tầng:
+Hệ thống Chiến đấu Cốt lõi & Chuỗi Đòn Đánh (Core Combat & Combo System) là trung tâm trải nghiệm hành động của *Mortal Ascension*. Được xây dựng trên nền tảng **Unreal Engine Gameplay Ability System (GAS)** kết hợp hoạt ảnh đồng bộ góc nhìn 2.5D Isometric, hệ thống cung cấp bộ đòn đánh đa tầng:
 1. Chuỗi đòn đánh thường 3 nhịp (**3-Hit Light Combo**) có nhịp độ dồn dập, hồi nhẹ Năng lượng khi trúng đích.
 2. Đòn đánh lướt (**Dash Attack**) kích hoạt mượt mà từ cửa sổ Dash Cancel của cú lướt để thu hẹp khoảng cách và duy trì thế trận tấn công liên tục (chưa triển khai trong code (theo quyết định 2026-10-09: giá trị code là chuẩn); cửa sổ ≈0.27s – 0.35s co theo tỉ lệ 0.35/0.45 (2026-10-10, Y1, chủ dự án duyệt), chốt khi triển khai, xem `dash-evasion.md`).
 3. Đòn tụ lực phá thế (**Heavy Charged Attack**) tiêu hao thể lực (20 Stamina) để giáng đòn uy lực, dồn sát thương Posture cực đại lên đối thủ.

@@ -10,7 +10,7 @@
 
 ## Overview
 
-Hệ thống Điều Khiển & Camera Isometric 2.5D (Input & Isometric Camera Controller) là cầu nối tương tác vật lý trực tiếp giữa người chơi và nhân vật trong Project Ascendant. Được xây dựng trên nền tảng **Unreal Engine Enhanced Input System** và cấu trúc **SpringArm/Camera Component**, hệ thống xử lý chuyển động 8 hướng mượt mà, cơ chế xoay hướng nhân vật tức thì theo trỏ chuột hoặc cần analog phải, và thiết lập góc nhìn Isometric chuẩn mực (Pitch: -45°, Yaw: 45°). 
+Hệ thống Điều Khiển & Camera Isometric 2.5D (Input & Isometric Camera Controller) là cầu nối tương tác vật lý trực tiếp giữa người chơi và nhân vật trong Mortal Ascension. Được xây dựng trên nền tảng **Unreal Engine Enhanced Input System** và cấu trúc **SpringArm/Camera Component**, hệ thống xử lý chuyển động 8 hướng mượt mà, cơ chế xoay hướng nhân vật tức thì theo trỏ chuột hoặc cần analog phải, và thiết lập góc nhìn Isometric chuẩn mực (Pitch: -45°, Yaw: 45°). 
 
 Hệ thống giải quyết bài toán cốt lõi: đảm bảo độ trễ phản hồi bằng 0 (Zero-latency responsiveness), tách biệt độc lập giữa hướng di chuyển và hướng ngắm đòn, đồng thời vận hành cơ chế camera đón đầu thông minh (Look-ahead Offset) giúp người chơi bao quát đấu trường và quan sát trước các đòn đánh nguy hiểm của Boss. Hệ thống hỗ trợ hoàn hảo cả Chuột/Bàn phím lẫn Tay cầm chơi game.
 

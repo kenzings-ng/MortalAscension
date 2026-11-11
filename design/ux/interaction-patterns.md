@@ -1,4 +1,4 @@
-# Interaction Pattern Library: Project Ascendant
+# Interaction Pattern Library: Mortal Ascension
 
 > **Status**: Stable  
 > **Author**: UX Designer / Technical Director  
@@ -15,7 +15,7 @@
 
 ## 1. Introduction & CommonUI Architecture
 
-This interaction pattern library serves as the single source of truth for all user interaction behaviors in *Project Ascendant*. All UI widgets are built on Unreal Engine 5.7 **CommonUI** to guarantee seamless input switching between Keyboard/Mouse and Gamepads, deterministic focus management, and automatic back-stack navigation.
+This interaction pattern library serves as the single source of truth for all user interaction behaviors in *Mortal Ascension*. All UI widgets are built on Unreal Engine 5.7 **CommonUI** to guarantee seamless input switching between Keyboard/Mouse and Gamepads, deterministic focus management, and automatic back-stack navigation.
 
 ### Core CommonUI Base Classes Used:
 - `UCommonUserWidget`: Base for all non-interactive visual containers.

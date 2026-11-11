@@ -12,7 +12,7 @@
 
 ## Overview
 
-Hệ thống Lướt & Né Bất Tử (Dash & I-frame Evasion) là cơ chế phòng thủ chủ động tối thượng và là linh hồn trong hệ thống chiến đấu của Project Ascendant. Được xây dựng trên nền tảng **Unreal Engine Gameplay Ability System (GAS)** kết hợp `CharacterMovementComponent`, hệ thống cung cấp cú lướt tốc độ cao (450 cm trong tổng thời lượng 0.35s, vận tốc giảm tuyến tính từ đỉnh ≈2571 cm/s) tích hợp **0.20 giây khung bất tử tuyệt đối (I-frame), từ t = 0.05s đến t = 0.25s**, sau đó hồi chiêu 0.5s. 
+Hệ thống Lướt & Né Bất Tử (Dash & I-frame Evasion) là cơ chế phòng thủ chủ động tối thượng và là linh hồn trong hệ thống chiến đấu của Mortal Ascension. Được xây dựng trên nền tảng **Unreal Engine Gameplay Ability System (GAS)** kết hợp `CharacterMovementComponent`, hệ thống cung cấp cú lướt tốc độ cao (450 cm trong tổng thời lượng 0.35s, vận tốc giảm tuyến tính từ đỉnh ≈2571 cm/s) tích hợp **0.20 giây khung bất tử tuyệt đối (I-frame), từ t = 0.05s đến t = 0.25s**, sau đó hồi chiêu 0.5s. 
 
 Hệ thống giải quyết bài toán biểu đạt kỹ năng của người chơi: biến việc né tránh thành đòn bẩy phản công thông qua cơ chế **Né Đòn Hoàn Hảo (Perfect Dodge)** thưởng hồi phục thể lực và kích hoạt thiên phú Class, đồng thời hỗ trợ hủy hoạt ảnh linh hoạt (Dash Cancel) để duy trì nhịp độ chiến đấu dồn dập, liền mạch như *Hades*.
 
@@ -71,7 +71,7 @@ gantt
 - **Phần thưởng kỹ năng:**
   - **Hồi Phục Thể Lực:** Lập tức hoàn lại **+15 Stamina** (chi phí thực tế của cú lướt giảm từ 25 xuống chỉ còn 10 điểm, cho phép người chơi kỹ năng cao lướt liên tục mà không lo cạn Stamina).
   - **Hiệu Ứng Hitstop (0.08s):** Toàn bộ sàn đấu và quái vật ngưng đọng nhẹ 0.08 giây, tạo điểm nhấn va chạm cực mạnh cho người chơi.
-  - **Kích Hoạt Thiên Phú Class:** Cấp thẻ `State.PerfectDodgeTriggered` trong 2.0s để kích hoạt các cơ chế phản kích đặc thù (ví dụ: *Thí Thần Giả* ngưng đọng thời gian 1s, *Hư Không Kiếm Sư* để lại vết cắt không gian, *Du Hiệp* tăng 30% tốc chạy).
+  - **Kích Hoạt Thiên Phú Class:** Cấp thẻ `State.PerfectDodgeTriggered` trong 2.0s để kích hoạt các cơ chế phản kích đặc thù (ví dụ: *Kẻ Diệt Thần* ngưng đọng thời gian 1s, *Hư Không Kiếm* để lại vết cắt không gian, *Xạ Thủ* tăng 30% tốc chạy).
 
 #### 3. Quy Tắc Xác Định Hướng Lướt (Direction Determination)
 
