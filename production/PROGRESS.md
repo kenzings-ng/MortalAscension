@@ -1129,3 +1129,37 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
     1. Tên class: **tên tiếng Anh là tên canon duy nhất**; mỗi class giữ đúng một chú thích tiếng Việt theo DECISIONS §2. Không đổi gì trong code.
     2. Tên canon mới của thế giới (thế giới, vùng, phe phái, NPC, boss): **tên riêng tiếng Anh, tài liệu diễn giải tiếng Việt**. Văn bản trong game đi qua localization.
     Hai lựa chọn này sẽ được ghi vào DECISIONS §13 trong PR của N1.
+
+---
+
+## 24. Nhật Ký Đầu Việc: Nhánh `docs/n1-unify-class-names` (Giai Đoạn N — N1: Thống Nhất Tên Gọi Hiện Có)
+
+- **Ngày**: 2026-11-11.
+- **Mục tiêu**: đưa mọi tên gọi đang lệch về đúng DECISIONS §2/§7, không tạo nội dung mới (`production/ROADMAP.md`, dòng N1).
+- **Quyết định của chủ dự án áp dụng** (hộp chọn trong terminal, 2026-11-11): tên tiếng Anh của class là tên canon duy nhất, mỗi class giữ một chú thích tiếng Việt theo §2; tên canon mới của thế giới dùng tiếng Anh, tài liệu viết tiếng Việt. Lựa chọn thứ nhất cũng là xác nhận cho 🛑 ở dòng N1 (Ranger = "Xạ Thủ", "Du Hiệp" là tên nhánh Scout).
+- **Nội dung thực hiện**:
+  1. Khoảng 100 dòng trong `design/gdd/`, `design/art/` đổi chú thích tiếng Việt của class về đúng §2; 4 tiêu đề viết hoa trong `foundational-classes.md`; căn lại sơ đồ cây chuyển chức trong `advanced-classes.md`. Commit `0dec8b6`, `e2eb754`.
+  2. `design/registry/entities.yaml`: đủ 16 class (thêm Swordmaster, Phantom Stalker, Inquisitor, Seraph); `rank:` T1–T4 thay `tier:`; `weapon` chép nguyên văn §7; giá trị cũ giữ thành comment. Commit `09474f3`, `e2eb754`, `00e69ce`.
+  3. Tên game "Project Ascendant" → "Mortal Ascension" ở 47 chỗ trong `design/` (theo `README.md`). `systems-index.md`: "7 Class Nâng Cao" → "11 Class Nâng Cao (T2–T3)". Bỏ "Class Dark Knight ẩn" khỏi `art-bible.md`. "Sách Thí Thần độc quyền" → "Sách God Slayer độc quyền". Commit `0dec8b6`, `e2eb754`.
+  4. Validator: check mới `class_vn_name` dùng danh sách chú thích đã loại `Tools/QA/retired_class_glosses.json`; báo lỗi khi chú thích đã loại đi cặp với tên tiếng Anh của class, cả hai thứ tự, không phân biệt hoa thường. Commit `347e455`, `e2eb754`, `03a6c8f`, `bb1b06e`.
+  5. `production/DECISIONS.md` §13: thêm gạch đầu dòng "Ngôn ngữ tên gọi" ghi hai lựa chọn trên. Commit `0dec8b6`, `e2eb754`.
+- **Log cổng tự động** (tại `bb1b06e`):
+  - `python3 Tools/QA/validate_gdd_consistency.py`: 112 file quét, 2 file lịch sử bỏ qua, 0 lỗi, 0 cảnh báo, 1 allowlist, exit 0.
+  - `python3 Tools/QA/test_validate_gdd_consistency.py`: 37 test, OK, exit 0.
+  - `git diff --check main..HEAD`: 8 dòng trailing whitespace, đều có sẵn trên `main` ở đúng dòng đó; không có dòng mới.
+  - Chạy check mới trên bản chụp `main` của 8 file trọng tâm: bắt 95 dòng tên lệch, không lọt dòng nào (reviewer vòng 3).
+  - Không sửa code, art, backend nên không chạy build, UE test, pixel-review, test backend.
+- **Kết luận reviewer** (cùng một reviewer, 3 vòng):
+  - Vòng 1 (tại `0dec8b6`): CHƯA. Sót 4 tiêu đề viết hoa; check bản đầu (heuristic chuỗi viết hoa) vừa lọt lỗi vừa báo nhầm; registry thiếu giá trị cũ. Không có chỗ nào thay nhầm danh từ chung.
+  - Vòng 2 (tại `00e69ce`): CHƯA. Ngoại lệ "đuôi của tên Title-Case" làm lọt 5 dòng tên lệch từng có trên `main`.
+  - Vòng 3 (tại `03a6c8f`): CHƯA, còn một lỗi: `break` khiến mục allowlist che được lỗi khác cùng dòng. Sửa ở `bb1b06e`. Reviewer ghi rõ sửa xong lỗi này và chạy lại cổng thì đồng ý về kỹ thuật và nhất quán.
+- **Sai sót trong quá trình**: commit `e2eb754` được tạo khi validator đang báo 8 lỗi (comment ghi giá trị cũ trong registry chứa tên đã loại). Sửa ở `00e69ce` trước khi push.
+- **Mục allowlist mới** (`Tools/QA/gdd_validator_allowlist.yaml`): `design/gdd/itemization.md:238` "Khăn Quàng Du Mục (Ranger)" là tên vật phẩm tabard, không phải chú thích class. Câu hỏi cho chủ dự án ở N5: có đổi tên tabard này không.
+- **Chưa sửa, ghi nợ**:
+  1. Vũ khí God Slayer: `design/gdd/game-concept.md:135` và `design/gdd/advanced-classes.md:73` ghi "Thần Binh … Tự Biến Hình", DECISIONS §7 ghi `Weapon.1H.Blade` và `Weapon.2H.Polearm`. Registry theo §7. Cần chủ dự án quyết ở N5.
+  2. `design/registry/entities.yaml` mục `class_god_slayer` trỏ tới `design/gdd/hidden-classes.md`, file chưa tồn tại (có sẵn từ trước).
+  3. Tên game ngoài `design/`: `docs/architecture/*.md`, `production/epics/**`, `production/sprints/*` vẫn ghi "Project Ascendant".
+  4. Chuỗi hiển thị trong `Source/` (`PACharacterSelectTypes.cpp`, `PACharacterSelectWidget.cpp`) vẫn là "Chiến Binh", "Du Hiệp", "Thuật Sĩ": thuộc N7.
+  5. Giới hạn của check `class_vn_name`: không bắt chú thích sai hoàn toàn mới chưa có trong danh sách đã loại; có thể báo nhầm khi chú thích đã loại cũng là cụm từ thông dụng đứng cạnh tên class. Ghi trong comment của validator.
+- **Việc cần chủ dự án**: xem 3 dòng thêm vào `production/DECISIONS.md` §13 ("Ngôn ngữ tên gọi") trong PR trước khi merge.
+- **Trạng thái**: chưa push, chưa merge; mục N1 trong ROADMAP vẫn là `[ ]`.
