@@ -140,46 +140,46 @@ class AscendantApiHandler(BaseHTTPRequestHandler):
                     logger.exception("Error in swap_inventory_slots:")
                     return self._send_json(500, {"error": str(e)})
 
-            if "/promote-class" in path:
+            if path.startswith("/api/v1/server/characters/") and path.endswith("/promote-class"):
                 # POST /api/v1/server/characters/{id}/promote-class
-                parts = path.strip("/").split("/")
-                if len(parts) >= 4 and parts[1] == "server" and parts[2] == "characters" and parts[4] == "promote-class":
-                    char_id = parts[3]
-                    scroll_id = body.get("scroll_item_instance_id")
-                    target_class = body.get("target_class_tag")
-                    is_secondary = bool(body.get("is_secondary", False))
-                    if not scroll_id or not target_class:
-                        return self._send_json(400, {"error": "Missing scroll_item_instance_id or target_class_tag."})
-                    try:
-                        res = BackendService.promote_class(char_id, scroll_id, target_class, is_secondary)
-                        return self._send_json(200, res)
-                    except ValueError as e:
-                        return self._send_json(400, {"error": str(e)})
-                    except Exception as e:
-                        logger.exception("Error in promote_class:")
-                        return self._send_json(500, {"error": str(e)})
+                prefix = "/api/v1/server/characters/"
+                suffix = "/promote-class"
+                char_id = path[len(prefix):-len(suffix)]
+                scroll_id = body.get("scroll_item_instance_id")
+                target_class = body.get("target_class_tag")
+                is_secondary = bool(body.get("is_secondary", False))
+                if not scroll_id or not target_class:
+                    return self._send_json(400, {"error": "Missing scroll_item_instance_id or target_class_tag."})
+                try:
+                    res = BackendService.promote_class(char_id, scroll_id, target_class, is_secondary)
+                    return self._send_json(200, res)
+                except ValueError as e:
+                    return self._send_json(400, {"error": str(e)})
+                except Exception as e:
+                    logger.exception("Error in promote_class:")
+                    return self._send_json(500, {"error": str(e)})
 
-            if "/save" in path:
+            if path.startswith("/api/v1/server/characters/") and path.endswith("/save"):
                 # POST /api/v1/server/characters/{id}/save
-                parts = path.strip("/").split("/")
-                if len(parts) >= 4 and parts[1] == "server" and parts[2] == "characters" and parts[4] == "save":
-                    char_id = parts[3]
-                    level = body.get("character_level", 1)
-                    exp = body.get("character_exp", 0)
-                    primary_class = body.get("primary_class_tag", "")
-                    secondary_class = body.get("secondary_class_tag")
-                    history = body.get("class_progression_history")
-                    quests = body.get("completed_quests")
-                    items = body.get("items")
-                    try:
-                        res = BackendService.save_character(
-                            char_id, level, exp, primary_class, secondary_class,
-                            history, quests, items
-                        )
-                        return self._send_json(200, res)
-                    except Exception as e:
-                        logger.exception("Error in save_character:")
-                        return self._send_json(500, {"error": str(e)})
+                prefix = "/api/v1/server/characters/"
+                suffix = "/save"
+                char_id = path[len(prefix):-len(suffix)]
+                level = body.get("character_level", 1)
+                exp = body.get("character_exp", 0)
+                primary_class = body.get("primary_class_tag", "")
+                secondary_class = body.get("secondary_class_tag")
+                history = body.get("class_progression_history")
+                quests = body.get("completed_quests")
+                items = body.get("items")
+                try:
+                    res = BackendService.save_character(
+                        char_id, level, exp, primary_class, secondary_class,
+                        history, quests, items
+                    )
+                    return self._send_json(200, res)
+                except Exception as e:
+                    logger.exception("Error in save_character:")
+                    return self._send_json(500, {"error": str(e)})
 
         return self._send_json(404, {"error": f"Path not found: {path}"})
 

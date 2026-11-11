@@ -101,6 +101,74 @@ def test_jwt_lifecycle():
     print("  -> JWT Lifecycle, Signature Validation & Expiry PASSED.")
 
 
+def test_http_api_routing():
+    print("\n[UNIT TEST 4] Testing REST API Handler Routing & Security Handshake...")
+    import urllib.request
+    import urllib.error
+    import threading
+    from Services.Backend.app import ThreadedHTTPServer, AscendantApiHandler
+
+    server = ThreadedHTTPServer(("127.0.0.1", 0), AscendantApiHandler)
+    host, port = server.server_address
+    t = threading.Thread(target=server.serve_forever)
+    t.daemon = True
+    t.start()
+
+    base_url = f"http://{host}:{port}"
+    try:
+        # 1. Health check
+        with urllib.request.urlopen(f"{base_url}/health") as resp:
+            assert resp.status == 200
+            data = json.loads(resp.read().decode("utf-8"))
+            assert data["status"] == "ok"
+
+        # 2. Register with invalid email -> 400 Bad Request
+        bad_req = urllib.request.Request(
+            f"{base_url}/api/v1/auth/register",
+            data=json.dumps({"email": "not-an-email", "password": "pass"}).encode("utf-8"),
+            headers={"Content-Type": "application/json"}
+        )
+        try:
+            urllib.request.urlopen(bad_req)
+            assert False, "Should have failed with 400"
+        except urllib.error.HTTPError as e:
+            assert e.code == 400
+
+        # 3. Dedicated Server endpoint without X-Server-Secret -> 401 Unauthorized
+        for path in [
+            "/api/v1/server/validate-token",
+            "/api/v1/server/inventory/swap-slots",
+            "/api/v1/server/characters/test-char-1/save",
+            "/api/v1/server/characters/test-char-1/promote-class",
+            "/api/v1/server/characters/test-char-1"
+        ]:
+            if "characters/test-char-1" in path and not path.endswith("save") and not path.endswith("promote-class"):
+                sec_req = urllib.request.Request(f"{base_url}{path}")
+            else:
+                sec_req = urllib.request.Request(
+                    f"{base_url}{path}",
+                    data=b"{}",
+                    headers={"Content-Type": "application/json"}
+                )
+            try:
+                urllib.request.urlopen(sec_req)
+                assert False, f"Path {path} should have returned 401 without X-Server-Secret"
+            except urllib.error.HTTPError as e:
+                assert e.code == 401, f"Path {path} expected 401, got {e.code}"
+
+        # 4. Unknown route -> 404
+        try:
+            urllib.request.urlopen(f"{base_url}/api/v1/unknown")
+            assert False, "Unknown route should return 404"
+        except urllib.error.HTTPError as e:
+            assert e.code == 404
+
+        print("  -> REST API Routing, Status Codes & Security Secret Verification PASSED.")
+    finally:
+        server.shutdown()
+        server.server_close()
+
+
 def main():
     print("=" * 60)
     print("Project Ascendant: Backend Service Unit Test Suite")
@@ -109,6 +177,7 @@ def main():
         test_auth_validation()
         test_password_hashing()
         test_jwt_lifecycle()
+        test_http_api_routing()
         print("\n" + "=" * 60)
         print(">> ALL BACKEND SERVICE UNIT TESTS PASSED SUCCESSFULLY (Exit 0) <<")
         print("=" * 60)
