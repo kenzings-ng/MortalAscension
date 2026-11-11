@@ -1,6 +1,6 @@
 # Narrative — Thế giới, phe phái, nhân vật
 
-> **Trạng thái**: Khung thư mục (N0, 2026-11-11). Chưa có nội dung canon.
+> **Trạng thái**: Có canon từ N3 (2026-11-11): `world/world-bible.md`, `world/tone-guide.md`. Các thư mục còn lại chưa có nội dung.
 > **Lộ trình**: `production/ROADMAP.md` — Giai đoạn N.
 > **Nguồn chuẩn**: `production/DECISIONS.md` thắng mọi file trong thư mục này.
 
@@ -8,7 +8,7 @@ Thư mục này là nguồn duy nhất cho thế giới và nhân vật của ga
 
 ## Tiền đề đã chốt
 
-Thế giới fantasy có thật. Hệ Thống (cấp độ, class, kỹ năng) là quy luật của thế giới mà cư dân nhìn thấy (DECISIONS §13, bổ sung 2026-11-11). Mọi nội dung khác chưa được quyết.
+Thế giới fantasy có thật. Hệ Thống (cấp độ, class, kỹ năng) là quy luật của thế giới mà cư dân nhìn thấy (DECISIONS §13, bổ sung 2026-11-11). Thế giới, tông và tên nhóm người chơi: xem `world/` (N3). Vùng, phe phái, nhân vật, boss, NPC: chưa quyết (N4–N6).
 
 ## Cấu trúc
 

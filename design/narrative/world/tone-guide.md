@@ -44,7 +44,7 @@ Không đổi tên class nào (DECISIONS §2). Việc sửa từng chỗ trong G
 
 - Sci-fi, súng, máy móc cơ khí lạc thời, bánh răng lộ ra (`production/qa/art-gate-criteria.md`).
 - Hình ảnh vũ trụ, sao, thiên hà, plasma.
-- Meme, tiếng lóng hiện đại, tham chiếu văn hóa đại chúng trong văn bản trong game. Lưu ý: tên chiêu "Judgement Cut" (`game-concept.md:125`, `advanced-classes.md:63`) trùng tên chiêu của một tác phẩm khác; N5 xem lại.
+- Meme, tiếng lóng hiện đại, tham chiếu văn hóa đại chúng trong văn bản trong game. Lưu ý: tên chiêu "Judgement Cut" (`game-concept.md:131`, `advanced-classes.md:63`) trùng tên chiêu của một tác phẩm khác; N5 xem lại.
 - **Từ ngữ meta trong văn bản trong game** (lời thoại, mô tả vật phẩm, thông báo): "server", "máy chủ", "NPC", "PK", "respawn", "farm", "buff". Tài liệu thiết kế vẫn được dùng các từ này khi nói về hệ thống.
 - Thành ngữ không dịch được (`.claude/rules/narrative.md`).
 - Sao chép mô típ đặc trưng của tác phẩm khác (ví dụ đống lửa nghỉ chân, "linh hồn" làm tiền tệ). Nét riêng của game: Hệ Thống là **chữ** của thần, người chơi là **mảnh của chính vị thần**.
@@ -54,6 +54,18 @@ Không đổi tên class nào (DECISIONS §2). Việc sửa từng chỗ trong G
 - Tên riêng canon bằng tiếng Anh; diễn giải trong tài liệu bằng tiếng Việt; văn bản trong game qua localization (DECISIONS §13 "Ngôn ngữ tên gọi").
 - Lời thoại tối đa 120 ký tự một dòng (`.claude/rules/narrative.md`).
 
-## 7. Contradictions Check
+## 7. History
+
+Không áp dụng: tài liệu quy tắc viết, không có dòng thời gian. Lịch sử thế giới ở `world-bible.md` mục 3.
+
+## 8. Connections
+
+`world-bible.md`; `design/art/art-bible.md` §2 (ánh sáng); `design/art/vanguard-mood-board.md` (tham chiếu); `production/qa/art-gate-criteria.md` (cấm sci-fi, máy móc); `.claude/rules/narrative.md`.
+
+## 9. Player Relevance
+
+Người chơi không đọc tài liệu này; họ cảm nhận nó qua văn bản trong game, art và âm thanh.
+
+## 10. Contradictions Check
 
 Không có mâu thuẫn với DECISIONS. Các chỗ trong GDD đang trái tone guide được liệt kê ở `world-bible.md` mục 11 và sửa ở các đầu việc sau.
