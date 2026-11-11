@@ -63,6 +63,10 @@ public:
 	static bool CheckAuthToken(const FString& Options, bool bRequireToken, FString& OutErrorMessage);
 
 protected:
+	/** Nhận kết quả lưu nhân vật từ Backend (dynamic delegate cần UFUNCTION). */
+	UFUNCTION()
+	void HandleCharacterSaveComplete(bool bSuccess, const FString& Message);
+
 	/** Có bắt buộc kiểm tra Token hợp lệ ở PreLogin hay không (bật mặc định trên Dedicated Server phát hành) */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "ProjectAscendant|Security")
 	bool bRequireAuthToken = false;

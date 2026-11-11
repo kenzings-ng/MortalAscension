@@ -152,10 +152,12 @@ void APAGameModeBase::TriggerImmediateCharacterSave(APlayerController* PC)
 	}
 
 	// Gọi bất đồng bộ tới Backend Game Service thông qua FHttpModule.
-	// FPABackendSaveCharacterDelegate là dynamic delegate nên không gắn được lambda; truyền delegate rỗng
-	// (subsystem gọi ExecuteIfBound) và ghi log tại đây.
+	// FPABackendSaveCharacterDelegate là dynamic delegate nên không gắn được lambda; gắn UFUNCTION để ghi kết quả.
+	// Delegate không mang CharacterId, nên log yêu cầu ở đây để nối với dòng kết quả.
 	UE_LOG(LogTemp, Log, TEXT("[APAGameModeBase] Requesting character save for %s (%d item(s))."), *CharData.CharacterId, CharData.Items.Num());
-	BackendSubsystem->SaveCharacter(CharData, FPABackendSaveCharacterDelegate());
+	FPABackendSaveCharacterDelegate OnSaved;
+	OnSaved.BindUFunction(this, GET_FUNCTION_NAME_CHECKED(APAGameModeBase, HandleCharacterSaveComplete));
+	BackendSubsystem->SaveCharacter(CharData, OnSaved);
 }
 
 bool APAGameModeBase::CheckAuthToken(const FString& Options, bool bRequireToken, FString& OutErrorMessage)
@@ -194,4 +196,16 @@ bool APAGameModeBase::CheckAuthToken(const FString& Options, bool bRequireToken,
 	}
 
 	return true;
+}
+
+void APAGameModeBase::HandleCharacterSaveComplete(bool bSuccess, const FString& Message)
+{
+	if (bSuccess)
+	{
+		UE_LOG(LogTemp, Log, TEXT("[APAGameModeBase] Character save completed: %s"), *Message);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("[APAGameModeBase] Character save FAILED: %s"), *Message);
+	}
 }
