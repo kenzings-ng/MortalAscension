@@ -16,6 +16,7 @@ SCAN SCOPE (X13, 2026-10-10) -- see SCAN_TARGETS:
   - docs/architecture/*.md, docs/architecture/*.yaml
   - design/registry/*.yaml
   - design/*.md, design/art/*.md, design/ux/*.md, docs/registry/*.yaml
+  - design/narrative/**/*.md (N0, 2026-11-11: world bible, factions, character sheets, bestiary, NPCs)
 
 SKIPPED HISTORICAL / DATED RECORDS -- see SKIP_PATH_PREFIXES / SKIP_NAME_PATTERNS:
   These files are snapshots of the past (review reports, gate checks, plans,
@@ -62,6 +63,7 @@ SCAN_TARGETS = [
     ("design/art", "*.md"),
     ("design/ux", "*.md"),
     ("docs/registry", "*.yaml"),
+    ("design/narrative", "**/*.md"),
 ]
 
 # Historical / dated records that are never scanned (path prefixes, posix, relative to root).

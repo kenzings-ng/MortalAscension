@@ -35,6 +35,7 @@
 # FORMAT: YAML. Consistent indentation is critical for grep reliability.
 #   Sections: entities | items | formulas | constants
 #   Each entry: name, status, source, referenced_by[], attributes{}, added, revised
+#   Narrative entities (N0, 2026-11-11) also carry: kind, canon, and replaced_by on deprecated names
 
 version: 1
 last_updated: ""
@@ -278,6 +279,22 @@ entities:
 #         drop_rate: 0.8          # 0.0–1.0
 #     added: 2026-03-26
 #     revised: ""
+
+
+  # ─── NARRATIVE ENTITIES (N0, 2026-11-11) ─────────────────────────
+  # Chưa có mục nào. Chỉ đăng ký tên đã được chủ dự án chọn (ROADMAP Giai đoạn N;
+  # nguồn: design/narrative/**). Không tự đặt tên mới.
+  # Vùng, thành, địa điểm, phe phái, NPC, boss, quái đều đăng ký trong `entities`
+  # (không tạo section riêng, để /consistency-check đọc được) và thêm hai trường:
+  #   kind:  region | citadel | site | faction | npc | boss | enemy
+  #   canon: Established | Provisional | Under Review   (xem design/narrative/README.md)
+  # Nguồn (source) theo kind:
+  #   region | citadel | site -> design/narrative/world/<slug>.md      (N4)
+  #   faction                 -> design/narrative/factions/<slug>.md   (N4)
+  #   npc                     -> design/narrative/npcs/<slug>.md       (N6)
+  #   boss | enemy            -> design/narrative/bestiary/<slug>.md   (N6)
+  # Tên cũ bị loại: giữ thành một mục riêng với `status: deprecated` và
+  # `replaced_by: <name>`, theo quy tắc "Never delete entries" ở đầu file.
 
 
 # ─── ITEMS ───────────────────────────────────────────────────────────────────

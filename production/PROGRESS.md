@@ -1089,3 +1089,33 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
      - Chạy Unreal Automation Tool (`RunUAT.sh BuildCookRun -cook -skipstage`) kiểm chứng toàn bộ 3,700+ asset, maps, shaders và blueprints: **BUILD SUCCESSFUL, 0 Errors, ExitCode=0**.
      - Ghi lại tệp Unreal Insights Trace Benchmark chuyên biệt cho Outpost map và Combat: `Saved/Profiling/Alpha_Benchmark_L_VerdantFrontier_Outpost.utrace` (6.4 MB) chứa dữ liệu chi tiết về chu kỳ khung hình (Frame), xung nhịp CPU và mốc đo (Bookmarks).
 - **Cột mốc**: Cập nhật toàn bộ các mục kỹ thuật của Giai đoạn 7 trong `production/ROADMAP.md` thành `[x]`. Sẵn sàng cho trạm kiểm duyệt Alpha Playtest với người ngoài (`ROADMAP.md:147`).
+
+---
+
+## 23. Nhật Ký Đầu Việc: Nhánh `docs/n0-narrative-foundation-infra` (Giai Đoạn N — N0: Hạ Tầng Narrative)
+
+- **Ngày**: 2026-11-11.
+- **Mục tiêu**: mở Giai đoạn N (Nền tảng Narrative) theo bốn lựa chọn của chủ dự án ngày 2026-11-11 và kế hoạch `production/plans/narrative-foundation-2026-11-11.md`; dựng khung và cổng kiểm tra trước khi viết nội dung canon.
+- **Nội dung thực hiện**:
+  1. Validator quét `design/narrative/**/*.md` (`Tools/QA/validate_gdd_consistency.py`), kèm test phạm vi lồng thư mục (`Tools/QA/test_validate_gdd_consistency.py`). Commit `070b354`. Test skip rule trong `design/narrative/` thêm ở `cd0ce86`.
+  2. Khung `design/narrative/` (`world/`, `factions/`, `characters/`, `bestiary/`, `npcs/`) và `README.md` nêu quy tắc canon. Commit `d04f6dc` (bản đầu dùng section `locations` riêng trong `design/registry/entities.yaml`). Quy ước `kind:` / `canon:` trong section `entities` thay cho bản đó từ `cd0ce86`; chưa đăng ký mục nào.
+  3. Thêm Giai đoạn N (N0–N8) vào `production/ROADMAP.md` và khối "Narrative (bổ sung 2026-11-11)" vào `production/DECISIONS.md` §13. Commit `c127da0`.
+  4. Sửa theo reviewer: commit `cd0ce86` (vòng 1, 11 lỗi) và `956558a` (vòng 2, M1, M2, L1, L3, L4).
+- **Log cổng tự động** (chạy tại `956558a`):
+  - `python3 Tools/QA/validate_gdd_consistency.py`: 112 file quét, 2 file lịch sử bỏ qua, 0 lỗi, 0 cảnh báo, 0 allowlist, exit 0.
+  - `python3 Tools/QA/test_validate_gdd_consistency.py`: 26 test, OK, exit 0.
+  - `git diff --check`: sạch.
+  - Không sửa code, art hay backend nên không chạy build, UE test, pixel-review, test backend.
+- **Kết luận reviewer**:
+  - Vòng 1 (tại `c127da0`): CHƯA đồng ý. 5 lỗi trung bình, 6 lỗi thấp, đều về câu chữ và cấu trúc registry. Reviewer tự chạy mutation: bỏ dòng `SCAN_TARGETS` mới hoặc đổi thành `*.md` thì test fail.
+  - Vòng 2 (tại `cd0ce86`): 11 lỗi vòng 1 đã sửa đúng; còn 2 lỗi trung bình (M1, M2) và 6 lỗi thấp (L1–L6). `956558a` sửa M1, M2, L1, L3, L4; L6 là mục nhật ký này (`cec80e2`); L2 và L5 không sửa, chỉ ghi nhận ở hai mục dưới.
+  - Vòng 3 (tại `cec80e2`): **ĐỒNG Ý merge về kỹ thuật và nhất quán, chờ chủ dự án xem câu chữ.** Reviewer chạy lại: validator 112 file, 0 lỗi, exit 0; self-test 26 test OK, exit 0; `git diff --check main..HEAD` sạch. Còn 4 điểm thấp trong chính mục nhật ký này (P1–P4), đã sửa ở commit kế tiếp.
+- **Sai khác so với kế hoạch đã duyệt** (file kế hoạch là hồ sơ, không sửa):
+  1. Kế hoạch ghi "(N1–N8)" và "một dòng ghi nhận" ở DECISIONS; thực tế là N0–N8 và 5 gạch đầu dòng ghi bốn lựa chọn của chủ dự án.
+  2. Kế hoạch ghi sáu nhóm rỗng (`regions`, `citadels`, …) trong registry; thực tế dùng trường `kind:` trong section `entities`, vì header của `entities.yaml` đã xếp NPC, phe phái, boss vào đó và `/consistency-check` chỉ đọc bốn section sẵn có.
+  3. Quy tắc "không tên mới" ghi phạm vi "vào repo", chặt hơn câu "vào GDD" trong kế hoạch.
+- **Việc cần chủ dự án**:
+  - Xem câu chữ phần thêm vào `production/ROADMAP.md` và `production/DECISIONS.md` trong PR trước khi merge.
+  - `CLAUDE.md:35` và `DECISIONS.md:226` vẫn ghi phạm vi tự vận hành "0 → 7, gồm 1.5 và 2B", chưa nhắc Giai đoạn N. Agent không sửa hai dòng này.
+  - N1 giữ 🛑 dạng xác nhận: áp DECISIONS §2 nguyên văn (Ranger = "Xạ Thủ", "Du Hiệp" = tên nhánh Scout).
+- **Trạng thái**: nhánh đã push (`git ls-remote`: `4a76715` trên `refs/heads/docs/n0-narrative-foundation-infra`), PR #63 đã mở, chờ chủ dự án xem câu chữ. Chưa merge; mục N0 trong ROADMAP vẫn là `[ ]`.

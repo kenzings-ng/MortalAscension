@@ -15,9 +15,12 @@
 
 ```
 0 → 1 → 1.5 → [2 (chờ duyệt thẩm mỹ) song song 2B] → 3 → 4 → 5 → 6 → 7
+                                                         N (song song Giai đoạn 4)
 ```
 
 Giai đoạn 2B không cần duyệt thẩm mỹ, nên agent làm 2B trong lúc chờ chủ dự án duyệt ở Giai đoạn 2.
+
+Giai đoạn N (Nền tảng Narrative) chạy song song Giai đoạn 4 và không chặn sản xuất art (DECISIONS §13, bổ sung 2026-11-11).
 
 ---
 
@@ -148,6 +151,32 @@ Khối lượng theo 5 hướng + lật (story-004 → 007), 16 class:
 - [x] Profile hiệu năng bằng Unreal Insights (Trace benchmark Outpost map & Combat trong `Saved/Profiling/Alpha_Benchmark_L_VerdantFrontier_Outpost.utrace`).
 - [x] Đóng gói bản build (Nội dung và maps đã qua kiểm chứng Cook 100% PASS bằng RunUAT BuildCookRun, 0 lỗi).
 - [x] Kiểm tra license lần cuối; khai báo nội dung AI theo yêu cầu nền tảng phát hành (`THIRD_PARTY_ASSETS.md` §1-5).
+
+---
+
+## Giai đoạn N — Nền tảng Narrative (thế giới, phe phái, thiết kế nhân vật)
+
+_Thêm ngày 2026-11-11 theo quyết định của chủ dự án (DECISIONS §13, bổ sung 2026-11-11). Chạy song song Giai đoạn 4, không chặn sản xuất art._
+
+**Mục tiêu**: một nguồn canon duy nhất cho thế giới và nhân vật trong `design/narrative/`; mọi GDD và registry trỏ về đó; validator chặn tên lệch tái phát.
+
+**Tiền đề đã chốt**: thế giới fantasy có thật; Hệ Thống (cấp độ, class, kỹ năng) là quy luật mà cư dân nhìn thấy.
+
+**Cách tạo canon**: agent đề xuất 2–3 phương án trên một trang xem trước, chủ dự án chọn. Không tên thế giới, vùng, thành, địa điểm, phe phái, NPC, boss hay quái mới nào được ghi vào repo trước khi chủ dự án chọn; phương án chưa được chọn chỉ nằm trên trang xem trước.
+
+- [ ] N0 — Hạ tầng: khung `design/narrative/`, validator quét `design/narrative/**`, quy ước `kind:` cho vùng, thành, địa điểm, phe phái, NPC, boss, quái trong `entities.yaml`.
+- [ ] N1 — Thống nhất tên gọi hiện có theo DECISIONS §2/§7: tên tiếng Việt của 16 class, bổ sung 4 class thiếu trong registry, tên game "Mortal Ascension" (theo `README.md`), check `class_vn_name` trong validator. 🛑 Xác nhận trước khi sửa: áp §2 nguyên văn, "Du Hiệp" là tên nhánh Scout và Ranger là "Xạ Thủ" (GDD đang gọi Ranger là "Du Hiệp").
+- [ ] N2 — Hòa giải thông số sprite về một bảng duy nhất trong `pixel-asset-specifications.md`; retrofit `art-bible.md` §5–§6. 🛑 Các điểm chưa có nguồn chốt: số lớp paperdoll, PPU, ngân sách màu, khiên và tabard Vanguard, tư thế 90° / 50-50.
+- [ ] N3 — World bible và tone guide (`design/narrative/world/`). 🛑 Chủ dự án chọn trên trang đề xuất.
+- [ ] N4 — Địa lý và phe phái: 3 vùng, 3 thành, địa điểm mở khóa class, phe phái; chốt vị trí lò rèn, Chợ Đen, Lửa Trại. 🛑
+- [ ] N5 — Character sheet 16 class, 5 lô theo nhánh (`design/narrative/characters/`). 🛑 Mỗi lô; giới tính / kiểu thân nhân vật.
+- [ ] N6 — Boss, bestiary, NPC có tên. 🛑 Quan hệ Stone Golem ↔ Ironclad Warlord và danh sách bộ phận boss (chạm DECISIONS §10, §13).
+- [ ] N7 — Đồng bộ chuỗi hiển thị trong code với canon (chỉ text; không sửa logic).
+- [ ] N8 — Rà soát chéo cuối: `/review-all-gdds`, `/consistency-check full`, cổng `nd-consistency` và `cd-narrative`.
+
+**Thứ tự**: N0 → (N1 song song N2) → N3 → N4 → N5 → N6 → N7 → N8.
+
+**Xong khi**: mọi mục trên là `[x]`.
 
 ---
 
