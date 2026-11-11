@@ -1097,8 +1097,8 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
 - **Ngày**: 2026-11-11.
 - **Mục tiêu**: mở Giai đoạn N (Nền tảng Narrative) theo bốn lựa chọn của chủ dự án ngày 2026-11-11 và kế hoạch `production/plans/narrative-foundation-2026-11-11.md`; dựng khung và cổng kiểm tra trước khi viết nội dung canon.
 - **Nội dung thực hiện**:
-  1. Validator quét `design/narrative/**/*.md` (`Tools/QA/validate_gdd_consistency.py`), kèm test phạm vi lồng thư mục và test skip rule (`Tools/QA/test_validate_gdd_consistency.py`). Commit `070b354`.
-  2. Khung `design/narrative/` (`world/`, `factions/`, `characters/`, `bestiary/`, `npcs/`) và `README.md` nêu quy tắc canon. Quy ước `kind:` / `canon:` cho narrative entity trong `design/registry/entities.yaml`; chưa đăng ký mục nào. Commit `d04f6dc`.
+  1. Validator quét `design/narrative/**/*.md` (`Tools/QA/validate_gdd_consistency.py`), kèm test phạm vi lồng thư mục (`Tools/QA/test_validate_gdd_consistency.py`). Commit `070b354`. Test skip rule trong `design/narrative/` thêm ở `cd0ce86`.
+  2. Khung `design/narrative/` (`world/`, `factions/`, `characters/`, `bestiary/`, `npcs/`) và `README.md` nêu quy tắc canon. Commit `d04f6dc` (bản đầu dùng section `locations` riêng trong `design/registry/entities.yaml`). Quy ước `kind:` / `canon:` trong section `entities` thay cho bản đó từ `cd0ce86`; chưa đăng ký mục nào.
   3. Thêm Giai đoạn N (N0–N8) vào `production/ROADMAP.md` và khối "Narrative (bổ sung 2026-11-11)" vào `production/DECISIONS.md` §13. Commit `c127da0`.
   4. Sửa theo reviewer: commit `cd0ce86` (vòng 1, 11 lỗi) và `956558a` (vòng 2, M1, M2, L1, L3, L4).
 - **Log cổng tự động** (chạy tại `956558a`):
@@ -1108,7 +1108,8 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   - Không sửa code, art hay backend nên không chạy build, UE test, pixel-review, test backend.
 - **Kết luận reviewer**:
   - Vòng 1 (tại `c127da0`): CHƯA đồng ý. 5 lỗi trung bình, 6 lỗi thấp, đều về câu chữ và cấu trúc registry. Reviewer tự chạy mutation: bỏ dòng `SCAN_TARGETS` mới hoặc đổi thành `*.md` thì test fail.
-  - Vòng 2 (tại `cd0ce86`): 11 lỗi vòng 1 đã sửa đúng; còn 2 lỗi trung bình (M1, M2) và 6 lỗi thấp. Đã sửa ở `956558a`.
+  - Vòng 2 (tại `cd0ce86`): 11 lỗi vòng 1 đã sửa đúng; còn 2 lỗi trung bình (M1, M2) và 6 lỗi thấp (L1–L6). `956558a` sửa M1, M2, L1, L3, L4; L6 là mục nhật ký này (`cec80e2`); L2 và L5 không sửa, chỉ ghi nhận ở hai mục dưới.
+  - Vòng 3 (tại `cec80e2`): **ĐỒNG Ý merge về kỹ thuật và nhất quán, chờ chủ dự án xem câu chữ.** Reviewer chạy lại: validator 112 file, 0 lỗi, exit 0; self-test 26 test OK, exit 0; `git diff --check main..HEAD` sạch. Còn 4 điểm thấp trong chính mục nhật ký này (P1–P4), đã sửa ở commit kế tiếp.
 - **Sai khác so với kế hoạch đã duyệt** (file kế hoạch là hồ sơ, không sửa):
   1. Kế hoạch ghi "(N1–N8)" và "một dòng ghi nhận" ở DECISIONS; thực tế là N0–N8 và 5 gạch đầu dòng ghi bốn lựa chọn của chủ dự án.
   2. Kế hoạch ghi sáu nhóm rỗng (`regions`, `citadels`, …) trong registry; thực tế dùng trường `kind:` trong section `entities`, vì header của `entities.yaml` đã xếp NPC, phe phái, boss vào đó và `/consistency-check` chỉ đọc bốn section sẵn có.
