@@ -36,7 +36,7 @@
 | Atlas | Tối đa $2048 \times 2048$ mỗi bộ flipbook nhân vật; sheet dài hơn xuất nhiều hàng. | `control-manifest.md`; chủ dự án xác nhận 2026-11-11 |
 | Lọc texture | Nearest, không mipmap. | `art-bible.md` §8 |
 | Khung độ hiếm | Màu theo `inventory-system.md` §1. Viền 2 px. | DECISIONS §13 (màu); §6.2 (viền) |
-| Vanguard | Khiên Sắt Vuông `Item.Shield.Square`; tabard navy "Worn Azure"; mào lông đỏ thẫm (cần chủ dự án duyệt hình có mào). | DECISIONS §7, §10; mood board §2; chủ dự án chọn 2026-11-11 |
+| Vanguard | Khiên Sắt Vuông `Item.Shield.Square`; tabard navy "Worn Azure" (asset `Tabard_Vanguard_CrimsonSash` màu đỏ phải làm lại); mào lông đỏ thẫm (cần chủ dự án duyệt hình có mào). | DECISIONS §7, §10; mood board §2; chủ dự án chọn 2026-11-11 (tabard, mào) |
 
 ---
 

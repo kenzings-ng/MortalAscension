@@ -266,7 +266,7 @@ Thống nhất dứt điểm mọi phân bổ weapon family cho toàn bộ 16 Cl
 - **Thông số sprite nhân vật (N2; chủ dự án chọn trong terminal ngày 2026-11-11)**. Bảng đầy đủ, là nguồn duy nhất: `design/art/pixel-asset-specifications.md` §0.
   - Chiều cao chuẩn **75 px** trên canvas 128×128, đo trên design sheet Vanguard đã duyệt (mood board trước đó ghi 70). Các nhóm class lệch trong ±4 px; số từng nhóm khác Vanguard là tạm, duyệt ở N5.
   - Tư thế: mặc định đường cong S/C, trọng tâm 80/20; dáng thẳng hoặc 50/50 trong `character-visual-system.md` §2.1 là ngoại lệ có chủ đích.
-  - Vanguard giữ mào lông đỏ thẫm; vì design sheet đã duyệt chưa có mào, hình Vanguard có mào phải được chủ dự án duyệt.
+  - Vanguard giữ mào lông đỏ thẫm; vì design sheet đã duyệt chưa có mào, hình Vanguard có mào phải được chủ dự án duyệt. Tabard Vanguard là navy "Worn Azure" theo mood board và design sheet; asset `Tabard_Vanguard_CrimsonSash` (đỏ) phải làm lại.
   - Không bắt buộc viền ngoài tối 1 px.
   - Lớp render paperdoll: 5 lớp `EPAPaperdollLayer` + 2 lớp phủ theo class (mào, tabard); slot trang bị là dữ liệu, không phải lớp vẽ.
   - Animation theo `character-visual-system.md` §4.3, thêm Stunned và Dead với số frame chờ chốt khi duyệt cảm giác chơi.
