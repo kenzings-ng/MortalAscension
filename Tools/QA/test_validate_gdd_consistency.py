@@ -301,6 +301,9 @@ class ScopeAndAllowlistTests(unittest.TestCase):
         self.tp.write("design/ux/hud.md", "Viền đồ Divine (Hoàng kim).\n")
         self.tp.write("design/overview.md", "Tag `Class.Tier2.Templar`.\n")
         self.tp.write("docs/registry/terms.yaml", "  currency: AshShards\n")
+        self.tp.write("design/narrative/README.md", "Tag `Class.Vanguard`.\n")
+        self.tp.write("design/narrative/characters/oracle.md", "Class Oracle.\n")
+        self.tp.write("design/narrative/world/clean.md", "Canon level: Provisional.\n")
         code, out = self.tp.run()
         self.assertEqual(code, 1)
         for rel, cid in [
@@ -314,9 +317,12 @@ class ScopeAndAllowlistTests(unittest.TestCase):
             ("design/ux/hud.md:1", "divine_immortal_rarity"),
             ("design/overview.md:1", "legacy_class_tag"),
             ("docs/registry/terms.yaml:1", "ash_shards"),
+            ("design/narrative/README.md:1", "legacy_class_tag"),
+            ("design/narrative/characters/oracle.md:1", "banned_class"),
         ]:
             self.assertIn(f"{rel}: [{cid}]", out)
         self.assertIn("[PASS] design/gdd/clean.md", out)
+        self.assertIn("[PASS] design/narrative/world/clean.md", out)
 
     def test_historical_records_are_skipped(self):
         bad = "Nhận 10 Ash Shards. Class.Vanguard. Oracle.\n"
