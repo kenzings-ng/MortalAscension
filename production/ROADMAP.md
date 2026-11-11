@@ -123,10 +123,10 @@ Khối lượng theo 5 hướng + lật (story-004 → 007), 16 class:
 
 ## Giai đoạn 5 — Dựng thế giới (PCG)
 
-- [ ] Tileset mặt đất 32×32 có autotile bitmask (`pixel-tileset`).
-- [ ] Translucent Sort Policy = Sort Along Axis cho sắp xếp độ sâu isometric.
-- [ ] Nạp asset môi trường M6 vào `PCG_WorldBiomeGraph`.
-- [ ] Đường và thành bằng `PCG_CitadelRoadSplineGraph`.
+- [x] Tileset mặt đất 32×32 có autotile bitmask (`pixel-tileset`).
+- [x] Translucent Sort Policy = Sort Along Axis cho sắp xếp độ sâu isometric.
+- [x] Nạp asset môi trường M6 vào `PCG_WorldBiomeGraph`.
+- [x] Đường và thành bằng `PCG_CitadelRoadSplineGraph`.
 - [ ] WFC ngục tối: để backlog, chỉ làm khi mọi mục trên xong.
 - [ ] 🛑 Chủ dự án đi dạo map và nhận xét.
 
