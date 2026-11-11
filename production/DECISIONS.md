@@ -2,8 +2,8 @@
 
 > **Status**: APPROVED & LOCKED  
 > **Authority**: System Architect & Project Lead  
-> **Last Updated**: 2026-10-10 (bổ sung §13)  
-> **Scope**: Bắt buộc tuân thủ tuyệt đối trong toàn bộ quá trình phát triển (Giai đoạn 0 → 7, theo ROADMAP; cập nhật 2026-10-10 §13). Mọi sửa đổi phải có sự chấp thuận trực tiếp từ Project Lead.
+> **Last Updated**: 2026-11-11 (§7 dòng God Slayer; §13 bổ sung Narrative, ngôn ngữ tên gọi, thông số sprite nhân vật)  
+> **Scope**: Bắt buộc tuân thủ tuyệt đối trong toàn bộ quá trình phát triển (Giai đoạn 0 → 7 và Giai đoạn N — Nền tảng Narrative, theo ROADMAP; cập nhật 2026-10-10 và 2026-11-11 §13). Mọi sửa đổi phải có sự chấp thuận trực tiếp từ Project Lead.
 
 ---
 
@@ -259,7 +259,15 @@ Thống nhất dứt điểm mọi phân bổ weapon family cho toàn bộ 16 Cl
 - **Tiền đề thế giới**: thế giới fantasy **có thật**. Hệ Thống (cấp độ, class, kỹ năng) là quy luật của thế giới mà cư dân nhìn thấy.
 - **Cách tạo canon**: agent đề xuất 2–3 phương án cho mỗi quyết định lớn trên một trang xem trước, chủ dự án chọn. Không tên thế giới, vùng, thành, địa điểm, phe phái, NPC, boss hay quái mới nào được ghi vào repo trước khi chủ dự án chọn; phương án chưa được chọn chỉ nằm trên trang xem trước.
 - **ROADMAP**: thêm **Giai đoạn N — Nền tảng Narrative** (N0–N8), chạy **song song** Giai đoạn 4 và không chặn sản xuất art.
-- Các mục §1–§12 không đổi. Điểm nào của Giai đoạn N chạm tới mục đã chốt (tên nhánh ở §2, boss và phong cách ở §10, bộ phận boss ở §13) vẫn phải dừng và hỏi.
+- Các mục §1–§12 không đổi, trừ §7 dòng God Slayer (cập nhật 2026-11-11 theo lựa chọn "Gộp hai ý" của chủ dự án, PR #66). Điểm nào của Giai đoạn N chạm tới mục đã chốt (tên nhánh ở §2, boss và phong cách ở §10, bộ phận boss ở §13) vẫn phải dừng và hỏi.
 - **Ngôn ngữ tên gọi (chủ dự án chọn trong terminal ngày 2026-11-11, vì game hướng global)**:
   - Tên class: **tên tiếng Anh là tên canon duy nhất**. Mỗi class giữ đúng một chú thích tiếng Việt, là tên trong ngoặc ở §2. Không đổi gì trong code.
   - Tên canon mới của thế giới (tên thế giới, vùng, phe phái, NPC, boss): **tên riêng bằng tiếng Anh**; phần diễn giải trong tài liệu viết tiếng Việt. Văn bản trong game đi qua localization.
+- **Thông số sprite nhân vật (N2; chủ dự án chọn trong terminal ngày 2026-11-11)**. Bảng đầy đủ, là nguồn duy nhất: `design/art/pixel-asset-specifications.md` §0.
+  - Chiều cao chuẩn **75 px** trên canvas 128×128, đo trên design sheet Vanguard đã duyệt (mood board trước đó ghi 70). Các nhóm class lệch trong ±4 px; số từng nhóm khác Vanguard là tạm, duyệt ở N5.
+  - Tư thế: mặc định đường cong S/C, trọng tâm 80/20; dáng thẳng hoặc 50/50 trong `character-visual-system.md` §2.1 là ngoại lệ có chủ đích.
+  - Vanguard giữ mào lông đỏ thẫm; vì design sheet đã duyệt chưa có mào, hình Vanguard có mào phải được chủ dự án duyệt.
+  - Không bắt buộc viền ngoài tối 1 px.
+  - Lớp render paperdoll: 5 lớp `EPAPaperdollLayer` + 2 lớp phủ theo class (mào, tabard); slot trang bị là dữ liệu, không phải lớp vẽ.
+  - Animation theo `character-visual-system.md` §4.3, thêm Stunned và Dead với số frame chờ chốt khi duyệt cảm giác chơi.
+  - PPU 1.0; atlas tối đa 2048×2048; ngân sách màu icon 16×16 ≤16, icon 32×32 16–24, sprite nhân vật ≤32 mỗi frame; socket tay (96,76)/(32,76) là mốc tham chiếu, vị trí thật đọc theo từng frame từ metadata.
