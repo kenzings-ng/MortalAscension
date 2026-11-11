@@ -134,11 +134,11 @@ Khối lượng theo 5 hướng + lật (story-004 → 007), 16 class:
 
 ## Giai đoạn 6 — Backend & lưu dữ liệu
 
-- [ ] Service backend (công nghệ **chưa chốt**, quyết qua ADR-0006 — DECISIONS §13) + PostgreSQL theo schema trong `DECISIONS.md` mục 9 (bảng `accounts`, `characters`, `items`).
-- [ ] Client đăng nhập lấy JWT; dedicated server xác thực token.
-- [ ] Chỉ dedicated server gọi API ghi dữ liệu (`FHttpModule`); client không bao giờ ghi trực tiếp.
-- [ ] Test backend gọi vào **code service backend thật** (công nghệ chưa chốt, ADR-0006) (không chỉ câu SQL trong file test): chống dupe, hoán đổi ô đồ, thăng chức bằng quyển trục.
-- [ ] Lưu khi thoát và lưu định kỳ.
+- [x] Service backend (công nghệ **chưa chốt**, quyết qua ADR-0006 — DECISIONS §13) + PostgreSQL theo schema trong `DECISIONS.md` mục 9 (bảng `accounts`, `characters`, `items`).
+- [x] Client đăng nhập lấy JWT; dedicated server xác thực token.
+- [x] Chỉ dedicated server gọi API ghi dữ liệu (`FHttpModule`); client không bao giờ ghi trực tiếp.
+- [x] Test backend gọi vào **code service backend thật** (công nghệ chưa chốt, ADR-0006) (không chỉ câu SQL trong file test): chống dupe, hoán đổi ô đồ, thăng chức bằng quyển trục.
+- [x] Lưu khi thoát và lưu định kỳ.
 
 ---
 
