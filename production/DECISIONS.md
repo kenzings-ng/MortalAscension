@@ -223,7 +223,7 @@ Thống nhất dứt điểm mọi phân bổ weapon family cho toàn bộ 16 Cl
 - Rèn Boss Soul làm đúng GDD: **4 bộ phận khác nhau** (Sừng, Vảy đuôi, Giáp ngực, Cánh), đồ ra theo class. Chi phí **5.000 Gold**, ghi bổ sung vào `blacksmithing-system.md`.
 
 **ROADMAP & quy trình**
-- Phạm vi giai đoạn theo ROADMAP: **0 → 7**, gồm cả 1.5 và 2B.
+- Phạm vi giai đoạn theo ROADMAP: **0 → 7**, gồm cả 1.5 và 2B. _(Bổ sung 2026-11-11, chủ dự án cho phép sửa dòng này: gồm cả **Giai đoạn N — Nền tảng Narrative**.)_
 - Các mục ở `ROADMAP.md:29` và `:33` hạ về `[~]` vì chưa có bằng chứng. Thêm vào Giai đoạn 0 mục "bảo vệ nhánh main", đánh `[x]` với bằng chứng từ X3.
 - Khi các file mâu thuẫn nhau:
   - Mâu thuẫn chạm tới DECISIONS hoặc ROADMAP: **dừng và hỏi**.

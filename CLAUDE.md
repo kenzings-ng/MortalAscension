@@ -32,7 +32,7 @@ Each agent owns a specific domain, enforcing separation of concerns and quality.
 
 ## CHẾ ĐỘ TỰ VẬN HÀNH (Autonomous Mode)
 
-Mục tiêu: thực hiện tuần tự roadmap (Giai đoạn 0 → 7, gồm 1.5 và 2B — DECISIONS §13) và các quyết định thiết kế đã chốt, không cần tôi duyệt từng bước.
+Mục tiêu: thực hiện tuần tự roadmap (Giai đoạn 0 → 7, gồm 1.5, 2B và Giai đoạn N — DECISIONS §13) và các quyết định thiết kế đã chốt, không cần tôi duyệt từng bước.
 
 ### Quy trình mỗi đầu việc
 1. Tạo nhánh riêng từ main. Làm việc nhỏ, commit nhỏ. Mỗi PR chỉ chứa một đầu việc của ROADMAP (không gộp nhiều đầu việc, không đưa các thay đổi thuộc giai đoạn sau vào PR hiện tại).
