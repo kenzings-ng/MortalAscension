@@ -394,7 +394,7 @@ Mọi tiêu chí kiểm thử đều được cấu trúc theo định dạng **
 - **AC-11 (Trừng Phạt Kẻ Bị Truy Nã - Wanted Outlaw Penalties):**
   - **GIVEN** người chơi có Karma $-60$ (Tên Đỏ Thẫm / Wanted Outlaw) bị Thợ Săn Tiền Thưởng hạ sát,
   - **WHEN** nhân vật tử trận,
-  - **THEN** kẻ thủ ác đánh rơi $100\%$ Vàng và $100\%$ Tàn Trang công khai ra đất, có $15\%$ xác suất đánh rơi $1$ món đồ trong ba lô; đồng thời nhân vật bị cưỡng chế chuyển sinh vào Ngục Tối Khổ Sai trong $5$ phút hoặc cho đến khi đập đủ $20$ quặng ngục.
+  - **THEN** kẻ thủ ác đánh rơi $100\%$ Vàng và $100\%$ Tàn Trang công khai ra đất, có $15\%$ xác suất đánh rơi $1$ món đồ trong ba lô; đồng thời nhân vật bị cưỡng chế áp giải vào Ngục Tối Khổ Sai trong $5$ phút hoặc cho đến khi đập đủ $20$ quặng ngục.
 
 - **AC-12 (Ranh Giới Truy Đuổi Của Quái - AI Leash Limit):**
   - **GIVEN** quái vật dã ngoại có điểm sinh tại tọa độ $(X_0, Y_0)$,

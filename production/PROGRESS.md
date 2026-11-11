@@ -1203,3 +1203,28 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
 - **Việc cần chủ dự án sau này**: duyệt hình Vanguard có mào đỏ (và xác nhận trọng tâm 60/40 của Vanguard ở `character-visual-system.md:76` cùng lúc); duyệt chiều cao các nhóm class ở N5.
 - **Trạng thái**: chưa push, chưa merge. _(Đã lỗi thời, xem "Cập nhật sau merge" bên dưới.)_
 - **Cập nhật sau merge (2026-11-11)**: nhánh push tại `93b480d`, PR #67. CI "Fast Gates (GDD & Backend QA)" pass (43s). Squash-merge thành `fd29b22` trên `main`; `git ls-remote origin refs/heads/main` trả `fd29b22b9aa6f81ba27e22f7012a99c95f3bd902`. Nhánh `docs/n2-closure` đổi N2 thành `[x]` trong ROADMAP.
+
+---
+
+## 26. Nhật Ký Đầu Việc: Nhánh `docs/n3-world-bible` (Giai Đoạn N — N3: World Bible & Tone Guide)
+
+- **Ngày**: 2026-11-11.
+- **Mục tiêu**: viết world bible và tone guide trong `design/narrative/world/` (ROADMAP dòng N3).
+- **Chuẩn bị**: narrative-director soạn bản đề xuất ngoài repo (3 gói, 10 mục, mỗi mục 3 phương án). Phiên chính kiểm lại các trích dẫn chính trước khi hỏi chủ dự án.
+- **Lựa chọn của chủ dự án** (hộp chọn trong terminal, 2026-11-11):
+  - Lượt 1: **Gói B — Xác Thần**; tên thế giới để sau, kiểm trùng tên trước; tên nhóm người chơi **Ascendant**; tông **U tối có phẩm giá**.
+  - Lượt 2 (sau khi reviewer phát hiện agent đã ghi phần từ vựng mà chưa hỏi): từ vựng "Giữ cái có tương đương trung cổ"; danh sách cấm chỉ gồm "không bạo lực tình dục, không hại trẻ em" và "cấm meme, tham chiếu tác phẩm khác" (không cấm từ ngữ meta); sự thật ẩn "cơn đói đánh thức tự vệ".
+- **Nội dung thực hiện**:
+  1. `design/narrative/world/world-bible.md`, `tone-guide.md` (mới); bỏ `world/.gitkeep`. Commit `65ecfa9`, `cd2fbe0`, `46745b5`, `01b0afb`.
+  2. `design/gdd/game-concept.md`: mục "Bối Cảnh Thế Giới (Setting)" tóm tắt và trỏ về world bible.
+  3. `design/gdd/zone-system.md:397`: "chuyển sinh vào Ngục Tối" → "áp giải vào Ngục Tối" (tránh trùng tên hệ thống Chuyển Sinh).
+  4. `design/narrative/README.md`: cập nhật trạng thái.
+  5. `production/DECISIONS.md` §13: khối "World bible (N3)" ghi đúng các câu trả lời của hai lượt.
+- **Log cổng tự động** (tại `01b0afb`): validator 114 file, 2 file lịch sử bỏ qua, 0 lỗi, 0 cảnh báo, 1 allowlist, exit 0; self-test 37 test OK, exit 0; `git diff --check main..HEAD` sạch. Không sửa code, art, backend.
+- **Kết luận reviewer**:
+  - Vòng 1 (tại `65ecfa9`): CHƯA. Lỗi nguy cấp: DECISIONS và tài liệu ghi từ vựng 9C là lựa chọn của chủ dự án trong khi chưa hỏi. Lỗi cao: Templar xếp nhầm vào nhánh Tín Đồ; mọi trích dẫn `game-concept.md` lệch 6 dòng do chính mục Setting chèn vào; luật Karma đánh dấu cả người tự vệ. Thêm 10 lỗi trung bình và thấp.
+  - Vòng 2 (tại `46745b5`): 14 lỗi vòng 1 đã sửa đúng, khối DECISIONS khớp câu trả lời; còn 2 lỗi thấp (đáp án sự thật ẩn chưa ghi vào DECISIONS; chỉ dẫn art tháp đồng hồ chưa được chọn). Sửa ở `01b0afb`.
+  - Vòng 3 (tại `28f777a`): **ĐỒNG Ý merge**, không còn lỗi; reviewer chạy lại validator 114 file 0 lỗi, self-test 37 OK, diff-check sạch.
+- **Sai sót trong quá trình**: ghi từ vựng 9C vào DECISIONS như lựa chọn của chủ dự án khi chưa hỏi; reviewer bắt được, đã hỏi lại và ghi đúng câu trả lời.
+- **Chuyển cho đầu việc sau** (world-bible.md mục 11): vị trí hồi sinh và Lửa Trại (N4); "World Boss Thần Linh" cụ thể và phân tầng Lãnh Chúa (N6; sửa điều kiện mở God Slayer là 🛑); "Liên Minh" trùng tên tổ đội đột kích (N4); sửa từ vựng lệch tông từng chỗ (N5); Lãnh Chúa xuất hiện lại trong MMO (N6); đăng ký "Ascendant" vào registry (N4); tên thế giới (N4, sau khi kiểm trùng tên); chỉ dẫn art Tháp Đồng Hồ Vĩnh Hằng (Provisional, N4/N5).
+- **Trạng thái**: chưa push, chưa merge.
