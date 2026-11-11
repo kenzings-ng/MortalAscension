@@ -1,6 +1,7 @@
 // Copyright Project Ascendant. All Rights Reserved.
 
 #include "Misc/AutomationTest.h"
+#include "Engine/GameInstance.h"
 #include "Backend/PABackendPersistenceSubsystem.h"
 #include "Game/PAGameModeBase.h"
 #include "Itemization/PASavedItemInstance.h"
@@ -27,7 +28,9 @@ bool FPABackendPersistenceTests::RunTest(const FString& Parameters)
 	// Test 1: Subsystem Configuration & Character Data Structure
 	// ===========================================================
 	{
-		UPABackendPersistenceSubsystem* Subsystem = NewObject<UPABackendPersistenceSubsystem>();
+		// Subsystem có ClassWithin = GameInstance nên phải tạo với outer là một GameInstance.
+		UGameInstance* TestGameInstance = NewObject<UGameInstance>(GetTransientPackage());
+		UPABackendPersistenceSubsystem* Subsystem = NewObject<UPABackendPersistenceSubsystem>(TestGameInstance);
 		TestNotNull(TEXT("Subsystem instantiated"), Subsystem);
 
 		Subsystem->SetBackendBaseUrl(TEXT("http://game-backend.ascendant.internal:8080"));
@@ -56,40 +59,39 @@ bool FPABackendPersistenceTests::RunTest(const FString& Parameters)
 	// Test 2: GameMode PreLogin Token Authentication Gate
 	// ===========================================================
 	{
-		APAGameModeBase* GameMode = NewObject<APAGameModeBase>();
-		TestNotNull(TEXT("GameMode instantiated"), GameMode);
+		// PreLogin cần World (GameSession) nên test gọi thẳng phần kiểm tra token, không cần World.
+		FString ErrorMsg;
 
 		// Khi chưa bật require auth (Dev/Standalone)
-		GameMode->SetRequireAuthToken(false);
-		FString ErrorMsg;
-		GameMode->PreLogin(TEXT(""), TEXT("127.0.0.1"), FUniqueNetIdRepl(), ErrorMsg);
-		TestTrue(TEXT("PreLogin passes when token not required"), ErrorMsg.IsEmpty());
-
-		// Khi bật require auth (Dedicated Server production)
-		GameMode->SetRequireAuthToken(true);
-		TestTrue(TEXT("RequireAuthToken flag is true"), GameMode->IsAuthTokenRequired());
+		TestTrue(TEXT("Token not required passes"), APAGameModeBase::CheckAuthToken(TEXT(""), false, ErrorMsg));
+		TestTrue(TEXT("No error when token not required"), ErrorMsg.IsEmpty());
 
 		// 1. Thiếu token -> Bị từ chối
 		ErrorMsg.Empty();
-		GameMode->PreLogin(TEXT("?Name=Player1"), TEXT("127.0.0.1"), FUniqueNetIdRepl(), ErrorMsg);
-		TestFalse(TEXT("Missing token rejected"), ErrorMsg.IsEmpty());
+		TestFalse(TEXT("Missing token rejected"), APAGameModeBase::CheckAuthToken(TEXT("?Name=Player1"), true, ErrorMsg));
 		TestTrue(TEXT("Error indicates missing token"), ErrorMsg.Contains(TEXT("Missing session token")));
 
 		// 2. Token dị tật (malformed) -> Bị từ chối
 		ErrorMsg.Empty();
-		GameMode->PreLogin(TEXT("?token=random_invalid_string"), TEXT("127.0.0.1"), FUniqueNetIdRepl(), ErrorMsg);
-		TestFalse(TEXT("Malformed token rejected"), ErrorMsg.IsEmpty());
+		TestFalse(TEXT("Malformed token rejected"), APAGameModeBase::CheckAuthToken(TEXT("?token=random_invalid_string"), true, ErrorMsg));
 		TestTrue(TEXT("Error indicates invalid format"), ErrorMsg.Contains(TEXT("Invalid token format")));
 
 		// 3. Token hợp lệ (PA-TOKEN-...) -> Chấp thuận
 		ErrorMsg.Empty();
-		GameMode->PreLogin(TEXT("?token=PA-TOKEN-ACC001-1794351-randomsecret"), TEXT("127.0.0.1"), FUniqueNetIdRepl(), ErrorMsg);
-		TestTrue(TEXT("PA-TOKEN format accepted"), ErrorMsg.IsEmpty());
+		TestTrue(TEXT("PA-TOKEN format accepted"), APAGameModeBase::CheckAuthToken(TEXT("?token=PA-TOKEN-ACC001-1794351-randomsecret"), true, ErrorMsg));
+		TestTrue(TEXT("No error for PA-TOKEN"), ErrorMsg.IsEmpty());
 
 		// 4. Token chuẩn RFC 7519 JWT (3 phần phân tách bằng dấu chấm) -> Chấp thuận
 		ErrorMsg.Empty();
-		GameMode->PreLogin(TEXT("?token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0In0.signature"), TEXT("127.0.0.1"), FUniqueNetIdRepl(), ErrorMsg);
-		TestTrue(TEXT("JWT format accepted"), ErrorMsg.IsEmpty());
+		TestTrue(TEXT("JWT format accepted"), APAGameModeBase::CheckAuthToken(TEXT("?token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0In0.signature"), true, ErrorMsg));
+		TestTrue(TEXT("No error for JWT"), ErrorMsg.IsEmpty());
+
+		// Cờ require auth vẫn đọc/ghi được trên CDO (không cần World)
+		APAGameModeBase* GameModeCDO = GetMutableDefault<APAGameModeBase>();
+		const bool bPrevious = GameModeCDO->IsAuthTokenRequired();
+		GameModeCDO->SetRequireAuthToken(true);
+		TestTrue(TEXT("RequireAuthToken flag is true"), GameModeCDO->IsAuthTokenRequired());
+		GameModeCDO->SetRequireAuthToken(bPrevious);
 	}
 
 	// ===========================================================

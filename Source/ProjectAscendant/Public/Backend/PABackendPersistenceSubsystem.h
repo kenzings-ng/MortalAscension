@@ -59,7 +59,7 @@ DECLARE_DYNAMIC_DELEGATE_TwoParams(FPABackendPromotionDelegate, bool, bSuccess, 
  * Chỉ Dedicated Server được phép gọi các API ghi dữ liệu (FHttpModule).
  * Client không bao giờ ghi trực tiếp vào cơ sở dữ liệu.
  */
-UCLASS()
+UCLASS(Config = Game)
 class PROJECTASCENDANT_API UPABackendPersistenceSubsystem : public UGameInstanceSubsystem
 {
 	GENERATED_BODY()
