@@ -1147,12 +1147,13 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   - `python3 Tools/QA/validate_gdd_consistency.py`: 112 file quét, 2 file lịch sử bỏ qua, 0 lỗi, 0 cảnh báo, 1 allowlist, exit 0.
   - `python3 Tools/QA/test_validate_gdd_consistency.py`: 37 test, OK, exit 0.
   - `git diff --check main..HEAD`: 8 dòng trailing whitespace, đều có sẵn trên `main` ở đúng dòng đó; không có dòng mới.
-  - Chạy check mới trên bản chụp `main` của 8 file trọng tâm: bắt 95 dòng tên lệch, không lọt dòng nào (reviewer vòng 3).
+  - Reviewer (vòng 3) chạy check mới trên bản chụp `main` của toàn bộ `design/`, `docs/architecture/`, `docs/registry/`, `production/epics/`, `production/sprints/` và `production/sprint-status.yaml`: bắt 95 dòng tên lệch, không lọt dòng nào.
   - Không sửa code, art, backend nên không chạy build, UE test, pixel-review, test backend.
 - **Kết luận reviewer** (cùng một reviewer, 3 vòng):
   - Vòng 1 (tại `0dec8b6`): CHƯA. Sót 4 tiêu đề viết hoa; check bản đầu (heuristic chuỗi viết hoa) vừa lọt lỗi vừa báo nhầm; registry thiếu giá trị cũ. Không có chỗ nào thay nhầm danh từ chung.
   - Vòng 2 (tại `00e69ce`): CHƯA. Ngoại lệ "đuôi của tên Title-Case" làm lọt 5 dòng tên lệch từng có trên `main`.
   - Vòng 3 (tại `03a6c8f`): CHƯA, còn một lỗi: `break` khiến mục allowlist che được lỗi khác cùng dòng. Sửa ở `bb1b06e`. Reviewer ghi rõ sửa xong lỗi này và chạy lại cổng thì đồng ý về kỹ thuật và nhất quán.
+  - Vòng 4 (tại `f07e5ef`): **ĐỒNG Ý merge về kỹ thuật và nhất quán**, với điều kiện chủ dự án trực tiếp duyệt 3 dòng thêm ở `production/DECISIONS.md` §13 trước khi merge. Reviewer chạy lại: validator 112 file, 0 lỗi, 1 allowlist, exit 0; self-test 37 test OK, exit 0.
 - **Sai sót trong quá trình**: commit `e2eb754` được tạo khi validator đang báo 8 lỗi (comment ghi giá trị cũ trong registry chứa tên đã loại). Sửa ở `00e69ce` trước khi push.
 - **Mục allowlist mới** (`Tools/QA/gdd_validator_allowlist.yaml`): `design/gdd/itemization.md:238` "Khăn Quàng Du Mục (Ranger)" là tên vật phẩm tabard, không phải chú thích class. Câu hỏi cho chủ dự án ở N5: có đổi tên tabard này không.
 - **Chưa sửa, ghi nợ**:
