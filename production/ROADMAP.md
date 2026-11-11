@@ -115,7 +115,7 @@ Khối lượng theo 5 hướng + lật (story-004 → 007), 16 class:
 
 - [ ] Sản xuất theo từng lô, mỗi lô qua Art Gate trước khi import.
 - [ ] Sổ cái CC0: thẩm định pack Pending, thay 7 asset bị từ chối, rà `doficia/project-cordon-sprites`.
-- [ ] Legacy Đợt 4: xóa 3 file DELETE_CANDIDATE trùng lặp, sửa `Scripts/setup_art_gallery.py` dòng 214/222/230.
+- [x] Legacy Đợt 4: xóa 3 file DELETE_CANDIDATE trùng lặp, sửa `Scripts/setup_art_gallery.py` dòng 214/222/230.
 - [ ] Asset legacy `REWORK`: chỉ xóa sau khi bản thay thế qua Art Gate.
 - [ ] 🛑 Mọi asset license khác CC0 hoặc sinh bằng AI; mọi khoản mua asset pack.
 
