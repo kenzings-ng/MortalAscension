@@ -334,6 +334,7 @@ class ScopeAndAllowlistTests(unittest.TestCase):
             "production/qa/report.md",
             "production/plans/plan.md",
             "production/PROGRESS.md",
+            "design/narrative/world/lore-review-2026-11-11.md",
         ]:
             self.tp.write(rel, bad)
         code, out = self.tp.run()
@@ -342,6 +343,7 @@ class ScopeAndAllowlistTests(unittest.TestCase):
         self.assertIn("[SKIP] docs/architecture/architecture-review-2026-09-16.md", out)
         self.assertIn("[SKIP] production/epics/gate-check-old.md", out)
         self.assertIn("[SKIP] production/epics/e/retrospective-sprint-1.md", out)
+        self.assertIn("[SKIP] design/narrative/world/lore-review-2026-11-11.md", out)
 
     def test_allowlist_accepts_listed_finding_and_flags_stale_entry(self):
         self.tp.write("production/epics/e/story-001.md", "Nhận 10 Ash Shards.\n")

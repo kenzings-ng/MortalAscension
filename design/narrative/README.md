@@ -20,13 +20,15 @@ Thế giới fantasy có thật. Hệ Thống (cấp độ, class, kỹ năng) l
 | `bestiary/` | Boss và quái theo vùng | Chuẩn mục bên dưới | N6 |
 | `npcs/` | NPC có tên theo từng thành | `.claude/docs/templates/narrative-character-sheet.md` | N6 |
 
+Skill `team-narrative` còn ghi vào `design/narrative/lore/` và `design/narrative/dialogue/`. Hai thư mục đó chưa thuộc đầu việc nào của Giai đoạn N; tạo khi có đầu việc cần. Lore của thế giới trong Giai đoạn N nằm ở `world/`.
+
 ## Quy tắc
 
-1. **Không tự đặt tên mới.** Tên thế giới, vùng, phe phái, NPC, boss chỉ được ghi vào đây sau khi chủ dự án chọn trên trang đề xuất (CLAUDE.md, mục CẤM).
-2. **Mỗi mục ghi mức canon** ở đầu file: `Established` (chủ dự án đã chọn), `Provisional` (đang chờ chọn), `Under Review` (đang mâu thuẫn với file khác).
+1. **Không tự đặt tên mới.** Không tên thế giới, phe phái, vùng, NPC hay boss mới nào được ghi vào repo trước khi chủ dự án chọn; phương án chưa được chọn chỉ nằm trên trang xem trước. (DECISIONS §13, bổ sung 2026-11-11.)
+2. **Mỗi mục ghi mức canon** ở đầu file. Cả ba mức đều là nội dung chủ dự án đã chọn: `Established` (đã chốt), `Provisional` (đã chọn nhưng còn chờ một đầu việc sau của Giai đoạn N xác nhận), `Under Review` (đã chọn, đang mâu thuẫn với file khác và chờ xử lý).
 3. **Tên class, nhánh, bậc, vũ khí** lấy nguyên từ DECISIONS §2 và §7. Không viết tên tiếng Việt khác.
-4. **Một nơi, một tên.** Bí danh bị loại ghi ở `design/registry/entities.yaml` (`deprecated_aliases`), không dùng lại trong văn bản.
-5. **Đăng ký** mọi tên xuất hiện ở hơn một file vào `design/registry/entities.yaml` (`entities` với `kind:`, hoặc `locations`).
+4. **Một nơi, một tên.** Tên cũ bị loại giữ trong `design/registry/entities.yaml` thành mục `status: deprecated` kèm `replaced_by:`, không dùng lại trong văn bản.
+5. **Đăng ký** mọi tên xuất hiện ở hơn một file vào section `entities` của `design/registry/entities.yaml`, kèm `kind:` và `canon:`.
 6. Các quy tắc còn lại theo `.claude/rules/narrative.md`: luật thế giới ghi rõ, bí ẩn có đáp án, lời thoại tối đa 120 ký tự mỗi dòng.
 
 ## Chuẩn mục cho file trong `world/` và `bestiary/`
@@ -48,4 +50,4 @@ Thế giới fantasy có thật. Hệ Thống (cấp độ, class, kỹ năng) l
 
 ## Cổng kiểm tra
 
-`python3 Tools/QA/validate_gdd_consistency.py` quét `design/narrative/**/*.md` với cùng bộ luật như GDD.
+`python3 Tools/QA/validate_gdd_consistency.py` quét `design/narrative/**/*.md` với cùng bộ luật như GDD. File có tên kiểu `*-review-YYYY-MM-DD*`, `gate-check-*` hoặc chứa `retrospective` bị coi là hồ sơ lịch sử và không được quét, nên không đặt tên file canon theo các kiểu đó.

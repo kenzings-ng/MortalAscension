@@ -33,8 +33,9 @@
 #   Deprecated entries:      Grep pattern="status: deprecated"
 #
 # FORMAT: YAML. Consistent indentation is critical for grep reliability.
-#   Sections: entities | locations | items | formulas | constants
+#   Sections: entities | items | formulas | constants
 #   Each entry: name, status, source, referenced_by[], attributes{}, added, revised
+#   Narrative entities (N0, 2026-11-11) also carry: kind, canon, and replaced_by on deprecated names
 
 version: 1
 last_updated: ""
@@ -281,24 +282,19 @@ entities:
 
 
   # ─── NARRATIVE ENTITIES (N0, 2026-11-11) ─────────────────────────
-  # Các nhóm dưới đây hiện để trống. Chỉ đăng ký tên đã được chủ dự án chọn
-  # (ROADMAP Giai đoạn N; nguồn: design/narrative/**). Không tự đặt tên mới.
-  # Mỗi mục thêm trường `kind:` để phân nhóm, và `canon:` theo
-  # .claude/rules/narrative.md (Established / Provisional / Under Review).
-  #   kind: faction   -> source: design/narrative/factions/<slug>.md      (N4)
-  #   kind: npc       -> source: design/narrative/npcs/<slug>.md          (N6)
-  #   kind: boss      -> source: design/narrative/bestiary/<slug>.md      (N6)
-  #   kind: enemy     -> source: design/narrative/bestiary/<slug>.md      (N6)
-
-
-# ─── LOCATIONS (N0, 2026-11-11) ──────────────────────────────────────────────
-# Vùng (region), tòa thành (citadel) và địa điểm có tên. Hiện để trống; điền ở
-# ROADMAP Giai đoạn N mục N4 sau khi chủ dự án chốt một tên chính thức cho mỗi nơi.
-#
-# Required fields: name, kind (region | citadel | site), status, canon, source,
-#   referenced_by, added. Bí danh bị loại ghi vào `deprecated_aliases:`.
-
-locations: []
+  # Chưa có mục nào. Chỉ đăng ký tên đã được chủ dự án chọn (ROADMAP Giai đoạn N;
+  # nguồn: design/narrative/**). Không tự đặt tên mới.
+  # Vùng, thành, địa điểm, phe phái, NPC, boss, quái đều đăng ký trong `entities`
+  # (không tạo section riêng, để /consistency-check đọc được) và thêm hai trường:
+  #   kind:  region | citadel | site | faction | npc | boss | enemy
+  #   canon: Established | Provisional | Under Review   (xem design/narrative/README.md)
+  # Nguồn (source) theo kind:
+  #   region | citadel | site -> design/narrative/world/<slug>.md      (N4)
+  #   faction                 -> design/narrative/factions/<slug>.md   (N4)
+  #   npc                     -> design/narrative/npcs/<slug>.md       (N6)
+  #   boss | enemy            -> design/narrative/bestiary/<slug>.md   (N6)
+  # Tên cũ bị loại: giữ thành một mục riêng với `status: deprecated` và
+  # `replaced_by: <name>`, theo quy tắc "Never delete entries" ở đầu file.
 
 
 # ─── ITEMS ───────────────────────────────────────────────────────────────────
