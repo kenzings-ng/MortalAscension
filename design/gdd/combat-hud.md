@@ -10,7 +10,7 @@
 
 ## Overview
 
-Hệ thống Giao diện Chiến đấu Tối giản & Phản hồi Trực quan (Minimal Combat HUD & Feedback System) là cầu nối thông tin trực quan giữa người chơi và các cơ chế chiến đấu hardcore của *Project Ascendant*. Được xây dựng trên nền tảng **Unreal Engine 5 UMG**, **CommonUI** và hệ thống hậu kỳ Post-Process, hệ thống cung cấp giao diện trực quan tinh gọn (Diegetic & Non-intrusive HUD) phục vụ góc nhìn 2.5D Isometric mà không làm che khuất tầm quan sát sàn đấu.
+Hệ thống Giao diện Chiến đấu Tối giản & Phản hồi Trực quan (Minimal Combat HUD & Feedback System) là cầu nối thông tin trực quan giữa người chơi và các cơ chế chiến đấu hardcore của *Mortal Ascension*. Được xây dựng trên nền tảng **Unreal Engine 5 UMG**, **CommonUI** và hệ thống hậu kỳ Post-Process, hệ thống cung cấp giao diện trực quan tinh gọn (Diegetic & Non-intrusive HUD) phục vụ góc nhìn 2.5D Isometric mà không làm che khuất tầm quan sát sàn đấu.
 
 Hệ thống giải quyết bài toán giao diện hành động: Loại bỏ sự lộn xộn (UI Clutter) thường thấy trong các game nhập vai, chỉ hiển thị thông tin sinh tử quan trọng nhất:
 1. **Cụm Trạng Thái Người Chơi (Player Cluster - Góc Dưới Trái):** Máu, Thể lực (Stamina bar phản hồi nhấp nháy vàng khi Perfect Dodge), Năng lượng (Mana bar).

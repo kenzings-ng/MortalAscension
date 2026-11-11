@@ -1,8 +1,8 @@
 # Bảng Định Hướng Thẩm Mỹ & Tâm Trạng Nhân Vật (Vanguard Mood Board)
-## Project Ascendant — Giai Đoạn 2: Chốt Phong Cách Nhân Vật
+## Mortal Ascension — Giai Đoạn 2: Chốt Phong Cách Nhân Vật
 
-> **Dự án**: Project Ascendant (2.5D Isometric HD-2D Dark Fantasy Action RPG / MMO)  
-> **Chủ đề nhân vật**: Tiền Tuyến Sắt Đá — Thiết Vệ (Vanguard "Iron Bastion")  
+> **Dự án**: Mortal Ascension (2.5D Isometric HD-2D Dark Fantasy Action RPG / MMO)  
+> **Chủ đề nhân vật**: Tiền Tuyến Sắt Đá — Tiên Phong (Vanguard "Iron Bastion")  
 > **Bộ vũ khí & trang bị**: Kiếm Bản Rộng (Broadsword) & Đại Khiên Thép Vuông (Square Tower Shield)  
 > **Hợp đồng quy chuẩn**: `SPEC-ART-2026-09-23-V2` (Mục 5.3)  
 > **Cơ sở phê duyệt**: Quyết định lựa chọn của Chủ dự án (2026-11-10) theo `ROADMAP.md:66`
@@ -11,7 +11,7 @@
 
 ## 1. Tứ Trụ Game Tham Chiếu Thẩm Mỹ (The 4 Benchmarks)
 
-Chủ dự án đã chính thức lựa chọn 4 tựa game đỉnh cao làm tham chiếu cốt lõi để định hình ngôn ngữ đồ họa của *Project Ascendant*:
+Chủ dự án đã chính thức lựa chọn 4 tựa game đỉnh cao làm tham chiếu cốt lõi để định hình ngôn ngữ đồ họa của *Mortal Ascension*:
 
 ```mermaid
 graph TD
@@ -22,7 +22,7 @@ graph TD
         TS["4. Triangle Strategy (Square Enix)<br/>Mảng Khối Quân Sự Chắc Nịch & Bảng Màu Trầm Ấm"]
     end
 
-    OT2 --> Synthesis["PHONG CÁCH HYBRID HD-2D DARK FANTASY<br/>(Project Ascendant)"]
+    OT2 --> Synthesis["PHONG CÁCH HYBRID HD-2D DARK FANTASY<br/>(Mortal Ascension)"]
     DS --> Synthesis
     COM --> Synthesis
     TS --> Synthesis
@@ -60,7 +60,7 @@ graph TD
 ## 2. Thiết Kế Nhân Vật Tiền Tuyến: Vanguard "Iron Bastion"
 
 ```
-                  [Vành Mũ Chiến Binh Sắt: Y=44]
+                  [Vành Mũ Tiên Phong Sắt: Y=44]
                          [Mặt Nạ Khe Ngắm Tối]
                                    │
                  ┌─────────────────┴─────────────────┐

@@ -12,7 +12,7 @@
 
 ## 1. Cấu Trúc Cây Chuyển Chức 4 Nhánh (The 4 Class Lines)
 
-Hệ thống chức nghiệp trong Project Ascendant được tổ chức theo cấu trúc phân nhánh hình cây gồm 4 Bậc tiến trình rõ rệt:
+Hệ thống chức nghiệp trong Mortal Ascension được tổ chức theo cấu trúc phân nhánh hình cây gồm 4 Bậc tiến trình rõ rệt:
 - **Bậc 1 (T1 Sơ Cấp - Foundational)**: Có sẵn từ màn hình tạo nhân vật, là gốc rễ của 4 Nhánh chính (`Guard`, `Scout`, `Caster`, `Faith`).
 - **Bậc 2 (T2 Trung Cấp - Specialization)**: Chuyên hóa phong cách chiến đấu, mở khóa qua Quyển Trục Tinh Anh (Rare Promotion Scroll) hoặc kỳ ngộ dã ngoại.
 - **Bậc 3 (T3 Cao Cấp - Mastery)**: Làm chủ sức mạnh tối thượng, mở khóa qua Quyển Trục Lãnh Chúa (Epic Promotion Scroll / Boss Soul Relic).
@@ -23,7 +23,7 @@ Hệ thống chức nghiệp trong Project Ascendant được tổ chức theo c
 ```
                     ┌──────────────────────────────────────────────────────────┐
                     │               BẬC 4 (T4 ẨN / MYTHIC)                     │
-                    │               GOD SLAYER (Thí Thần Giả)                  │
+                    │               GOD SLAYER (Kẻ Diệt Thần)                  │
                     │  (Yêu cầu: Kết hợp Đa Nhánh + Khiêu Chiến No-Hit Boss)  │
                     └─────────────────────────────▲────────────────────────────┘
                                                   │ (Kỳ ngộ đa nhánh)
@@ -32,13 +32,13 @@ Hệ thống chức nghiệp trong Project Ascendant được tổ chức theo c
 ┌────────┴────────┐     ┌────────┴────────┐                      ┌────────┴────────┐     ┌────────┴────────┐
 │ BẬC 3 (T3 CAO)  │     │ BẬC 3 (T3 CAO)  │                      │ BẬC 3 (T3 CAO)  │     │ BẬC 3 (T3 CAO)  │
 │  DRAGON KNIGHT  │     │   VOID BLADE    │                      │  PHANTOM STALKER│     │  CHRONOMANCER   │     │    SERAPH       │
-│  (Long Kỵ Sĩ)   │     │(Hư Không Kiếm Sư)│                     │(Ảo Ảnh Dạ Hành) │     │ (Thời Gian Ma Đạo)│   │ (Lục Dực Thần Sứ)│
+│  (Long Kỵ Sĩ)   │     │ (Hư Không Kiếm) │                      │(U Hồn Đoạt Mệnh)│     │Thời Gian Pháp Sư│     │Thiên Sứ Lục Dực │
 └────────▲────────┘     └────────▲────────┘                      └────────▲────────┘     └────────▲────────┘     └────────▲────────┘
          │                       │                                        │                       │                       │
 ┌────────┴────────┐     ┌────────┴────────┐                      ┌────────┴────────┐     ┌────────┴────────┐     ┌────────┴────────┐
 │ BẬC 2 (T2 TRUNG)│     │ BẬC 2 (T2 TRUNG)│                      │ BẬC 2 (T2 TRUNG)│     │ BẬC 2 (T2 TRUNG)│     │ BẬC 2 (T2 TRUNG)│
 │TEMPLAR/BERSERKER│     │   SWORDMASTER   │                      │   SHADOWBLADE   │     │   ELEMENTALIST  │     │   INQUISITOR    │
-│(Thánh Binh/Cuồng)│    │   (Kiếm Sư)     │                      │ (Ảo Ảnh Thích Khách)│  │  (Nguyên Tố Sư) │     │  (Thẩm Phán)    │
+│ (xem bảng dưới) │     │    (Kiếm Sư)    │                      │   (Ảnh Nhẫn)    │     │ (Nguyên Tố Sư)  │     │Thẩm Phán Dị Giáo│
 └────────▲────────┘     └────────▲────────┘                      └────────▲────────┘     └────────▲────────┘     └────────▲────────┘
          │                       │                                        │                       │                       │
          └───────────┬───────────┘                                        │                       │                       │
@@ -46,7 +46,7 @@ Hệ thống chức nghiệp trong Project Ascendant được tổ chức theo c
             ┌────────┴────────┐                                  ┌────────┴────────┐     ┌────────┴────────┐     ┌────────┴────────┐
             │ BẬC 1 (T1 SƠ)   │                                  │ BẬC 1 (T1 SƠ)   │     │ BẬC 1 (T1 SƠ)   │     │ BẬC 1 (T1 SƠ)   │
             │    VANGUARD     │                                  │     RANGER      │     │    ARCANIST     │     │     ACOLYTE     │
-            │  (Chiến Binh)   │                                  │   (Du Hiệp)     │     │   (Thuật Sĩ)    │     │    (Tu Sĩ)      │
+            │  (Tiên Phong)   │                                  │    (Xạ Thủ)     │     │  (Bí Thuật Sư)  │     │    (Tập Sự)     │
             └─────────────────┘                                  └─────────────────┘     └─────────────────┘     └─────────────────┘
              [NHÁNH 1: GUARD]                                     [NHÁNH 2: SCOUT]        [NHÁNH 3: CASTER]       [NHÁNH 4: FAITH]
 ```
@@ -55,22 +55,22 @@ Hệ thống chức nghiệp trong Project Ascendant được tổ chức theo c
 
 | Nhánh (Line) | Bậc (Rank) | Tên Chức Nghiệp | GameplayTag Chuẩn Hóa | Vũ Khí Định Danh | Phong Cách Chiến Đấu Cốt Lõi |
 | :--- | :---: | :--- | :--- | :--- | :--- |
-| **Guard** | T1 | **Vanguard (Chiến Binh)** | `Class.Line.Guard.Vanguard` | `1H.Blade` + Khiên Sắt Vuông | Cận chiến cân bằng, phản đòn chớp nhoáng (Parry), càn lướt vững chắc. |
-| **Guard** | T2 | **Templar (Thánh Binh)** | `Class.Line.Guard.Templar` | `1H.Mace` + Đại Thuẫn | Tanker thuần túy, thu hút hận thù (Taunt), tạo khiên thánh hóa, phản sát thương. |
+| **Guard** | T1 | **Vanguard (Tiên Phong)** | `Class.Line.Guard.Vanguard` | `1H.Blade` + Khiên Sắt Vuông | Cận chiến cân bằng, phản đòn chớp nhoáng (Parry), càn lướt vững chắc. |
+| **Guard** | T2 | **Templar (Thánh Hiệp Sĩ)** | `Class.Line.Guard.Templar` | `1H.Mace` + Đại Thuẫn | Tanker thuần túy, thu hút hận thù (Taunt), tạo khiên thánh hóa, phản sát thương. |
 | **Guard** | T2 | **Berserker (Cuồng Chiến Sĩ)** | `Class.Line.Guard.Berserker` | `2H.Heavy` (Đại Đao/Đại Rìu) | Liều mạng đổi sát thương, Super Armor không ngắt chiêu, máu càng thấp đánh càng nhanh. |
 | **Guard** | T2 | **Swordmaster (Kiếm Sư)** | `Class.Line.Guard.Swordmaster` | `1H.Blade` (Kiếm đơn, bỏ khiên) | Kiếm đạo tốc độ, bộ pháp lướt né thanh thoát, phản kích chuẩn xác từng khung hình. |
 | **Guard** | T3 | **Dragon Knight (Long Kỵ Sĩ)** | `Class.Line.Guard.DragonKnight` | `2H.Polearm` (Chiến Kích) | Bật nhảy không chiến, giáng đòn phá vỡ thế đứng cực mạnh (Posture Crush), hơi thở rồng lửa. |
 | **Guard** | T3 | **Void Blade (Hư Không Kiếm)** | `Class.Line.Guard.VoidBlade` | `1H.Blade` (Kiếm đơn Hư Không) | Trảm kích không thời gian (*Judgement Cut*), lướt dịch chuyển tức thời, tàn ảnh hư vô. |
-| **Scout** | T1 | **Ranger (Du Hiệp)** | `Class.Line.Scout.Ranger` | `2H.Bow` (Cung hai tay) | Xạ kích tầm xa, thả diều cơ động, đặt bẫy chông làm chậm mục tiêu. |
-| **Scout** | T2 | **Shadowblade (Ảo Ảnh Thích Khách)** | `Class.Line.Scout.Shadowblade` | `Dual.Daggers` (Song đoản đao) | Ám sát tàng hình, lướt để lại phân thân đánh lừa quái, đòn đánh sau lưng (Backstab) x3 bạo kích. |
-| **Scout** | T3 | **Phantom Stalker (Ảo Ảnh Dạ Hành)** | `Class.Line.Scout.PhantomStalker` | `Dual.Daggers` / Cung ám khí | Bẫy hư không bóng tối, phân thân liên hoàn cùng tấn công, biến mất vào màn đêm. |
-| **Caster** | T1 | **Arcanist (Thuật Sĩ)** | `Class.Line.Caster.Arcanist` | `2H.Staff` (Pháp trượng) | Kiểm soát chiến trường diện rộng, dồn quái thành cụm, phóng hồ quang nguyên tố bùng nổ. |
+| **Scout** | T1 | **Ranger (Xạ Thủ)** | `Class.Line.Scout.Ranger` | `2H.Bow` (Cung hai tay) | Xạ kích tầm xa, thả diều cơ động, đặt bẫy chông làm chậm mục tiêu. |
+| **Scout** | T2 | **Shadowblade (Ảnh Nhẫn)** | `Class.Line.Scout.Shadowblade` | `Dual.Daggers` (Song đoản đao) | Ám sát tàng hình, lướt để lại phân thân đánh lừa quái, đòn đánh sau lưng (Backstab) x3 bạo kích. |
+| **Scout** | T3 | **Phantom Stalker (U Hồn Đoạt Mệnh)** | `Class.Line.Scout.PhantomStalker` | `Dual.Daggers` / Cung ám khí | Bẫy hư không bóng tối, phân thân liên hoàn cùng tấn công, biến mất vào màn đêm. |
+| **Caster** | T1 | **Arcanist (Bí Thuật Sư)** | `Class.Line.Caster.Arcanist` | `2H.Staff` (Pháp trượng) | Kiểm soát chiến trường diện rộng, dồn quái thành cụm, phóng hồ quang nguyên tố bùng nổ. |
 | **Caster** | T2 | **Elementalist (Nguyên Tố Sư)** | `Class.Line.Caster.Elementalist` | `2H.Staff` / Cầu Phép (Orbs) | Phản ứng nguyên tố xoay vần: Đóng băng khống chế, Thiêu đốt rút máu, Sét giật lan truyền. |
-| **Caster** | T3 | **Chronomancer (Thời Gian Ma Đạo)** | `Class.Line.Caster.Chronomancer` | `Relic` (Đồng Hồ Cát) | Bong bóng ngưng đọng thời gian, tua ngược vị trí và lượng máu bản thân về 3 giây trước. |
-| **Faith** | T1 | **Acolyte (Tu Sĩ)** | `Class.Line.Faith.Acolyte` | `1H.Mace` + Tràng Hạt Khí | Hỗ trợ sinh tồn, thanh tẩy hiệu ứng xấu, hồi phục thể lực (Stamina) cho bản thân và đồng đội. |
-| **Faith** | T2 | **Inquisitor (Thẩm Phán)** | `Class.Line.Faith.Inquisitor` | `1H.Mace` (Chiến Chùy) | Trừng phạt dị giáo, sát thương đập nện cực mạnh, ấn chú làm suy yếu giáp và thế đứng của Boss. |
-| **Faith** | T3 | **Seraph (Lục Dực Thánh Sứ)** | `Class.Line.Faith.Seraph` | `1H.Mace` / Thánh Tích | Đôi cánh ánh sáng thánh hóa (chân chạm đất), dựng kết giới bất tử ngắn hạn, giáng sấm sét thánh tích toàn bản đồ. |
-| **Apex** | T4 | **God Slayer (Thí Thần Giả)** | `Class.Line.Apex.GodSlayer` | Thần Binh Hư Vô Tự Biến Hình | Né hoàn hảo ngưng đọng thời gian 1s, tước đoạt và sao chép chiêu thức đặc trưng của Boss. |
+| **Caster** | T3 | **Chronomancer (Thời Gian Pháp Sư)** | `Class.Line.Caster.Chronomancer` | `Relic` (Đồng Hồ Cát) | Bong bóng ngưng đọng thời gian, tua ngược vị trí và lượng máu bản thân về 3 giây trước. |
+| **Faith** | T1 | **Acolyte (Tập Sự)** | `Class.Line.Faith.Acolyte` | `1H.Mace` + Tràng Hạt Khí | Hỗ trợ sinh tồn, thanh tẩy hiệu ứng xấu, hồi phục thể lực (Stamina) cho bản thân và đồng đội. |
+| **Faith** | T2 | **Inquisitor (Thẩm Phán Dị Giáo)** | `Class.Line.Faith.Inquisitor` | `1H.Mace` (Chiến Chùy) | Trừng phạt dị giáo, sát thương đập nện cực mạnh, ấn chú làm suy yếu giáp và thế đứng của Boss. |
+| **Faith** | T3 | **Seraph (Thiên Sứ Lục Dực)** | `Class.Line.Faith.Seraph` | `1H.Mace` / Thánh Tích | Đôi cánh ánh sáng thánh hóa (chân chạm đất), dựng kết giới bất tử ngắn hạn, giáng sấm sét thánh tích toàn bản đồ. |
+| **Apex** | T4 | **God Slayer (Kẻ Diệt Thần)** | `Class.Line.Apex.GodSlayer` | Thần Binh Hư Vô Tự Biến Hình | Né hoàn hảo ngưng đọng thời gian 1s, tước đoạt và sao chép chiêu thức đặc trưng của Boss. |
 
 ---
 
@@ -101,7 +101,7 @@ Mỗi nhân vật được trang bị đồng thời **1 Class Chính (Primary C
 
 ## 3. Hệ Thống Hai Thang Đo Tiến Trình (Dual-Track Progression)
 
-Tiến trình phát triển trong Project Ascendant vận hành trên 2 thang đo song hành:
+Tiến trình phát triển trong Mortal Ascension vận hành trên 2 thang đo song hành:
 
 ### 3.1 Cấp Độ Nhân Vật (Character Level 1–50):
 - Là cấp độ sinh mệnh xuyên suốt của nhân vật, nhận EXP từ mọi hoạt động (tiêu diệt quái, nhiệm vụ, khám phá).

@@ -1,5 +1,5 @@
 # Character & NPC Visual Identity System (Silhouette, Rigs & Threat Telegraphing)
-## Đặc Tả Hệ Thống Bản Sắc Thị Giác Nhân Vật & NPC — Project Ascendant
+## Đặc Tả Hệ Thống Bản Sắc Thị Giác Nhân Vật & NPC — Mortal Ascension
 
 > **Mã tài liệu**: `GDD-VISUAL-IDENTITY-2026-V1`  
 > **Trạng thái**: Approved  
@@ -35,11 +35,11 @@ Trong góc nhìn 2.5D Isometric nghiêng $-45^\circ$, với camera đặt cách 
 
 ## 2. Ma Trận Silhouette Rule Cho 16 Class Nhân Vật
 
-Các Class trong Project Ascendant trải dài qua 4 Bậc Chức Nghiệp (Class Rank):
-- **Bậc T1 (Sơ cấp - Foundational)**: *Vanguard (Tiên Phong)*, *Ranger (Du Hiệp)*, *Arcanist (Thuật Sĩ)*, *Acolyte (Tu Sĩ)*.
-- **Bậc T2 (Trung cấp - Advanced)**: *Berserker (Cuồng Chiến Sĩ)*, *Templar (Thánh Hiệp Sĩ)*, *Swordmaster (Kiếm Sư)*, *Shadowblade (Thích Khách)*, *Elementalist (Nguyên Tố Sư)*, *Inquisitor (Thẩm Phán)*.
-- **Bậc T3 (Cao cấp - Master)**: *Dragon Knight (Long Kỵ Sĩ)*, *Void Blade (Hư Không Kiếm)*, *Phantom Stalker (Bóng Ma)*, *Chronomancer (Thời Không Pháp Sư)*, *Seraph (Thiên Sứ)*.
-- **Bậc T4 (Ẩn / Tối thượng - Apex)**: *God Slayer (Thần Thí Giả)*.
+Các Class trong Mortal Ascension trải dài qua 4 Bậc Chức Nghiệp (Class Rank):
+- **Bậc T1 (Sơ cấp - Foundational)**: *Vanguard (Tiên Phong)*, *Ranger (Xạ Thủ)*, *Arcanist (Bí Thuật Sư)*, *Acolyte (Tập Sự)*.
+- **Bậc T2 (Trung cấp - Advanced)**: *Berserker (Cuồng Chiến Sĩ)*, *Templar (Thánh Hiệp Sĩ)*, *Swordmaster (Kiếm Sư)*, *Shadowblade (Ảnh Nhẫn)*, *Elementalist (Nguyên Tố Sư)*, *Inquisitor (Thẩm Phán Dị Giáo)*.
+- **Bậc T3 (Cao cấp - Master)**: *Dragon Knight (Long Kỵ Sĩ)*, *Void Blade (Hư Không Kiếm)*, *Phantom Stalker (U Hồn Đoạt Mệnh)*, *Chronomancer (Thời Gian Pháp Sư)*, *Seraph (Thiên Sứ Lục Dực)*.
+- **Bậc T4 (Ẩn / Tối thượng - Apex)**: *God Slayer (Kẻ Diệt Thần)*.
 
 ```mermaid
 flowchart TD
@@ -82,19 +82,19 @@ flowchart TD
 | **7. Swordmaster (Kiếm Sư)**<br>*(Bậc 2 - Trung cấp)* | Family 1: `1H.Blade` (Kiếm đơn, bỏ khiên) | **Đường kiếm thanh thoát (Sharp Stance)** | Chân trước kiễng nhẹ, thân người nghiêng $15^\circ$, tay trái thủ thế sau lưng. | Kiếm đơn chúc đất $45^\circ$, không mang khiên, bờ vai trái tự do thanh thoát. | Dáng hình thanh mảnh, lưỡi kiếm đơn vát chéo sắc bén. |
 | **8. Shadowblade**<br>*(Bậc 2 - Trung cấp)* | Family 5: `Dual.Daggers` | **Mũi tên dốc thấp (Low-Slung Chevron)** | Hạ thấp sát đất (chỉ cao bằng 75% chiều cao thường), chân gập sâu, tư thế sẵn sàng bật lò xo. | Cặp song đao bắt chéo chữ X trước ngực hoặc chỉa ngược về sau; khăn trùm kín mặt. | Khối bóng dẹt, bề ngang bè rộng hơn bề cao, hai mũi dao sắc lẹm. |
 | **9. Elementalist**<br>*(Bậc 2 - Trung cấp)* | Family 6: `2H.Staff` / Orbs | **Hình thoi lơ lửng (Floating Diamond)** | Hai chân không chạm đất (hovering 4px), thân trên nghiêng nhẹ theo luồng khí động. | Hai quả cầu nguyên tố bay vòng tròn tạo thành quỹ đạo elip lớn bao quanh thân. | Bóng chân lơ lửng cách mặt bóng đổ (Cast Shadow) 4px. |
-| **10. Inquisitor (Thẩm Phán)**<br>*(Bậc 2 - Trung cấp)* | Family 7: `1H.Mace` (Chiến Chùy) | **Hình khối phán quyết (Rigid Monolith)** | Đứng thẳng nghiêm cẩn, ngực ưỡn đón bão, chùy sắt giơ ngang ngực sẵn sàng giáng tội. | Mũ trùm che nửa khuôn mặt bí ẩn; chùy gai sắt nhô cao sẵn sàng đập nện. | Khối tam giác chóp nhọn của mũ trùm và đầu chùy nhô cao. |
+| **10. Inquisitor (Thẩm Phán Dị Giáo)**<br>*(Bậc 2 - Trung cấp)* | Family 7: `1H.Mace` (Chiến Chùy) | **Hình khối phán quyết (Rigid Monolith)** | Đứng thẳng nghiêm cẩn, ngực ưỡn đón bão, chùy sắt giơ ngang ngực sẵn sàng giáng tội. | Mũ trùm che nửa khuôn mặt bí ẩn; chùy gai sắt nhô cao sẵn sàng đập nện. | Khối tam giác chóp nhọn của mũ trùm và đầu chùy nhô cao. |
 | **11. Dragon Knight**<br>*(Bậc 3 - Cao cấp)* | Family 3: `2H.Polearm` (Chiến Kích) | **Mũi thương chọc trời (Ascending Lance)** | Đứng chéo chân kiên cố, ngực vươn cao, tay cầm thương dựng đứng góc $75^\circ$. | Mũi chiến kích lưỡi trăng khuyết vươn cao vượt đầu 24px; đuôi mũ giáp vảy rồng dài. | Điểm cao nhất trong tất cả các class, đỉnh nhọn áp đảo khung hình. |
 | **12. Void Blade**<br>*(Bậc 3 - Cao cấp)* | Family 1: `1H.Blade` (Kiếm đơn Hư Không) | **Đường zigzag bất ổn (Fractured Zigzag)** | Thân người chao đảo nhẹ như tàn ảnh, một tay giấu sau lưng, một tay cầm kiếm dốc ngược. | Tà áo choàng hư không rách xơ xác bay ngược chiều gió; lưỡi kiếm dài mảnh như đường chỉ. | Vạt áo xé răng cưa bay hỗn loạn, tạo cảm giác phi vật lý. |
 | **13. Chronomancer**<br>*(Bậc 3 - Cao cấp)* | Family 7: `Relic` (Đồng Hồ Cát) | **Con lắc dao động (Pendulum Asymmetry)** | Dáng đứng thong thả, bước chân lệch nhịp, tay nâng pháp bảo lơ lửng ngang tầm mắt. | Vòng kim cô thời gian xoay lơ lửng sau lưng; dây xích đồng hồ cát rủ dài đung đưa. | Vòng hào quang tròn rỗng bao quanh đầu và vai. |
 | **14. Phantom Stalker**<br>*(Bậc 3 - Cao cấp)* | Family 5: `Dual.Daggers` / Cung ám khí | **Bóng mờ u linh (Shadow Silhouette)** | Dáng đứng mờ ảo, trọng tâm chìm sâu trong làn khói đen hư vô. | Vệt tàn ảnh đen bốc lên sau lưng; mặt nạ u linh phát quang le lói. | Khối bóng mờ nhòe với viền răng cưa sương khói. |
-| **15. Seraph (Lục Dực)**<br>*(Bậc 3 - Cao cấp)* | Family 7: `1H.Mace` / Thánh Tích | **Thánh giá phát quang (Radiant Cross)** | Chân chạm đất kiên định (kế thừa Rig 4), thân người thẳng tắp trong ánh hào quang. | Đôi cánh ánh sáng 6 cánh (Wings Overlay) vươn rộng sau lưng qua Socket_Back. | Đôi cánh lớn đối xứng tạo thành hình chữ thập thánh áp đảo. |
+| **15. Seraph (Thiên Sứ Lục Dực)**<br>*(Bậc 3 - Cao cấp)* | Family 7: `1H.Mace` / Thánh Tích | **Thánh giá phát quang (Radiant Cross)** | Chân chạm đất kiên định (kế thừa Rig 4), thân người thẳng tắp trong ánh hào quang. | Đôi cánh ánh sáng 6 cánh (Wings Overlay) vươn rộng sau lưng qua Socket_Back. | Đôi cánh lớn đối xứng tạo thành hình chữ thập thánh áp đảo. |
 | **16. God Slayer**<br>*(Bậc 4 - Ẩn/Mythic)* | Family 1 / Family 3 | **Hư vô biến dạng (Distorted Negative Space)** | Tĩnh lặng tuyệt đối (No idle breathing), không có chuyển động thở thông thường. | Lưỡi kiếm/kích cắm thẳng xuống đất phía trước mặt; bóng đổ dưới chân loang lổ như mực đen. | Khoảng rỗng (Negative space) lớn giữa thân người và vũ khí cắm đất. |
 
 ---
 
 ## 3. Hệ Thống Phân Cấp NPC & Quái Vật (Enemy Tier System)
 
-Quái vật trong Project Ascendant được chia thành **4 Tầng Nguy Hiểm (Threat Tiers)** xuyên suốt 3 vùng bản đồ mở không rào cản. Người chơi phải có khả năng ước lượng cấp bậc và chuẩn bị phản xạ I-frame ngay khi quái vật xuất hiện ở rìa tầm nhìn camera.
+Quái vật trong Mortal Ascension được chia thành **4 Tầng Nguy Hiểm (Threat Tiers)** xuyên suốt 3 vùng bản đồ mở không rào cản. Người chơi phải có khả năng ước lượng cấp bậc và chuẩn bị phản xạ I-frame ngay khi quái vật xuất hiện ở rìa tầm nhìn camera.
 
 ```
 TIỂU THỂ (TRASH)      TINH ANH (ELITE)       THỦ LĨNH (MINI-BOSS)      LÃNH CHÚA (WORLD BOSS)

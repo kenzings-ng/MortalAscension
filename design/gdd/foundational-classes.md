@@ -10,7 +10,7 @@
 
 ## Overview
 
-Hệ thống 4 Chức Nghiệp Nền Tảng & Cây Kỹ Năng (4 Foundational Classes & Skill Trees) định hình bản sắc khởi đầu và cấu trúc tiến trình dài hạn cho người chơi trong Project Ascendant. Đại diện cho 4 trường phái chiến đấu nguyên bản—**Chiến Binh (Vanguard)** kiên cường với phản đòn, **Du Hiệp (Ranger)** linh hoạt xạ kích và đặt bẫy, **Thuật Sĩ (Arcanist)** kiểm soát chiến trường bằng ma pháp bùng nổ, và **Tu Sĩ (Acolyte)** bền bỉ hỗ trợ sinh tồn cùng khí công hộ thể—4 chức nghiệp này là nền móng vận hành toàn bộ vòng lặp hành động hardcore của game.
+Hệ thống 4 Chức Nghiệp Nền Tảng & Cây Kỹ Năng (4 Foundational Classes & Skill Trees) định hình bản sắc khởi đầu và cấu trúc tiến trình dài hạn cho người chơi trong Mortal Ascension. Đại diện cho 4 trường phái chiến đấu nguyên bản—**Tiên Phong (Vanguard)** kiên cường với phản đòn, **Xạ Thủ (Ranger)** linh hoạt xạ kích và đặt bẫy, **Bí Thuật Sư (Arcanist)** kiểm soát chiến trường bằng ma pháp bùng nổ, và **Tập Sự (Acolyte)** bền bỉ hỗ trợ sinh tồn cùng khí công hộ thể—4 chức nghiệp này là nền móng vận hành toàn bộ vòng lặp hành động hardcore của game.
 
 Được xây dựng theo triết lý thiết kế **A + C**, 4 Class cơ bản không phải là "lớp đệm tạm thời" để vứt bỏ khi tìm thấy Class hiếm, mà là những chức nghiệp sở hữu độ đa dụng cao nhất, chi phí nâng cấp kỹ năng tiết kiệm hơn **40%**, và khả năng tương thích với mọi **Bí Kíp Võ Học Chung** (Shared Weapon Grimoires). Hệ thống tích hợp trực tiếp vào Gameplay Ability System (GAS) của Unreal Engine 5, quản lý chỉ số khởi đầu, bộ Starter Skills (2 Chủ Động + 1 Nội Tại), cơ chế đặc trưng riêng biệt (Class Mechanics), và cây tiến trình phát triển kỹ năng chuyên sâu từ Cấp 1 đến Cấp 5.
 
@@ -20,16 +20,16 @@ Hệ thống 4 Chức Nghiệp Nền Tảng & Cây Kỹ Năng (4 Foundational Cl
 
 Hệ thống 4 Chức Nghiệp Nền Tảng mang đến trải nghiệm nhập vai trực diện (Direct Engagement), nơi người chơi cảm nhận sự khác biệt sống động trong từng nhịp thở chiến đấu, độ nặng của vũ khí và phản xạ cơ học đặc thù của từng trường phái:
 
-- **Chiến Binh (Vanguard) — *"Bức Tường Thép Bất Hoại"***:
+- **Tiên Phong (Vanguard) — *"Bức Tường Thép Bất Hoại"***:
   > *"Đứng sừng sững như một pháo đài trước lưỡi đao búa tạ khổng lồ của Lãnh Chúa, bạn giương chiếc khiên sắt lên ngay tích tắc trước khi đòn đánh chạm người. Âm thanh 'KENG!' chói tai xé toạc không gian, tia lửa bắn tung tóe—đòn thế của Boss bị phản phé hoàn toàn, mở toang tử huyệt thế đứng (Posture). Bạn bồi tiếp cú chém thứ ba đầy uy lực, tận hưởng khoái cảm thuần túy của việc làm chủ kỹ năng Parrying chuẩn xác từng khung hình."*
 
-- **Du Hiệp (Ranger) — *"Bóng Ma Tật Phong & Thợ Săn Tử Thần"***:
+- **Xạ Thủ (Ranger) — *"Bóng Ma Tật Phong & Thợ Săn Tử Thần"***:
   > *"Bạn lướt vút qua luồng quét đòn chết chóc của kẻ thù trong một phần tư giây, để lại một tàn ảnh mờ ảo. Ngay khi tiếp đất, bạn kéo căng dây cung phóng ra loạt tiễn xuyên thấu găm trúng điểm yếu của Boss, đồng thời rải bẫy chông làm chậm hoàn toàn toán quái đang lao tới. Sự phấn khích tột độ đến từ tốc độ di chuyển xé gió và cảm giác luôn đi trước lưỡi hái tử thần đúng nửa bước."*
 
-- **Thuật Sĩ (Arcanist) — *"Bậc Thầy Thao Túng Chiến Trường"***:
+- **Bí Thuật Sư (Arcanist) — *"Bậc Thầy Thao Túng Chiến Trường"***:
   > *"Bị bủa vây giữa vòng vây quái vật khát máu, bạn giộng mạnh đầu trượng ma thuật xuống mặt đất. Một xoáy nghịch ma pháp bùng lên gom toàn bộ kẻ địch vào một điểm, rồi một vụ nổ hồ quang sấm sét giáng xuống quét sạch chiến trường trong chớp mắt. Bạn không cần chạy trốn; bạn điều khiển toàn bộ nhịp độ trận đánh như một kỳ thủ sắp đặt bàn cờ."*
 
-- **Tu Sĩ (Acolyte) — *"Điểm Tựa Sinh Tử & Hộ Thể Kim Cương"***:
+- **Tập Sự (Acolyte) — *"Điểm Tựa Sinh Tử & Hộ Thể Kim Cương"***:
   > *"Khi thanh Stamina của đồng đội cạn kiệt và Boss chuẩn bị giáng đòn kết liễu, bạn lao mình vào tâm chấn với tiếng rống khí công trầm hùng. Cú giộng chùy thánh giải phóng vầng hào quang hộ thể, triệt tiêu mọi hiệu ứng xuất huyết, hồi sinh tức thì thanh thể lực và dựng lên kết giới bất khả xâm phạm. Bạn là chỗ dựa vững chãi nhất, là sự cứu rỗi giữa những trận tử chiến nghẹt thở."*
 
 ---
@@ -41,7 +41,7 @@ Hệ thống 4 Chức Nghiệp Nền Tảng mang đến trải nghiệm nhập v
 #### 1. Quy Chuẩn Khởi Tạo & Bảng Chỉ Số Nền Tảng (Baseline Stats & Attributes)
 Tất cả 4 Class cơ bản được mở khóa miễn phí ngay từ màn hình tạo nhân vật, đóng vai trò là **Bậc 1 (T1 Sơ Cấp - Foundational)** của 4 Nhánh chức nghiệp: **Guard**, **Scout**, **Caster**, và **Faith** (theo [`advanced-classes.md`](file:///mnt/Data/Projects/project-games/ProjectAscendant/design/gdd/advanced-classes.md)). Khi chọn một class, nhân vật nhận đúng thẻ nhận diện chức nghiệp phẳng (`Class.Line.Guard.Vanguard`, `Class.Line.Scout.Ranger`, `Class.Line.Caster.Arcanist`, `Class.Line.Faith.Acolyte`), khởi tạo bộ trang bị Bậc 1 và nạp bảng chỉ số thuộc tính vào `UAscendantAttributeSet`:
 
-| Thuộc Tính (Attribute) | Chiến Binh (Vanguard) | Du Hiệp (Ranger) | Thuật Sĩ (Arcanist) | Tu Sĩ (Acolyte) | Ý Nghĩa Thiết Kế |
+| Thuộc Tính (Attribute) | Tiên Phong (Vanguard) | Xạ Thủ (Ranger) | Bí Thuật Sư (Arcanist) | Tập Sự (Acolyte) | Ý Nghĩa Thiết Kế |
 | :--- | :---: | :---: | :---: | :---: | :--- |
 | **Nhánh Chức Nghiệp** | **Nhánh Guard** | **Nhánh Scout** | **Nhánh Caster** | **Nhánh Faith** | Gốc rễ của 4 cây chuyển chức độc lập. |
 | **Máu Tối Đa (Max Health)** | **120** | 90 | 85 | 110 | Vanguard & Acolyte đứng tuyến đầu; Ranger & Arcanist mỏng manh. |
@@ -205,7 +205,7 @@ The `foundational_upgrade_cost` formula is defined as:
 
 ---
 
-### 2. Công Thức Phản Đòn Hoàn Hảo Của Chiến Binh (Vanguard Perfect Parry)
+### 2. Công Thức Phản Đòn Hoàn Hảo Của Tiên Phong (Vanguard Perfect Parry)
 The `vanguard_parry_reflection` formula is defined as:
 
 `ParryPostureDamage = BaseParryPosture * (1.0 + 0.10 * (ShieldRarity - 1))`
@@ -221,7 +221,7 @@ The `vanguard_parry_reflection` formula is defined as:
 
 ---
 
-### 3. Công Thức Thể Lực & Thời Gian Lướt Du Hiệp (Ranger Acrobatic Dash)
+### 3. Công Thức Thể Lực & Thời Gian Lướt Xạ Thủ (Ranger Acrobatic Dash)
 The `ranger_acrobatic_dash` formula is defined as:
 
 `RangerDashStamina = max(10.0, BaseDashStamina - StaminaReduction)`  
@@ -240,7 +240,7 @@ The `ranger_acrobatic_dash` formula is defined as:
 
 ---
 
-### 4. Công Thức Sát Thương Quá Tải Ma Lực Của Thuật Sĩ (Arcanist Arcane Surge)
+### 4. Công Thức Sát Thương Quá Tải Ma Lực Của Bí Thuật Sư (Arcanist Arcane Surge)
 The `arcanist_surge_burst` formula is defined as:
 
 `SurgeDamage = BaseAttackPower * 2.50 + MaxMana * 0.15`
@@ -252,11 +252,11 @@ The `arcanist_surge_burst` formula is defined as:
 | Max Mana | $\text{MaxMana}$ | float | $140.0 - 400.0$ | Trữ lượng Mana tối đa từ `UAscendantAttributeSet`. |
 
 **Output Range:** $83.5 - 435.0$ sát thương phép diện rộng; luôn hồi cố định $+20.0$ Mana và gây $30.0$ Posture Damage.  
-**Example:** Thuật sĩ khởi đầu có $\text{AP} = 30$, $\text{MaxMana} = 140$: Đòn nổ Arcane Surge gây $30 \times 2.50 + 140 \times 0.15 = 75 + 21 = \mathbf{96.0}$ sát thương ma pháp AoE và hồi lại $20$ Mana tức thì.
+**Example:** Bí Thuật Sư khởi đầu có $\text{AP} = 30$, $\text{MaxMana} = 140$: Đòn nổ Arcane Surge gây $30 \times 2.50 + 140 \times 0.15 = 75 + 21 = \mathbf{96.0}$ sát thương ma pháp AoE và hồi lại $20$ Mana tức thì.
 
 ---
 
-### 5. Công Thức Lớp Khiên Hộ Thể Của Tu Sĩ (Acolyte Aegis Barrier)
+### 5. Công Thức Lớp Khiên Hộ Thể Của Tập Sự (Acolyte Aegis Barrier)
 The `acolyte_aegis_barrier` formula is defined as:
 
 `BarrierHP = MaxHealth * 0.15 * (1.0 + 0.10 * (SkillLevel - 1))`
@@ -264,11 +264,11 @@ The `acolyte_aegis_barrier` formula is defined as:
 **Variables:**
 | Variable | Symbol | Type | Range | Description |
 |---|:---:|:---:|:---:|---|
-| Max Health | $\text{HP}$ | float | $110.0 - 500.0$ | Máu tối đa của Tu Sĩ tại thời điểm kích hoạt. |
+| Max Health | $\text{HP}$ | float | $110.0 - 500.0$ | Máu tối đa của Tập Sự tại thời điểm kích hoạt. |
 | Skill Level | $\text{Level}$ | int | $1 - 5$ | Cấp độ hiện tại của kỹ năng Kim Cương Thuẫn. |
 
 **Output Range:** $16.5 - 105.0$ lượng khiên hấp thụ sát thương; tồn tại tối đa $4.0\text{s}$.  
-**Example:** Tu Sĩ Cấp 1 có $\text{MaxHealth} = 110$, kỹ năng Level 1: Lớp khiên hấp thụ $110 \times 0.15 \times 1.0 = \mathbf{16.5}$ sát thương. Tại Level 5 với đồ tăng Max HP lên 200: Lớp khiên hấp thụ $200 \times 0.15 \times (1 + 0.40) = \mathbf{42.0}$ sát thương cho cả bản thân và đồng minh.
+**Example:** Tập Sự Cấp 1 có $\text{MaxHealth} = 110$, kỹ năng Level 1: Lớp khiên hấp thụ $110 \times 0.15 \times 1.0 = \mathbf{16.5}$ sát thương. Tại Level 5 với đồ tăng Max HP lên 200: Lớp khiên hấp thụ $200 \times 0.15 \times (1 + 0.40) = \mathbf{42.0}$ sát thương cho cả bản thân và đồng minh.
 
 ---
 
@@ -288,9 +288,9 @@ The `acolyte_aegis_barrier` formula is defined as:
    - Bộ đếm thời gian duy trì 8 giây của trạng thái Quá Tải được làm mới (Reset) về 8.0s.
    - Đòn nổ diện rộng Arcane Surge chỉ kích hoạt khi người chơi thực hiện đòn đánh thường (`[LMB]`) kế tiếp bằng Trượng.
 
-4. **If Tu Sĩ (Acolyte) tụt Stamina dưới 30% khi cơ chế Chân Khí Hộ Thể đang trong thời gian hồi nội tại (ICD 20s)**:
+4. **If Tập Sự (Acolyte) tụt Stamina dưới 30% khi cơ chế Chân Khí Hộ Thể đang trong thời gian hồi nội tại (ICD 20s)**:
    - Sóng chân khí và việc hồi 30 Stamina KHÔNG kích hoạt.
-   - Tu Sĩ rơi vào trạng thái Kiệt Sức (`State.Debuff.Exhausted`), tốc độ di chuyển giảm 30% và buộc phải dùng *Lăn Sinh Tồn (Desperation Roll)* với chi phí gấp đôi cho đến khi hồi trên 30 Stamina. *(Desperation Roll chưa triển khai trong code (theo quyết định 2026-10-09: giá trị code là chuẩn): `UPAGameplayAbility_Dash` chặn cú lướt khi Stamina < 25.)*
+   - Tập Sự rơi vào trạng thái Kiệt Sức (`State.Debuff.Exhausted`), tốc độ di chuyển giảm 30% và buộc phải dùng *Lăn Sinh Tồn (Desperation Roll)* với chi phí gấp đôi cho đến khi hồi trên 30 Stamina. *(Desperation Roll chưa triển khai trong code (theo quyết định 2026-10-09: giá trị code là chuẩn): `UPAGameplayAbility_Dash` chặn cú lướt khi Stamina < 25.)*
 
 5. **If người chơi thực hiện Chuyển Đổi Class Cơ Bản (Class Swap) tại Lửa Trại**:
    - Toàn bộ cấp độ kỹ năng và số lượng Tàn Trang đã đầu tư trong Grimoire của Class cũ được bảo lưu vĩnh viễn 100%.
@@ -320,7 +320,7 @@ The `acolyte_aegis_barrier` formula is defined as:
 | Hệ Thống Hạ Nguồn | Bản Tả Thiết Kế (GDD) | Bản Chất Phụ Thuộc | Kỳ Vọng Hệ Thống Cung Cấp |
 | :--- | :--- | :---: | :--- |
 | **7 Advanced Classes** | `design/gdd/advanced-classes.md` | **Bắt Buộc (Hard)** | Cung cấp nền tảng bộ kỹ năng và phong cách chiến đấu gốc để các Class Hiếm/Cao Cấp phát triển chuyên sâu hơn (ví dụ: Templar kế thừa Vanguard/Acolyte; Berserker biến tấu từ Vanguard). |
-| **Open World MMO Netcode** | `design/gdd/multiplayer-coop.md` | **Tương Thích (Soft)** | Đồng bộ hiệu ứng hào quang của Tu Sĩ (*Tịnh Tâm*, *Kim Cương Thuẫn*), khả năng kiểm soát Aggro của Chiến Binh qua mạng Server-Authoritative Dedicated Server ([ADR-0001](file:///mnt/Data/Projects/project-games/docs/architecture/adr-0001-open-world-mmo-combat-networking.md)). |
+| **Open World MMO Netcode** | `design/gdd/multiplayer-coop.md` | **Tương Thích (Soft)** | Đồng bộ hiệu ứng hào quang của Tập Sự (*Tịnh Tâm*, *Kim Cương Thuẫn*), khả năng kiểm soát Aggro của Tiên Phong qua mạng Server-Authoritative Dedicated Server ([ADR-0001](file:///mnt/Data/Projects/project-games/docs/architecture/adr-0001-open-world-mmo-combat-networking.md)). |
 | **Reincarnation & Soul Loop** | `design/gdd/reincarnation.md` | **Kế Thừa (Soft)** | Chuyển đổi độ thuần thục (Mastery) của 4 Class Cơ Bản thành điểm tích lũy danh vọng linh hồn vĩnh viễn qua các vòng lặp chơi lại. |
 
 ---
@@ -361,30 +361,30 @@ Bảng tổng hợp các biến số cân bằng dành cho Designer có thể ti
 ## Visual/Audio Requirements
 
 ### 1. Hiệu Ứng Hình Ảnh & Niagara VFX (Visual & VFX)
-- **Chiến Binh (Vanguard):**
+- **Tiên Phong (Vanguard):**
   - *Perfect Parry:* Lóe sáng chùm tia lửa kim loại rực rỡ (*Metallic Spark Splash*) màu vàng cam tại điểm tiếp xúc của khiên, kèm theo một vòng sóng xung kích khúc xạ không khí (*Distortion Wave Ring*) bán kính 200cm.
   - *Khiên Kích & Đại Địa Trảm:* Đất đá nứt toác bốc khói bụi, vệt kiếm để lại đường cắt màu xám thép dày đặc.
-- **Du Hiệp (Ranger):**
+- **Xạ Thủ (Ranger):**
   - *Nhịp Lướt Tật Phong:* Tàn ảnh di chuyển mờ ảo (*Translucent Ghost Trail*) kéo dài 0.3s sau lưng nhân vật.
   - *Xuyên Tâm Tiễn:* Mũi tên phát sáng xanh lục ngọc (`#10B981`) để lại luồng lốc xoáy mini rẽ gió trên quỹ đạo bay.
   - *Bẫy Chông & Mưa Tên:* Vùng bẫy hiển thị các gai sắt ghim chặt xuống nền đá; mưa tên rơi xuống kèm hiệu ứng bóng đổ động của từng mũi tên cắm xuống đất.
-- **Thuật Sĩ (Arcanist):**
+- **Bí Thuật Sư (Arcanist):**
   - *Quá Tải Ma Lực (Arcane Surge):* Mỗi tầng tích tụ tạo ra 1 viên ngọc tím lam xoay tròn quanh đỉnh trượng ma thuật; khi đủ 3 tầng, viên ngọc bùng cháy dữ dội.
   - *Tử Quang Hủy Diệt (Laser Beam):* Chùm laser trụ ma thuật màu tím đậm chiếu thẳng, phát tán ánh sáng động (Dynamic Point Light) chiếu sáng rực rỡ toàn bộ khu vực xung quanh.
-- **Tu Sĩ (Acolyte):**
+- **Tập Sự (Acolyte):**
   - *Kim Cương Thuẫn:* Lớp màng bảo vệ dạng khối đa giác phát sáng màu vàng kim hoàng gia (`#F59E0B`), xuất hiện các ấn ký kinh văn cổ chuyển động chậm trên bề mặt khiên.
   - *Sóng Chân Khí (Ki Surge):* Vòng sóng năng lượng hình hoa sen bung nở từ chân nhân vật đẩy dạt quái vật ra xa.
 
 ---
 
 ### 2. Âm Thanh & Phản Hồi Âm Học (Audio & SFX)
-- **Chiến Binh (Vanguard):**
+- **Tiên Phong (Vanguard):**
   - *Âm Parry:* Tiếng va chạm kim loại nặng nề và đanh thép (*"KEEENG!"*) tần số cao, có độ vang vọng rền rĩ trầm ấm (*Bass Sub-drop*) báo hiệu thế đứng của đối phương đã bị bẻ gãy.
-- **Du Hiệp (Ranger):**
+- **Xạ Thủ (Ranger):**
   - *Âm Bắn Cung:* Tiếng dây cung bật tanh tách (*Bowstring Thwap*) kèm tiếng rít xé gió chói tai của mũi tên lao đi; tiếng bẫy sập lách cách dứt khoát.
-- **Thuật Sĩ (Arcanist):**
+- **Bí Thuật Sư (Arcanist):**
   - *Âm Ma Pháp:* Tiếng rung điện từ trầm đục (*Low-frequency Electric Hum*) chuyển sang tiếng nổ hồ quang chói lòa khi giải phóng đòn nổ Arcane Surge.
-- **Tu Sĩ (Acolyte):**
+- **Tập Sự (Acolyte):**
   - *Âm Thánh Quang:* Tiếng chuông đồng cổ xưa ngân nga (*Sacred Bronze Bell*) hòa quyện tiếng tụng chân ngôn âm vang tạo cảm giác an tâm tuyệt đối cho đồng đội.
 
 ---
@@ -413,27 +413,27 @@ Tích hợp trực tiếp vào thanh trạng thái CommonUI của người chơi
 ## Acceptance Criteria
 
 - [ ] **AC-1 (Foundational Archetype Initialization):**
-  - **GIVEN** người chơi ở màn hình tạo nhân vật và lựa chọn bất kỳ class nào trong 4 Class Cơ Bản (Chiến Binh, Du Hiệp, Thuật Sĩ, Tu Sĩ),
+  - **GIVEN** người chơi ở màn hình tạo nhân vật và lựa chọn bất kỳ class nào trong 4 Class Cơ Bản (Tiên Phong, Xạ Thủ, Bí Thuật Sư, Tập Sự),
   - **WHEN** nhân vật đăng nhập vào thế giới lần đầu tiên,
   - **THEN** nhân vật mang đúng thẻ `ClassTag`, sở hữu đúng bảng chỉ số nền tảng quy chuẩn trong `UAscendantAttributeSet`, được trang bị sẵn bộ vũ khí Bậc 1 tương ứng trên Paperdoll, và Action Deck kích hoạt sẵn 2 kỹ năng chủ động Cấp 1 (`Slot Q`, `Slot E`) cùng 1 kỹ năng nội tại Cấp 1.
 
 - [ ] **AC-2 (Vanguard Perfect Parry Precision):**
-  - **GIVEN** Chiến Binh (Vanguard) đang đối mặt với đòn đánh cận chiến hoặc tầm xa của kẻ địch,
+  - **GIVEN** Tiên Phong (Vanguard) đang đối mặt với đòn đánh cận chiến hoặc tầm xa của kẻ địch,
   - **WHEN** người chơi bấm chuột phải `[RMB]` trúng cửa sổ $0.15\text{s}$ trước khi đòn đánh chạm người,
   - **THEN** nhân vật không nhận bất kỳ sát thương HP nào, không bị tiêu hao Posture, kẻ tấn công lập tức nhận $40.0$ điểm Posture Damage, và quái thường bị choáng nhẹ $0.6\text{s}$ kèm âm thanh *"KEEENG!"* và tia lửa Niagara VFX lóe sáng.
 
 - [ ] **AC-3 (Ranger Acrobatic Dash & Stamina Reduction):**
-  - **GIVEN** Du Hiệp (Ranger) có đủ Thể Lực,
+  - **GIVEN** Xạ Thủ (Ranger) có đủ Thể Lực,
   - **WHEN** nhấn phím Space để thực hiện lướt né,
   - **THEN** thanh Stamina chỉ tiêu hao đúng $20.0$ điểm (thay vì $25.0$ điểm tiêu chuẩn), tổng thời gian lướt ngắn hơn nền $0.05\text{s}$ (tức $0.30\text{s}$ trên nền code $0.35\text{s}$ — (2026-10-10, Y1, chủ dự án duyệt)) với I-frame như nền ($0.20\text{s}$, từ $0.05\text{s}$ đến $0.25\text{s}$), và có thể bắn ngay 1 phát tên phụ (*Snap Shot*) mà không bị khựng lại. *(chưa triển khai trong code (theo quyết định 2026-10-09: giá trị code là chuẩn))*
 
 - [ ] **AC-4 (Arcanist Arcane Surge Resource Loop):**
-  - **GIVEN** Thuật Sĩ (Arcanist) đã tích lũy đủ 3 tầng `Arcane Charge` qua việc tung kỹ năng ma pháp trúng đích,
+  - **GIVEN** Bí Thuật Sư (Arcanist) đã tích lũy đủ 3 tầng `Arcane Charge` qua việc tung kỹ năng ma pháp trúng đích,
   - **WHEN** thực hiện đòn đánh thường kế tiếp bằng trượng,
   - **THEN** đòn đánh giải phóng vụ nổ diện rộng bán kính $300\text{ cm}$ gây sát thương ma pháp tính theo công thức $\text{AP} \times 2.5 + \text{MaxMana} \times 0.15$, đồng thời hồi phục tức thì $+20.0$ Mana cho nhân vật và gây $30.0$ Posture Damage lên mọi mục tiêu trúng đòn.
 
 - [ ] **AC-5 (Acolyte Emergency Stamina Surge & ICD):**
-  - **GIVEN** Tu Sĩ (Acolyte) có cơ chế Chân Khí Hộ Thể không trong thời gian hồi nội tại (`AcolyteAegisICD = 20.0s`),
+  - **GIVEN** Tập Sự (Acolyte) có cơ chế Chân Khí Hộ Thể không trong thời gian hồi nội tại (`AcolyteAegisICD = 20.0s`),
   - **WHEN** thanh Stamina tụt xuống dưới ngưỡng $30\%$,
   - **THEN** nhân vật lập tức phát tán luồng sóng chân khí đẩy lùi quái nhỏ xung quanh và hồi ngay $+30.0$ Thể Lực, đồng thời cơ chế rơi vào thời gian hồi $20.0\text{s}$ (nếu tụt Stamina dưới $30\%$ trong $20.0\text{s}$ này sẽ không kích hoạt lại).
 

@@ -1,5 +1,5 @@
 # 2D Pixel Asset Technical Specifications & Production Contract
-## Hợp Đồng Quy Chuẩn Kỹ Thuật Đồ Họa 2D Pixel — Project Ascendant
+## Hợp Đồng Quy Chuẩn Kỹ Thuật Đồ Họa 2D Pixel — Mortal Ascension
 
 > **Mã hợp đồng**: `SPEC-ART-2026-09-23-V2`  
 > **Cơ quan ban hành**: Lead Game Designer & Technical Art Director  
@@ -41,7 +41,7 @@ flowchart TD
 
 ## 2. Các Bộ Hợp Đồng Định Sẵn (Asset Contract Presets)
 
-### Preset A: *Project Ascendant HD-2D* (Chunky 32×32 Pixel Standard — Kế Thừa Tinh Hoa Stardew & Octopath)
+### Preset A: *Mortal Ascension HD-2D* (Chunky 32×32 Pixel Standard — Kế Thừa Tinh Hoa Stardew & Octopath)
 * **Hệ quy chiếu lưới pixel**:
   * **Kích thước bản vẽ gốc (Native Grid)**: Chuẩn hóa **$32 \times 32$ pixel** (Vũ khí tiêu chuẩn, khiên, dược phẩm, quặng khoáng sản) và **$40 \times 40$ pixel** (Đại kiếm 2 tay, trượng đại pháp sư).
   * **Kích thước xuất xưởng cho UI (Export Canvas)**: Phóng to thuật toán **Nearest Neighbor $8\times$ thành $256 \times 256$ pixel** (hoặc $2\times$ thành $64 \times 64$ trong kho đồ dạng lưới).
@@ -213,7 +213,7 @@ RARITY_COLORS = {
 
 ## 7. Kiến Trúc Biến Thể & Đột Biến Trực Quan Động (Living Equipment Mutation System)
 
-> 🔮 **QUY CHUẨN THIẾT KẾ ĐỘT PHÁ**: *"Một trang bị trong Project Ascendant không bao giờ là một bức ảnh tĩnh bất biến. Một cây kiếm có thể sở hữu hàng trăm biến thể trực quan dựa trên hành trình nâng cấp, khảm ngọc nguyên tố, trạng thái tác chiến và môi trường của người chơi."*  
+> 🔮 **QUY CHUẨN THIẾT KẾ ĐỘT PHÁ**: *"Một trang bị trong Mortal Ascension không bao giờ là một bức ảnh tĩnh bất biến. Một cây kiếm có thể sở hữu hàng trăm biến thể trực quan dựa trên hành trình nâng cấp, khảm ngọc nguyên tố, trạng thái tác chiến và môi trường của người chơi."*  
 > *(Kế thừa trọn vẹn từ module Consistent Upgrades & Variants trong `game-art-studio/references/ui-and-image-editing.md`).*
 
 ### 7.1 Ma Trận 4 Cấp Độ Đột Biến Cường Hóa (4-Tier Evolution Mutation Matrix)
@@ -264,7 +264,7 @@ Sprite trang bị có khả năng hiển thị các lớp phủ (Overlays) tươ
 
 ## 9. Ví Dụ Đối Chiếu Mẫu: Dở vs Xuất Sắc
 
-### Ví Dụ 1: Sprite Nhân Vật Chiến Binh Lao Đánh (Combat Sprite)
+### Ví Dụ 1: Sprite Nhân Vật Tiên Phong Lao Đánh (Combat Sprite)
 
 * ❌ **Prompt Kém (Đầy mùi AI, kết quả đơ cứng và bẩn màu)**:
   ```text

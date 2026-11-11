@@ -12,7 +12,7 @@
 
 ## Overview
 
-Hệ thống Thuộc tính và Trạng thái Nhân vật (Character Attributes & Stats Engine) là xương sống tính toán toàn bộ năng lực sinh tồn, độ cơ động và sức mạnh chiến đấu của người chơi cũng như quái vật trong Project Ascendant. Được xây dựng trực tiếp trên nền tảng **Unreal Engine Gameplay Ability System (GAS)**, hệ thống quản lý các thuộc tính cơ sở (Máu, Thể lực, Năng lượng), chỉ số cơ chế (Thế đứng - Posture, Thời lượng I-frame, Ngưỡng choáng) và chỉ số chiến đấu (Công, Thủ, Tốc độ). 
+Hệ thống Thuộc tính và Trạng thái Nhân vật (Character Attributes & Stats Engine) là xương sống tính toán toàn bộ năng lực sinh tồn, độ cơ động và sức mạnh chiến đấu của người chơi cũng như quái vật trong Mortal Ascension. Được xây dựng trực tiếp trên nền tảng **Unreal Engine Gameplay Ability System (GAS)**, hệ thống quản lý các thuộc tính cơ sở (Máu, Thể lực, Năng lượng), chỉ số cơ chế (Thế đứng - Posture, Thời lượng I-frame, Ngưỡng choáng) và chỉ số chiến đấu (Công, Thủ, Tốc độ). 
 
 Hệ thống giải quyết bài toán cốt lõi của game: biến kỹ năng canh thời gian (timing) và né đòn của người chơi thành lợi thế vượt qua sự chênh lệch cấp độ ảo thông qua cơ chế phá vỡ Posture, đồng thời đảm bảo khả năng đồng bộ mạng nhiều người chơi (Multiplayer Replication) mượt mà không độ trễ.
 

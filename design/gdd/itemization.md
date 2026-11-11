@@ -10,7 +10,7 @@
 
 ## Overview
 
-Hệ thống Vật Phẩm & Trang Bị (Itemization & Equipment System) là xương sống vận hành cơ chế phát triển sức mạnh nhân vật, vòng lặp phần thưởng (Loot Loop), và cân bằng kinh tế trong Project Ascendant (MMO 2.5D ARPG). Hệ thống kết nối trực tiếp giữa:
+Hệ thống Vật Phẩm & Trang Bị (Itemization & Equipment System) là xương sống vận hành cơ chế phát triển sức mạnh nhân vật, vòng lặp phần thưởng (Loot Loop), và cân bằng kinh tế trong Mortal Ascension (MMO 2.5D ARPG). Hệ thống kết nối trực tiếp giữa:
 1. **Tiến trình cấp độ nhân vật Cấp 1–50** với chỉ số Item Level ($iLvl$).
 2. **Cơ chế Thợ Rèn 3 Bậc (3-Tier Forge)**: Lò Rèn Tiền Trạm (Outpost), Lò Rèn Dã Ngoại (Field), và Lò Rèn Cấm Địa (Forbidden).
 3. **Kinh tế Song Tiền Tệ (Dual-Currency)**: Vàng (`currency_gold`) kết hợp Tàn Trang Kỹ Năng (`item_skill_shard`).
@@ -30,7 +30,7 @@ Hệ thống được thiết kế theo triết lý **"Chất lượng đồ h�
 
 ## 1. Hệ Thống 5 Độ Hiếm (5-Rarity Matrix)
 
-Mọi trang bị trong Project Ascendant được phân loại thành **5 Độ Hiếm** chuẩn RPG. *(Cập nhật 2026-10-10 (X7): "Bậc Hiếm/Tier" → "Độ Hiếm", DECISIONS.md §1.)* 
+Mọi trang bị trong Mortal Ascension được phân loại thành **5 Độ Hiếm** chuẩn RPG. *(Cập nhật 2026-10-10 (X7): "Bậc Hiếm/Tier" → "Độ Hiếm", DECISIONS.md §1.)* 
 
 > 🛑 **QUY TẮC MỸ THUẬT CỐT LÕI (Art Budget Rule):**  
 > **Độ hiếm (Rarity) KHÔNG sinh ra art vẽ tay riêng biệt!**  
@@ -109,10 +109,10 @@ $$\text{AffixValue} = \text{RandomRound}(\text{MinVal}_{T}, \text{MaxVal}_{T})$$
 
 ### 2.3 Dòng Đặc Quyền Huyền Thoại (Legendary Combat Perks)
 Chỉ xuất hiện trên trang bị Legendary. Thay vì chỉ tăng số liệu thuần túy, dòng này can thiệp và biến đổi cơ chế chiêu thức của Gameplay Ability System (GAS): *(Cập nhật 2026-10-10 (X7): bỏ cách đánh số độ hiếm bằng "Tier/Bậc" — độ hiếm gọi bằng tên (DECISIONS.md §1).)*
-- **Gươm Lãnh Chúa Hỏa Ngục (Vanguard):** Kỹ năng *Blade Arc* phóng ra một luồng sóng dung nham thiêu đốt mặt đất trong 3 giây.
-- **Cung Phong Bão Cổ Thụ (Ranger):** Phát bắn *Piercing Shot* khi xuyên qua kẻ địch thứ 2 sẽ tự động tách thành 3 mũi tên phụ.
-- **Pháp Trượng Hư Không Cấm Thuật (Arcanist):** Kỹ năng *Gravity Pull* tăng 40% bán kính hút và làm câm lặng quái nhỏ trong 1.5 giây.
-- **Chiến Chùy Thái Dương (Acolyte):** Đòn giáng *Smite* tạo kết giới hồi 10 điểm Thể Lực mỗi giây cho mọi đồng minh đứng trong vòng tròn.
+- **Gươm Lãnh Chúa Hỏa Ngục — dành cho Vanguard:** Kỹ năng *Blade Arc* phóng ra một luồng sóng dung nham thiêu đốt mặt đất trong 3 giây.
+- **Cung Phong Bão Cổ Thụ — dành cho Ranger:** Phát bắn *Piercing Shot* khi xuyên qua kẻ địch thứ 2 sẽ tự động tách thành 3 mũi tên phụ.
+- **Pháp Trượng Hư Không Cấm Thuật — dành cho Arcanist:** Kỹ năng *Gravity Pull* tăng 40% bán kính hút và làm câm lặng quái nhỏ trong 1.5 giây.
+- **Chiến Chùy Thái Dương — dành cho Acolyte:** Đòn giáng *Smite* tạo kết giới hồi 10 điểm Thể Lực mỗi giây cho mọi đồng minh đứng trong vòng tròn.
 
 ### 2.4 Quy Tắc Xử Lý Stacking Khi Đánh Boss Đa Người Chơi (Multiplayer Raid Stacking & Contested PvE Rules)
 Để ngăn chặn tình trạng lạm phát chỉ số khi 50 người chơi cùng vây đánh 1 World Boss, toàn bộ 28 Affix tuân thủ nghiêm ngặt 4 quy tắc mạng Server-Authoritative:
@@ -144,21 +144,21 @@ Chỉ xuất hiện trên trang bị Legendary. Thay vì chỉ tăng số liệu
 graph TD
     subgraph 16_Classes["16 CHỨC NGHIỆP TRONG GAME"]
         C1["Tiên Phong (Vanguard)"]
-        C2["Du Hiệp (Ranger)"]
-        C3["Thuật Sĩ (Arcanist)"]
-        C4["Tu Sĩ (Acolyte)"]
-        C5["Cuồng Chiến (Berserker)"]
-        C6["Thích Khách (Shadowblade)"]
-        C7["Nguyên Tố (Elementalist)"]
+        C2["Xạ Thủ (Ranger)"]
+        C3["Bí Thuật Sư (Arcanist)"]
+        C4["Tập Sự (Acolyte)"]
+        C5["Cuồng Chiến Sĩ (Berserker)"]
+        C6["Ảnh Nhẫn (Shadowblade)"]
+        C7["Nguyên Tố Sư (Elementalist)"]
         C8["Thánh Hiệp Sĩ (Templar)"]
         C9["Hư Không Kiếm (Void Blade)"]
-        C10["Thời Gian (Chronomancer)"]
+        C10["Thời Gian Pháp Sư (Chronomancer)"]
         C11["Long Kỵ Sĩ (Dragon Knight)"]
-        C12["Thần Thí Giả (God Slayer)"]
+        C12["Kẻ Diệt Thần (God Slayer)"]
         C13["Kiếm Sư (Swordmaster)"]
-        C14["Thẩm Phán (Inquisitor)"]
-        C15["Bóng Ma (Phantom Stalker)"]
-        C16["Thiên Sứ (Seraph)"]
+        C14["Thẩm Phán Dị Giáo (Inquisitor)"]
+        C15["U Hồn Đoạt Mệnh (Phantom Stalker)"]
+        C16["Thiên Sứ Lục Dực (Seraph)"]
     end
 
     subgraph 7_Families["7 WEAPON FAMILIES (NGÂN SÁCH ART TỐI ƯU)"]
@@ -282,7 +282,7 @@ $$\text{BaseArmor}(iLvl) = \text{ArchetypeArmor}_{\text{Base}} \times \left(1.0 
 
 ## 6. Danh Mục Vị Trí Trang Bị Đầy Đủ (Comprehensive Slot List)
 
-Nhân vật trong Project Ascendant quản lý trang bị qua 4 phân vùng lưu trữ chuyên biệt:
+Nhân vật trong Mortal Ascension quản lý trang bị qua 4 phân vùng lưu trữ chuyên biệt:
 
 ```
 TỔNG THỂ KHO VẬT PHẨM & TRANG BỊ

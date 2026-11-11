@@ -1,4 +1,4 @@
-# Game Concept: Project Ascendant (Working Title)
+# Game Concept: Mortal Ascension
 
 *Created: 2026-09-14*  
 *Status: In Review — Scope Adjusted to Open World Action MMO (v2)*  
@@ -72,7 +72,7 @@ Một thế giới nơi cấp độ không thể che giấu sự non nớt, và 
 ```
                      ┌───────────────────────────┐
                      │   1 APEX CLASS (BẬC T4)   │
-                     │  (Thí Thần Giả - No-Hit)  │
+                     │  (Kẻ Diệt Thần - No-Hit)  │
                      └─────────────┬─────────────┘
                                    │
                      ┌─────────────┴─────────────┐
@@ -100,9 +100,9 @@ Một thế giới nơi cấp độ không thể che giấu sự non nớt, và 
 | STT | Tên Class | Vũ Khí Đặc Trưng | Phong Cách Chiến Đấu & Kỹ Năng Độc Đáo |
 | :---: | :--- | :--- | :--- |
 | **1** | **Tiên Phong (Vanguard)** | Kiếm 1 tay & Khiên Sắt Vuông (`1H.Blade`) | **Bậc thầy cận chiến & Đỡ đòn:** Sở hữu kỹ năng **Phản Đòn (Parry)** đòn đánh thường; thể lực (Stamina) dồi dào, khả năng càn lướt và tạo thế đứng vững chắc trước boss. |
-| **2** | **Du Hiệp (Ranger)** | Cung Tên / Song Đao (`2H.Bow` / `Dual.Daggers`) | **Cơ động tầm xa & Bẫy:** Nhịp lướt né nhanh nhất game; có khả năng bắn tiễn xuyên thấu làm chậm quái, đặt bẫy chông và găm tên nổ vào điểm yếu của mục tiêu. |
-| **3** | **Thuật Sĩ (Arcanist)** | Trượng Ma Pháp (`2H.Staff`) | **Kiểm soát diện rộng & Phép thuật:** Tầm đánh trung bình; các chiêu thức kéo dồn quái, đẩy lùi kẻ địch khi bị áp sát và dồn sát thương nguyên tố phép thuật bùng nổ. |
-| **4** | **Tu Sĩ (Acolyte)** | Chùy Chiến / Pháp Bảo (`1H.Mace` / `Relic`) | **Hỗ trợ sinh tồn & Khí công:** Vừa cận chiến vừa tạo khiên ánh sáng; có kỹ năng thanh tẩy độc/chảy máu, hồi phục Stamina cho bản thân và đồng đội xung quanh trong thế giới mở / tổ đội. |
+| **2** | **Xạ Thủ (Ranger)** | Cung Tên / Song Đao (`2H.Bow` / `Dual.Daggers`) | **Cơ động tầm xa & Bẫy:** Nhịp lướt né nhanh nhất game; có khả năng bắn tiễn xuyên thấu làm chậm quái, đặt bẫy chông và găm tên nổ vào điểm yếu của mục tiêu. |
+| **3** | **Bí Thuật Sư (Arcanist)** | Trượng Ma Pháp (`2H.Staff`) | **Kiểm soát diện rộng & Phép thuật:** Tầm đánh trung bình; các chiêu thức kéo dồn quái, đẩy lùi kẻ địch khi bị áp sát và dồn sát thương nguyên tố phép thuật bùng nổ. |
+| **4** | **Tập Sự (Acolyte)** | Chùy Chiến / Pháp Bảo (`1H.Mace` / `Relic`) | **Hỗ trợ sinh tồn & Khí công:** Vừa cận chiến vừa tạo khiên ánh sáng; có kỹ năng thanh tẩy độc/chảy máu, hồi phục Stamina cho bản thân và đồng đội xung quanh trong thế giới mở / tổ đội. |
 
 #### BẬC T2: 6 Class Trung Cấp (Advanced)
 *Mở khóa qua các chuỗi thử thách dã ngoại, săn quái tinh anh hoặc khám phá tàn tích.*
@@ -112,9 +112,9 @@ Một thế giới nơi cấp độ không thể che giấu sự non nớt, và 
 | **5** | **Cuồng Chiến Sĩ (Berserker)** | Đại Đao 2 tay (`Weapon.2H.Heavy`) | **Liều mạng đổi sát thương:** Máu càng tụt thì tốc độ đánh và sát thương càng tăng; đòn đánh sở hữu *Super Armor* (không bị ngắt chiêu).<br>📍 *Cách mở:* Sống sót qua đấu trường quái tinh anh tại *Hẻm Núi Máu*. |
 | **6** | **Thánh Hiệp Sĩ (Templar)** | Chiến Chùy & Đại Thuẫn (`Weapon.1H.Mace`) | **Tanker thuần túy & Phản kích:** Thu hút hận thù quái (Taunt) cực mạnh trong giao tranh đông người; chặn đòn đánh tích năng lượng ánh sáng nổ tung phản sát thương.<br>📍 *Cách mở:* Thanh tẩy lăng mộ thánh địa bị ô uế. |
 | **7** | **Kiếm Sư (Swordmaster)** | Kiếm 1 tay (`Weapon.1H.Blade`, không khiên) | **Đoạt mệnh bằng kiếm đạo:** Bỏ khiên để tối ưu tốc độ vung kiếm và phản xạ, kiếm ý sắc bén tạo vết chém xuyên giáp.<br>📍 *Cách mở:* Giải mã tàn tích Kiếm Tông cổ xưa. |
-| **8** | **Ảo Ảnh Thích Khách (Shadowblade)** | Song Đoản Kiếm (`Weapon.Dual.Daggers`) | **Ám sát & Tàng hình:** Lướt né để lại phân thân đánh lạc hướng quái; đòn đánh từ sau lưng (Backstab) x3 sát thương bạo kích.<br>📍 *Cách mở:* Tìm thấy căn cứ hội sát thủ ẩn sâu trong hang động đầm lầy. |
+| **8** | **Ảnh Nhẫn (Shadowblade)** | Song Đoản Kiếm (`Weapon.Dual.Daggers`) | **Ám sát & Tàng hình:** Lướt né để lại phân thân đánh lạc hướng quái; đòn đánh từ sau lưng (Backstab) x3 sát thương bạo kích.<br>📍 *Cách mở:* Tìm thấy căn cứ hội sát thủ ẩn sâu trong hang động đầm lầy. |
 | **9** | **Nguyên Tố Sư (Elementalist)** | Trượng Phép / Cầu Phép (`Weapon.2H.Staff`) | **Phản ứng kết hợp:** Luân chuyển 3 nguyên tố Hỏa - Băng - Lôi. Băng làm đông cứng, Hỏa thiêu đốt, Lôi gây nổ giật sét lan sang đàn quái.<br>📍 *Cách mở:* Giải mã câu đố 4 trụ đá nguyên tố ở đền thờ cổ. |
-| **10** | **Thẩm Phán (Inquisitor)** | Chiến Chùy 1 tay (`Weapon.1H.Mace`) | **Trừng phạt dị giáo:** Giáng chùy thiêng định tội, thanh trừng tà linh và phá Posture kẻ địch cực mạnh.<br>📍 *Cách mở:* Thanh tẩy tu viện hắc ám bị giáo sĩ tha hóa chiếm đóng. |
+| **10** | **Thẩm Phán Dị Giáo (Inquisitor)** | Chiến Chùy 1 tay (`Weapon.1H.Mace`) | **Trừng phạt dị giáo:** Giáng chùy thiêng định tội, thanh trừng tà linh và phá Posture kẻ địch cực mạnh.<br>📍 *Cách mở:* Thanh tẩy tu viện hắc ám bị giáo sĩ tha hóa chiếm đóng. |
 
 #### BẬC T3: 5 Class Cao Cấp (Master)
 *Mở khóa sau khi đánh bại các Lãnh Chúa (Boss) hoặc giải mã bí cảnh cấp cao.*
@@ -122,17 +122,17 @@ Một thế giới nơi cấp độ không thể che giấu sự non nớt, và 
 | STT | Tên Class | Vũ Khí Đặc Trưng | Phong Cách Chiến Đấu & Điều Kiện Mở Khóa |
 | :---: | :--- | :--- | :--- |
 | **11** | **Long Kỵ Sĩ (Dragon Knight)** | Thương Dài (`2H.Polearm`) *(2026-10-10, Y1, chủ dự án duyệt): bỏ `2H.Heavy`, theo DECISIONS.md:122* | **Không chiến & Hỏa long:** Kỹ năng phóng vút lên không trung rồi giáng xuống gây sát thương phá thế (Posture) cực mạnh; phun lửa diện rộng.<br>📍 *Cách mở:* Hạ gục và chặt đứt sừng của *Hỏa Long Lãnh Chúa*. |
-| **12** | **Hư Không Kiếm Sư (Void Blade)** | Kiếm Hư Không (`Weapon.1H.Blade`) | **Chém xuyên không gian:** Cú lướt biến thành dịch chuyển tức thời; đòn đánh để lại các vết cắt không thời gian nổ sau 1 giây (*Judgement Cut*).<br>📍 *Cách mở:* Đánh bại *Lãnh Chúa Khe Nứt Hư Không*. |
-| **13** | **Bóng Ma (Phantom Stalker)** | Song Đoản Kiếm (`Weapon.Dual.Daggers`) | **Ám tiễn & Tử khí:** Thoắt ẩn thoắt hiện trong sương mù độc, dồn sát thương bạo kích từ hư vô.<br>📍 *Cách mở:* Đánh bại *Lãnh Chúa Đầm Lầy Tử Khí*. |
-| **14** | **Thời Gian Ma Đạo (Chronomancer)** | Pháp Bảo Thời Gian (`1H.Mace` / `Relic`) | **Thao túng dòng thời gian:** Tạo bong bóng làm chậm chuyển động của quái vật; kỹ năng "Đảo ngược" đưa lượng máu và vị trí bản thân quay lại 3 giây trước.<br>📍 *Cách mở:* Vượt qua thử thách *Tháp Đồng Hồ Vĩnh Hằng*. |
-| **15** | **Thiên Sứ (Seraph)** | Pháp Bảo Thánh Quang (`1H.Mace` / `Relic`) | **Hộ trì ánh sáng & Cứu rỗi:** Ban phước lành hồi sinh, thánh thuẫn bảo hộ và ánh sáng thiêu đốt tà ma.<br>📍 *Cách mở:* Đánh bại *Lãnh Chúa Đền Thánh Ánh Sáng*. |
+| **12** | **Hư Không Kiếm (Void Blade)** | Kiếm Hư Không (`Weapon.1H.Blade`) | **Chém xuyên không gian:** Cú lướt biến thành dịch chuyển tức thời; đòn đánh để lại các vết cắt không thời gian nổ sau 1 giây (*Judgement Cut*).<br>📍 *Cách mở:* Đánh bại *Lãnh Chúa Khe Nứt Hư Không*. |
+| **13** | **U Hồn Đoạt Mệnh (Phantom Stalker)** | Song Đoản Kiếm (`Weapon.Dual.Daggers`) | **Ám tiễn & Tử khí:** Thoắt ẩn thoắt hiện trong sương mù độc, dồn sát thương bạo kích từ hư vô.<br>📍 *Cách mở:* Đánh bại *Lãnh Chúa Đầm Lầy Tử Khí*. |
+| **14** | **Thời Gian Pháp Sư (Chronomancer)** | Pháp Bảo Thời Gian (`1H.Mace` / `Relic`) | **Thao túng dòng thời gian:** Tạo bong bóng làm chậm chuyển động của quái vật; kỹ năng "Đảo ngược" đưa lượng máu và vị trí bản thân quay lại 3 giây trước.<br>📍 *Cách mở:* Vượt qua thử thách *Tháp Đồng Hồ Vĩnh Hằng*. |
+| **15** | **Thiên Sứ Lục Dực (Seraph)** | Pháp Bảo Thánh Quang (`1H.Mace` / `Relic`) | **Hộ trì ánh sáng & Cứu rỗi:** Ban phước lành hồi sinh, thánh thuẫn bảo hộ và ánh sáng thiêu đốt tà ma.<br>📍 *Cách mở:* Đánh bại *Lãnh Chúa Đền Thánh Ánh Sáng*. |
 
 #### BẬC T4: 1 Class Ẩn / Tối Thượng (Apex)
 *Tấm huy chương danh dự tối thượng dành riêng cho người chơi có kỹ năng thượng thừa.*
 
 | STT | Tên Class | Vũ Khí Đặc Trưng | Phong Cách Chiến Đấu & Điều Kiện Mở Khóa |
 | :---: | :--- | :--- | :--- |
-| **16** | **Thí Thần Giả (God Slayer)** | Thần Binh Tự Biến Hình (Morphing Relic) | **Tước đoạt sức mạnh thần thánh:** <br>• Khi thực hiện **Né Hoàn Hảo (Perfect Dodge)**: Kích hoạt hiệu ứng "Ngưng Đọng Thời Gian" 1 giây để phản kích.<br>• Có khả năng sao chép 1 chiêu thức đặc trưng của Boss vừa bị hạ gục.<br>📍 *Cách mở:* **Solo hạ gục một Boss Lãnh chúa vượt ít nhất 15 cấp mà KHÔNG dính bất kỳ một đòn đánh nào (No-Hit Challenge).** |
+| **16** | **Kẻ Diệt Thần (God Slayer)** | Thần Binh Tự Biến Hình (Morphing Relic) | **Tước đoạt sức mạnh thần thánh:** <br>• Khi thực hiện **Né Hoàn Hảo (Perfect Dodge)**: Kích hoạt hiệu ứng "Ngưng Đọng Thời Gian" 1 giây để phản kích.<br>• Có khả năng sao chép 1 chiêu thức đặc trưng của Boss vừa bị hạ gục.<br>📍 *Cách mở:* **Solo hạ gục một Boss Lãnh chúa vượt ít nhất 15 cấp mà KHÔNG dính bất kỳ một đòn đánh nào (No-Hit Challenge).** |
 
 ---
 

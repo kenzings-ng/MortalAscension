@@ -10,7 +10,7 @@
 
 ## Overview
 
-Hệ thống Phát triển Kỹ năng & Sách Kỹ Năng (Skill Progression & Skill Book System) là kiến trúc quản lý toàn bộ vòng lặp thu thập, học tập, cường hóa và trang bị kỹ năng chiến đấu cho toàn bộ 16 Chức nghiệp trong Project Ascendant. Hệ thống xây dựng cầu nối liền mạch giữa:
+Hệ thống Phát triển Kỹ năng & Sách Kỹ Năng (Skill Progression & Skill Book System) là kiến trúc quản lý toàn bộ vòng lặp thu thập, học tập, cường hóa và trang bị kỹ năng chiến đấu cho toàn bộ 16 Chức nghiệp trong Mortal Ascension. Hệ thống xây dựng cầu nối liền mạch giữa:
 1. **Kho Đồ (Inventory System):** Nơi Sách Kỹ Năng (Skill Book) tồn tại dưới dạng vật phẩm tiêu hao có điều kiện khóa Class/Vũ khí.
 2. **Hệ Thống Thuộc Tính (Attributes Engine - GAS):** Nơi các chiêu thức trích xuất Mana và Stamina để thi triển theo quy chuẩn cân bằng.
 3. **Thanh Kỹ Năng Hành Động (Action Deck):** Giới hạn số lượng kỹ năng mang vào chiến đấu (4 Active + 3 Passive) để duy trì trải nghiệm hành động tốc độ cao, tránh quá tải phím bấm.
@@ -35,19 +35,19 @@ Mỗi chức nghiệp khi được khởi tạo hoặc mở khóa trong thế gi
 * *Đặc tính kỹ thuật:* Không tốn sách, không yêu cầu cấp độ, không thể bị xóa hoặc phân rã (`bIsStarterAbility = true`).
 
 #### Bộ Starter Kit Tiêu Biểu:
-- **Chiến Binh (Vanguard):** 
+- **Tiên Phong (Vanguard):** 
   - Active 1: *Khiên Kích (Shield Bash)* — Tích 25% Posture lên mục tiêu (Tốn 20 Mana).
   - Active 2: *Kiếm Khí Trảm (Blade Arc)* — Vung kiếm quét rộng đẩy lùi quái (Tốn 15 Stamina + 10 Mana).
   - Passive: *Thế Đứng Kiên Định* — Giảm 20% sát thương Posture nhận phải khi đang Block.
-- **Du Hiệp (Ranger):**
+- **Xạ Thủ (Ranger):**
   - Active 1: *Xuyên Tâm Tiễn (Piercing Shot)* — Tên bắn xuyên thẳng nhiều mục tiêu (Tốn 20 Mana).
   - Active 2: *Lưới Bẫy Chông (Caltrop Trap)* — Làm chậm 40% đàn quái đuổi theo (Tốn 15 Stamina + 10 Mana).
   - Passive: *Bộ Pháp Nhanh Nhẹn* — Sau khi lướt né tăng 15% tốc chạy trong 1.5s.
-- **Hư Không Kiếm Sư (Void Blade):**
+- **Hư Không Kiếm (Void Blade):**
   - Active 1: *Hư Không Trảm (Void Slash)* — Cắt không gian để lại vết nứt nổ sau 1s (Tốn 25 Mana).
   - Active 2: *Thiểm Ảnh (Blink)* — Lướt dịch chuyển tức thời sau lưng mục tiêu (Tốn 20 Mana + 15 Stamina).
   - Passive: *Vết Cắt Thứ Nguyên* — Đòn đánh có 20% cơ hội bỏ qua 30% giáp của đối thủ.
-- **Thí Thần Giả (God Slayer):**
+- **Kẻ Diệt Thần (God Slayer):**
   - Active 1: *Thần Lực Tước Đoạt (Divine Siphon)* — Đòn quét bòn rút 30 Mana của mục tiêu (Tốn 20 Stamina).
   - Active 2: *Nhất Kiếm Tuyệt Diệt (Severance)* — Đòn đâm xuyên thế đứng gây 35% Posture (Tốn 35 Mana).
   - Passive: *Linh Hồn Phản Xạ* — Perfect Dodge đóng băng thời gian xung quanh trong 1.0s.
@@ -183,22 +183,22 @@ flowchart TD
 
 | Bậc Chức Nghiệp | Tên Chức Nghiệp | Độ Hiếm Sách / Quyển Trục | Loại Sách Sử Dụng | Nguồn Rơi Trọng Tâm |
 | :---: | :--- | :---: | :--- | :--- |
-| **Bậc T1 (Sơ cấp)** | **Chiến Binh (Vanguard)** | Normal | Sách Vanguard + Bí kíp Kiếm/Khiên chung | Quái thường, Thủ lĩnh, Thương nhân thành trấn |
-| **Bậc T1 (Sơ cấp)** | **Du Hiệp (Ranger)** | Normal | Sách Ranger + Bí kíp Cung/Song đao chung | Quái thường, Rương gỗ rừng sâu, Thủ lĩnh |
-| **Bậc T1 (Sơ cấp)** | **Thuật Sĩ (Arcanist)** | Normal | Sách Arcanist + Bí kíp Ma pháp trượng chung | Quái phép thuật, Thư viện phế tích, Thương nhân |
-| **Bậc T1 (Sơ cấp)** | **Tu Sĩ (Acolyte)** | Normal | Sách Acolyte + Bí kíp Khí công/Chùy chung | Tu viện đổ nát, Quái thánh địa, Thương nhân |
+| **Bậc T1 (Sơ cấp)** | **Tiên Phong (Vanguard)** | Normal | Sách Vanguard + Bí kíp Kiếm/Khiên chung | Quái thường, Thủ lĩnh, Thương nhân thành trấn |
+| **Bậc T1 (Sơ cấp)** | **Xạ Thủ (Ranger)** | Normal | Sách Ranger + Bí kíp Cung/Song đao chung | Quái thường, Rương gỗ rừng sâu, Thủ lĩnh |
+| **Bậc T1 (Sơ cấp)** | **Bí Thuật Sư (Arcanist)** | Normal | Sách Arcanist + Bí kíp Ma pháp trượng chung | Quái phép thuật, Thư viện phế tích, Thương nhân |
+| **Bậc T1 (Sơ cấp)** | **Tập Sự (Acolyte)** | Normal | Sách Acolyte + Bí kíp Khí công/Chùy chung | Tu viện đổ nát, Quái thánh địa, Thương nhân |
 | **Bậc T2 (Trung cấp)** | **Cuồng Chiến Sĩ (Berserker)** | Rare | Sách Berserker độc quyền | Đấu trường Hẻm Núi Máu, Tinh anh cấp 20+ |
-| **Bậc T2 (Trung cấp)** | **Ảo Ảnh Thích Khách (Shadowblade)**| Rare | Sách Shadowblade độc quyền | Căn cứ đầm lầy, Thích khách tinh anh |
+| **Bậc T2 (Trung cấp)** | **Ảnh Nhẫn (Shadowblade)**| Rare | Sách Shadowblade độc quyền | Căn cứ đầm lầy, Thích khách tinh anh |
 | **Bậc T2 (Trung cấp)** | **Nguyên Tố Sư (Elementalist)** | Rare | Sách Elementalist độc quyền | Rương đền thờ nguyên tố, Tinh anh nguyên tố |
 | **Bậc T2 (Trung cấp)** | **Thánh Hiệp Sĩ (Templar)** | Rare | Sách Templar độc quyền | Lăng mộ thánh địa, Kỵ sĩ tha hóa |
 | **Bậc T2 (Trung cấp)** | **Kiếm Sư (Swordmaster)** | Rare | Sách Swordmaster độc quyền | Di chỉ Kiếm Tông, Tinh anh kiếm thuật |
-| **Bậc T2 (Trung cấp)** | **Thẩm Phán (Inquisitor)** | Rare | Sách Inquisitor độc quyền | Tu viện hắc ám, Giáo sĩ tha hóa |
-| **Bậc T3 (Cao cấp)** | **Hư Không Kiếm Sư (Void Blade)** | Epic | Sách Void Blade độc quyền | **Boss Lãnh Chúa Khe Nứt Hư Không** |
-| **Bậc T3 (Cao cấp)** | **Thời Gian Ma Đạo (Chronomancer)** | Epic | Sách Chronomancer độc quyền | **Boss Lãnh Chúa Tháp Đồng Hồ** |
+| **Bậc T2 (Trung cấp)** | **Thẩm Phán Dị Giáo (Inquisitor)** | Rare | Sách Inquisitor độc quyền | Tu viện hắc ám, Giáo sĩ tha hóa |
+| **Bậc T3 (Cao cấp)** | **Hư Không Kiếm (Void Blade)** | Epic | Sách Void Blade độc quyền | **Boss Lãnh Chúa Khe Nứt Hư Không** |
+| **Bậc T3 (Cao cấp)** | **Thời Gian Pháp Sư (Chronomancer)** | Epic | Sách Chronomancer độc quyền | **Boss Lãnh Chúa Tháp Đồng Hồ** |
 | **Bậc T3 (Cao cấp)** | **Long Kỵ Sĩ (Dragon Knight)** | Epic | Sách Dragon Knight độc quyền | **Boss Lãnh Chúa Hỏa Long** |
-| **Bậc T3 (Cao cấp)** | **Bóng Ma (Phantom Stalker)** | Epic | Sách Phantom Stalker độc quyền | **Boss Lãnh Chúa Đầm Lầy Tử Khí** |
-| **Bậc T3 (Cao cấp)** | **Thiên Sứ (Seraph)** | Epic | Sách Seraph độc quyền | **Boss Lãnh Chúa Đền Thánh Ánh Sáng** |
-| **Bậc T4 (Ẩn)** | **Thí Thần Giả (God Slayer)** | Mythic | Sách Thí Thần độc quyền | **World Boss Thần Linh / Thử thách No-Hit** |
+| **Bậc T3 (Cao cấp)** | **U Hồn Đoạt Mệnh (Phantom Stalker)** | Epic | Sách Phantom Stalker độc quyền | **Boss Lãnh Chúa Đầm Lầy Tử Khí** |
+| **Bậc T3 (Cao cấp)** | **Thiên Sứ Lục Dực (Seraph)** | Epic | Sách Seraph độc quyền | **Boss Lãnh Chúa Đền Thánh Ánh Sáng** |
+| **Bậc T4 (Ẩn)** | **Kẻ Diệt Thần (God Slayer)** | Mythic | Sách Thí Thần độc quyền | **World Boss Thần Linh / Thử thách No-Hit** |
 
 ---
 
@@ -219,7 +219,7 @@ flowchart TD
 - **Downstream:**
   - `foundational-classes.md` (Triển khai cụ thể các skill sách cấp Normal).
   - `advanced-classes.md` (Triển khai cụ thể các skill sách cấp Rare & Epic).
-  - `hidden-classes.md` (Triển khai kỹ năng Thí Thần Giả).
+  - `hidden-classes.md` (Triển khai kỹ năng Kẻ Diệt Thần).
 
 ---
 

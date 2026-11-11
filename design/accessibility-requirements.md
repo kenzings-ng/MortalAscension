@@ -1,4 +1,4 @@
-# Accessibility Requirements: Project Ascendant
+# Accessibility Requirements: Mortal Ascension
 
 > **Status**: Committed  
 > **Author**: UX Team / Technical Director  
@@ -17,7 +17,7 @@
 
 ## 1. Executive Summary & Tier Commitment
 
-Project Ascendant is an isometric 2.5D HD-2D Dark Fantasy Action RPG MMO built on Unreal Engine 5.7. Due to high-intensity real-time isometric combat (parrying, dodging, ability timing) combined with deep RPG inventory and stats systems, accessibility barriers fall primarily into:
+Mortal Ascension is an isometric 2.5D HD-2D Dark Fantasy Action RPG MMO built on Unreal Engine 5.7. Due to high-intensity real-time isometric combat (parrying, dodging, ability timing) combined with deep RPG inventory and stats systems, accessibility barriers fall primarily into:
 1. **Visual processing**: High-contrast telegraphs in dark environments, pixel sprite readability against 3D backgrounds, and color vision deficiency support.
 2. **Motor precision & timing**: Fast-paced combat inputs, dodging, and inventory management.
 3. **Auditory feedback**: Clear distinction between ambient dark fantasy audio, telegraph sound cues, and combat impacts.

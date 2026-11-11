@@ -10,7 +10,7 @@
 
 ## Overview
 
-Hệ thống Đồng Bộ Mạng Thế Giới Mở & Cừu Hận Tranh Chấp (Open World MMO Netcode & Contested Aggro Sync) là trụ cột hạ tầng kỹ thuật và trải nghiệm nhiều người chơi then chốt của Project Ascendant. Được xây dựng trên nền tảng **Unreal Engine 5.7 Iris Replication System** kết hợp cùng **Gameplay Ability System (GAS) Replication**, hệ thống giải quyết bài toán đồng bộ thời gian thực cho các cuộc đụng độ quy mô lớn dã ngoại mà không sử dụng rào cản phụ bản (No Instanced Dungeons / No Matchmaking Queues). Mọi hành động chiến đấu, di chuyển, tung chiêu thức kỹ năng, tính toán va chạm và bẻ gãy thanh Thể Khí (Posture) đều được điều phối trực tiếp trên bản đồ mở rộng lớn thông qua mô hình **Dedicated Server Authority 100%** theo quyết định kiến trúc [`ADR-0001`](file:///mnt/Data/Projects/project-games/docs/architecture/adr-0001-open-world-mmo-combat-networking.md).
+Hệ thống Đồng Bộ Mạng Thế Giới Mở & Cừu Hận Tranh Chấp (Open World MMO Netcode & Contested Aggro Sync) là trụ cột hạ tầng kỹ thuật và trải nghiệm nhiều người chơi then chốt của Mortal Ascension. Được xây dựng trên nền tảng **Unreal Engine 5.7 Iris Replication System** kết hợp cùng **Gameplay Ability System (GAS) Replication**, hệ thống giải quyết bài toán đồng bộ thời gian thực cho các cuộc đụng độ quy mô lớn dã ngoại mà không sử dụng rào cản phụ bản (No Instanced Dungeons / No Matchmaking Queues). Mọi hành động chiến đấu, di chuyển, tung chiêu thức kỹ năng, tính toán va chạm và bẻ gãy thanh Thể Khí (Posture) đều được điều phối trực tiếp trên bản đồ mở rộng lớn thông qua mô hình **Dedicated Server Authority 100%** theo quyết định kiến trúc [`ADR-0001`](file:///mnt/Data/Projects/project-games/docs/architecture/adr-0001-open-world-mmo-combat-networking.md).
 
 Về mặt lối chơi, hệ thống vận hành theo cơ chế **Chiến Đấu Cạnh Tranh Mở (Contested Combat / Open Tagging)**—loại bỏ hoàn toàn khái niệm khóa quái độc quyền (No Kill-Lock). Mọi người chơi và tổ đội đi ngang qua đều có quyền tự do can thiệp vào bất kỳ trận giao tranh nào ngoài tự nhiên. Trọng tâm tương tác nhiều người chơi xoay quanh ba cơ chế cốt lõi:
 1. **Bảng Cừu Hận Động (Dynamic Aggro & Threat Table)**: Quái vật Tinh anh và Thủ lĩnh (Boss) tự động tính toán điểm đe dọa (Threat Score) từ mọi người chơi tham chiến dựa trên tổng sát thương gây ra, lượng sát thương bẻ gãy Posture tích lũy, kỹ năng khiêu khích (Taunt của Vanguard/Templar), và lượng hồi máu hỗ trợ (Healing Threat của Acolyte). AI liên tục tái đánh giá mục tiêu mỗi 1.0 giây hoặc chuyển mục tiêu đột ngột (Target Switching) khi nhận đòn bộc phát lớn.
@@ -21,13 +21,13 @@ Về mặt hạ tầng mạng, Iris Replication tối ưu hóa băng thông bằ
 
 ## Player Fantasy
 
-Hệ thống Mạng & Cừu Hận phục vụ đồng thời Trụ cột 1 ("Chinh phục điều không thể bằng kỹ năng tuyệt đỉnh") và Trụ cột 3 ("Kinh tế dã ngoại & Thám hiểm rủi ro cao - phần thưởng lớn"). Trải nghiệm nhiều người chơi trong Project Ascendant không phải là một phòng chờ đợi nhàm chán, mà là những cuộc hội ngộ sinh tử nghẹt thở giữa hoang dã bao la:
+Hệ thống Mạng & Cừu Hận phục vụ đồng thời Trụ cột 1 ("Chinh phục điều không thể bằng kỹ năng tuyệt đỉnh") và Trụ cột 3 ("Kinh tế dã ngoại & Thám hiểm rủi ro cao - phần thưởng lớn"). Trải nghiệm nhiều người chơi trong Mortal Ascension không phải là một phòng chờ đợi nhàm chán, mà là những cuộc hội ngộ sinh tử nghẹt thở giữa hoang dã bao la:
 
 > *"Bạn cùng ba người đồng đội trong tổ đội đang dồn sức vây hãm con Golem Đá Canh Gác tại khúc quanh rực lửa của Hoang Dã Tàn Tích. Bạn chơi Vanguard—đứng sừng sững tuyến đầu, giương khiên đỡ đòn nện đất, liên tục tích lũy điểm cừu hận để con quái khổng lồ dán chặt mắt vào bạn, che chắn cho nàng Ranger phía sau đang kéo căng dây cung bắn liên hoàn tên gió.*
 > 
 > *Bỗng nhiên, từ hẻm núi tàn tích, một tổ đội lạ khác gồm hai người chơi xuất hiện. Không có tường ngăn hay màn hình tải, họ lao thẳng vào tiếp chiến. Trên màn hình của bạn, thanh máu của Golem Đá khẽ nhấp nháy chuyển trạng thái co giãn độ khó động (DDS)—máu tối đa tăng lên, thanh Thể Khí (Posture) dày thêm.*
 > 
-> *Đột ngột, gã Thuật Sĩ bên đội lạ tung ra một chiêu nổ AoE lôi điện cực mạnh—sát thương bộc phát tức thì kéo vọt điểm cừu hận (Threat Spike) của hắn lên đỉnh! Con Golem khổng lồ gầm lên dữ dội, ngoảnh phắt đầu 180°, giơ hai nắm đấm đá tảng chuẩn bị giáng thẳng xuống đầu gã Thuật Sĩ không có kỹ năng đỡ đòn. Bạn không do dự—bấm phím lướt Dash chéo góc luồn qua khe đá, tung tuyệt kỹ Khiêu Khích 'Tiếng Gầm Khiên Thép'! Điểm cừu hận tức thì khóa chặt lại bạn. Cú đấm trời giáng nện trúng khiên của bạn, tóe lửa thành một vầng sáng chói lòa trong khoảnh khắc Perfect Parry hoàn hảo.*
+> *Đột ngột, gã Bí Thuật Sư bên đội lạ tung ra một chiêu nổ AoE lôi điện cực mạnh—sát thương bộc phát tức thì kéo vọt điểm cừu hận (Threat Spike) của hắn lên đỉnh! Con Golem khổng lồ gầm lên dữ dội, ngoảnh phắt đầu 180°, giơ hai nắm đấm đá tảng chuẩn bị giáng thẳng xuống đầu gã Bí Thuật Sư không có kỹ năng đỡ đòn. Bạn không do dự—bấm phím lướt Dash chéo góc luồn qua khe đá, tung tuyệt kỹ Khiêu Khích 'Tiếng Gầm Khiên Thép'! Điểm cừu hận tức thì khóa chặt lại bạn. Cú đấm trời giáng nện trúng khiên của bạn, tóe lửa thành một vầng sáng chói lòa trong khoảnh khắc Perfect Parry hoàn hảo.*
 > 
 > *'KENGGGG—CRACK!'*
 > 
@@ -54,7 +54,7 @@ Hệ thống Mạng & Cừu Hận phục vụ đồng thời Trụ cột 1 ("Chi
 
 #### 1. Mô Hình Mạng Dedicated Server Authority 100% & Iris Replication Framework
 
-Mọi tương tác trong thế giới mở Project Ascendant tuân thủ nghiêm ngặt nguyên tắc Server-Authoritative từ [`ADR-0001`](file:///mnt/Data/Projects/project-games/docs/architecture/adr-0001-open-world-mmo-combat-networking.md):
+Mọi tương tác trong thế giới mở Mortal Ascension tuân thủ nghiêm ngặt nguyên tắc Server-Authoritative từ [`ADR-0001`](file:///mnt/Data/Projects/project-games/docs/architecture/adr-0001-open-world-mmo-combat-networking.md):
 
 - **Single Source of Truth**: Máy chủ chuyên dụng (Dedicated Server) nắm độc quyền quyền sinh sát—tính toán toàn bộ tọa độ di chuyển, va chạm hitbox/hurtbox, kích hoạt kỹ năng GAS, xác nhận trúng đòn (Hit Registration), khấu trừ máu, bẻ gãy Posture và phát sinh chiến lợi phẩm.
 - **Client Prediction & Server Reconciliation**:

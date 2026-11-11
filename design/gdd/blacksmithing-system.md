@@ -10,7 +10,7 @@
 
 ## Overview
 
-Hệ thống Thợ Rèn Phân Vùng (Zone-tiered Blacksmithing System) là trụ cột kinh tế chế tác và cường hóa trang bị cốt lõi trong Project Ascendant, kết nối trực tiếp tài nguyên thu thập từ quái vật, mảnh vỡ bộ phận Boss ([`stagger-system.md`](file:///mnt/Data/Projects/project-games/design/gdd/stagger-system.md)) và trang bị trong kho đồ ([`inventory-system.md`](file:///mnt/Data/Projects/project-games/design/gdd/inventory-system.md)) với động lực khám phá thế giới mở. Khác với các tựa game nhập vai truyền thống vốn tập trung mọi dịch vụ thợ rèn tại khu an toàn trung tâm, hệ thống phân bổ các lò rèn thành **3 cấp độ dã ngoại phân vùng**—từ *Thợ Rèn Tiền Trạm* tại khu an toàn (chuyên sửa chữa và rèn đồ Common/Uncommon/Rare, giới hạn +3), *Thợ Rèn Dã Ngoại* nơi rừng sâu nguy hiểm (mở khóa trang bị Epic, giới hạn +6 và đục 2 lỗ khảm ngọc), cho đến *Lò Rèn Cấm Địa* ẩn sâu trong lãnh địa Lãnh Chúa (nơi duy nhất đúc được Thần Binh Legendary từ Linh Hồn Boss, giới hạn +10 và mở khóa ô khảm Prismatic thứ 3).
+Hệ thống Thợ Rèn Phân Vùng (Zone-tiered Blacksmithing System) là trụ cột kinh tế chế tác và cường hóa trang bị cốt lõi trong Mortal Ascension, kết nối trực tiếp tài nguyên thu thập từ quái vật, mảnh vỡ bộ phận Boss ([`stagger-system.md`](file:///mnt/Data/Projects/project-games/design/gdd/stagger-system.md)) và trang bị trong kho đồ ([`inventory-system.md`](file:///mnt/Data/Projects/project-games/design/gdd/inventory-system.md)) với động lực khám phá thế giới mở. Khác với các tựa game nhập vai truyền thống vốn tập trung mọi dịch vụ thợ rèn tại khu an toàn trung tâm, hệ thống phân bổ các lò rèn thành **3 cấp độ dã ngoại phân vùng**—từ *Thợ Rèn Tiền Trạm* tại khu an toàn (chuyên sửa chữa và rèn đồ Common/Uncommon/Rare, giới hạn +3), *Thợ Rèn Dã Ngoại* nơi rừng sâu nguy hiểm (mở khóa trang bị Epic, giới hạn +6 và đục 2 lỗ khảm ngọc), cho đến *Lò Rèn Cấm Địa* ẩn sâu trong lãnh địa Lãnh Chúa (nơi duy nhất đúc được Thần Binh Legendary từ Linh Hồn Boss, giới hạn +10 và mở khóa ô khảm Prismatic thứ 3).
 
 Được xây dựng trên triết lý **"Rủi ro cao - Phần thưởng xứng đáng" (High-Risk High-Reward)** và thế giới mở không rào chắn cấp độ nhân vật (Non-gated Open World), hệ thống trao quyền cho những người chơi có kỹ năng phản xạ và né tránh thượng thừa khả năng mạo hiểm tiến sâu vào các vùng cấm địa nguy hiểm từ sớm để rèn đúc những món trang bị tối thượng vượt bậc. Hệ thống cung cấp các tính năng: Đúc Trang Bị Mới (Crafting), Cường Hóa Chỉ Số (Enhancement +1 đến +10), Khảm Ngọc (Gem Sockets), Đúc Thần Binh từ Linh Hồn Boss (Boss Soul Forging), Phân Rã Sách Kỹ Năng thừa thành Tàn Trang (`item_skill_shard`), và Nâng cấp mở rộng sức chứa túi đồ (30 đến 60 ô).
 
@@ -35,7 +35,7 @@ Hệ thống Thợ Rèn Phân Vùng mang đến trải nghiệm cảm xúc trự
 ### Core Rules
 
 #### 1. Ma Trận Phân Cấp 3 Bậc Thợ Rèn Dã Ngoại (3-Tier Blacksmithing Matrix)
-Khác biệt hoàn toàn với các tựa game MMORPG gom mọi dịch vụ vào thành chính, thế giới của Project Ascendant phân bổ các lò rèn rải rác ngoài thế giới theo 3 cấp độ hiểm nguy:
+Khác biệt hoàn toàn với các tựa game MMORPG gom mọi dịch vụ vào thành chính, thế giới của Mortal Ascension phân bổ các lò rèn rải rác ngoài thế giới theo 3 cấp độ hiểm nguy:
 
 | Bậc Lò Rèn | Tên Cơ Sở Rèn | Vị Trí Địa Lý & Mức Nguy Hiểm | Độ Hiếm Trang Bị Cho Phép Rèn | Giới Hạn Cường Hóa | Dịch Vụ Đặc Thù |
 | :---: | :--- | :--- | :---: | :---: | :--- |

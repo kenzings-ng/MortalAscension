@@ -12,7 +12,7 @@
 
 ## Overview
 
-Hệ thống Phá Thế Đứng & Phá Hủy Bộ Phận (Stagger & Part Breaking System) là cơ chế mang tính biểu tượng định nghĩa lối chơi "đánh Boss vượt cấp" (Under-leveled Boss Slaying) trong *Project Ascendant*. Được xây dựng trên nền tảng **Unreal Engine Gameplay Ability System (GAS)** kết hợp Unreal Motion Warping và Chaos Skeletal Mesh, hệ thống vận hành theo 2 nhánh cơ chế tương hỗ:
+Hệ thống Phá Thế Đứng & Phá Hủy Bộ Phận (Stagger & Part Breaking System) là cơ chế mang tính biểu tượng định nghĩa lối chơi "đánh Boss vượt cấp" (Under-leveled Boss Slaying) trong *Mortal Ascension*. Được xây dựng trên nền tảng **Unreal Engine Gameplay Ability System (GAS)** kết hợp Unreal Motion Warping và Chaos Skeletal Mesh, hệ thống vận hành theo 2 nhánh cơ chế tương hỗ:
 1. **Cơ chế Phá Vỡ Thế Đứng (Stagger & Execution):** Mỗi đòn đánh chuẩn xác, đòn tụ lực (Heavy Charged) hoặc phản đòn né hoàn hảo tích tụ thanh Posture của đối phương. Khi thanh Posture đạt 100%, Boss rơi vào trạng thái choáng vỡ thế (`State.Staggered`) trong **3.0 giây**, mở ra cửa sổ kích hoạt Đòn Kết Liễu (**Execution**) rút thẳng **25% Máu tối đa (Max HP)** bất kể chênh lệch cấp độ hay chỉ số phòng thủ của Boss.
 2. **Cơ chế Phá Hủy Bộ Phận (Part Breaking):** Các bộ phận giải phẫu đặc thù của quái vật (sừng, đuôi, giáp ngực, cánh) sở hữu thanh máu bộ phận độc lập. Khi người chơi tập trung tấn công và phá hủy một bộ phận, không chỉ rơi ra nguyên liệu rèn quý hiếm (Crafting Reagents) mà còn **vô hiệu hóa hoặc suy yếu vĩnh viễn các đòn đánh nguy hiểm nhất của Boss** trong phần còn lại của trận đấu.
 
