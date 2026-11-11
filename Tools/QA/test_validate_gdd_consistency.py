@@ -229,23 +229,33 @@ class ClassVnGlossTests(unittest.TestCase):
         self.assertEqual(gloss["Seraph"], "Thiên Sứ Lục Dực")
         self.assertEqual(gloss["God Slayer"], "Kẻ Diệt Thần")
 
-    def test_english_first_with_wrong_gloss_is_flagged(self):
+    def test_english_first_with_retired_gloss_is_flagged(self):
         for text in [
             "| **Scout** | T1 | **Ranger (Du Hiệp)** | `Class.Line.Scout.Ranger` |",
             "*Shadowblade (Thích Khách)*, *Elementalist (Nguyên Tố Sư)*",
-            "**Vanguard** (Tiên phong), **Ranger** (Xạ Thủ)",
+            "**Vanguard** (Chiến binh), **Ranger** (du hiệp), **Acolyte** (tu sĩ)",
             "| **15. Seraph (Lục Dực)**<br>*(Bậc 3)* |",
             "`Templar` (Thánh Binh)",
+            "Void Blade (Hư Không Kiếm Sư)",
+            "GOD SLAYER (Thí Thần Giả)",
+            "~~x~~ Ranger (Du Hiệp)",
         ]:
             self.assertIn("class_vn_name", check_ids(text), text)
 
-    def test_vietnamese_first_with_wrong_gloss_is_flagged(self):
+    def test_vietnamese_first_with_retired_gloss_is_flagged(self):
         for text in [
             "- **Chiến Binh (Vanguard) — *\"Bức Tường Thép\"***:",
             "| **8** | **Ảo Ảnh Thích Khách (Shadowblade)** | Song Đoản Kiếm |",
             '    display_name: "Tu Sĩ (Acolyte)"',
+            "    display_name: 'Tu Sĩ (Acolyte)'",
             '        C7["Nguyên Tố (Elementalist)"]',
             "- **Thí Thần Giả (God Slayer):**",
+            "##### A. CHIẾN BINH (VANGUARD)",
+            "##### B. DU HIỆP (RANGER)",
+            "### Chiến Binh (Vanguard)",
+            "Class chính: Du Hiệp (Ranger)",
+            "**Tiên Phong (Vanguard)**, Du Hiệp (Ranger)",
+            '> **Chủ đề nhân vật**: Tiền Tuyến Sắt Đá — Thiết Vệ (Vanguard "Iron Bastion")',
         ]:
             self.assertIn("class_vn_name", check_ids(text), text)
 
@@ -253,22 +263,46 @@ class ClassVnGlossTests(unittest.TestCase):
         for text in [
             "**Vanguard (Tiên Phong)**, *Ranger (Xạ Thủ)*, `Seraph` (Thiên Sứ Lục Dực - Phương án 1)",
             "- **Tiên Phong (Vanguard) — *\"Bức Tường Thép\"***:",
+            "##### A. TIÊN PHONG (VANGUARD)",
             '    display_name: "Dragon Knight (Long Kỵ Sĩ)"',
             "### 2. Công Thức Phản Đòn Hoàn Hảo Của Tiên Phong (Vanguard Perfect Parry)",
-            "| **Thời Gian Pháp Sư (Chronomancer)** | Epic |",
+            "| **Thời Gian Pháp Sư (Chronomancer)** | **Thiên Sứ Lục Dực (Seraph)** | Inquisitor (Thẩm Phán Dị Giáo) |",
+            "Berserker (Cuồng Chiến Sĩ), Elementalist (Nguyên Tố Sư), Thẩm Phán Dị Giáo (Inquisitor)",
         ]:
             self.assertNotIn("class_vn_name", check_ids(text), text)
 
-    def test_non_gloss_parentheses_are_not_flagged(self):
+    def test_non_gloss_parentheses_and_standalone_words_are_not_flagged(self):
         for text in [
             "Vanguard (T1): Khiên Sắt Vuông + Kiếm 1 tay.",
-            "Ranger (2H.Bow) bắn tầm xa; Templar (Tank) giữ aggro.",
+            "Vanguard (Khiên Sắt Vuông + Kiếm 1 tay), Vanguard (Bậc T1), Templar (Đỡ đòn chính)",
+            "Ranger (Nhánh Du Hiệp), Dragon Knight (Đại Kích), Ranger (2H.Bow), Templar (Tank)",
             "*Tabard 2: Khăn Quàng Du Mục (Ranger)*",
-            "- **Gươm Lãnh Chúa Hỏa Ngục — dành cho Vanguard:** Kỹ năng *Blade Arc*.",
-            "Bảng màu tu sĩ cao cấp; trọng lượng cơ bắp của chiến binh.",
-            "  - ~~Arcanist: `Chronomancer` (Thời gian)~~ — Removed (DECISIONS §12)",
+            "| Khăn Quàng Du Mục (Ranger) |",
+            "- Sách Kỹ Năng (Vanguard)",
+            "- **Gươm Lãnh Chúa Hỏa Ngục (Vanguard):** Kỹ năng *Blade Arc*.",
+            "Nhánh Du Hiệp (Scout Line - 3 Class)",
+            "Bảng màu tu sĩ cao cấp; trọng lượng cơ bắp của chiến binh; Vũ Điệu Bóng Ma (Phantom Decoy).",
+            "~~Arcanist: `Chronomancer` (Thời gian)~~ — Removed (DECISIONS §12)",
+            "  - Arcanist: `Pyromancer` (Hỏa thuật), `Chronomancer` (Thời gian)~~ — Removed (DECISIONS §12)",
         ]:
             self.assertNotIn("class_vn_name", check_ids(text), text)
+
+    def test_marked_deprecated_gloss_is_accepted(self):
+        self.assertNotIn("class_vn_name", check_ids('Tên cũ "Chiến Binh (Vanguard)" (deprecated) nay là Tiên Phong.'))
+
+    def test_retired_list_is_validated_against_decisions(self):
+        gloss = decisions()["class_vn_gloss"]
+        self.assertEqual(set(v.load_retired_glosses(gloss)) - set(gloss), set())
+        with tempfile.TemporaryDirectory() as d:
+            bad = Path(d) / "r.json"
+            bad.write_text('{"retired": {"Oracle": ["Tiên Tri"]}}', encoding="utf-8")
+            with self.assertRaises(v.DecisionsParseError):
+                v.load_retired_glosses(gloss, bad)
+            bad.write_text('{"retired": {"Vanguard": ["tiên phong"]}}', encoding="utf-8")
+            with self.assertRaises(v.DecisionsParseError):
+                v.load_retired_glosses(gloss, bad)
+            with self.assertRaises(v.DecisionsParseError):
+                v.load_retired_glosses(gloss, Path(d) / "missing.json")
 
     def test_missing_gloss_in_decisions_fails_loudly(self):
         text = DECISIONS.read_text(encoding="utf-8").replace("`Ranger` (Xạ Thủ)", "`Ranger`")

@@ -53,9 +53,10 @@ entities:
   # ─── 16 CLASS (DECISIONS §2, §7) ────────────────────────────────
   # N1 2026-11-11: tên canon là tên tiếng Anh (`canonical_name`); `vn_gloss` là chú thích
   # tiếng Việt duy nhất theo DECISIONS §2. Trường `tier:` cũ (Normal/Rare/Epic/Mythic) đã
-  # thay bằng `rank:` T1–T4 theo DECISIONS §1; `weapon:` ghi lại theo DECISIONS §7.
+  # thay bằng `rank:` T1–T4 theo DECISIONS §1; `weapon:` chép nguyên văn DECISIONS §7 (bỏ các ghi chú "Lưu ý"). Giá trị cũ ghi ở comment trên từng mục.
   # Bổ sung 4 class còn thiếu: Swordmaster, Phantom Stalker, Inquisitor, Seraph.
 
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Chiến Binh (Vanguard)", tier "Normal", weapon "Kiếm & Khiên / Đại Kiếm".
   - name: class_vanguard
     display_name: "Vanguard (Tiên Phong)"
     canonical_name: "Vanguard"
@@ -69,11 +70,12 @@ entities:
       - design/gdd/game-concept.md
       - design/gdd/foundational-classes.md
       - design/gdd/advanced-classes.md
-    weapon: "Kiếm 1 tay (`Weapon.1H.Blade`) + Khiên Sắt Vuông (`Item.Shield.Square`)"
+    weapon: "Khiên Sắt Vuông (`Item.Shield.Square`) + Kiếm 1 tay (`Weapon.1H.Blade`)."
     role: "Parry & Frontline Defense"
     added: 2026-09-14
     revised: 2026-11-11
 
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Thánh Hiệp Sĩ (Templar)", tier "Rare", weapon "Chiến Chùy & Đại Thuẫn".
   - name: class_templar
     display_name: "Templar (Thánh Hiệp Sĩ)"
     canonical_name: "Templar"
@@ -86,11 +88,12 @@ entities:
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/advanced-classes.md
-    weapon: "Chùy 1 tay (`Weapon.1H.Mace`) + Đại Thuẫn / Khiên Tháp (`Item.Shield.Tower`)"
+    weapon: "Đại Thuẫn / Khiên Tháp (`Item.Shield.Tower`) + Chùy 1 tay (`Weapon.1H.Mace`)."
     role: "Aggro Tank & Radiant Retaliation"
     added: 2026-09-14
     revised: 2026-11-11
 
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Cuồng Chiến Sĩ (Berserker)", tier "Rare", weapon "Song Rìu / Búa Tạ".
   - name: class_berserker
     display_name: "Berserker (Cuồng Chiến Sĩ)"
     canonical_name: "Berserker"
@@ -103,11 +106,12 @@ entities:
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/advanced-classes.md
-    weapon: "Vũ khí 2 tay hạng nặng (`Weapon.2H.Heavy`)"
+    weapon: "Vũ khí 2 tay hạng nặng (`Weapon.2H.Heavy` - Đại Đao)."
     role: "High-Risk High-Reward & Hyper-Armor"
     added: 2026-09-14
     revised: 2026-11-11
 
+  # N1 2026-11-11: mục mới; role trích nguyên văn cột "Phong Cách Chiến Đấu Cốt Lõi" của design/gdd/advanced-classes.md.
   - name: class_swordmaster
     display_name: "Swordmaster (Kiếm Sư)"
     canonical_name: "Swordmaster"
@@ -120,11 +124,12 @@ entities:
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/advanced-classes.md
-    weapon: "Kiếm 1 tay (`Weapon.1H.Blade`), không dùng khiên"
-    role: "Speed Swordplay & Frame-Precise Counter"
+    weapon: "Kiếm 1 tay (`Weapon.1H.Blade`), không dùng khiên. Tay trái tự do (Paperdoll tách biệt `Layer_Arms/Hands` khỏi `Layer_Equipment_Offhand`)."
+    role: "Kiếm đạo tốc độ, bộ pháp lướt né thanh thoát, phản kích chuẩn xác từng khung hình."
     added: 2026-11-11
     revised: 2026-11-11
 
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Long Kỵ Sĩ (Dragon Knight)", tier "Epic", weapon "Thương Dài (Halberd)".
   - name: class_dragon_knight
     display_name: "Dragon Knight (Long Kỵ Sĩ)"
     canonical_name: "Dragon Knight"
@@ -137,11 +142,12 @@ entities:
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/advanced-classes.md
-    weapon: "Vũ khí cán dài (`Weapon.2H.Polearm`)"
+    weapon: "Vũ khí cán dài (`Weapon.2H.Polearm` - Chiến Kích). (§13: chỉ `Weapon.2H.Polearm`, không dùng 2H Heavy.)"
     role: "Aerial Dive & Massive Posture Break"
     added: 2026-09-14
     revised: 2026-11-11
 
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Hư Không Kiếm Sư (Void Blade)", tier "Epic", weapon "Kiếm Katana Hư Không".
   - name: class_void_blade
     display_name: "Void Blade (Hư Không Kiếm)"
     canonical_name: "Void Blade"
@@ -154,11 +160,12 @@ entities:
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/advanced-classes.md
-    weapon: "Kiếm đơn Hư Không (`Weapon.1H.Blade`)"
+    weapon: "Kiếm đơn Hư Không (`Weapon.1H.Blade`)."
     role: "Blink Dash & Dimensional Slashes"
     added: 2026-09-14
     revised: 2026-11-11
 
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Du Hiệp (Ranger)", tier "Normal", weapon "Cung Tên / Song Đao".
   - name: class_ranger
     display_name: "Ranger (Xạ Thủ)"
     canonical_name: "Ranger"
@@ -172,11 +179,12 @@ entities:
       - design/gdd/game-concept.md
       - design/gdd/foundational-classes.md
       - design/gdd/advanced-classes.md
-    weapon: "Cung 2 tay (`Weapon.2H.Bow`); sub-set đoản đao (`Weapon.Dual.Daggers`)"
+    weapon: "Cung 2 tay (`Weapon.2H.Bow`). *(Sub-set: Đoản đao `Weapon.Dual.Daggers` theo itemization.md)*."
     role: "Ranged Mobility & Traps"
     added: 2026-09-14
     revised: 2026-11-11
 
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Ảo Ảnh Thích Khách (Shadowblade)", tier "Rare", weapon "Song Đoản Kiếm / Phi Tiêu".
   - name: class_shadowblade
     display_name: "Shadowblade (Ảnh Nhẫn)"
     canonical_name: "Shadowblade"
@@ -189,11 +197,12 @@ entities:
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/advanced-classes.md
-    weapon: "Song đao / Dao găm (`Weapon.Dual.Daggers`)"
+    weapon: "Song đao / Dao găm (`Weapon.Dual.Daggers`)."
     role: "Stealth, Clones & Backstab Burst"
     added: 2026-09-14
     revised: 2026-11-11
 
+  # N1 2026-11-11: mục mới; role trích nguyên văn cột "Phong Cách Chiến Đấu Cốt Lõi" của design/gdd/advanced-classes.md.
   - name: class_phantom_stalker
     display_name: "Phantom Stalker (U Hồn Đoạt Mệnh)"
     canonical_name: "Phantom Stalker"
@@ -206,11 +215,12 @@ entities:
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/advanced-classes.md
-    weapon: "Song đao ám khí (`Weapon.Dual.Daggers`)"
-    role: "Shadow Traps & Chained Clones"
+    weapon: "Song đao ám khí (`Weapon.Dual.Daggers`)."
+    role: "Bẫy hư không bóng tối, phân thân liên hoàn cùng tấn công, biến mất vào màn đêm."
     added: 2026-11-11
     revised: 2026-11-11
 
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Thuật Sĩ (Arcanist)", tier "Normal", weapon "Trượng Phép / Cổ Thư".
   - name: class_arcanist
     display_name: "Arcanist (Bí Thuật Sư)"
     canonical_name: "Arcanist"
@@ -224,11 +234,12 @@ entities:
       - design/gdd/game-concept.md
       - design/gdd/foundational-classes.md
       - design/gdd/advanced-classes.md
-    weapon: "Pháp trượng (`Weapon.2H.Staff`)"
+    weapon: "Pháp trượng (`Weapon.2H.Staff`)."
     role: "AoE Crowd Control & Elemental Burst"
     added: 2026-09-14
     revised: 2026-11-11
 
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Nguyên Tố Sư (Elementalist)", tier "Rare", weapon "Cầu Phép (Orb)".
   - name: class_elementalist
     display_name: "Elementalist (Nguyên Tố Sư)"
     canonical_name: "Elementalist"
@@ -241,11 +252,12 @@ entities:
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/advanced-classes.md
-    weapon: "Pháp trượng (`Weapon.2H.Staff` / Orbs)"
+    weapon: "Pháp trượng (`Weapon.2H.Staff` / Orbs)."
     role: "Triple Element Fusion & Status Reaction"
     added: 2026-09-14
     revised: 2026-11-11
 
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Thời Gian Ma Đạo (Chronomancer)", tier "Epic", weapon "Đồng Hồ Cát Ma Thuật".
   - name: class_chronomancer
     display_name: "Chronomancer (Thời Gian Pháp Sư)"
     canonical_name: "Chronomancer"
@@ -258,11 +270,12 @@ entities:
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/advanced-classes.md
-    weapon: "Thánh tích thời gian (`Weapon.1H.Mace` / `Relic`)"
+    weapon: "Thánh tích thời gian (`Weapon.1H.Mace` / `Relic` - Đồng Hồ Cát)."
     role: "Time-Dilation & Damage Rewind"
     added: 2026-09-14
     revised: 2026-11-11
 
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Tu Sĩ (Acolyte)", tier "Normal", weapon "Chùy Chiến / Tràng Hạt Khí".
   - name: class_acolyte
     display_name: "Acolyte (Tập Sự)"
     canonical_name: "Acolyte"
@@ -276,11 +289,12 @@ entities:
       - design/gdd/game-concept.md
       - design/gdd/foundational-classes.md
       - design/gdd/advanced-classes.md
-    weapon: "Chùy chuông (`Weapon.1H.Mace` / `Relic`)"
+    weapon: "Chùy chuông (`Weapon.1H.Mace` / `Relic`)."
     role: "Support, Shields & Stamina Regen"
     added: 2026-09-14
     revised: 2026-11-11
 
+  # N1 2026-11-11: mục mới; role trích nguyên văn cột "Phong Cách Chiến Đấu Cốt Lõi" của design/gdd/advanced-classes.md.
   - name: class_inquisitor
     display_name: "Inquisitor (Thẩm Phán Dị Giáo)"
     canonical_name: "Inquisitor"
@@ -293,11 +307,12 @@ entities:
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/advanced-classes.md
-    weapon: "Chùy 1 tay (`Weapon.1H.Mace`)"
-    role: "Heretic Punishment & Armor/Posture Debuff"
+    weapon: "Chùy 1 tay (`Weapon.1H.Mace`). Bỏ hoàn toàn roi xích."
+    role: "Trừng phạt dị giáo, sát thương đập nện cực mạnh, ấn chú làm suy yếu giáp và thế đứng của Boss."
     added: 2026-11-11
     revised: 2026-11-11
 
+  # N1 2026-11-11: mục mới; role trích nguyên văn cột "Phong Cách Chiến Đấu Cốt Lõi" của design/gdd/advanced-classes.md.
   - name: class_seraph
     display_name: "Seraph (Thiên Sứ Lục Dực)"
     canonical_name: "Seraph"
@@ -310,11 +325,12 @@ entities:
     referenced_by:
       - design/gdd/game-concept.md
       - design/gdd/advanced-classes.md
-    weapon: "Chùy thánh / Thánh tích (`Weapon.1H.Mace` / `Relic`)"
-    role: "Radiant Wings, Short Invulnerability Ward & Holy Lightning"
+    weapon: "Chùy thánh / Thánh tích (`Weapon.1H.Mace` / `Relic`)."
+    role: "Đôi cánh ánh sáng thánh hóa (chân chạm đất), dựng kết giới bất tử ngắn hạn, giáng sấm sét thánh tích toàn bản đồ."
     added: 2026-11-11
     revised: 2026-11-11
 
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Thí Thần Giả (God Slayer)", tier "Mythic", weapon "Thần Binh Tự Biến Hình (Morphing Relic)".
   - name: class_god_slayer
     display_name: "God Slayer (Kẻ Diệt Thần)"
     canonical_name: "God Slayer"
@@ -328,7 +344,7 @@ entities:
       - design/gdd/game-concept.md
       - design/gdd/hidden-classes.md
       - design/gdd/advanced-classes.md
-    weapon: "Kiếm 1 tay (`Weapon.1H.Blade`) và Vũ khí cán dài (`Weapon.2H.Polearm`)"
+    weapon: "Kiếm 1 tay (`Weapon.1H.Blade`) và Vũ khí cán dài (`Weapon.2H.Polearm`)."
     role: "Time Freeze on Perfect Dodge & Boss Skill Mimic"
     added: 2026-09-14
     revised: 2026-11-11

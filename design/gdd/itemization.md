@@ -109,10 +109,10 @@ $$\text{AffixValue} = \text{RandomRound}(\text{MinVal}_{T}, \text{MaxVal}_{T})$$
 
 ### 2.3 Dòng Đặc Quyền Huyền Thoại (Legendary Combat Perks)
 Chỉ xuất hiện trên trang bị Legendary. Thay vì chỉ tăng số liệu thuần túy, dòng này can thiệp và biến đổi cơ chế chiêu thức của Gameplay Ability System (GAS): *(Cập nhật 2026-10-10 (X7): bỏ cách đánh số độ hiếm bằng "Tier/Bậc" — độ hiếm gọi bằng tên (DECISIONS.md §1).)*
-- **Gươm Lãnh Chúa Hỏa Ngục — dành cho Vanguard:** Kỹ năng *Blade Arc* phóng ra một luồng sóng dung nham thiêu đốt mặt đất trong 3 giây.
-- **Cung Phong Bão Cổ Thụ — dành cho Ranger:** Phát bắn *Piercing Shot* khi xuyên qua kẻ địch thứ 2 sẽ tự động tách thành 3 mũi tên phụ.
-- **Pháp Trượng Hư Không Cấm Thuật — dành cho Arcanist:** Kỹ năng *Gravity Pull* tăng 40% bán kính hút và làm câm lặng quái nhỏ trong 1.5 giây.
-- **Chiến Chùy Thái Dương — dành cho Acolyte:** Đòn giáng *Smite* tạo kết giới hồi 10 điểm Thể Lực mỗi giây cho mọi đồng minh đứng trong vòng tròn.
+- **Gươm Lãnh Chúa Hỏa Ngục (Vanguard):** Kỹ năng *Blade Arc* phóng ra một luồng sóng dung nham thiêu đốt mặt đất trong 3 giây.
+- **Cung Phong Bão Cổ Thụ (Ranger):** Phát bắn *Piercing Shot* khi xuyên qua kẻ địch thứ 2 sẽ tự động tách thành 3 mũi tên phụ.
+- **Pháp Trượng Hư Không Cấm Thuật (Arcanist):** Kỹ năng *Gravity Pull* tăng 40% bán kính hút và làm câm lặng quái nhỏ trong 1.5 giây.
+- **Chiến Chùy Thái Dương (Acolyte):** Đòn giáng *Smite* tạo kết giới hồi 10 điểm Thể Lực mỗi giây cho mọi đồng minh đứng trong vòng tròn.
 
 ### 2.4 Quy Tắc Xử Lý Stacking Khi Đánh Boss Đa Người Chơi (Multiplayer Raid Stacking & Contested PvE Rules)
 Để ngăn chặn tình trạng lạm phát chỉ số khi 50 người chơi cùng vây đánh 1 World Boss, toàn bộ 28 Affix tuân thủ nghiêm ngặt 4 quy tắc mạng Server-Authoritative:

@@ -198,7 +198,7 @@ flowchart TD
 | **Bậc T3 (Cao cấp)** | **Long Kỵ Sĩ (Dragon Knight)** | Epic | Sách Dragon Knight độc quyền | **Boss Lãnh Chúa Hỏa Long** |
 | **Bậc T3 (Cao cấp)** | **U Hồn Đoạt Mệnh (Phantom Stalker)** | Epic | Sách Phantom Stalker độc quyền | **Boss Lãnh Chúa Đầm Lầy Tử Khí** |
 | **Bậc T3 (Cao cấp)** | **Thiên Sứ Lục Dực (Seraph)** | Epic | Sách Seraph độc quyền | **Boss Lãnh Chúa Đền Thánh Ánh Sáng** |
-| **Bậc T4 (Ẩn)** | **Kẻ Diệt Thần (God Slayer)** | Mythic | Sách Thí Thần độc quyền | **World Boss Thần Linh / Thử thách No-Hit** |
+| **Bậc T4 (Ẩn)** | **Kẻ Diệt Thần (God Slayer)** | Mythic | Sách God Slayer độc quyền | **World Boss Thần Linh / Thử thách No-Hit** |
 
 ---
 

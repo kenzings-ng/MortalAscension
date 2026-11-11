@@ -20,7 +20,8 @@ SCAN SCOPE (X13, 2026-10-10) -- see SCAN_TARGETS:
 
 CLASS NAME GLOSS (N1, 2026-11-11) -- check id class_vn_name, see class_gloss_findings:
   The English class name is canonical. Each class has one approved Vietnamese gloss, the
-  parenthetical in DECISIONS.md §2. "English (Gloss)" and "Gloss (English)" pairs must use it.
+  parenthetical in DECISIONS.md §2. Retired glosses are listed in Tools/QA/retired_class_glosses.json
+  and are an error when paired with the class name as "English (Gloss)" or "Gloss (English)".
 
 SKIPPED HISTORICAL / DATED RECORDS -- see SKIP_PATH_PREFIXES / SKIP_NAME_PATTERNS:
   These files are snapshots of the past (review reports, gate checks, plans,
@@ -399,6 +400,7 @@ def load_decisions(decisions_path: Path) -> Dict:
         "approved_lines": approved_lines,
         "class_weapons": class_weapons,
         "class_vn_gloss": class_vn_gloss,
+        "retired_glosses": load_retired_glosses(class_vn_gloss),
         "view_direction_count": view_direction_count,
     }
 
@@ -470,30 +472,63 @@ EQUIPMENT_TIER_PATTERN = re.compile(r'\b(?:ShieldTier|5-Tier\s+Items?)\b', re.IG
 
 
 # Vietnamese gloss of a class name (N1, 2026-11-11). The English class name is the canonical name; each class
-# has exactly one approved Vietnamese gloss, written in parentheses in DECISIONS.md §2. Two written forms are checked:
-#   "English (Gloss ...)"  -> a capitalised gloss that contains Vietnamese letters must start with the approved gloss.
-#   "Gloss (English)"      -> only when the capitalised run starts a unit (line start, table cell, emphasis, quote,
-#                             bracket, list dash), so item names such as "Khăn Quàng Du Mục (Ranger)" after other
-#                             text are not treated as glosses. The run must end with the approved gloss.
-_VN_CAP_WORD = r"[A-ZÀ-ỸĐ][A-Za-zÀ-ỹĐđ]*"
-_VN_CAP_RUN = r"%s(?: %s){0,4}" % (_VN_CAP_WORD, _VN_CAP_WORD)
-_NON_ASCII_LETTER = re.compile(r"[À-ỹĐđ]")
+# has exactly one approved Vietnamese gloss, written in parentheses in DECISIONS.md §2. Glosses that were used
+# before and are now retired are listed per class in Tools/QA/retired_class_glosses.json. A retired gloss is an
+# error when it is paired with that class's English name in parentheses, in either order, in any letter case:
+#   "Ranger (Du Hiệp)", "**Ranger** (du hiệp)", "Du Hiệp (Ranger)", "##### B. DU HIỆP (RANGER)".
+# A retired gloss used on its own (a common noun, a skill or item name) is not checked, a parenthetical that
+# is not a retired gloss ("Vanguard (T1)", "Dragon Knight (Đại Kích)") is never flagged, and a retired gloss that
+# is the tail of a longer Title-Case name ("Khăn Quàng Du Mục (Ranger)", an item) is not treated as a gloss.
+# Limit: a brand-new wrong gloss that is not in the retired list is not detected; add it to the list when found.
+RETIRED_GLOSS_FILE = Path(__file__).resolve().parent / "retired_class_glosses.json"
+_STRUCK = re.compile(r"~~.*?~~")
+_WORD_CH = r"A-Za-zÀ-ỹĐđ0-9"
+_PREV_WORD = re.compile(r"([%s]+) $" % _WORD_CH)
 
 
-def class_gloss_findings(line: str, class_vn_gloss: Dict[str, str]):
-    """Yields (match, english, found_gloss, approved_gloss) for every non-approved Vietnamese class gloss on the line."""
-    if "~~" in line:  # struck-through text records removed content
+def load_retired_glosses(class_vn_gloss: Dict[str, str], path: Path = RETIRED_GLOSS_FILE) -> Dict[str, List[str]]:
+    """Loads {English class name: [retired glosses]}. Fails loudly on unknown classes or on a listed approved gloss."""
+    if not path.exists():
+        raise DecisionsParseError(f"retired gloss list not found at {path}")
+    with open(path, "r", encoding="utf-8") as f:
+        retired = json.load(f).get("retired", {})
+    problems = []
+    for english, glosses in retired.items():
+        if english not in class_vn_gloss:
+            problems.append(f"'{english}' is not a class in DECISIONS.md §2")
+        elif any(g.casefold() == class_vn_gloss[english].casefold() for g in glosses):
+            problems.append(f"'{english}' lists its approved gloss '{class_vn_gloss[english]}' as retired")
+    if problems:
+        raise DecisionsParseError("retired_class_glosses.json: " + "; ".join(problems))
+    return retired
+
+
+def class_gloss_findings(line: str, class_vn_gloss: Dict[str, str], retired: Dict[str, List[str]]):
+    """Yields (start, end, english, found_gloss, approved_gloss) for each retired gloss paired with its class name."""
+    if line.count("~~") % 2:  # a strike-through that opens or closes on another line: cannot tell which side is struck
         return
-    for english, approved in class_vn_gloss.items():
-        en = re.escape(english)
-        for m in re.finditer(r"(?<![A-Za-z])%s[`*]{0,3}\s*\([`*]{0,2}(%s)" % (en, _VN_CAP_RUN), line):
-            found = m.group(1)
-            if _NON_ASCII_LETTER.search(found) and not found.startswith(approved):
-                yield m, english, found, approved
-        for m in re.finditer(r"(?:^|[|*\"“\[]|-\s)\s*(%s)[`*]{0,3}\s*\([`*]{0,3}%s[`*]{0,3}\)" % (_VN_CAP_RUN, en), line):
-            found = m.group(1)
-            if _NON_ASCII_LETTER.search(found) and not found.endswith(approved):
-                yield m, english, found, approved
+    text = _STRUCK.sub(lambda m: " " * len(m.group(0)), line)  # struck-through spans record removed content
+    folded = text.casefold()
+    if len(folded) != len(text):  # casefold changed the length (never for Vietnamese/ASCII); positions unusable
+        folded = text.lower()
+    for english, glosses in retired.items():
+        approved = class_vn_gloss[english]
+        en = re.escape(english.casefold())
+        for gloss in glosses:
+            g = re.escape(gloss.casefold())
+            # "English (Gloss": the gloss opens the parenthetical
+            for m in re.finditer(r"(?<![%s])%s[`*\"'”’]{0,4}\s*\([`*\"'“‘\s]{0,3}(%s)(?![%s])" % (_WORD_CH, en, g, _WORD_CH), folded):
+                if len(gloss) < len(approved) and folded.startswith(approved.casefold(), m.start(1)):
+                    continue  # the retired gloss is only the beginning of the approved one
+                yield m.start(), m.end(), english, text[m.start(1):m.end(1)], approved
+            # "Gloss (English": the gloss is the last thing before the parenthetical
+            for m in re.finditer(r"(?<![%s])(%s)[`*\"'”’]{0,4}\s*\([`*\"'“‘\s]{0,3}%s(?![%s])[`*]{0,3}\)?" % (_WORD_CH, g, en, _WORD_CH), folded):
+                if len(gloss) < len(approved) and folded.endswith(approved.casefold(), 0, m.end(1)):
+                    continue  # the retired gloss is only the end of the approved one
+                prev = _PREV_WORD.search(text[:m.start(1)])
+                if prev and prev.group(1)[0].isupper() and not text[m.start(1):m.end(1)].isupper():
+                    continue  # tail of a longer Title-Case name, e.g. the item "Khăn Quàng Du Mục (Ranger)"
+                yield m.start(), m.end(), english, text[m.start(1):m.end(1)], approved
 
 
 def first_unmarked(pat, line: str, unmarked):
@@ -549,10 +584,10 @@ def check_file(file_path: Path, decisions: Dict) -> Tuple[List[Finding], List[st
         if m12:
             add(line_idx, "class_count_12", "Lỗi số lượng: Còn sót '12 Class' / '12 Chức nghiệp'. Tổng số class chính thức là 16 Class theo DECISIONS.md Mục 2.")
 
-        # Vietnamese class gloss must be the single approved one from DECISIONS §2
-        for m_gl, english, found, approved in class_gloss_findings(line, decisions.get("class_vn_gloss", {})):
-            if unmarked(m_gl):
-                add(line_idx, "class_vn_name", f"Chú thích tiếng Việt của class '{english}' là '{found}', không khớp DECISIONS.md Mục 2: chỉ dùng '{approved}'.")
+        # A retired Vietnamese class gloss must not be paired with its class name (DECISIONS §2)
+        for g_start, g_end, english, found, approved in class_gloss_findings(line, decisions.get("class_vn_gloss", {}), decisions.get("retired_glosses", {})):
+            if not in_deprecated_entry and not is_marked_deprecated(line, g_start, g_end):
+                add(line_idx, "class_vn_name", f"Chú thích tiếng Việt '{found}' của class '{english}' đã bị loại. Theo DECISIONS.md Mục 2 chỉ dùng '{approved}'.")
                 break
 
         # Prohibited Class Tier / Rarity Terminology

@@ -1,0 +1,57 @@
+{
+  "_comment": "Retired Vietnamese glosses of class names (N1, 2026-11-11). The English name is canonical and the only approved Vietnamese gloss is the parenthetical in production/DECISIONS.md section 2. A retired gloss is an error when it is paired with the class's English name in parentheses, in either order. Add a gloss here when one is retired; never list the approved gloss.",
+  "retired": {
+    "Vanguard": [
+      "Chiến Binh",
+      "Thiết Vệ"
+    ],
+    "Templar": [
+      "Thánh Binh"
+    ],
+    "Berserker": [
+      "Cuồng Chiến"
+    ],
+    "Void Blade": [
+      "Hư Không Kiếm Sư"
+    ],
+    "Ranger": [
+      "Du Hiệp",
+      "Du Mục"
+    ],
+    "Shadowblade": [
+      "Ảo Ảnh Thích Khách",
+      "Thích Khách"
+    ],
+    "Phantom Stalker": [
+      "Bóng Ma",
+      "Ảo Ảnh Dạ Hành"
+    ],
+    "Arcanist": [
+      "Thuật Sĩ"
+    ],
+    "Elementalist": [
+      "Nguyên Tố"
+    ],
+    "Chronomancer": [
+      "Thời Gian Ma Đạo",
+      "Thời Không Pháp Sư",
+      "Thời Gian"
+    ],
+    "Acolyte": [
+      "Tu Sĩ"
+    ],
+    "Inquisitor": [
+      "Thẩm Phán"
+    ],
+    "Seraph": [
+      "Thiên Sứ",
+      "Lục Dực Thánh Sứ",
+      "Lục Dực Thần Sứ",
+      "Lục Dực"
+    ],
+    "God Slayer": [
+      "Thí Thần Giả",
+      "Thần Thí Giả"
+    ]
+  }
+}
