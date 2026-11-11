@@ -70,7 +70,7 @@ Hệ thống chức nghiệp trong Mortal Ascension được tổ chức theo c�
 | **Faith** | T1 | **Acolyte (Tập Sự)** | `Class.Line.Faith.Acolyte` | `1H.Mace` + Tràng Hạt Khí | Hỗ trợ sinh tồn, thanh tẩy hiệu ứng xấu, hồi phục thể lực (Stamina) cho bản thân và đồng đội. |
 | **Faith** | T2 | **Inquisitor (Thẩm Phán Dị Giáo)** | `Class.Line.Faith.Inquisitor` | `1H.Mace` (Chiến Chùy) | Trừng phạt dị giáo, sát thương đập nện cực mạnh, ấn chú làm suy yếu giáp và thế đứng của Boss. |
 | **Faith** | T3 | **Seraph (Thiên Sứ Lục Dực)** | `Class.Line.Faith.Seraph` | `1H.Mace` / Thánh Tích | Đôi cánh ánh sáng thánh hóa (chân chạm đất), dựng kết giới bất tử ngắn hạn, giáng sấm sét thánh tích toàn bản đồ. |
-| **Apex** | T4 | **God Slayer (Kẻ Diệt Thần)** | `Class.Line.Apex.GodSlayer` | Thần Binh Hư Vô Tự Biến Hình | Né hoàn hảo ngưng đọng thời gian 1s, tước đoạt và sao chép chiêu thức đặc trưng của Boss. |
+| **Apex** | T4 | **God Slayer (Kẻ Diệt Thần)** | `Class.Line.Apex.GodSlayer` | Thần Binh Tự Biến Hình: `1H.Blade` ↔ `2H.Polearm` | Né hoàn hảo ngưng đọng thời gian 1s, tước đoạt và sao chép chiêu thức đặc trưng của Boss. |
 
 ---
 

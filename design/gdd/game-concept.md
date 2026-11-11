@@ -132,7 +132,7 @@ Một thế giới nơi cấp độ không thể che giấu sự non nớt, và 
 
 | STT | Tên Class | Vũ Khí Đặc Trưng | Phong Cách Chiến Đấu & Điều Kiện Mở Khóa |
 | :---: | :--- | :--- | :--- |
-| **16** | **Kẻ Diệt Thần (God Slayer)** | Thần Binh Tự Biến Hình (Morphing Relic) | **Tước đoạt sức mạnh thần thánh:** <br>• Khi thực hiện **Né Hoàn Hảo (Perfect Dodge)**: Kích hoạt hiệu ứng "Ngưng Đọng Thời Gian" 1 giây để phản kích.<br>• Có khả năng sao chép 1 chiêu thức đặc trưng của Boss vừa bị hạ gục.<br>📍 *Cách mở:* **Solo hạ gục một Boss Lãnh chúa vượt ít nhất 15 cấp mà KHÔNG dính bất kỳ một đòn đánh nào (No-Hit Challenge).** |
+| **16** | **Kẻ Diệt Thần (God Slayer)** | Thần Binh Tự Biến Hình (Morphing Relic): biến đổi giữa kiếm 1 tay (`Weapon.1H.Blade`) và vũ khí cán dài (`Weapon.2H.Polearm`) | **Tước đoạt sức mạnh thần thánh:** <br>• Khi thực hiện **Né Hoàn Hảo (Perfect Dodge)**: Kích hoạt hiệu ứng "Ngưng Đọng Thời Gian" 1 giây để phản kích.<br>• Có khả năng sao chép 1 chiêu thức đặc trưng của Boss vừa bị hạ gục.<br>📍 *Cách mở:* **Solo hạ gục một Boss Lãnh chúa vượt ít nhất 15 cấp mà KHÔNG dính bất kỳ một đòn đánh nào (No-Hit Challenge).** |
 
 ---
 

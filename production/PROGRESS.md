@@ -1163,4 +1163,8 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   4. Chuỗi hiển thị trong `Source/` (`PACharacterSelectTypes.cpp`, `PACharacterSelectWidget.cpp`) vẫn là "Chiến Binh", "Du Hiệp", "Thuật Sĩ": thuộc N7.
   5. Giới hạn của check `class_vn_name`: không bắt chú thích sai hoàn toàn mới chưa có trong danh sách đã loại; có thể báo nhầm khi chú thích đã loại cũng là cụm từ thông dụng đứng cạnh tên class. Ghi trong comment của validator.
 - **Việc cần chủ dự án**: xem 3 dòng thêm vào `production/DECISIONS.md` §13 ("Ngôn ngữ tên gọi") trong PR trước khi merge.
-- **Trạng thái**: chưa push, chưa merge; mục N1 trong ROADMAP vẫn là `[ ]`.
+- **Trạng thái**: chưa push, chưa merge; mục N1 trong ROADMAP vẫn là `[ ]`. _(Đã lỗi thời, xem "Cập nhật sau merge" bên dưới.)_
+- **Cập nhật sau merge (2026-11-11)**:
+  - Nhánh N1 push tại `4649e75`, PR #65. CI "Fast Gates (GDD & Backend QA)" pass (37s). Chủ dự án chọn "Duyệt, merge PR #65" qua hộp chọn trong terminal. Squash-merge thành `3c8efde` trên `main`; `git ls-remote origin refs/heads/main` trả `3c8efde2c75e5a9f9ad2bd0391a3a86373bc5e59`.
+  - Nhánh `docs/n1-closure-god-slayer-weapon`: đổi N1 thành `[x]` trong ROADMAP kèm bằng chứng.
+  - Cùng nhánh, đóng mục ghi nợ 1 (vũ khí God Slayer). Chủ dự án chọn "Gộp hai ý": Thần Binh Tự Biến Hình là một vũ khí biến đổi giữa hai dạng kiếm 1 tay và cán dài, ghi vào cả GDD và DECISIONS §7. Đã sửa `production/DECISIONS.md` §7 (dòng God Slayer), `design/gdd/game-concept.md`, `design/gdd/advanced-classes.md`, `design/registry/entities.yaml`. `advanced-classes.md` trước đó ghi "Thần Binh Hư Vô Tự Biến Hình"; nay dùng một tên "Thần Binh Tự Biến Hình" như `game-concept.md` và câu chủ dự án đã chọn.
