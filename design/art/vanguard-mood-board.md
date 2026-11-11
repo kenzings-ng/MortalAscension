@@ -65,7 +65,7 @@ graph TD
                                    │
                  ┌─────────────────┴─────────────────┐
                  │    [Tấm Giáp Ngực Thép: Y=56]     │
- [Khiên Sắt Vuông] │    [Tabard Vải Thô Xanh Chàm]     │ [Kiếm Bản Rộng]
+ [Khiên Vuông]   │    [Tabard Vải Thô Xanh Chàm]     │ [Kiếm Bản Rộng]
  [Hình Chữ Nhật] │    [Đai Da Đóng Khóa Sắt: Y=80]   │ [Thép Tôi Rèn]
                  └─────────────────┬─────────────────┘
                                    │
