@@ -145,9 +145,9 @@ Khối lượng theo 5 hướng + lật (story-004 → 007), 16 class:
 ## Giai đoạn 7 — Alpha
 
 - [ ] Playtest với người ngoài. 🛑
-- [ ] Profile hiệu năng bằng Unreal Insights.
-- [ ] Đóng gói bản build.
-- [ ] Kiểm tra license lần cuối; khai báo nội dung AI theo yêu cầu nền tảng phát hành.
+- [x] Profile hiệu năng bằng Unreal Insights (Trace benchmark Outpost map & Combat trong `Saved/Profiling/Alpha_Benchmark_L_VerdantFrontier_Outpost.utrace`).
+- [x] Đóng gói bản build (Nội dung và maps đã qua kiểm chứng Cook 100% PASS bằng RunUAT BuildCookRun, 0 lỗi).
+- [x] Kiểm tra license lần cuối; khai báo nội dung AI theo yêu cầu nền tảng phát hành (`THIRD_PARTY_ASSETS.md` §1-5).
 
 ---
 
