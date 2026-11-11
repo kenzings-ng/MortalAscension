@@ -56,7 +56,7 @@ entities:
   # thay bằng `rank:` T1–T4 theo DECISIONS §1; `weapon:` chép nguyên văn DECISIONS §7 (bỏ các ghi chú "Lưu ý"). Giá trị cũ ghi ở comment trên từng mục.
   # Bổ sung 4 class còn thiếu: Swordmaster, Phantom Stalker, Inquisitor, Seraph.
 
-  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Chiến Binh (Vanguard)", tier "Normal", weapon "Kiếm & Khiên / Đại Kiếm".
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name deprecated "Chiến Binh (Vanguard)", tier "Normal", weapon "Kiếm & Khiên / Đại Kiếm".
   - name: class_vanguard
     display_name: "Vanguard (Tiên Phong)"
     canonical_name: "Vanguard"
@@ -75,7 +75,7 @@ entities:
     added: 2026-09-14
     revised: 2026-11-11
 
-  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Thánh Hiệp Sĩ (Templar)", tier "Rare", weapon "Chiến Chùy & Đại Thuẫn".
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name deprecated "Thánh Hiệp Sĩ (Templar)", tier "Rare", weapon "Chiến Chùy & Đại Thuẫn".
   - name: class_templar
     display_name: "Templar (Thánh Hiệp Sĩ)"
     canonical_name: "Templar"
@@ -93,7 +93,7 @@ entities:
     added: 2026-09-14
     revised: 2026-11-11
 
-  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Cuồng Chiến Sĩ (Berserker)", tier "Rare", weapon "Song Rìu / Búa Tạ".
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name deprecated "Cuồng Chiến Sĩ (Berserker)", tier "Rare", weapon "Song Rìu / Búa Tạ".
   - name: class_berserker
     display_name: "Berserker (Cuồng Chiến Sĩ)"
     canonical_name: "Berserker"
@@ -129,7 +129,7 @@ entities:
     added: 2026-11-11
     revised: 2026-11-11
 
-  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Long Kỵ Sĩ (Dragon Knight)", tier "Epic", weapon "Thương Dài (Halberd)".
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name deprecated "Long Kỵ Sĩ (Dragon Knight)", tier "Epic", weapon "Thương Dài (Halberd)".
   - name: class_dragon_knight
     display_name: "Dragon Knight (Long Kỵ Sĩ)"
     canonical_name: "Dragon Knight"
@@ -147,7 +147,7 @@ entities:
     added: 2026-09-14
     revised: 2026-11-11
 
-  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Hư Không Kiếm Sư (Void Blade)", tier "Epic", weapon "Kiếm Katana Hư Không".
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name deprecated "Hư Không Kiếm Sư (Void Blade)", tier "Epic", weapon "Kiếm Katana Hư Không".
   - name: class_void_blade
     display_name: "Void Blade (Hư Không Kiếm)"
     canonical_name: "Void Blade"
@@ -165,7 +165,7 @@ entities:
     added: 2026-09-14
     revised: 2026-11-11
 
-  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Du Hiệp (Ranger)", tier "Normal", weapon "Cung Tên / Song Đao".
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name deprecated "Du Hiệp (Ranger)", tier "Normal", weapon "Cung Tên / Song Đao".
   - name: class_ranger
     display_name: "Ranger (Xạ Thủ)"
     canonical_name: "Ranger"
@@ -184,7 +184,7 @@ entities:
     added: 2026-09-14
     revised: 2026-11-11
 
-  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Ảo Ảnh Thích Khách (Shadowblade)", tier "Rare", weapon "Song Đoản Kiếm / Phi Tiêu".
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name deprecated "Ảo Ảnh Thích Khách (Shadowblade)", tier "Rare", weapon "Song Đoản Kiếm / Phi Tiêu".
   - name: class_shadowblade
     display_name: "Shadowblade (Ảnh Nhẫn)"
     canonical_name: "Shadowblade"
@@ -220,7 +220,7 @@ entities:
     added: 2026-11-11
     revised: 2026-11-11
 
-  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Thuật Sĩ (Arcanist)", tier "Normal", weapon "Trượng Phép / Cổ Thư".
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name deprecated "Thuật Sĩ (Arcanist)", tier "Normal", weapon "Trượng Phép / Cổ Thư".
   - name: class_arcanist
     display_name: "Arcanist (Bí Thuật Sư)"
     canonical_name: "Arcanist"
@@ -239,7 +239,7 @@ entities:
     added: 2026-09-14
     revised: 2026-11-11
 
-  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Nguyên Tố Sư (Elementalist)", tier "Rare", weapon "Cầu Phép (Orb)".
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name deprecated "Nguyên Tố Sư (Elementalist)", tier "Rare", weapon "Cầu Phép (Orb)".
   - name: class_elementalist
     display_name: "Elementalist (Nguyên Tố Sư)"
     canonical_name: "Elementalist"
@@ -257,7 +257,7 @@ entities:
     added: 2026-09-14
     revised: 2026-11-11
 
-  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Thời Gian Ma Đạo (Chronomancer)", tier "Epic", weapon "Đồng Hồ Cát Ma Thuật".
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name deprecated "Thời Gian Ma Đạo (Chronomancer)", tier "Epic", weapon "Đồng Hồ Cát Ma Thuật".
   - name: class_chronomancer
     display_name: "Chronomancer (Thời Gian Pháp Sư)"
     canonical_name: "Chronomancer"
@@ -275,7 +275,7 @@ entities:
     added: 2026-09-14
     revised: 2026-11-11
 
-  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Tu Sĩ (Acolyte)", tier "Normal", weapon "Chùy Chiến / Tràng Hạt Khí".
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name deprecated "Tu Sĩ (Acolyte)", tier "Normal", weapon "Chùy Chiến / Tràng Hạt Khí".
   - name: class_acolyte
     display_name: "Acolyte (Tập Sự)"
     canonical_name: "Acolyte"
@@ -330,7 +330,7 @@ entities:
     added: 2026-11-11
     revised: 2026-11-11
 
-  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name "Thí Thần Giả (God Slayer)", tier "Mythic", weapon "Thần Binh Tự Biến Hình (Morphing Relic)".
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name deprecated "Thí Thần Giả (God Slayer)", tier "Mythic", weapon "Thần Binh Tự Biến Hình (Morphing Relic)".
   - name: class_god_slayer
     display_name: "God Slayer (Kẻ Diệt Thần)"
     canonical_name: "God Slayer"
