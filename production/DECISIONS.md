@@ -134,7 +134,7 @@ Thống nhất dứt điểm mọi phân bổ weapon family cho toàn bộ 16 Cl
    - **Inquisitor (T2)**: Chùy 1 tay (`Weapon.1H.Mace`). Bỏ hoàn toàn roi xích.
    - **Seraph (T3)**: Chùy thánh / Thánh tích (`Weapon.1H.Mace` / `Relic`).
 5. **Nhánh Apex (Tối Cao)**:
-   - **God Slayer (T4)**: Kiếm 1 tay (`Weapon.1H.Blade`) và Vũ khí cán dài (`Weapon.2H.Polearm`).
+   - **God Slayer (T4)**: Thần Binh Tự Biến Hình (Morphing Relic): một vũ khí biến đổi giữa hai dạng Kiếm 1 tay (`Weapon.1H.Blade`) và Vũ khí cán dài (`Weapon.2H.Polearm`). *(Cập nhật 2026-11-11, chủ dự án chọn "gộp hai ý": mô tả "Thần Binh Tự Biến Hình" của GDD và hai weapon family đã chốt là một. Trước đó dòng này chỉ ghi hai weapon family.)*
 
 ---
 

@@ -330,7 +330,7 @@ entities:
     added: 2026-11-11
     revised: 2026-11-11
 
-  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name deprecated "Thí Thần Giả (God Slayer)", tier "Mythic", weapon "Thần Binh Tự Biến Hình (Morphing Relic)".
+  # N1 2026-11-11 (DECISIONS §1, §2, §7): giá trị cũ display_name deprecated "Thí Thần Giả (God Slayer)", tier "Mythic", weapon "Thần Binh Tự Biến Hình (Morphing Relic)". Tên vũ khí này được dùng lại trong `weapon` hiện tại (xem comment ngay trên dòng `weapon`).
   - name: class_god_slayer
     display_name: "God Slayer (Kẻ Diệt Thần)"
     canonical_name: "God Slayer"
@@ -344,7 +344,8 @@ entities:
       - design/gdd/game-concept.md
       - design/gdd/hidden-classes.md
       - design/gdd/advanced-classes.md
-    weapon: "Kiếm 1 tay (`Weapon.1H.Blade`) và Vũ khí cán dài (`Weapon.2H.Polearm`)."
+    # N1 2026-11-11: weapon cũ "Kiếm 1 tay (`Weapon.1H.Blade`) và Vũ khí cán dài (`Weapon.2H.Polearm`)." (DECISIONS §7 trước khi chủ dự án chọn gộp hai ý).
+    weapon: "Thần Binh Tự Biến Hình (Morphing Relic): một vũ khí biến đổi giữa hai dạng Kiếm 1 tay (`Weapon.1H.Blade`) và Vũ khí cán dài (`Weapon.2H.Polearm`)."
     role: "Time Freeze on Perfect Dodge & Boss Skill Mimic"
     added: 2026-09-14
     revised: 2026-11-11
