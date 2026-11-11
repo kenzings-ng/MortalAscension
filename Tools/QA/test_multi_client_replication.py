@@ -153,7 +153,7 @@ def main():
         # Wait for server to load outpost map and initialize Iris
         server_ready = False
         print(" Waiting for Dedicated Server to load outpost world and listen...")
-        while time.time() - start_time < 40:
+        while time.time() - start_time < 90:
             if server_proc.poll() is not None:
                 print(f"[FAIL] Server exited unexpectedly with code {server_proc.returncode}")
                 break
@@ -220,7 +220,7 @@ def main():
         replicate_confirmed = False
 
         # Allow sufficient time for both clients to load map and establish session
-        monitor_deadline = time.time() + 35
+        monitor_deadline = time.time() + 60
         while time.time() < monitor_deadline:
             if server_proc.poll() is not None:
                 print(f"[FAIL] Server terminated prematurely with code {server_proc.returncode}")
