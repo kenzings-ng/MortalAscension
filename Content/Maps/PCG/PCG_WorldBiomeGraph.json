@@ -1,6 +1,6 @@
 {
   "graph_name": "PCG_WorldBiomeGraph",
-  "version": "1.0",
+  "version": "1.1",
   "engine_target": "UE_5.8",
   "exclusion_zones": [
     {
@@ -76,37 +76,52 @@
             "foliage_density": 0.8,
             "rock_density": 0.3,
             "tree_palette": [
-              "SM_Oak_Large",
-              "SM_Pine_Young",
-              "SM_Bush_Fern"
+              "/Game/Art/Environment/Sprites/Trees/TREE_Oak_Canopy_02",
+              "/Game/Art/Environment/Sprites/Trees/TREE_Sapling_01",
+              "/Game/Art/Environment/Sprites/Trees/TREE_Pine_Evergreen_03"
+            ],
+            "foliage_palette": [
+              "/Game/Art/Environment/Sprites/Foliage/FOL_Bush_Medium_02",
+              "/Game/Art/Environment/Sprites/Foliage/FOL_Bush_Small_01",
+              "/Game/Art/Environment/Sprites/Foliage/FOL_Flower_Poppies_01",
+              "/Game/Art/Environment/Sprites/Foliage/FOL_Flower_Bellflowers_02",
+              "/Game/Art/Environment/Sprites/Foliage/FOL_Flower_Daisies_03",
+              "/Game/Art/Environment/Sprites/Foliage/FOL_Grass_Patch_02",
+              "/Game/Art/Environment/Sprites/Foliage/FOL_Grass_Tuft_01"
             ],
             "rock_palette": [
-              "SM_MossyBoulder_01",
-              "SM_MossyBoulder_02"
+              "/Game/Art/Environment/Sprites/Props/ROCK_Boulder_Mossy_02",
+              "/Game/Art/Environment/Sprites/Props/ROCK_Pebbles_01"
+            ],
+            "props_palette": [
+              "/Game/Art/Environment/Sprites/Props/PROP_Crate_Oak_01",
+              "/Game/Art/Environment/Sprites/Props/PROP_Barrel_Keg_02"
             ]
           },
           "AshenKeep": {
             "foliage_density": 0.2,
             "rock_density": 0.8,
             "tree_palette": [
-              "SM_BurntTrunk_01",
-              "SM_ThornBush"
+              "/Game/Art/Environment/Sprites/Trees/TREE_Sapling_01",
+              "/Game/Art/Environment/Sprites/Foliage/FOL_Bush_Bramble_03"
             ],
             "rock_palette": [
-              "SM_ObsidianCrag_01",
-              "SM_AshenRock_02"
+              "/Game/Art/Environment/Sprites/Props/ROCK_Formation_Crag_03",
+              "/Game/Art/Environment/Sprites/Props/ROCK_Pebbles_01"
+            ],
+            "props_palette": [
+              "/Game/Art/Environment/Sprites/Props/PROP_Brazier_Torch_04_sheet"
             ]
           },
           "SanctumFortress": {
             "foliage_density": 0.5,
             "rock_density": 0.6,
             "tree_palette": [
-              "SM_SnowyPine_01",
-              "SM_WhiteBirch"
+              "/Game/Art/Environment/Sprites/Trees/TREE_Pine_Evergreen_03"
             ],
             "rock_palette": [
-              "SM_GranitePillar_01",
-              "SM_FrostRock_02"
+              "/Game/Art/Environment/Sprites/Props/ROCK_Formation_Crag_03",
+              "/Game/Art/Environment/Sprites/Props/ROCK_Boulder_Mossy_02"
             ]
           }
         }

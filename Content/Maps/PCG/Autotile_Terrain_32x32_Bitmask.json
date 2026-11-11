@@ -1,0 +1,71 @@
+{
+  "tileset_name": "M6_Terrain_Autotile_32x32",
+  "tile_size": 32,
+  "bitmask_type": "4_bit_cardinal_with_corners",
+  "base_dirt": "TILE_Dirt_Base.png",
+  "base_grass": "TILE_Grass_Base.png",
+  "cobblestone_path": "TILE_Stone_Cobble_Path.png",
+  "cliff_wall": "TILE_Cliff_Ledge_Wall.png",
+  "masks": {
+    "edge_north": {
+      "tile": "TILE_Grass_Edge_N.png",
+      "cardinal_pattern": "E+S+W (No Grass North)",
+      "mask": 14
+    },
+    "edge_south": {
+      "tile": "TILE_Grass_Edge_S.png",
+      "cardinal_pattern": "N+E+W (No Grass South)",
+      "mask": 11
+    },
+    "edge_west": {
+      "tile": "TILE_Grass_Edge_W.png",
+      "cardinal_pattern": "N+E+S (No Grass West)",
+      "mask": 7
+    },
+    "edge_east": {
+      "tile": "TILE_Grass_Edge_E.png",
+      "cardinal_pattern": "N+S+W (No Grass East)",
+      "mask": 13
+    },
+    "corner_north_west": {
+      "tile": "TILE_Grass_Corner_NW.png",
+      "cardinal_pattern": "S+E (Grass South & East)",
+      "mask": 6
+    },
+    "corner_north_east": {
+      "tile": "TILE_Grass_Corner_NE.png",
+      "cardinal_pattern": "S+W (Grass South & West)",
+      "mask": 12
+    },
+    "corner_south_west": {
+      "tile": "TILE_Grass_Corner_SW.png",
+      "cardinal_pattern": "N+E (Grass North & East)",
+      "mask": 3
+    },
+    "corner_south_east": {
+      "tile": "TILE_Grass_Corner_SE.png",
+      "cardinal_pattern": "N+W (Grass North & West)",
+      "mask": 9
+    },
+    "inner_north_west": {
+      "tile": "TILE_Grass_Inner_NW.png",
+      "diagonal_missing": "NW",
+      "mask": 254
+    },
+    "inner_north_east": {
+      "tile": "TILE_Grass_Inner_NE.png",
+      "diagonal_missing": "NE",
+      "mask": 251
+    },
+    "inner_south_west": {
+      "tile": "TILE_Grass_Inner_SW.png",
+      "diagonal_missing": "SW",
+      "mask": 239
+    },
+    "inner_south_east": {
+      "tile": "TILE_Grass_Inner_SE.png",
+      "diagonal_missing": "SE",
+      "mask": 191
+    }
+  }
+}

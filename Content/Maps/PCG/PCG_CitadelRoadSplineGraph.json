@@ -1,6 +1,6 @@
 {
   "graph_name": "PCG_CitadelRoadSplineGraph",
-  "version": "1.0",
+  "version": "1.1",
   "engine_target": "UE_5.8",
   "nodes": [
     {
@@ -40,13 +40,23 @@
     },
     {
       "id": "CobblestoneSpawner_0",
-      "type": "PCGStaticMeshSpawner",
+      "type": "PCGPaper2DSpriteSpawner",
       "properties": {
-        "mesh_paths": [
-          "/Game/Content/Maps/Meshes/SM_RoadCobblestone_01",
-          "/Game/Content/Maps/Meshes/SM_RoadCobblestone_02"
+        "sprite_paths": [
+          "/Game/Art/Environment/Sprites/Tiles/TILE_Stone_Cobble_Path"
         ],
         "hism_enabled": true
+      }
+    },
+    {
+      "id": "WaymarkerSpawner_0",
+      "type": "PCGPaper2DSpriteSpawner",
+      "properties": {
+        "interval_cm": 1500.0,
+        "sprite_palette": [
+          "/Game/Art/Environment/Sprites/Props/PROP_Signpost_Waymarker_03",
+          "/Game/Art/Environment/Sprites/Props/PROP_Brazier_Torch_04_sheet"
+        ]
       }
     }
   ],
@@ -66,6 +76,10 @@
     {
       "from": "RoadCrossSection_0",
       "to": "CobblestoneSpawner_0"
+    },
+    {
+      "from": "RoadCrossSection_0",
+      "to": "WaymarkerSpawner_0"
     }
   ]
 }
