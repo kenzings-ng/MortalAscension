@@ -1118,4 +1118,4 @@ Các tham chiếu số dòng ROADMAP trong plan đã chỉnh theo vị trí mớ
   - Xem câu chữ phần thêm vào `production/ROADMAP.md` và `production/DECISIONS.md` trong PR trước khi merge.
   - `CLAUDE.md:35` và `DECISIONS.md:226` vẫn ghi phạm vi tự vận hành "0 → 7, gồm 1.5 và 2B", chưa nhắc Giai đoạn N. Agent không sửa hai dòng này.
   - N1 giữ 🛑 dạng xác nhận: áp DECISIONS §2 nguyên văn (Ranger = "Xạ Thủ", "Du Hiệp" = tên nhánh Scout).
-- **Trạng thái**: chờ chủ dự án xem PR. Chưa merge; mục N0 trong ROADMAP vẫn là `[ ]`.
+- **Trạng thái**: nhánh đã push (`git ls-remote`: `4a76715` trên `refs/heads/docs/n0-narrative-foundation-infra`), PR #63 đã mở, chờ chủ dự án xem câu chữ. Chưa merge; mục N0 trong ROADMAP vẫn là `[ ]`.
