@@ -8,7 +8,7 @@
 
 ## 0. Câu Hỏi Duy Nhất Của Lần Chơi Thử Greybox (cập nhật 2026-11-12)
 
-> Theo lựa chọn của chủ dự án (DECISIONS §13 "Hướng đi và phân công agent"): chơi thử vòng lõi bằng greybox trước khi thêm nội dung lớn. Mục này dùng khi thẻ G10 (`production/roadmap/G-greybox.md`) sẵn sàng; trước đó nhân vật chưa hiện và đòn đánh chưa trúng.
+> Theo lựa chọn của chủ dự án (DECISIONS §13 "Hướng đi và phân công agent"): chơi thử vòng lõi bằng greybox trước khi thêm nội dung lớn. Mục này dùng khi thẻ G10 (`production/roadmap/G-greybox.md`) sẵn sàng; phiên trước ghi nhận vấn đề nhân vật chưa hiện và đòn đánh chưa trúng; G1 phải đo lại, lượt kiểm 2026-11-12 crash startup nên chưa xác nhận vòng chơi hiện tại.
 
 **Câu hỏi**: *Né chuẩn để hạ một Lãnh Chúa mạnh hơn mình có đã tay không?* (Core Fantasy, `design/gdd/game-concept.md`)
 

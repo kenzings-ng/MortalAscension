@@ -17,4 +17,6 @@
 ### H3 — Hitbox boss và hurtbox theo bộ phận
 - Phụ thuộc: H2, N6.
 - 🛑 Danh sách bộ phận boss chạm DECISIONS §13 ("Sừng, Vảy đuôi, Giáp ngực, Cánh") và N6; chủ dự án chốt trước.
+- Đọc trước: spec H1, pipeline H2, danh sách bộ phận được duyệt ở N6 và `design/gdd/boss-ai.md`.
 - Làm: hitbox từng đòn boss; hurtbox theo bộ phận để phá bộ phận.
+- Nghiệm thu: test từng đòn và từng bộ phận đã duyệt; i-frame/stagger vẫn xanh; bằng chứng server + 2 client theo DECISIONS §11 và screenshot hitbox debug.

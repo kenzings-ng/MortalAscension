@@ -29,9 +29,9 @@ Các mã cũ (Giai đoạn 0–7, 1.5, 2B, N0–N9) giữ nguyên; thẻ của G
 
 ## Quy tắc nhận việc (cho mọi agent: Claude, Codex, Antigravity)
 
-1. Chỉ nhận thẻ có mọi mã ở dòng "Phụ thuộc" đã `[x]` trong `ROADMAP.md`.
+1. Chỉ nhận thẻ có mọi mã ở dòng "Phụ thuộc" đã `[x]` trong `ROADMAP.md`. Với thẻ mới đang `[ ]`, chủ dự án cập nhật trạng thái theo bằng chứng sau merge; agent ghi đề xuất trong PR/PROGRESS. Quyền agent tự đổi `[~]` → `[x]` vẫn theo DECISIONS §13, không mở rộng sang `[ ]` → `[x]`.
 2. Trước khi bắt đầu, kiểm tra không ai đang làm: `git ls-remote --heads origin | grep -i <mã>` và `gh pr list --state open --search <mã>`. Có kết quả → chọn thẻ khác.
 3. Đặt tên nhánh có mã thẻ: `<loại>/<mã-viết-thường>-<mô-tả>` (ví dụ `feat/g2-pawn-visible`). Tiêu đề PR bắt đầu bằng `[<MÃ>]`.
 4. Một PR = một thẻ. Không gộp, không làm trước việc của thẻ sau.
-5. Dòng "Nghiệm thu" là điều kiện tối thiểu. Lệnh nghiệm thu phải **thất bại trước** khi làm và **pass sau** khi làm; dán cả hai kết quả vào PR.
+5. Dòng "Nghiệm thu" là điều kiện tối thiểu. Với sửa tính năng/lỗi, test mục tiêu phải **thất bại trước** và **pass sau**; dán cả hai kết quả vào PR. Với tài liệu/cổng mới, lưu baseline và kết quả sau, không cố làm validator hiện có thất bại. G1 là thẻ viết baseline đỏ có chủ đích; cổng từng PR G theo quy ước trong `G-greybox.md`, chỉ có hiệu lực sau khi chủ dự án duyệt roadmap v2.
 6. Gặp 🛑 → dừng, ghi câu hỏi vào PR, không tự quyết.

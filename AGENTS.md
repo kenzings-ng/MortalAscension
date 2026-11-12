@@ -3,6 +3,8 @@
 > Mortal Ascension (định danh kỹ thuật `ProjectAscendant`): action RPG isometric 2.5D pixel art, Unreal Engine 5.8.2, C++ + GAS + PaperZD.
 > File này là bản rút gọn cho agent không đọc được `CLAUDE.md`. Khi hai file khác nhau, `CLAUDE.md` và `production/DECISIONS.md` thắng; báo chỗ lệch trong PR.
 
+> **Trạng thái**: bản hướng dẫn v2 đang đề xuất; chỉ áp dụng thay đổi quy trình sau khi chủ dự án duyệt PR roadmap. PR roadmap v2 chỉ do chủ dự án merge sau khi duyệt, không tự merge dù reviewer PASS.
+
 ## 1. Đọc theo thứ tự này trước khi làm
 
 1. `production/DECISIONS.md`: quyết định đã chốt. Thắng mọi file khác.
@@ -22,7 +24,7 @@
 2. Tạo nhánh từ `main` mới nhất: `<loại>/<mã-thẻ>-<mô-tả>`. Lần đầu trên máy: `git config core.hooksPath Tools/git-hooks`.
 3. Đọc file gốc trước khi sửa. Không refactor ngoài phạm vi thẻ.
 4. Chạy cổng tự động (mục 3) **trước và sau** khi sửa; dán kết quả vào PR.
-5. Mở PR vào `main`, tiêu đề `[<MÃ>] ...`. **Không tự merge.** Một phiên Claude (subagent `reviewer`) rà PR, tìm lỗi kèm file:dòng; sửa hết rồi chạy lại cổng. Chỉ merge khi mọi cổng pass và reviewer đồng ý.
+5. Mở PR vào `main`, tiêu đề `[<MÃ>] ...`. **Không tự merge.** Một phiên Claude (subagent `reviewer`) rà PR, tìm lỗi kèm file:dòng; sửa hết rồi chạy lại cổng. Chủ dự án thực hiện merge khi mọi cổng bắt buộc pass, reviewer đồng ý và các điểm 🛑 liên quan đã được duyệt.
 6. Sau merge: thêm mục vào `production/PROGRESS.md` (việc đã làm, commit hash trên remote, log test, kết luận reviewer).
 
 ## 3. Cổng tự động
@@ -31,7 +33,7 @@
 |---|---|---|
 | `Source/`, `Config/`, `Content/` | `/mnt/Data/Engine/Build/BatchFiles/Linux/Build.sh ProjectAscendantEditor Linux Development -Project="$PWD/ProjectAscendant.uproject" -WaitMutex` | build thành công |
 | `Source/`, `Config/`, `Content/` | `./Tools/QA/run_headless_tests.sh --ue-only` | `Failed=0`, `QueueFinished=1` |
-| Mảng G (greybox) | `./Tools/QA/run_headless_tests.sh --ue-only --filter=Greybox.CoreLoop` | test của thẻ chuyển đỏ → xanh |
+| Mảng G (greybox, sau khi roadmap v2 được duyệt) | chạy từng `--filter=Greybox.CoreLoop.<Tên>` trong Nghiệm thu; lưu thêm log toàn suite | G2–G7: ca của thẻ và các ca đã xanh không hồi quy; G8: log kết nối thật và không hồi quy; G1: baseline đủ 9 ca, queue hoàn tất; G9: toàn suite xanh — xem quy ước trong `G-greybox.md` |
 | `design/`, `production/` | `python3 Tools/QA/validate_gdd_consistency.py` | exit 0, 0 lỗi |
 | `Tools/QA/validate_gdd_consistency.py` | `python3 Tools/QA/test_validate_gdd_consistency.py` | exit 0 |
 | `Services/Backend/` | `python3 Tools/QA/test_backend_service_unit.py`; `python3 Tools/QA/test_backend_postgres.py` | exit 0 |
@@ -52,7 +54,7 @@ CI trên GitHub chỉ chạy "Fast Gates (GDD & Backend QA)", **không biên d�
 ## 5. Cấm
 
 - Push thẳng vào `main`, force push, viết lại lịch sử git, xóa nhánh của người khác.
-- Sửa `production/DECISIONS.md`, `production/ROADMAP.md`, `production/roadmap/*.md`, `CLAUDE.md`, `AGENTS.md`. Đề xuất thay đổi bằng câu hỏi trong PR.
+- Sửa `production/DECISIONS.md`, `production/ROADMAP.md`, `production/roadmap/*.md`, `CLAUDE.md`, `AGENTS.md` khi chưa có chỉ thị/phê duyệt cụ thể của chủ dự án. Ngoại lệ đã chốt: agent được đổi `[~]` → `[x]` trong ROADMAP khi đủ PR đã merge, log test và reviewer đồng ý (DECISIONS §13); không tự đổi `[ ]` → `[x]`. Các thay đổi khác đề xuất bằng câu hỏi trong PR.
 - Báo "đã xong" khi chưa có commit hash trên remote và log test.
 - Tự tạo thuật ngữ, tiền tệ, thang độ hiếm, hệ thống, tên riêng (vùng, phe phái, NPC, boss) không có trong GDD/DECISIONS/registry.
 - Commit secret, token, email hoặc thông tin cá nhân.
