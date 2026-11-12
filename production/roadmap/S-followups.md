@@ -11,7 +11,7 @@
 ### S2 — Xác thực token thật khi đăng nhập
 - Phụ thuộc: không.
 - Đọc trước: `PAGameModeBase.cpp` (`CheckAuthToken` chỉ kiểm định dạng), `PABackendPersistenceSubsystem::ValidateClientToken` (chưa ai gọi).
-- Làm: PreLogin/Login gọi backend kiểm token; giữ đường dev của G8.
+- Làm: PreLogin/Login gọi backend kiểm token; tương thích token dev/cờ dev mà G8 sẽ triển khai nếu S2 làm trước. Đường dev phải được giới hạn rõ ở môi trường phát triển, không nới kiểm tra token ở build phát hành.
 - Nghiệm thu: test với token giả đúng định dạng bị từ chối.
 
 ### S3 — Auto-save dùng dữ liệu thật

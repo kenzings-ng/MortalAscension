@@ -28,7 +28,7 @@
 - Phụ thuộc: G10 ("giữ"), H1, A0.
 - Đọc trước: playbook A0; `design/art/vanguard-mood-board.md`; `design/gdd/character-visual-system.md` §4.3 (danh sách animation); ghi chú PaperZD (P1 trong `ROADMAP.md`).
 - Làm: Vanguard đủ bộ animation §4.3 + Stunned, Dead; 5 hướng + lật; mào đỏ thẫm, tabard navy "Worn Azure"; metadata socket và hitbox theo H1; import Paper2D (Nearest, không mipmap, PPU 1.0); thay hình tạm của greybox.
-- Nghiệm thu: `sprite_spec_gate.py` pass cho mọi frame; test `ProjectAscendant.CoreLoop.*` vẫn xanh; ảnh chụp trong game.
+- Nghiệm thu: `sprite_spec_gate.py` pass cho mọi frame nhân vật đã ghép; test `ProjectAscendant.CoreLoop.*` vẫn xanh; ảnh chụp trong game.
 - 🛑 Duyệt thẩm mỹ (hình có mào lần đầu); 🛑 nếu có bước sinh ảnh AI.
 
 ### A2 — Sổ cái CC0

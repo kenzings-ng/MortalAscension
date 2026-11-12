@@ -35,7 +35,7 @@
   - `Greybox.CoreLoop.TagsFromIni`: mọi tag mà combat/ability dùng tra được bằng `RequestGameplayTag(Tag, false)` mà không đăng ký lúc chạy.
   - `Greybox.CoreLoop.PawnVisible`: sprite của Vanguard có flipbook với số keyframe > 0, hoặc có mesh khối tạm hiển thị.
   - `Greybox.CoreLoop.MoveOnInput`: bơm input di chuyển, tick ~30 frame, vị trí đổi theo hướng input.
-  - `Greybox.CoreLoop.MeleeHitsDummy`: kích hoạt đòn đánh thường cạnh một mục tiêu, HP mục tiêu giảm.
+  - `Greybox.CoreLoop.MeleeHitsDummy`: kích hoạt một đòn đánh thường cạnh mục tiêu có HP đủ lớn và thông số phòng thủ cố định; trong cùng cửa sổ hitbox, kể cả khi cả notify và timer phát tín hiệu hoặc overlap được xử lý nhiều lần, HP mục tiêu chỉ giảm đúng một lần và tổng mức giảm bằng sát thương kỳ vọng của một hit. Sau khi đóng cửa sổ, một đòn mới phải gây thêm đúng một hit để chứng minh cơ chế chống lặp không khóa các đòn sau. Kiểm cả số lần nhận damage và HP trước/sau; không chỉ assert HP giảm.
   - `Greybox.CoreLoop.DashStaminaRegen`: dash 4 lần, chờ, stamina hồi và dash lần 5 được.
   - `Greybox.CoreLoop.DashIFrame`: đòn boss trúng lúc đang trong cửa sổ i-frame của dash không gây sát thương; trúng ngoài cửa sổ thì có.
   - `Greybox.CoreLoop.BossStagger`: đánh trúng boss làm thanh thế đứng (posture) giảm; về 0 thì boss vào trạng thái vỡ thế (Stunned) trong một khoảng thời gian.
@@ -63,7 +63,7 @@
 - Đọc trước: `Private/Combat/PAGameplayAbility_MeleeAttack.cpp` (chờ event hitbox; đường notify đã có trong `PAPaperZDNotifyState_Hitbox.cpp` → `PABaseCharacter::NotifyHitboxOpened` → `SendGameplayEventToActor`, nhưng tag/AnimBP cần kiểm runtime); `Content/Art/Characters/Vanguard/anim/ABP_Vanguard.uasset` nghi là stub, G1 cần kiểm bằng engine.
 - Làm: ability tự mở/đóng cửa sổ hitbox theo thời gian (không phụ thuộc PaperZD notify); hình dạng là box/capsule theo hướng nhìn; cvar `pa.Debug.Hitbox 1` vẽ hitbox và hurtbox bằng `DrawDebug*`. Thông số (kích thước, thời điểm) để trong data asset hoặc config, **không** coi là số chốt. Chọn rõ một nguồn mở/đóng cửa sổ hitbox khi dùng fallback, chống notify và timer gây đòn kép; test mỗi mục tiêu chỉ nhận một hit trong cùng cửa sổ.
 - Không làm: không viết spec hitbox chính thức (để H1).
-- Nghiệm thu: `Greybox.CoreLoop.MeleeHitsDummy` xanh; ảnh chụp hitbox debug.
+- Nghiệm thu: `Greybox.CoreLoop.MeleeHitsDummy` xanh, gồm assert đúng một lần nhận damage và đúng tổng sát thương mỗi cửa sổ dù có tín hiệu notify/timer hoặc overlap lặp, rồi đòn kế tiếp vẫn gây một hit; ảnh chụp hitbox debug. Các assert này nằm trong ca MeleeHitsDummy hiện có, không thêm ca thứ 10.
 
 ### G5 — Stamina hồi sau dash
 - Phụ thuộc: G1.
