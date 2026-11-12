@@ -1,0 +1,54 @@
+{
+  "claude_settings_valid": true,
+  "class_tags": 16,
+  "pcg_files": [
+    "Content/Maps/PCG/Autotile_Terrain_32x32_Bitmask.json",
+    "Content/Maps/PCG/Citadel_SafeZone_Exclusion_Volumes.json",
+    "Content/Maps/PCG/PCG_CitadelRoadSplineGraph.json",
+    "Content/Maps/PCG/PCG_WorldBiomeGraph.json"
+  ],
+  "traces": {
+    "Saved/Profiling/Alpha_Benchmark_L_VerdantFrontier_Outpost.utrace": 6646266,
+    "Saved/Profiling/PeakCombat50.utrace": 1963074
+  },
+  "select_assets": {
+    "Content/art/characters/ranger_pixel_spritesheet.uasset": true,
+    "Content/art/characters/arcanist_pixel_spritesheet.uasset": true
+  },
+  "binary_heuristic": {
+    "Content/Art/Characters/Vanguard/flipbooks/FB_Vanguard_Idle.uasset": {
+      "exists": true,
+      "bytes": 1221,
+      "contains_KeyFrames": false
+    },
+    "Content/Art/Characters/Vanguard/flipbooks/FB_Vanguard_Walk.uasset": {
+      "exists": false,
+      "bytes": 0,
+      "contains_KeyFrames": false
+    },
+    "Content/Art/Characters/Vanguard/flipbooks/FB_Vanguard_Run.uasset": {
+      "exists": true,
+      "bytes": 1216,
+      "contains_KeyFrames": false
+    },
+    "Content/Art/Characters/Boss/flipbooks/FB_Golem_Idle.uasset": {
+      "exists": true,
+      "bytes": 1198,
+      "contains_KeyFrames": false
+    }
+  },
+  "main_push_hook": {
+    "exit": 1,
+    "blocked": true
+  },
+  "legacy_deleted": {
+    "Content/art/complete_map_showcase.jpg": true,
+    "Content/art/ruins_blockout_3d.gif": true,
+    "Content/art/ruins_concept.jpg": true
+  },
+  "historical_character_log": {
+    "exists": true,
+    "successes": 6,
+    "contains_vanguard_runtime_wiring": true
+  }
+}
